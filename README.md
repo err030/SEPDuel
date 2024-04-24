@@ -1,5 +1,8 @@
 # Gruppe Q
 
+Use
+git branch -D <branch>
+to force delete the old branches
 
 
 ## Getting started
