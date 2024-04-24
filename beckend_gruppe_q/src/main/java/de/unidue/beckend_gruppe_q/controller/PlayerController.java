@@ -1,10 +1,8 @@
 //PlayerController.java
 package de.unidue.beckend_gruppe_q.controller;
 
-import com.decks.model.Card;
-import com.decks.model.Deck;
-import com.decks.model.Player;
-import com.decks.repository.PlayerRepository;
+import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
