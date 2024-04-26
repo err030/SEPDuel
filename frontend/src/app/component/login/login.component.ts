@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgClass} from "@angular/common";
@@ -17,7 +17,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     FormsModule,
-    NgClass
+    NgClass,
+    RouterLink
   ],
   providers: [UserService, MessageService]
 })
@@ -95,7 +96,7 @@ export class LoginComponent implements OnInit {
               detail: 'Failed to login. Please try again later.'
             });
           }
-            console.error(error);
+          console.error(error);
         }
       });
     } else {
@@ -103,38 +104,29 @@ export class LoginComponent implements OnInit {
     }
   }
 
-    // 申请忘记密码
-    forgetPasswordRequest()
-  :
+  // 申请忘记密码
+  forgetPasswordRequest()
+    :
     void {
-      // 获取用户输入的邮箱地址或用户名
-      const emailOrUsername = this.user.email;
+    // 获取用户输入的邮箱地址或用户名
+    const emailOrUsername = this.user.email;
 
-      // 检查用户输入的邮箱地址或用户名是否存在
-      this.userService.checkUserByEmailAndGroupId(this.user).subscribe({
-        next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
-          // 如果存在用户
-          if (response.status == 200) {
-            // 发送重置密码链接到用户邮箱
-            this.userService.sendResetPasswordEmail(emailOrUsername).subscribe({
-              next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
-                // 发送成功
-                if (response.status === 200) {
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'An email with password reset instructions has been sent to your email address.'
-                  });
-                } else {
-                  // 发送失败
-                  this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to send password reset email. Please try again later.'
-                  });
-                }
-              },
-              error: (error: any) => { // 显式声明 error 参数的类型
+    // 检查用户输入的邮箱地址或用户名是否存在
+    this.userService.checkUserByEmailAndGroupId(this.user).subscribe({
+      next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
+        // 如果存在用户
+        if (response.status == 200) {
+          // 发送重置密码链接到用户邮箱
+          this.userService.sendResetPasswordEmail(emailOrUsername).subscribe({
+            next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
+              // 发送成功
+              if (response.status === 200) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'An email with password reset instructions has been sent to your email address.'
+                });
+              } else {
                 // 发送失败
                 this.messageService.add({
                   severity: 'error',
@@ -142,40 +134,49 @@ export class LoginComponent implements OnInit {
                   detail: 'Failed to send password reset email. Please try again later.'
                 });
               }
-            });
-          } else {
-            // 用户不存在，显示错误消息
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'This email or username does not exist'
-            });
-          }
-        },
-        error: (error: any) => { // 显式声明 error 参数的类型
-          // 其他错误，显示通用错误消息
+            },
+            error: (error: any) => { // 显式声明 error 参数的类型
+              // 发送失败
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to send password reset email. Please try again later.'
+              });
+            }
+          });
+        } else {
+          // 用户不存在，显示错误消息
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Failed to send password reset email. Please try again later.'
+            detail: 'This email or username does not exist'
           });
         }
-      });
-    }
-
-    goToRegister()
-  :
-    void {
-      this.router.navigateByUrl('/register')
-        .then((navigationSuccess: boolean) => {
-          if (navigationSuccess) {
-            console.log('Navigation to /register successful');
-            // 执行其他操作
-          } else {
-            console.error('Navigation to /register failed');
-          }
+      },
+      error: (error: any) => { // 显式声明 error 参数的类型
+        // 其他错误，显示通用错误消息
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to send password reset email. Please try again later.'
         });
-    }
-
-
+      }
+    });
   }
+
+  goToRegister()
+    :
+    void {
+    this.router.navigateByUrl('/register')
+      .then((navigationSuccess: boolean) => {
+        if (navigationSuccess) {
+          console.log('Navigation to /register successful');
+          // 执行其他操作
+        } else {
+          console.error('Navigation to /register failed');
+        }
+      });
+  }
+
+
+}

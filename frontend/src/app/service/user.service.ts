@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
 import {User} from "../model/user";
 import {Router} from "@angular/router";
-import {Global} from "../../global";
+import {Global} from "../global";
 
 
 @Injectable({

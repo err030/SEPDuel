@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "untitled2": {
+    "a0422": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/untitled2",
+            "outputPath": "dist/a0422",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -25,11 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/app/component/login/login.component.css",
-              "src/app/component/register/register.component.css",
-              "src/app/component/reset-password/reset-password.component.css",
-              "src/app/component/verify/verify.component.css"
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -61,10 +57,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "untitled2:build:production"
+              "buildTarget": "a0422:build:production"
             },
             "development": {
-              "buildTarget": "untitled2:build:development"
+              "buildTarget": "a0422:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "untitled2:build"
+            "buildTarget": "a0422:build"
           }
         },
         "test": {
