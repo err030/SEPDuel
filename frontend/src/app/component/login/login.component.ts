@@ -49,9 +49,14 @@ export class LoginComponent implements OnInit {
                 if (response.status == 200) {
                   if (response.body) {
                     this.loggedUser = response.body;
+                    // 保存用户信息后进行导航
+                    if (this.loggedUser.groupId == 1) {
+                      this.router.navigate(['/user']); // 导航到普通用户页面
+                    } else if (this.loggedUser.groupId == 2) {
+                      this.router.navigate(['/admin']); // 导航到管理员页面
+                    }
                   }
-                  // 导航到 verify 页面
-                  this.router.navigate(['/verify']);
+
                 }
               },
               error: (error) => {
