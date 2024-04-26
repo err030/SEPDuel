@@ -20,7 +20,7 @@ public class Player {
     private int score;
     @OneToMany
     private List<Deck> decks;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Card> cards;
 
     public Player(String nickname) {

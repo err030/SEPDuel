@@ -7,6 +7,9 @@ import { userAuthGuard } from './auth-guard/auth.guard.user';
 import { adminAuthGuard } from './auth-guard/auth.guard.admin';
 import {HomepageUserComponent} from "./homepage-user/homepage-user.component";
 import {HomepageAdminComponent} from "./homepage-admin/homepage-admin.component";
+import {DeckListComponent} from "./component/deck-list/deck-list.component";
+import {CardListComponent} from "./component/card-list/card-list.component";
+import {AboutComponent} from "./component/about/about.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,6 +17,9 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'verify', component: VerifyComponent },
   { path: '**', redirectTo: 'login' },
+  { path: 'deck-list', component: DeckListComponent },
+  { path: 'card-list', component: CardListComponent },
+  { path: 'about', component: AboutComponent },
   {
     path: 'user',
     component: HomepageUserComponent,

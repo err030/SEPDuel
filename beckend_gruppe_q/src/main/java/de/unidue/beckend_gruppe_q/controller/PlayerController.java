@@ -22,11 +22,10 @@ public class PlayerController {
 
 //    @Secured({"ROLE_USER", "ROLE_ADMIN"})
 //
-//    @GetMapping("/api/players/{id}/addDeck")
-//
-//    public List<Player> getPlayers() {
-//        return playerRepository.findAll();
-//    }
+    @GetMapping("/api/players")
+    public List<Player> getPlayers() {
+        return playerRepository.findAll();
+    }
 
     @GetMapping("/api/players/{id}/addDeck")
     public Long addDeck(@PathVariable Long id) {

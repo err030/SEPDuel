@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgClass} from "@angular/common";
@@ -17,7 +17,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     FormsModule,
-    NgClass
+    NgClass,
+    RouterLink
   ],
   providers: [UserService, MessageService]
 })
