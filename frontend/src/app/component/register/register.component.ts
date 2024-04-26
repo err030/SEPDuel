@@ -27,16 +27,16 @@ export class RegisterComponent {
 
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
 
-  // 初始化年份、月份和日期选项
-  this.years = this.generateOptions(1970, 2006);
-  this.months = Array.from({ length: 12 }, (_, i) => i + 1);
-  this.days = Array.from({ length: 31 }, (_, i) => i + 1);
-}
+    // 初始化年份、月份和日期选项
+    this.years = this.generateOptions(1970, 2006);
+    this.months = Array.from({ length: 12 }, (_, i) => i + 1);
+    this.days = Array.from({ length: 31 }, (_, i) => i + 1);
+  }
 
 // 辅助函数，用于生成指定范围内的数字数组
-generateOptions(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
+  generateOptions(start: number, end: number): number[] {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
 
 // 验证邮箱是否符合规则
   isValidEmail(email: string): boolean {
@@ -80,7 +80,7 @@ generateOptions(start: number, end: number): number[] {
 
     const emailUser = new User('', '', this.user.email, '', 0);
     const usernameUser = new User('', '', '', '', 0, undefined, undefined, undefined, this.user.username);
-  // 检查邮箱是否存在
+    // 检查邮箱是否存在
     this.userService.checkEmailExists(emailUser).subscribe({
       next: (exists) => {
         if (exists) {
