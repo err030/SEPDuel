@@ -1,9 +1,6 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -19,8 +16,9 @@ public class User {
     private Date geburtstag;
     private String avatarUrl;
     private Integer groupId;
-    private Long leaderboradPunkte;
     private Long sepCoins;
+    @OneToOne(mappedBy = "user")
+    private LeaderBoardPunkt leaderBoardPunkt;
 
     public Long getId() {
         return id;
@@ -86,13 +84,6 @@ public class User {
         this.groupId = groupId;
     }
 
-    public Long getLeaderboradPunkte() {
-        return leaderboradPunkte;
-    }
-
-    public void setLeaderboradPunkte(Long leaderboradPunkte) {
-        this.leaderboradPunkte = leaderboradPunkte;
-    }
 
     public Long getSepCoins() {
         return sepCoins;

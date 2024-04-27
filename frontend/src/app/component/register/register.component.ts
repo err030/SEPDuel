@@ -146,6 +146,6 @@ generateOptions(start: number, end: number): number[] {
 
   //跳转到登录页面
   returnToLogin(): void {
-    void this.router.navigateByUrl("/login");
+    this.router.navigateByUrl("/login");
   }
 }

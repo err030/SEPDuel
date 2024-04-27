@@ -110,8 +110,8 @@ public class UserController {
             }
             // 设置邮件内容
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            String emailSubject = "SEP: Ihr Sicherheitscode";
-            String emailText = "Ihr Sicherheitscode lautet: " + code + ", der gültig bis " + format.format(expirationTime) + " ist. Geben Sie diesen Code nicht weiter.";
+            String emailSubject = "SEP: Your Securitycode";
+            String emailText = "Your securitycode is: " + code + ", valid until " + format.format(expirationTime) + " . Do not share this code.";
             try {
                 // 发送邮件
                 emailService.sendEMail(user.getEmail(), emailSubject, emailText);
@@ -178,8 +178,8 @@ public class UserController {
             // 如果用户存在，则生成一个6位数的随机字符串，由大写小写字母和数字组成
             String newPassword = RandomStringUtils.randomAlphanumeric(6);
             // 设置Email内容
-            String emailSubject = "SEP: Ihr neues Passwort";
-            String emailText = "Ihr neues Passwort lautet: " + newPassword + ".";
+            String emailSubject = "SEP: Your new password";
+            String emailText = "Your new password is: " + newPassword + ".";
             try {
                 emailService.sendEMail(user.getEmail(), emailSubject, emailText);
                 User resetPasswordUser = list.get(0);
@@ -249,5 +249,12 @@ public class UserController {
             // 用户id不存在返回404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody User user) {
+        // 设置初始的SEP Coin和Leaderpunkte
+        user.setSepCoins(500L);
+        return userRepository.save(user);
     }
 }
