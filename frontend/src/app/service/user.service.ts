@@ -40,7 +40,7 @@ export class UserService {
   }
 
   checkUsernameExists(user: User): Observable<HttpResponse<any>> {
-    const url = Global.userRestServiceUrl + "/username/" + user.username;
+    const url = Global.userRestServiceUrl + "/checkusername/"+user.groupId+"/" + user.username;
     return this.http.get<any>(url, {observe: 'response'});
   }
 

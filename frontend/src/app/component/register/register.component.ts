@@ -5,41 +5,46 @@ import { Router } from '@angular/router';
 import { User } from '../../model/user';
 import {CommonModule, NgClass} from '@angular/common';
 import {FormsModule} from "@angular/forms";
+import { CalendarModule } from 'primeng/calendar';
+
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
-  standalone: true,
-  imports: [
+   selector: 'app-register',
+   templateUrl: './register.component.html',
+   styleUrls: ['./register.component.css'],
+   standalone: true,
+   imports: [
     CommonModule,
     FormsModule,
-    NgClass
-  ],
-  providers: [UserService, MessageService]
+    NgClass,
+    CalendarModule
+   ],
+   providers: [UserService, MessageService]
 })
 export class RegisterComponent {
-  user: User = new User("", "", "", "", 1);
+  user: User = new User("", "", "", "", "",1);
   confirmPassword: string = "";
-  years: number[] = [];
+ /* years: number[] = [];
   months: number[] = [];
-  days: number[] = [];
+  days: number[] = [];*/
 
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
-
+  }
   // 初始化年份、月份和日期选项
-  this.years = this.generateOptions(1970, 2006);
+  /*this.years = this.generateOptions(1970, 2006);
   this.months = Array.from({ length: 12 }, (_, i) => i + 1);
   this.days = Array.from({ length: 31 }, (_, i) => i + 1);
-}
+}*/
 
 // 辅助函数，用于生成指定范围内的数字数组
+/*
 generateOptions(start: number, end: number): number[] {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
+*/
 
 // 验证邮箱是否符合规则
-  isValidEmail(email: string): boolean {
+isValidEmail(email: string): boolean {
     if (!email) {
       // 如果邮箱为空，返回 false
       return false;
@@ -78,12 +83,12 @@ generateOptions(start: number, end: number): number[] {
       return;
     }
 
-    const emailUser = new User('', '', this.user.email, '', 0);
-    const usernameUser = new User('', '', '', '', 0, undefined, undefined, undefined, this.user.username);
+    const emailUser = new User('', '', "", this.user.email, "",1);
+    const usernameUser = new User('', '', this.user.username, '',"", 1, undefined, undefined);
   // 检查邮箱是否存在
     this.userService.checkEmailExists(emailUser).subscribe({
-      next: (exists) => {
-        if (exists) {
+      next: (response) => {
+        if (response.body) {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -92,8 +97,8 @@ generateOptions(start: number, end: number): number[] {
         } else {
           // 检查用户名是否存在
           this.userService.checkUsernameExists(usernameUser).subscribe({
-            next: (exists) => {
-              if (exists) {
+            next: (response) => {
+              if (response.body) {
                 this.messageService.add({
                   severity: 'error',
                   summary: 'Error',
@@ -118,8 +123,8 @@ generateOptions(start: number, end: number): number[] {
                         detail: 'You have successfully registered'
                       });
                       // 清空表单数据
-                      this.user = new User("", "", "", "", 1);
-                      this.confirmPassword = "";
+                     /* this.user = new User("", "", "", "", 1);
+                      this.confirmPassword = "";*/
                       // 跳转到登录页面
                       void this.router.navigateByUrl("/login");
                     }
@@ -149,3 +154,6 @@ generateOptions(start: number, end: number): number[] {
     this.router.navigateByUrl("/login");
   }
 }
+
+
+
