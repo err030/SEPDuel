@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
   providers: [UserService, MessageService]
 })
 export class LoginComponent implements OnInit {
-  user: User = new User("", "", "", "", 1);
+  user: User = new User("", "", "", "", "",1);
 
   loggedUser: any;
 

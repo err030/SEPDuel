@@ -29,7 +29,12 @@
               "src/app/component/login/login.component.css",
               "src/app/component/register/register.component.css",
               "src/app/component/reset-password/reset-password.component.css",
-              "src/app/component/verify/verify.component.css"
+              "src/app/component/verify/verify.component.css",
+
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
+
+
             ],
             "scripts": []
           },
