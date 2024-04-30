@@ -38,27 +38,6 @@ public class FriendController{
     }
 
 
-    @PostMapping("/friend/sendFriendRequest/{aktuelleUserid}/{zielUserid}")
-    public ResponseEntity<?> sendFriendRequest(@PathVariable(value = "aktuelleUserid") Long aktuelleUserId,
-                                               @PathVariable(value = "zielUserid") Long zielUserId) {
-        FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(aktuelleUserId, zielUserId);
-        if (friendRequest != null) {
-            if (friendRequest.getFreundschaftanfragStatus() == 2) {
-                friendRequest.setFreundschaftanfragStatus(0);
-                friendRequestRepository.save(friendRequest);
-                freundschaftsanfrageEmail(aktuelleUserId,zielUserId);
-                return ResponseEntity.status(HttpStatus.OK).body(null);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
-        } else {
-            FriendRequest newFriendRequest = new FriendRequest(aktuelleUserId, zielUserId, 0);
-            friendRequestRepository.save(newFriendRequest);
-            freundschaftsanfrageEmail(aktuelleUserId,zielUserId);
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        }
-    }
-
     @GetMapping("/friend/getAllFriends/{aktuelleUserId}")
     public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId) {
         List<User> userList = new ArrayList<>();
@@ -73,24 +52,29 @@ public class FriendController{
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
-    private void freundschaftsanfrageEmail(Long aktuelleUserId, Long zielUserId) {
-        Optional<User> senderOptional = userRepository.findById(aktuelleUserId);
-        if (senderOptional.isPresent()) {
-            User sender = senderOptional.get();
-            Optional<User> receiverOptional = userRepository.findById(zielUserId);
-            if (receiverOptional.isPresent()) {
-                User receiver = receiverOptional.get();
-                String emailSubject = "Freundschaftsanfrage";
-                String emailText = "Lieber Benutzer, Sie haben eine Freundschaftsanfrage von " + sender.getVorname() + " " + sender.getNachname()
-                        + " " + sender.getEmail() + " erhalten. "
-                        + "Bitte loggen Sie sich auf unserem System ein, um die Details zu sehen und sie zu bearbeiten.";
 
-                eMailService.sendEMail(receiver.getEmail(), emailSubject, emailText);
-
-            }
+    @GetMapping("/friend/getListStatus/{aktuelleUserId}")
+    public ResponseEntity<Boolean> getListStatus(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId) {
+        FriendList friendList = friendListRepository.findByUserId(aktuelleUserId);
+        if (friendList != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(friendList.getPublic());
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
     }
 
+    @PutMapping("/friend/updateListStatus/{currentUserId}/{newStatus}")
+    public ResponseEntity<?> updateListStatus(@PathVariable(value = "currentUserId") Long currentUserId,
+                                              @PathVariable(value = "newStatus") Boolean newStatus) {
+        FriendList friendList = friendListRepository.findByUserId(currentUserId);
+        if (friendList != null) {
+            friendList.setPublic(newStatus);
+            friendListRepository.save(friendList);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @DeleteMapping("/friend/{aktuelleUserId}/{friendId}")
     public ResponseEntity<?> deleteFriend(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId,
