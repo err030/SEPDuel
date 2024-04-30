@@ -10,10 +10,9 @@ import { HomepageUserComponent } from "./component/homepage-user/homepage-user.c
 import { HomepageAdminComponent } from "./component/homepage-admin/homepage-admin.component";
 
 
-import {HomeComponent} from "./home/home.component";
-import {AboutComponent} from "./about/about.component";
-import {CardListComponent} from "./card-list/card-list.component";
-import {DeckListComponent} from "./deck-list/deck-list.component";
+import {AboutComponent} from "./component/about/about.component";
+import {CardListComponent} from "./component/card-list/card-list.component";
+import {DeckListComponent} from "./component/deck-list/deck-list.component";
 
 
 export const routes: Routes = [
@@ -24,7 +23,7 @@ export const routes: Routes = [
   { path: 'homepage-user', component: HomepageUserComponent, canActivate: [userAuthGuard] },
   { path: 'homepage-admin', component: HomepageAdminComponent, canActivate: [adminAuthGuard] },
 
-  {path: 'home', component: HomeComponent},
+
   {path: 'about', component: AboutComponent},
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},

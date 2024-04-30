@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-verify',
   templateUrl: './verify.component.html',
   standalone: true,
   styleUrls: ['./verify.component.css'],
+  imports: [
+    FormsModule
+  ],
   providers: [MessageService, UserService]
 })
 export class VerifyComponent {
