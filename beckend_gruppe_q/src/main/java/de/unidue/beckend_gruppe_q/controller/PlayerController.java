@@ -43,7 +43,7 @@ public class PlayerController {
         if (existingDeck.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        existingDeck.get().setDeckName(updateDeck.getDeckName()); //update deckName
+        existingDeck.get().setName(updateDeck.getName()); //update deckName
         existingDeck.get().setCards(updateDeck.getCards());       //update Cards
         Deck savedDeck = deckRepository.save(existingDeck.get());
         return new ResponseEntity<>(savedDeck, HttpStatus.OK);
@@ -57,7 +57,8 @@ public class PlayerController {
         deckRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
-
+//获取用户所有的卡组和卡牌get api/players/{id}/cards  api/players/{id}/decks。。。特定卡组内的卡牌get api/players/{id}/decks/{id}。。。
+// 新增卡组get api/players/{id}/addDeck Long new Deck return deck.id
 //    @GetMapping("/api/players/{id}/addDeck")
 //    public Long addDeck(@PathVariable Long id) {
 //        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid player id"));
