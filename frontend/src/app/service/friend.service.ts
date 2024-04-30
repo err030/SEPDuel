@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable} from 'rxjs';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {User} from "../model/user";
 import {Global} from "../../global";
@@ -25,7 +25,25 @@ export class FriendService {
   }
 
 
+  sendFriendRequest(currentUserId: number, targetUserId: number): Observable<HttpResponse<any>> {
+    const url = Global.friendRestServiceUrl + "/sendFriendRequest" + currentUserId + "/" + targetUserId;
 
+    return this.http.post(url, null, {observe: 'response'});
+  }
+
+
+  //从后端获取当前用户收到的好友请求列表
+  getFriendRequests(currentUserId: number): Observable<HttpResponse<FriendRequest[]>>{
+    const url = Global.friendRestServiceUrl + "getFriendRequests" + currentUserId;
+
+    return this.http.get<FriendRequest[]>(url, {observe: 'response'});
+  }
+
+  acceptOrRejectFriendRequest(friendRequest: FriendRequest): Observable<HttpResponse<any>>{
+    const url = Global.friendRestServiceUrl + "acceptOrRejectFriendRequest";
+
+    return this.http.post(url, friendRequest, {observe: 'response'});
+  }
 
 
 

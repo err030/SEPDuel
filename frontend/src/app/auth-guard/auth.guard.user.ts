@@ -3,7 +3,7 @@ import {inject} from '@angular/core';
 import {
   CanActivateFn, CanMatchFn, Router, CanActivateChildFn
 } from '@angular/router';
-import {UserService} from "../../../../../WebstormProjects/gruppe-q/frontend/src/app/service/user.service";
+import {UserService} from "../service/user.service";
 
 /**
  * 定义普通用户的路由守卫

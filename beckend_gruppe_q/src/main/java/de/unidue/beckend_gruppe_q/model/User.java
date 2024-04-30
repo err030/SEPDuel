@@ -1,9 +1,6 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -12,15 +9,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String vorname;
-    private String nachname;
+    private String username;
+    private String firstname;
+    private String lastname;
     private String email;
-    private String passwort;
-    private Date geburtstag;
+    private String password;
+    private Date birthday;
     private String avatarUrl;
     private Integer groupId;
-    private Long leaderboradPunkte;
     private Long sepCoins;
+    @OneToOne(mappedBy = "user")
+    private LeaderBoardPunkt leaderBoardPunkt;
 
     public Long getId() {
         return id;
@@ -30,20 +29,28 @@ public class User {
         this.id = id;
     }
 
-    public String getVorname() {
-        return vorname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setVorname(String vorname) {
-        this.vorname = vorname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getNachname() {
-        return nachname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setNachname(String nachname) {
-        this.nachname = nachname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -54,20 +61,20 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswort() {
-        return passwort;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswort(String passwort) {
-        this.passwort = passwort;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Date getGeburtstag() {
-        return geburtstag;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setGeburtstag(Date geburtstag) {
-        this.geburtstag = geburtstag;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getAvatarUrl() {
@@ -86,13 +93,6 @@ public class User {
         this.groupId = groupId;
     }
 
-    public Long getLeaderboradPunkte() {
-        return leaderboradPunkte;
-    }
-
-    public void setLeaderboradPunkte(Long leaderboradPunkte) {
-        this.leaderboradPunkte = leaderboradPunkte;
-    }
 
     public Long getSepCoins() {
         return sepCoins;
@@ -100,5 +100,21 @@ public class User {
 
     public void setSepCoins(Long sepCoins) {
         this.sepCoins = sepCoins;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", vorname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", birthday=" + birthday +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", groupId=" + groupId +
+                ", sepCoins=" + sepCoins +
+                ", leaderBoardPunkt=" + leaderBoardPunkt +
+                '}';
     }
 }

@@ -47,29 +47,42 @@
       <input type="text" placeholder="Enter your last name" required [(ngModel)]="user.lastname" name="lastname">
     </div>
 
-    <div class="input-box" [class.input-error]="!user.yearOfBirth || !user.monthOfBirth || !user.dayOfBirth">
+    <!--<div class="input-box" [class.input-error]="!user.yearOfBirth || !user.monthOfBirth || !user.dayOfBirth">
       <label>Date of Birth*</label>
       <div class="birthday-inputs">
-        <!-- 年份选择框 -->
+        &lt;!&ndash; 年份选择框 &ndash;&gt;
         <select class="s1" name="year" [(ngModel)]="user.yearOfBirth" required>
           <option value="" disabled selected>Year</option>
-          <!-- 添加年份选项 -->
+          &lt;!&ndash; 添加年份选项 &ndash;&gt;
           <option *ngFor="let year of years" [value]="year">{{ year }}</option>
         </select>
-        <!-- 月份选择框 -->
+        &lt;!&ndash; 月份选择框 &ndash;&gt;
         <select class="s1" name="month" [(ngModel)]="user.monthOfBirth" required>
           <option value="" disabled selected>Month</option>
-          <!-- 添加月份选项 -->
+          &lt;!&ndash; 添加月份选项 &ndash;&gt;
           <option *ngFor="let month of months" [value]="month">{{ month }}</option>
         </select>
-        <!-- 日期选择框 -->
+        &lt;!&ndash; 日期选择框 &ndash;&gt;
         <select class="s1" name="day" [(ngModel)]="user.dayOfBirth" required>
           <option value="" disabled selected>Day</option>
-          <!-- 添加日期选项 -->
+          &lt;!&ndash; 添加日期选项 &ndash;&gt;
           <option *ngFor="let day of days" [value]="day">{{ day }}</option>
         </select>
       </div>
+    </div>-->
+    <div class="input-box" [class.input-error]="!user.birthday">
+      <label>Birthday*</label>
+      <p-calendar [(ngModel)]="user.birthday"class="ng-invalid ng-dirty"dateFormat="dd.mm.yy"name="birthday"></p-calendar>
     </div>
+
+   <!-- <p-calendar [(ngModel)]="user.birthday" [showIcon]="true"></p-calendar>
+    <p-calendar [(ngModel)]="user.birthday" [iconDisplay]="'input'" [showIcon]="true"></p-calendar>
+    <p-calendar [(ngModel)]="user.birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
+      <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+      </ng-template>
+    </p-calendar>-->
+
 
   </form>
 
@@ -88,6 +101,7 @@
       <button type="submit" (click)="onRegisterFormSubmit()">Next</button>
     </div>
   </div>
+
 
 </div>
 </body>

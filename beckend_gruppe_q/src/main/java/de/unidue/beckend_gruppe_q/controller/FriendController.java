@@ -96,7 +96,7 @@ public class FriendController {
                  String EmailContent = String.format(
                          "Lieber Benutzer, Sie haben eine Freundschaftsanfrage von %s %s (%s) erhalten." +
                          "Bitte loggen Sie auf unserem System ein, um die Anfrage zu bearbeiten.",
-                         sender.getVorname(), sender.getNachname(), sender.getEmail()
+                         sender.getFirstname(), sender.getLastname(), sender.getEmail()
                  );
 
                  eMailService.sendEMail(receiver.getEmail(), EmailSubject, EmailContent);
@@ -154,7 +154,7 @@ public class FriendController {
         if(sender != null && receiver != null){
             String EmailSubject = "Freundschaftsanfrage " + status;
             String EmailContent = "Lieber Benutzer, Sie haben eine Freundschaftsanfrage erhalten, die von"
-                    + sender.getVorname() + " " + sender.getNachname() + " (" + sender.getEmail() + ") gesendet wurde. Bitte loggen Sie sich in unser System ein, um sie anzusehen und zu verarbeiten.";
+                    + sender.getFirstname() + " " + sender.getLastname() + " (" + sender.getEmail() + ") gesendet wurde. Bitte loggen Sie sich in unser System ein, um sie anzusehen und zu verarbeiten.";
 
             eMailService.sendEMail(receiver.getEmail(), EmailSubject, EmailContent);
         }
