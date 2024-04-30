@@ -117,7 +117,7 @@ public class FriendController {
       }
 
       @PutMapping("/friend/friendRequest")
-      public ResponseEntity<?> acceptOrDenyFriendRequest(@RequestBody FriendRequest friendRequest) {
+      public ResponseEntity<?> acceptOrRejectFriendRequest(@RequestBody FriendRequest friendRequest) {
         friendRequestRepository.save(friendRequest);
 
         if(friendRequest.getFreundschaftanfragStatus() == 1){
@@ -162,6 +162,19 @@ public class FriendController {
     }
 
 
+    @GetMapping("/friend/getNewFriendRequestNumber/{currentUserId}")
+
+    public ResponseEntity<Integer> getNewFriendRequestNumber(@PathVariable(value = "currentUserId") Long currentUserId) {
+
+        int newFriendRequestNumber = 0;
+        List<FriendRequest> friendRequests = friendRequestRepository.findByZielUserId(currentUserId);
+        for (FriendRequest request : friendRequests){
+            if(request.getFreundschaftanfragStatus() == 0){
+                newFriendRequestNumber++;
+            }
+        }
+        return ResponseEntity.ok(newFriendRequestNumber);
+    }
 
 
 
