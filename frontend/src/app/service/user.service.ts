@@ -126,5 +126,15 @@ export class UserService {
     const url = Global.userRestServiceUrl + "/" + user.email + "/" + user.groupId;
     return this.http.get<any>(url, { observe: 'response' });
   }
+// 验证码
+  getSecurityCode(): Observable<HttpResponse<any>> {
+    const userId = this.loggedUser?.id; // 使用可选链操作符访问id属性
+    if (!userId) {
+      // 处理loggedUser为null或undefined的情况，这里你可以抛出一个错误或者返回一个合适的Observable
+      throw new Error('Logged user id is null or undefined');    }
+    const url = Global.userRestServiceUrl + "/securitycode/" + userId;
+    return this.http.get<any>(url, {observe: 'response'});
+  }
+
 
 }

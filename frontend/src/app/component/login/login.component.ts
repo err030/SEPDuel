@@ -47,116 +47,42 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
-  // 用户登录
-  onLoginFormSubmit(loginForm: NgForm): void {
-    for (const field in loginForm.controls) {
-      if (loginForm.controls.hasOwnProperty(field)) {
-        loginForm.controls[field].markAsTouched();
-      }
+//表单验证失败
+  showFormValidationErrorMessages(): string {
+    let errorMessage = '';
+    if (!this.user.email && !this.user.password) {
+      errorMessage = 'Please enter your email or username and password';
+    } else if (!this.user.email) {
+      errorMessage = 'Please enter your username or email';
+    } else if (!this.user.password) {
+      errorMessage = 'Please enter your password';
     }
-    // 验证表单
-    if (loginForm.valid) {
-      console.log('Form is valid, logging in...');
-      // 将用户输入的Email或者username、密码和用户组发送到后端进行验证
-      this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
-        next: (response) => {
-          if (response.status == 200) {
-            // 邮箱或用户名存在，现在验证密码
-            this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
-              next: (response) => {
-                // 验证成功，将后端返回的Response中body里面的用户信息保存在loggedUser变量中
-                if (response.status == 200) {
-                  if (response.body) {
-                    this.loggedUser = response.body;
-                  }
-                  //显示用户id获取验证码
-                  this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
-                    error: (error) => {
-                      if(error.status == 404) {
-                        this.messageService.add({
-                          severity: 'error',
-                          summary: 'Error',
-                          detail: 'Error by getting security code'
-                        })
-                      }
-                      else if(error.status == 503){
-                        this.messageService.add({
-                          severity: 'error',
-                          summary: 'Error',
-                          detail: 'Failed to send security code'
-                        })
-                      }
-                      else{
-                        this.messageService.add({
-                          severity: 'error',
-                          summary: 'Error',
-                          detail: error.statusText
-                        })
-                      }
-                    }
-                  })
-                  // 导航到 verify 页面
-                  this.router.navigate(['/verify']);
-                }
-              },
-              error: (error) => {
-                // 密码错误
-                if (error.status == 401) {
-                  this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Your password is incorrect'
-                  });
-                } else {
-                  // 其他错误
-                  this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to login. Please try again later.'
-                  });
-                }
-              }
-            });
-          }
-        },
-        error: (error) => {
-          // 邮箱或用户名不存在
-          if (error.status == 404) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'This email or username does not exist'
-            });
-          } else {
-            // 其他错误
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to login. Please try again later.'
-            });
-          }
-          console.error(error);
-        }
-      });
-    } else {
-      if (!this.user.email) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Please enter your email or username'
-        })
-      }
-      if (!this.user.password) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Please enter your password'
-        })
-      }
-    }
+    return errorMessage;
   }
+
+
+//登录逻辑
+  onLoginFormSubmit(): void {
+    this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
+      next: (response: HttpResponse<any>) => {
+        if (response.status === 200) {
+          // 用户登录成功，导航到验证页面
+          this.router.navigate(['/verify']);
+        } else {
+          // 用户登录失败，显示错误消息
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to login. Please try again later.' });
+        }
+      },
+      error: (error) => {
+        // 处理用户登录失败的错误情况
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to login. Please try again later.' });
+      }
+    });
+  }
+
+
+
 
   // 申请忘记密码
   forgetPasswordRequest()
