@@ -116,9 +116,9 @@ export class UserService {
 // 根据用户组导航至相应页面
   private navigateBasedOnUserGroup(groupId: number): void {
     if (groupId === 1) {
-      void this.router.navigateByUrl("/user");
+      void this.router.navigateByUrl("/homepage-user");
     } else if (groupId === 2) {
-      void this.router.navigateByUrl("/admin");
+      void this.router.navigateByUrl("/homepage-admin");
     }
   }
 

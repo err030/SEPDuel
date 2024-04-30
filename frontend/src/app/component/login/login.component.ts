@@ -1,5 +1,5 @@
 //login.component.ts
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgClass} from "@angular/common";
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +21,10 @@ import { CommonModule } from '@angular/common';
   ],
   providers: [UserService, MessageService]
 })
-export class LoginComponent implements OnInit {
-  user: User = new User("", "", "", "", "",1);
+export class LoginComponent implements OnInit, AfterViewInit {
+  @ViewChild('loginForm') loginForm: NgForm | undefined;
+
+  user: User = new User("", "", "", "", "", 1);
 
   loggedUser: any;
 
@@ -30,11 +32,30 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.markFormFieldsAsTouched();
     this.userService.checkLoggedUser();
   }
+  ngAfterViewInit(): void { // 在 ngAfterViewInit 钩子中调用 markFormFieldsAsTouched()
+    this.markFormFieldsAsTouched();
+  }
+
+  // 标记所有表单字段为已触摸状态
+  markFormFieldsAsTouched(): void {
+    const controls = Object.values(this.loginForm?.controls || {});
+    controls.forEach(control => {
+      control?.markAsTouched();
+    });
+  }
+
+
 
   // 用户登录
   onLoginFormSubmit(loginForm: NgForm): void {
+    for (const field in loginForm.controls) {
+      if (loginForm.controls.hasOwnProperty(field)) {
+        loginForm.controls[field].markAsTouched();
+      }
+    }
     // 验证表单
     if (loginForm.valid) {
       console.log('Form is valid, logging in...');
@@ -50,6 +71,32 @@ export class LoginComponent implements OnInit {
                   if (response.body) {
                     this.loggedUser = response.body;
                   }
+                  //显示用户id获取验证码
+                  this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
+                    error: (error) => {
+                      if(error.status == 404) {
+                        this.messageService.add({
+                          severity: 'error',
+                          summary: 'Error',
+                          detail: 'Error by getting security code'
+                        })
+                      }
+                      else if(error.status == 503){
+                        this.messageService.add({
+                          severity: 'error',
+                          summary: 'Error',
+                          detail: 'Failed to send security code'
+                        })
+                      }
+                      else{
+                        this.messageService.add({
+                          severity: 'error',
+                          summary: 'Error',
+                          detail: error.statusText
+                        })
+                      }
+                    }
+                  })
                   // 导航到 verify 页面
                   this.router.navigate(['/verify']);
                 }
@@ -90,46 +137,49 @@ export class LoginComponent implements OnInit {
               detail: 'Failed to login. Please try again later.'
             });
           }
-            console.error(error);
+          console.error(error);
         }
       });
     } else {
-      console.log('Form is invalid');
+      if (!this.user.email) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Please enter your email or username'
+        })
+      }
+      if (!this.user.password) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Please enter your password'
+        })
+      }
     }
   }
 
-    // 申请忘记密码
-    forgetPasswordRequest()
-  :
-    void {
-      // 获取用户输入的邮箱地址或用户名
-      const emailOrUsername = this.user.email;
+  // 申请忘记密码
+  forgetPasswordRequest()
+    : void {
+    // 获取用户输入的邮箱地址或用户名
+    const emailOrUsername = this.user.email;
 
-      // 检查用户输入的邮箱地址或用户名是否存在
-      this.userService.checkUserByEmailAndGroupId(this.user).subscribe({
-        next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
-          // 如果存在用户
-          if (response.status == 200) {
-            // 发送重置密码链接到用户邮箱
-            this.userService.sendResetPasswordEmail(emailOrUsername).subscribe({
-              next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
-                // 发送成功
-                if (response.status === 200) {
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'An email with password reset instructions has been sent to your email address.'
-                  });
-                } else {
-                  // 发送失败
-                  this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to send password reset email. Please try again later.'
-                  });
-                }
-              },
-              error: (error: any) => { // 显式声明 error 参数的类型
+    // 检查用户输入的邮箱地址或用户名是否存在
+    this.userService.checkUserByEmailAndGroupId(this.user).subscribe({
+      next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
+        // 如果存在用户
+        if (response.status == 200) {
+          // 发送重置密码链接到用户邮箱
+          this.userService.sendResetPasswordEmail(emailOrUsername).subscribe({
+            next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
+              // 发送成功
+              if (response.status === 200) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'An email with password reset instructions has been sent to your email address.'
+                });
+              } else {
                 // 发送失败
                 this.messageService.add({
                   severity: 'error',
@@ -137,40 +187,49 @@ export class LoginComponent implements OnInit {
                   detail: 'Failed to send password reset email. Please try again later.'
                 });
               }
-            });
-          } else {
-            // 用户不存在，显示错误消息
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'This email or username does not exist'
-            });
-          }
-        },
-        error: (error: any) => { // 显式声明 error 参数的类型
-          // 其他错误，显示通用错误消息
+            },
+            error: (error: any) => { // 显式声明 error 参数的类型
+              // 发送失败
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to send password reset email. Please try again later.'
+              });
+            }
+          });
+        } else {
+          // 用户不存在，显示错误消息
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Failed to send password reset email. Please try again later.'
+            detail: 'This email or username does not exist'
           });
         }
-      });
-    }
-
-    goToRegister()
-  :
-    void {
-      this.router.navigateByUrl('/register')
-        .then((navigationSuccess: boolean) => {
-          if (navigationSuccess) {
-            console.log('Navigation to /register successful');
-            // 执行其他操作
-          } else {
-            console.error('Navigation to /register failed');
-          }
+      },
+      error: (error: any) => { // 显式声明 error 参数的类型
+        // 其他错误，显示通用错误消息
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to send password reset email. Please try again later.'
         });
-    }
-
-
+      }
+    });
   }
+
+  goToRegister()
+    :
+    void {
+    this.router.navigateByUrl('/register')
+      .then((navigationSuccess: boolean) => {
+        if (navigationSuccess) {
+          console.log('Navigation to /register successful');
+          // 执行其他操作
+        } else {
+          console.error('Navigation to /register failed');
+        }
+      });
+  }
+
+
+}
