@@ -1,0 +1,108 @@
+<!--register.component.html-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Register Window</title>
+  <link rel="stylesheet" href="register.component.css"/>
+</head>
+
+<body>
+<div class="box">
+  <h2>Create an Account</h2>
+  <form #registerForm="ngForm" (ngSubmit)="onRegisterFormSubmit()">
+    <div class="input-box" [class.input-error]="!isValidEmail(user.email)">
+      <label>Email*</label>
+      <input type="email" placeholder="Enter your email" required [(ngModel)]="user.email" name="email">
+      <div *ngIf="user.email && !isValidEmail(user.email)" class="error-message">Invalid email</div>
+    </div>
+
+
+    <div class="input-box" [class.input-error]="!user.password">
+      <label>Password*</label>
+      <input type="password" placeholder="Enter your password" required [(ngModel)]="user.password" name="password">
+    </div>
+
+    <div class="input-box" [class.input-error]="!confirmPassword || user.password !== confirmPassword">
+      <label>Confirm Password*</label>
+      <input type="password" placeholder="Confirm your password" required [(ngModel)]="confirmPassword" name="confirmPassword">
+      <div *ngIf="confirmPassword && user.password !== confirmPassword" class="error-message">Passwords do not match</div>
+    </div>
+
+
+
+    <div class="input-box" [class.input-error]="!user.username">
+      <label>Username*</label>
+      <input type="text" placeholder="Enter your username" required [(ngModel)]="user.username" name="username">
+    </div>
+
+    <div class="input-box" [class.input-error]="!user.firstname">
+      <label>Firstname*</label>
+      <input type="text" placeholder="Enter your first name" required [(ngModel)]="user.firstname" name="firstname">
+    </div>
+
+    <div class="input-box" [class.input-error]="!user.lastname">
+      <label>Lastname*</label>
+      <input type="text" placeholder="Enter your last name" required [(ngModel)]="user.lastname" name="lastname">
+    </div>
+
+    <!--<div class="input-box" [class.input-error]="!user.yearOfBirth || !user.monthOfBirth || !user.dayOfBirth">
+      <label>Date of Birth*</label>
+      <div class="birthday-inputs">
+        &lt;!&ndash; 年份选择框 &ndash;&gt;
+        <select class="s1" name="year" [(ngModel)]="user.yearOfBirth" required>
+          <option value="" disabled selected>Year</option>
+          &lt;!&ndash; 添加年份选项 &ndash;&gt;
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+        &lt;!&ndash; 月份选择框 &ndash;&gt;
+        <select class="s1" name="month" [(ngModel)]="user.monthOfBirth" required>
+          <option value="" disabled selected>Month</option>
+          &lt;!&ndash; 添加月份选项 &ndash;&gt;
+          <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+        </select>
+        &lt;!&ndash; 日期选择框 &ndash;&gt;
+        <select class="s1" name="day" [(ngModel)]="user.dayOfBirth" required>
+          <option value="" disabled selected>Day</option>
+          &lt;!&ndash; 添加日期选项 &ndash;&gt;
+          <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+        </select>
+      </div>
+    </div>-->
+    <div class="input-box" [class.input-error]="!user.birthday">
+      <label>Birthday*</label>
+      <p-calendar [(ngModel)]="user.birthday"class="ng-invalid ng-dirty"dateFormat="dd.mm.yy"name="birthday"></p-calendar>
+    </div>
+
+   <!-- <p-calendar [(ngModel)]="user.birthday" [showIcon]="true"></p-calendar>
+    <p-calendar [(ngModel)]="user.birthday" [iconDisplay]="'input'" [showIcon]="true"></p-calendar>
+    <p-calendar [(ngModel)]="user.birthday" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
+      <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+        <i class="pi pi-user pointer-events-none" (click)="clickCallBack($event)"></i>
+      </ng-template>
+    </p-calendar>-->
+
+
+  </form>
+
+
+
+
+
+  <div class="input-box">
+    <label>Admin invitation code (optional)</label>
+    <input type="text">
+  </div>
+
+  <div class="btn-box">
+    <div>
+      <button type="button"(click)="returnToLogin()">Return</button>
+      <button type="submit" (click)="onRegisterFormSubmit()">Next</button>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>
