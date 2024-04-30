@@ -14,9 +14,8 @@
 
   <div class="input-box">
     <p>We have sent a code to your email.<br>Please enter it below.</p>
-    <input type="text"
-           placeholder="Enter code"
-    />
+    <input type="text" [(ngModel)]="securityCode" placeholder="Enter code">
+
   </div>
 
 
@@ -24,7 +23,7 @@
   <div class="btn-box">
     <div>
       <button (click)="goBack()">Back</button>
-      <button>Next</button>
+      <button (click)="onSecurityCodeFormSubmit()">Next</button>
     </div>
   </div>
 

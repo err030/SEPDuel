@@ -2,17 +2,21 @@ import { Component } from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-verify',
   templateUrl: './verify.component.html',
   standalone: true,
   styleUrls: ['./verify.component.css'],
+  imports: [
+    FormsModule
+  ],
   providers: [MessageService, UserService]
 })
 export class VerifyComponent {
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
   }
-  superSecurityCode: string = "SEP2023";
+  superSecurityCode: string = "SEPGruppeQ";
 
   securityCode: string = "";
   loggedUser: any;
@@ -61,9 +65,9 @@ export class VerifyComponent {
         this.userService.loggedUser = this.loggedUser;
         // 根据用户组跳转至相应的页面
         if (this.loggedUser.groupId == 1) {
-          void this.router.navigateByUrl("/user");
+          void this.router.navigateByUrl("/homepage-user");
         } else if (this.loggedUser.groupId == 2) {
-          void this.router.navigateByUrl("/admin");
+          void this.router.navigateByUrl("/homepage-admin");
         }
         this.messageService.add({
           severity: 'success',
