@@ -1,70 +1,66 @@
 package de.unidue.beckend_gruppe_q.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-@Data
-@NoArgsConstructor
 public class Player {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nickname;
-    private int wins;
-    private int losses;
-    private int score;
+    private String username;
+
+    //whenever I save Player,it'll also save the decks as well
     @OneToMany
     private List<Deck> decks;
+
     @OneToMany
     private List<Card> cards;
 
-    public Player(String nickname) {
-        this.nickname = nickname;
-        this.wins = 0;
-        this.losses = 0;
-        this.score = 0;
-        this.decks = new ArrayList<>();
-        this.cards = new ArrayList<>();
+    public Player(List<Deck> decks, List<Card> cards, String username) {
+        this.decks = decks;
+        this.cards = cards;
+        this.username = username;
     }
 
-    public void addDeck(Deck deck) {
-        if (this.deckIsFull()) {
-            throw new IllegalStateException("Max number of decks reached");
-        } else {
-            this.decks.add(deck);
-        }
+    public Player() {
+
     }
 
-    private boolean deckIsFull() {
-        return this.decks.size() >= 3;
+    public Long getId() {
+        return id;
     }
 
-    public void removeDeck(Deck deck) {
-        this.decks.remove(deck);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void addWin() {
-        this.wins++;
+    public String getUsername() {
+        return username;
     }
 
-    public void addLoss() {
-        this.losses++;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void addScore(int score) {
-        this.score += score;
+    public List<Deck> getDecks() {
+        return decks;
     }
 
-    public void removeCard(Card card) {
-        this.cards.remove(card);
+    public void setDecks(List<Deck> decks) {
+        this.decks = decks;
     }
 
-    public void addCard(Card card) {
-        this.cards.add(card);
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 }
+
