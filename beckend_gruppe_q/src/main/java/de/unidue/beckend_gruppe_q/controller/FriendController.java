@@ -28,6 +28,7 @@ public class FriendController{
     final FriendRequestRepository friendRequestRepository;
     final EmailService eMailService;
 
+
     public FriendController(UserRepository userRepository, FriendListRepository friendListRepository,
                             FriendListDetailRepository friendListDetailRepository, FriendRequestRepository friendRequestRepository, EmailService eMailService) {
         this.userRepository = userRepository;
@@ -38,10 +39,10 @@ public class FriendController{
     }
 
 
-    @GetMapping("/friend/getAllFriends/{aktuelleUserId}")
-    public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId) {
+    @GetMapping("/friend/getAllFriends/{currentUserId}")
+    public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "currentUserId") Long currentUserId) {
         List<User> userList = new ArrayList<>();
-        FriendList friendList = friendListRepository.findByUserId(aktuelleUserId);
+        FriendList friendList = friendListRepository.findByUserId(currentUserId);
         if (friendList != null) {
             List<FriendListDetail> details = friendListDetailRepository.findByFreundListId(friendList.getId());
             details.forEach(detail -> {
@@ -53,9 +54,9 @@ public class FriendController{
     }
 
 
-    @GetMapping("/friend/getListStatus/{aktuelleUserId}")
-    public ResponseEntity<Boolean> getListStatus(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId) {
-        FriendList friendList = friendListRepository.findByUserId(aktuelleUserId);
+    @GetMapping("/friend/getListStatus/{currentUserId}")
+    public ResponseEntity<Boolean> getListStatus(@PathVariable(value = "currentUserId") Long currentUserId) {
+        FriendList friendList = friendListRepository.findByUserId(currentUserId);
         if (friendList != null) {
             return ResponseEntity.status(HttpStatus.OK).body(friendList.getPublic());
         } else {
@@ -76,16 +77,16 @@ public class FriendController{
         }
     }
 
-    @DeleteMapping("/friend/{aktuelleUserId}/{friendId}")
-    public ResponseEntity<?> deleteFriend(@PathVariable(value = "aktuelleUserId") Long aktuelleUserId,
+    @DeleteMapping("/friend/{currentUserId}/{friendId}")
+    public ResponseEntity<?> deleteFriend(@PathVariable(value = "currentUserId") Long currentUserId,
                                           @PathVariable(value = "friendId") Long friendId) {
-        FriendList currentUserList = friendListRepository.findByUserId(aktuelleUserId);
+        FriendList currentUserList = friendListRepository.findByUserId(currentUserId);
         FriendList friendList = friendListRepository.findByUserId(friendId);
         if (currentUserList != null) deleteUserFromList(friendId, currentUserList);
-        if (friendList != null) deleteUserFromList(aktuelleUserId, friendList);
-        FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(aktuelleUserId, friendId);
+        if (friendList != null) deleteUserFromList(currentUserId, friendList);
+        FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, friendId);
         if (friendRequest != null) friendRequestRepository.delete(friendRequest);
-        friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(friendId, aktuelleUserId);
+        friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(friendId, currentUserId);
         if (friendRequest != null) friendRequestRepository.delete(friendRequest);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
@@ -96,15 +97,16 @@ public class FriendController{
             friendListDetailRepository.delete(detail);
         }
     }
-    @GetMapping("/friend/searchFriendById/{userid}/{targetUserId}")
-    public ResponseEntity<Friend> searchUserById(@PathVariable(value = "userid") Long currentUserId,
-                                                 @PathVariable(value = "targetUserId") Long targetUserId) {
-        Optional<User> targetUserOptional = userRepository.findById(targetUserId);
+    @GetMapping("/friend/searchFriendByUsername/{userid}/{Username}")
+    public ResponseEntity<Friend> searchUserByUsername(@PathVariable(value = "userid") Long currentUserId,
+                                                       @PathVariable(value = "Username") String targetUsername) {
+        List<User> targetUserList = userRepository.findUserByGroupIdAndUsername(1, targetUsername);
 
-        if (targetUserOptional.isPresent()) {
-            User targetUser = targetUserOptional.get();
+        if (!targetUserList.isEmpty()) {
             Friend friend = new Friend();
+            User targetUser = targetUserList.get(0);
             friend.setUser(targetUser);
+
             FriendList currentUserFriendList = friendListRepository.findByUserId(currentUserId);
             if (currentUserFriendList != null) {
                 FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), targetUser.getId());
@@ -112,6 +114,7 @@ public class FriendController{
                     friend.setIstSchonFreunde(true);
                 }
             }
+
             FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, targetUser.getId());
             if (friendRequest != null) {
                 friend.setStatusVonFreundschaftanfrag(friendRequest.getFreundschaftanfragStatus());
