@@ -28,7 +28,7 @@ export class FriendService {
   sendFriendRequest(currentUserId: number, targetUserId: number): Observable<HttpResponse<any>> {
     const url = Global.friendRestServiceUrl + "/sendFriendRequest/" + currentUserId + "/" + targetUserId;
 
-    return this.http.post(url, null, {observe: 'response'});
+    return this.http.post<any>(url, null, {observe: 'response'});
   }
 
 
