@@ -8,6 +8,10 @@ import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
 import {NgClass} from "@angular/common";
 import {CommonModule} from '@angular/common';
+import {DialogModule} from "primeng/dialog";
+import {RadioButtonModule} from "primeng/radiobutton";
+import {ButtonModule} from "primeng/button";
+import {Global} from "../../global";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +21,10 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule,
     FormsModule,
-    NgClass
+    NgClass,
+    DialogModule,
+    RadioButtonModule,
+    ButtonModule
   ],
   providers: [UserService, MessageService]
 })
@@ -27,6 +34,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
   user: User = new User("", "", "", "", "", 1);
 
   loggedUser: any;
+  resetPasswordUser: User = new User("", "", "", "", "",1);
+  showResetPasswordDialog: boolean = false;
 
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
   }
@@ -64,10 +73,21 @@ export class LoginComponent implements OnInit, AfterViewInit {
 //登录逻辑
   onLoginFormSubmit(): void {
     this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
-      next: (response: HttpResponse<any>) => {
+      next: (response: HttpResponse<User>) => {
         if (response.status === 200) {
+          if (response.body){
+            this.loggedUser=response.body;
+          }
           // 用户登录成功，导航到验证页面
-          this.router.navigate(['/verify']);
+
+          this.userService.getSecurityCodeByUserId((this.loggedUser.id)).subscribe({
+            next: (response) => {
+              if(response.status === 201) {
+                Global.loggedUser = this.loggedUser;
+                this.router.navigate(['/verify']);
+              }
+            }
+          });
         } else {
           // 用户登录失败，显示错误消息
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to login. Please try again later.' });
@@ -83,20 +103,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
 
 
-
+  showPasswordForgetDialog(): void {
+    this.showResetPasswordDialog = true;
+  }
   // 申请忘记密码
   forgetPasswordRequest()
     : void {
-    // 获取用户输入的邮箱地址或用户名
-    const emailOrUsername = this.user.email;
+    /*// 获取用户输入的邮箱地址或用户名
+    const emailOrUsername = this.user.email;*/
 
     // 检查用户输入的邮箱地址或用户名是否存在
-    this.userService.checkUserByEmailAndGroupId(this.user).subscribe({
+    this.userService.checkUserByEmailAndGroupId(this.resetPasswordUser).subscribe({
       next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
         // 如果存在用户
         if (response.status == 200) {
           // 发送重置密码链接到用户邮箱
-          this.userService.sendResetPasswordEmail(emailOrUsername).subscribe({
+          this.userService.resetPassword(this.resetPasswordUser).subscribe({
             next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
               // 发送成功
               if (response.status === 200) {
@@ -105,6 +127,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                   summary: 'Success',
                   detail: 'An email with password reset instructions has been sent to your email address.'
                 });
+
               } else {
                 // 发送失败
                 this.messageService.add({
@@ -156,6 +179,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }
       });
   }
+
 
 
 }

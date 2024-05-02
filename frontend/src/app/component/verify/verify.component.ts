@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
+import {User} from "../../model/user";
+import {Global} from "../../global";
 @Component({
   selector: 'app-verify',
   templateUrl: './verify.component.html',
@@ -13,9 +15,13 @@ import {FormsModule} from "@angular/forms";
   ],
   providers: [MessageService, UserService]
 })
-export class VerifyComponent {
+export class VerifyComponent implements OnInit {
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
-    this.loggedUser = {}; // 初始化 loggedUser
+
+  }
+
+  ngOnInit(): void {
+    this.loggedUser = Global.loggedUser;
   }
   superSecurityCode: string = "SEPGruppeQ";
 
@@ -24,6 +30,7 @@ export class VerifyComponent {
 
   // 提交验证码
   onSecurityCodeFormSubmit(): void {
+    console.log("SC: " + this.securityCode);
     if (!this.loggedUser) {
       console.error('Logged user is not defined.');
       return;
@@ -31,6 +38,7 @@ export class VerifyComponent {
 
     if (this.securityCode == this.superSecurityCode) {
       // 使用Super验证码，直接获取Token
+      console.log("SUPER")
       this.getToken();
     }
 
@@ -48,23 +56,24 @@ export class VerifyComponent {
           if (error.status == 401) {
             this.messageService.add({
               severity: 'error',
-              summary: 'Fehler',
-              detail: 'Der eingegebene Sicherheitscode ist abgelaufen'
+              summary: 'Error',
+              detail: 'The security code you entered has expired'
             });
           } else if (error.status == 404) {
             this.messageService.add({
               severity: 'error',
-              summary: 'Fehler',
-              detail: 'Der eingegebene Sicherheitscode ist ungültig'
+              summary: 'Error',
+              detail: 'The security code entered is invalid'
             });
           } else {
-            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+            this.messageService.add({severity: 'error', summary: 'Error', detail: error.statusText});
           }
         }
       })
     }
   }
   private getToken(): void {
+    console.log("ID:" + this.loggedUser.id)
     if (!this.loggedUser || !this.loggedUser.id) {
       // 如果 loggedUser 或其 id 为空，显示错误消息并返回
       this.messageService.add({
@@ -74,7 +83,7 @@ export class VerifyComponent {
       });
       return;
     }
-
+  console.log("GET Token")
     // 如果 loggedUser 存在且其 id 已定义，继续获取 token
     this.userService.getTokenByUserId(this.loggedUser.id).subscribe({
       next: (response) => {

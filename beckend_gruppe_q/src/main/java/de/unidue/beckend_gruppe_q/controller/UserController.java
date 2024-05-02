@@ -85,7 +85,7 @@ public class UserController {
      * 根据用户id获取验证码，用于登录时的二次验证
      */
     @GetMapping("/user/securitycode/{userid}")
-    public ResponseEntity<SecurityCode> getSecurityCode(@PathVariable(value = "userid") Long userId) {
+    public ResponseEntity<SecurityCode> getSecurityCodeByUserId(@PathVariable(value = "userid") Long userId) {
         // 先通过用户id检查用户是否存在
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
