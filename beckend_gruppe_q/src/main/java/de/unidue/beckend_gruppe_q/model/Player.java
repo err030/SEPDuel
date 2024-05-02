@@ -19,10 +19,10 @@ public class Player {
     private String username;
 
     //whenever I save Player,it'll also save the decks as well
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Deck> decks;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Card> cards;
 
     public Player(List<Deck> decks, List<Card> cards, String username) {

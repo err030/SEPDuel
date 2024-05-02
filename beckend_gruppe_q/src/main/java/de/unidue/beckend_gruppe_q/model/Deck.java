@@ -24,15 +24,5 @@ public class Deck {
         this.description = description;
     }
 
-    public boolean isFull() {
-        return cards.size() >= 30;
-    }
 
-    public boolean addCard(Card card) {
-        if (this.isFull()) {
-            throw new IllegalStateException("Deck is full");
-        } else {
-            return cards.add(card);
-        }
-    }
 }
