@@ -26,7 +26,7 @@ export const adminAuthGuard: CanMatchFn | CanActivateFn | CanActivateChildFn = (
           userService.loggedUser = response.body;
           // 如果用户组是2，则跳转至管理员首页
           if(userService.loggedUser && userService.loggedUser.groupId == 2) {
-            void router.navigateByUrl("/admin");
+            void router.navigateByUrl("/homepage-admin");
           }
         },
         error: () => {

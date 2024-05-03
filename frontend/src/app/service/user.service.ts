@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
 import {User} from "../model/user";
 import {Router} from "@angular/router";
-import {Global} from "../../global";
+import {Global} from "../global";
 
 
 @Injectable({
@@ -63,9 +63,9 @@ export class UserService {
   }
 
   // 重置密码
-  resetPassword(userId: number, newPassword: string): Observable<HttpResponse<any>> {
+  resetPassword(user: User): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/resetpassword";
-    return this.http.put<any>(url, { userId, newPassword }, { headers: this.headers, observe: 'response' });
+    return this.http.put<any>(url, user, {headers: this.headers, observe: 'response'});
   }
 
   // 通过用户id获取Token
@@ -83,11 +83,11 @@ export class UserService {
     });
     return this.http.get<any>(url, {headers: headersWithToken, observe: 'response'});
   }
-  //向后端发送请求以发送重置密码链接
+/*  //向后端发送请求以发送重置密码链接
   sendResetPasswordEmail(email: string): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/resetpassword/email";
     return this.http.post<any>(url, { email }, { headers: this.headers, observe: 'response' });
-  }
+  }*/
 
   // 检查是否有已经登录的用户
   checkLoggedUser(): void {
@@ -116,9 +116,9 @@ export class UserService {
 // 根据用户组导航至相应页面
   private navigateBasedOnUserGroup(groupId: number): void {
     if (groupId === 1) {
-      void this.router.navigateByUrl("/user");
+      void this.router.navigateByUrl("/homepage-user");
     } else if (groupId === 2) {
-      void this.router.navigateByUrl("/admin");
+      void this.router.navigateByUrl("/homepage-admin");
     }
   }
 
@@ -126,5 +126,15 @@ export class UserService {
     const url = Global.userRestServiceUrl + "/" + user.email + "/" + user.groupId;
     return this.http.get<any>(url, { observe: 'response' });
   }
+// 验证码
+ /* getSecurityCode(): Observable<HttpResponse<any>> {
+    const userId = this.loggedUser?.id; // 使用可选链操作符访问id属性
+    if (!userId) {
+      // 处理loggedUser为null或undefined的情况，这里你可以抛出一个错误或者返回一个合适的Observable
+      throw new Error('Logged user id is null or undefined');    }
+    const url = Global.userRestServiceUrl + "/securitycode/" + userId;
+    return this.http.get<any>(url, {observe: 'response'});
+  }
+*/
 
 }

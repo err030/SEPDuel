@@ -15,6 +15,14 @@ import {NgForOf, NgIf} from "@angular/common";
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
+  username: string = "JohnDoe";
+  firstname: string = "John";
+  lastname: string = "Doe";
+  email: string = "johndoe@example.com";
+  leaderboardPoints: number = 0;
+  sepCoins: number = 500;
+
+
   passwordReset(){
     console.log("Password Reset");
   }
