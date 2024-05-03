@@ -4,33 +4,32 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//it represents card entity in the app and will be mapped to a table in the database
+
 @Entity
 @Data
 @NoArgsConstructor
 public class Card {
-    //tcg game card attributes
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "card")
     private Long id;
-    @ManyToOne
-    private CardType cardType;
-    public Card(CardType cardType) {
-        this.cardType = cardType;
-    }
+    private String cardName;
+    private Rarity cardRarity;
+    private double attackPoints;
+    private int defensePoints;
+    private String description;
+    private String image;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public CardType getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+    public Card( String cardName, Rarity cardRarity, double attackPoints, int defensePoints, String description, String image) {
+        this.cardName = cardName;
+        this.cardRarity = cardRarity;
+        this.attackPoints = attackPoints;
+        this.defensePoints = defensePoints;
+        this.description = description;
+        this.image = image;
     }
 }
+
