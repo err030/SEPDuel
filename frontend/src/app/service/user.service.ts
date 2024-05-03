@@ -19,7 +19,7 @@ export class UserService {
 
   loggedUser: User | null = null;
 
-  constructor(private http: HttpClient,  private router: Router, private confirmationService: ConfirmationService) {
+  constructor(private http: HttpClient,  private router: Router) {
   }
 
   // 添加新用户
@@ -64,10 +64,12 @@ export class UserService {
   }
 
   // 重置密码
-  resetPassword(user: User): Observable<HttpResponse<any>> {
-    const url = Global.userRestServiceUrl + "/resetpassword";
-    return this.http.put<any>(url, user, {headers: this.headers, observe: 'response'});
+  resetPassword(userId: number, newPassword: string): Observable<any> {
+    const url = Global.userRestServiceUrl + "/reset-password";
+    const requestBody = { userId: userId, newPassword: newPassword };
+    return this.http.post<any>(url, requestBody);
   }
+
 
   // 通过用户id获取Token
   getTokenByUserId(userId: number): Observable<string> {
@@ -84,11 +86,6 @@ export class UserService {
     });
     return this.http.get<any>(url, {headers: headersWithToken, observe: 'response'});
   }
-/*  //向后端发送请求以发送重置密码链接
-  sendResetPasswordEmail(email: string): Observable<HttpResponse<any>> {
-    const url = Global.userRestServiceUrl + "/resetpassword/email";
-    return this.http.post<any>(url, { email }, { headers: this.headers, observe: 'response' });
-  }*/
 
   // 检查是否有已经登录的用户
   checkLoggedUser(): void {
@@ -146,21 +143,8 @@ export class UserService {
     return this.http.put<User>(url, formData, {observe: 'response'});
   }
 
-// 退出登录
-  userLogout(): void {
-    this.confirmationService.confirm({
-      message: 'Sind Sie sicher, dass Sie sich abmelden möchten?',
-      header: 'Abmelden',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Ja',
-      rejectLabel: 'Nein',
-      defaultFocus: 'reject',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        localStorage.clear();
-        this.loggedUser = null;
-        void this.router.navigateByUrl("/login");
-      }
-    });
+
+  userLogout() {
+    //写一下
   }
 }

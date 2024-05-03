@@ -69,6 +69,10 @@ isValidEmail(email: string): boolean {
       });
       return;
     }
+// 如果Admin invitation code是SEP2024，则将用户添加为管理员
+    if (this.user.adminInvitationCode === "SEP2024") {
+      this.user.groupId = 2; // 将 groupId 设置为 2，即管理员
+    }
 
     const emailUser = new User('', '', "", this.user.email, "",1);
     const usernameUser = new User('', '', this.user.username, '',"", 1, undefined, undefined);
@@ -92,11 +96,6 @@ isValidEmail(email: string): boolean {
                   summary: 'Error',
                   detail: 'This username exists already'
                 });
-              } else {
-                // 如果Admin invitation code是SEP2024，则将用户添加为管理员
-                if (this.user.adminInvitationCode == "SEP2024") {
-                  this.user.groupId = 2;
-                }
 
                 // 注册用户
                 this.userService.addUser(this.user).subscribe({

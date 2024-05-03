@@ -1,35 +1,40 @@
+// reset-password.component.ts
 import { Component } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { User } from '../../model/user';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   standalone: true,
+  imports: [
+    FormsModule
+  ],
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent {
-  //应该后端需要调用这里，因为是后端发送给用户一个链接，点击链接后是这个重制密码页面
+
   newPassword: string = '';
+  confirmPassword: string = '';
 
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) { }
 
-  onNextButtonClick(): void {
+  onPasswordFormSubmit(): void {
     if (!this.newPassword) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'Please, try again'
+        detail: 'Please enter a new password.'
       });
       return;
     }
 
-    // 获取用户 ID
     const userId = this.userService.loggedUser?.id;
 
     if (!userId) {
-      // 如果无法获取用户 ID，则显示错误消息并返回
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -38,23 +43,27 @@ export class ResetPasswordComponent {
       return;
     }
 
-    // 调用 resetPassword 方法，并传递用户 ID 和新密码
-    this.userService.resetPassword(userId, this.newPassword).subscribe({
-      next: (response) => {
+    // 调用 UserService 中的方法来存储新密码
+    this.userService.resetPassword(userId, this.newPassword).subscribe(
+      (response) => {
+        // 处理成功响应
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Your password has been reset'
+          detail: 'Password reset successfully.'
         });
-        void this.router.navigateByUrl('/login');
+        // 重置密码成功后，跳转到个人资料页面
+        this.router.navigateByUrl('/profile');
       },
-      error: (error) => {
+      (error) => {
+        // 处理错误响应
+        console.error('Failed to reset password:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Failed to reset password'
+          detail: 'Failed to reset password, please try again later.'
         });
       }
-    });
+    );
   }
 }

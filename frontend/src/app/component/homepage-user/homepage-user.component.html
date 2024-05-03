@@ -1,4 +1,4 @@
-<!-- profile.component.html -->
+<!-- homepage-user.component.html -->
 <!DOCTYPE html>
 <html lang="en-EN">
 
@@ -11,14 +11,14 @@
 <body>
 <div>
   <h1>Welcome to your homepage!</h1>
-  <p>Here you can see your personal information, your recent activities, and your friends' posts.</p>
-  <p>To get started, click on the "New Post" button on the top right corner of the screen to start writing a new post.</p>
 
-  <p>You can also view your friends' profiles by clicking on their names on the left sidebar.</p>
-
-  <p>To edit your personal information, click on the "Edit Profile" button on the top right corner of the screen.</p>
-
+  <button> Log out </button>
+  <button (click)="goToEditProfile()">Profile</button>
+  <button>Card</button>
+  <button>Friends</button>
 </div>
 
 </body>
 </html>
+
+<router-outlet></router-outlet>
