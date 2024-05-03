@@ -1,9 +1,6 @@
 package de.unidue.beckend_gruppe_q;
 
-import de.unidue.beckend_gruppe_q.model.Card;
-import de.unidue.beckend_gruppe_q.model.CardType;
-import de.unidue.beckend_gruppe_q.model.Deck;
-import de.unidue.beckend_gruppe_q.model.Player;
+import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.PlayerRepository;
@@ -12,61 +9,64 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 public class BeckendGruppeQApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BeckendGruppeQApplication.class, args);
     }
+
 //    @Bean
-//    public CommandLineRunner demo(CardTypeRepository cardTypeRepository, DeckRepository deckRepository, CardRepository cardRepository, PlayerRepository playerRepository) {
+//    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, PlayerRepository playerRepository) {
 //        return args -> {
-//            deckRepository.deleteAll();
-//            playerRepository.deleteAll();
-//            cardTypeRepository.deleteAll();
-//            cardRepository.deleteAll();
-//            deckRepository.save(new Deck("Java", "Java programming"));
-//            deckRepository.save(new Deck("Python", "Python programming"));
-//            deckRepository.save(new Deck("C++", "C++ programming"));
-//            deckRepository.save(new Deck("C#", "C# programming"));
-//            deckRepository.save(new Deck("JavaScript", "JavaScript programming"));
-//            // add some cards
-//            CardType attackCard = new CardType("Attack", "An attack card", 0, 1, 1, 1, "");
-//            cardTypeRepository.save(attackCard);
-//            CardType defenseCard = new CardType("Defense", "A defense card", 1, 1, 1, 1, "");
-//            cardTypeRepository.save(defenseCard);
-//            CardType healCard = new CardType("Heal", "A heal card", 2, 1, 1, 1, "");
-//            cardTypeRepository.save(healCard);
-//            CardType specialCard = new CardType("O Deus Klaus", "A special card", 2, 1, Integer.MAX_VALUE, 0, "");
-//            cardTypeRepository.save(specialCard);
-//            Card card1 = new Card(attackCard);
-//            Card card2 = new Card(defenseCard);
-//            Card card3 = new Card(healCard);
-//            Card card4 = new Card(attackCard);
-//            Card card5 = new Card(defenseCard);
-//            Card card6 = new Card(healCard);
-//            cardRepository.save(card1);
-//            cardRepository.save(card2);
-//            cardRepository.save(card3);
-//            cardRepository.save(card4);
-//            cardRepository.save(card5);
-//            cardRepository.save(card6);
+//            // add some decks, cards, players, and assign cards to players
+//            Deck deck1 = new Deck("Java", "Java programming");
+//            Card attackCard = new Card("Attack", Rarity.COMMON, 1, 1, "a", "");
+//            Card defenseCard = new Card("Defense", Rarity.COMMON, 1, 1, "d", "");
+//            Card healCard = new Card("Heal", Rarity.COMMON, 1, 1, "h", "");
+//            Card specialCard = new Card("O Deus Klaus", Rarity.RARE, 1, 1, "o", "");
+//            cardRepository.save(attackCard);
+//            cardRepository.save(defenseCard);
+//            cardRepository.save(healCard);
+//            cardRepository.save(specialCard);
+//            deck1.cards.add(attackCard);
+//            deck1.cards.add(defenseCard);
+//            deck1.cards.add(healCard);
+//            deck1.cards.add(specialCard);
+//            deckRepository.save(deck1);
+//            Player player1 = new Player(new ArrayList<Deck>(), new ArrayList<Card>(), "John");
 //
-//            // add some players
-//            playerRepository.save(new Player("John"));
-//            playerRepository.save(new Player("Mary"));
-//            playerRepository.save(new Player("Tom"));
-//            playerRepository.save(new Player("Jane"));
-//            //give every player 6 cards
-//            playerRepository.findAll().forEach(player -> {
-//                player.addCard(card1);
-//                player.addCard(card2);
-//                player.addCard(card3);
-//                player.addCard(card4);
-//                player.addCard(card5);
-//                player.addCard(card6);
-//            });
+//            player1.cards.add(attackCard);
+//            player1.cards.add(defenseCard);
+//            player1.cards.add(healCard);
+//            player1.cards.add(specialCard);
 //
+//            Player player2 = new Player(new ArrayList<Deck>(), new ArrayList<Card>(), "Mary");
+//            player2.cards.add(attackCard);
+//            player2.cards.add(defenseCard);
+//            player2.cards.add(healCard);
+//            player2.cards.add(specialCard);
+//
+//            Player player3 = new Player(new ArrayList<Deck>(), new ArrayList<Card>(), "Tom");
+//            player3.cards.add(attackCard);
+//            player3.cards.add(defenseCard);
+//            player3.cards.add(healCard);
+//            player3.cards.add(specialCard);
+//
+//            Player player4 = new Player(new ArrayList<Deck>(), new ArrayList<Card>(), "Jane");
+//            player4.cards.add(attackCard);
+//            player4.cards.add(defenseCard);
+//            player4.cards.add(healCard);
+//
+//
+//            playerRepository.save(player1);
+//            playerRepository.save(player2);
+//            playerRepository.save(player3);
+//
+//            playerRepository.save(player4);
 //
 //        };
 //    }
