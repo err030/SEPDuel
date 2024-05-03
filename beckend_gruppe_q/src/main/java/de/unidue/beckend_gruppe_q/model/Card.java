@@ -17,13 +17,13 @@ public class Card {
     private Long id;
     private String cardName;
     private Rarity cardRarity;
-    private double attackPoints;
+    private int attackPoints;
     private int defensePoints;
     private String description;
     private String image;
 
 
-    public Card( String cardName, Rarity cardRarity, double attackPoints, int defensePoints, String description, String image) {
+    public Card( String cardName, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
         this.cardName = cardName;
         this.cardRarity = cardRarity;
         this.attackPoints = attackPoints;

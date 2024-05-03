@@ -19,10 +19,9 @@ public class Deck {
     @OneToMany
     private List<Card> cards;
 
-    public Deck(String name, String description) {
+    public Deck(String name, String description, List<Card> cards) {
         this.name = name;
         this.description = description;
+        this.cards = cards;
     }
-
-
 }
