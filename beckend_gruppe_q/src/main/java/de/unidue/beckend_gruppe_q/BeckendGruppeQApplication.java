@@ -5,7 +5,6 @@ import de.unidue.beckend_gruppe_q.model.CardType;
 import de.unidue.beckend_gruppe_q.model.Deck;
 import de.unidue.beckend_gruppe_q.model.Player;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import de.unidue.beckend_gruppe_q.repository.CardTypeRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.PlayerRepository;
 import org.springframework.boot.CommandLineRunner;
