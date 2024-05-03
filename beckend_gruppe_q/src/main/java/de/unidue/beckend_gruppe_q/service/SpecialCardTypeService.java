@@ -1,4 +1,4 @@
-package de.unidue.beckend_gruppe_q.service;
+package de.unidue.beckend_gruppe_q.Service;
 
 
 import de.unidue.beckend_gruppe_q.model.Card;
@@ -23,7 +23,6 @@ public class SpecialCardTypeService {
 
             specialCardType.setCardName("O Deus Klaus");
             specialCardType.setCardRarity(Rarity.LEGENDARY);
-            specialCardType.setAttackPoints(Double.POSITIVE_INFINITY);
             specialCardType.setDefensePoints(0);
             specialCardType.setDescription("");
             specialCardType.setImage("");

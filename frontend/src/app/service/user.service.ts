@@ -5,6 +5,7 @@ import {Observable, tap} from "rxjs";
 import {User} from "../model/user";
 import {Router} from "@angular/router";
 import {Global} from "../global";
+import {ConfirmationService} from "primeng/api";
 
 
 @Injectable({
@@ -18,7 +19,7 @@ export class UserService {
 
   loggedUser: User | null = null;
 
-  constructor(private http: HttpClient,  private router: Router) {
+  constructor(private http: HttpClient,  private router: Router, private confirmationService: ConfirmationService) {
   }
 
   // 添加新用户
@@ -126,15 +127,40 @@ export class UserService {
     const url = Global.userRestServiceUrl + "/" + user.email + "/" + user.groupId;
     return this.http.get<any>(url, { observe: 'response' });
   }
-// 验证码
- /* getSecurityCode(): Observable<HttpResponse<any>> {
-    const userId = this.loggedUser?.id; // 使用可选链操作符访问id属性
-    if (!userId) {
-      // 处理loggedUser为null或undefined的情况，这里你可以抛出一个错误或者返回一个合适的Observable
-      throw new Error('Logged user id is null or undefined');    }
-    const url = Global.userRestServiceUrl + "/securitycode/" + userId;
-    return this.http.get<any>(url, {observe: 'response'});
-  }
-*/
 
+  //获取头像
+  getUserAvatarUrl(): string {
+    if (this.loggedUser && this.loggedUser.avatarUrl) {
+      return Global.backendUrl + this.loggedUser.avatarUrl;
+    } else if (this.loggedUser && !this.loggedUser.avatarUrl) {
+      return this.loggedUser.firstname.charAt(0) + this.loggedUser.lastname.charAt(0);
+    } else {
+      return "";
+    }
+  }
+  //上传头像
+  uploadUserAvatar(file: File, userId: number): Observable<HttpResponse<User>> {
+    const url = Global.userRestServiceUrl + "/avatar/" + userId;
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.put<User>(url, formData, {observe: 'response'});
+  }
+
+// 退出登录
+  userLogout(): void {
+    this.confirmationService.confirm({
+      message: 'Sind Sie sicher, dass Sie sich abmelden möchten?',
+      header: 'Abmelden',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Ja',
+      rejectLabel: 'Nein',
+      defaultFocus: 'reject',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: () => {
+        localStorage.clear();
+        this.loggedUser = null;
+        void this.router.navigateByUrl("/login");
+      }
+    });
+  }
 }
