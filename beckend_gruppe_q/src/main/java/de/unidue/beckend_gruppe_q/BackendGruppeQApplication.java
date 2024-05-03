@@ -1,16 +1,7 @@
 package de.unidue.beckend_gruppe_q;
 
-import de.unidue.beckend_gruppe_q.model.*;
-import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import de.unidue.beckend_gruppe_q.repository.DeckRepository;
-import de.unidue.beckend_gruppe_q.repository.PlayerRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class BackendGruppeQApplication {
