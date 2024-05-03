@@ -2,35 +2,57 @@ package de.unidue.beckend_gruppe_q.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+//it represents card entity in the app and will be mapped to a table in the database
+
+@Getter
 @Entity
-@Data
 @NoArgsConstructor
 public class Card {
-    //tcg game card attributes
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    private CardType cardType;
-    public Card(CardType cardType) {
-        this.cardType = cardType;
+    private String cardName;
+    private Rarity cardRarity;
+    private int attackPoints;
+    private int defensePoints;
+    private String description;
+    private String image;
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
     }
 
-    public Long getId() {
-        return id;
+    public void setCardRarity(Rarity cardRarity) {
+        this.cardRarity = cardRarity;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAttackPoints(int attackPoints) {
+        this.attackPoints = attackPoints;
     }
 
-    public CardType getCardType() {
-        return cardType;
+    public void setDefensePoints(int defensePoints) {
+        this.defensePoints = defensePoints;
     }
 
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Card(String cardName, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
+        this.cardName = cardName;
+        this.cardRarity = cardRarity;
+        this.attackPoints = attackPoints;
+        this.defensePoints = defensePoints;
+        this.description = description;
+        this.image = image;
     }
 }
+

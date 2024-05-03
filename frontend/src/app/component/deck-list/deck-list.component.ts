@@ -4,6 +4,7 @@ import {DeckService} from "../../service/deck.service";
 import {Deck} from "../../model/deck.model";
 import {Card} from "../../model/card.model";
 import {NgForOf} from "@angular/common";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-deck-list',
@@ -43,12 +44,12 @@ export class DeckListComponent implements OnInit{
   //return id of new deck
   createDeck(): number {
     let deckId: number = -1;
-    this.deckService.createDeck().subscribe((deckId: number) => {
-        this.deckId = deckId;
+    this.deckService.createDeck().subscribe((deck : Deck) => {
+        this.deckId = deck.id;
         alert('Deck created successfully, opening in 3 seconds...');
 
         setTimeout(() => {
-          this.router.navigate(['/deck', deckId]);
+          this.router.navigate(['card-list', deckId]);
         }, 3000);
       }, (error: any) => {
         console.log(error);
