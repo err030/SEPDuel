@@ -26,7 +26,7 @@ export const userAuthGuard: CanMatchFn | CanActivateFn | CanActivateChildFn = ()
           userService.loggedUser = response.body;
           // 如果用户组是1，则跳转至普通用户首页
           if (userService.loggedUser && userService.loggedUser.groupId == 1) {
-            void router.navigateByUrl("/user");
+            void router.navigateByUrl("/homepage-user");
           }
         },
         error: () => {

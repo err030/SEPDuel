@@ -1,3 +1,5 @@
+import {User} from "./model/user";
+
 /**
  * 保存全局变量，比如后端地址等
  */
@@ -27,4 +29,6 @@ export class Global {
   public static databaseStreetId: number = 6;
   public static databaseDeathId: number = 7;
   public static databaseBirthId: number = 8;
+
+  public static loggedUser: User;
 }

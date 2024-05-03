@@ -3,7 +3,7 @@ import {inject} from '@angular/core';
 import {
   CanActivateFn, CanMatchFn, Router, CanActivateChildFn
 } from '@angular/router';
-import {UserService} from "../../../../../WebstormProjects/gruppe-q/frontend/src/app/service/user.service";
+import {UserService} from "../service/user.service";
 
 /**
  * 定义管理员的路由守卫
@@ -26,7 +26,7 @@ export const adminAuthGuard: CanMatchFn | CanActivateFn | CanActivateChildFn = (
           userService.loggedUser = response.body;
           // 如果用户组是2，则跳转至管理员首页
           if(userService.loggedUser && userService.loggedUser.groupId == 2) {
-            void router.navigateByUrl("/admin");
+            void router.navigateByUrl("/homepage-admin");
           }
         },
         error: () => {

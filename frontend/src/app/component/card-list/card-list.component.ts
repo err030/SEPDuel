@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Card} from "../card.model";
-import {Deck} from "../deck.model";
+import {Card} from "../../model/card.model";
+import {Deck} from "../../model/deck.model";
 import {NgForOf} from "@angular/common";
-import {DeckService} from "../deck.service";
+import {DeckService} from "../../service/deck.service";
 import {FormsModule} from "@angular/forms";
 import {RouterOutlet} from "@angular/router";
 
