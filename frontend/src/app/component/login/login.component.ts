@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   showPasswordForgetDialog(): void {
     this.showResetPasswordDialog = true;
   }
-  /*// 申请忘记密码
+  // 申请忘记密码
   forgetPasswordRequest()
     : void {
     // 检查用户输入的邮箱地址或用户名是否存在
@@ -162,7 +162,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     });
   }
-*/
+
   goToRegister()
     :
     void {
