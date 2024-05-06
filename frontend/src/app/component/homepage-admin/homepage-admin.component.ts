@@ -24,4 +24,8 @@ export class HomepageAdminComponent {
   goToEditCard(){
 
   }
+
+  userLogout() {
+    this.userLogout();
+  }
 }

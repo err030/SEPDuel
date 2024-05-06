@@ -145,6 +145,8 @@ export class UserService {
 
 
   userLogout() {
-    //写一下
+    localStorage.clear();
+    this.loggedUser = null;
+    void this.router.navigateByUrl("/login");
   }
 }
