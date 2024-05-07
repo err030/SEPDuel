@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/user/decks")
 public class PlayerController {
 
     @Autowired
@@ -22,6 +21,8 @@ public class PlayerController {
     private final DeckRepository deckRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CardRepository cardRepository;
 
     public PlayerController(PlayerRepository playerRepository, DeckRepository deckRepository) {
         this.playerRepository = playerRepository;
@@ -29,10 +30,10 @@ public class PlayerController {
     }
 
     // to add a new deck
-    @PostMapping("api/player/{deck}/createDeck")
-    public ResponseEntity<Deck> createDeck(@RequestBody Deck deck) {
-        Player newPlayer = new Player();
-        if (newPlayer.getDecks().size() > 3 || newPlayer.getCards().size() > 30){
+    @PostMapping("api/player/{id}/createDeck")
+    public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
+        Optional<Player> player = playerRepository.findById(id);
+        if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
@@ -116,6 +117,25 @@ public class PlayerController {
                 .stream()
                 .filter(card -> card.getId().equals(cardId))
                 .findFirst().get(), HttpStatus.OK);
+    }
+
+    //add cards to the deck
+    @PostMapping("api/player{id}/deck{deckId}/card{cardId}/addCardtoDeck")
+    public ResponseEntity<Deck> addCardsToDeck(@PathVariable Long id, @PathVariable Long deckId, @PathVariable Long cardId) {
+        if (!playerRepository.existsById(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!deckRepository.existsById(deckId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!cardRepository.existsById(cardId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Card newCard = cardRepository.findById(cardId).get();
+        Deck existingDeck = deckRepository.findById(deckId).get();
+        existingDeck.getCards().add(newCard);
+        deckRepository.save(existingDeck);
+        return new ResponseEntity<>(existingDeck, HttpStatus.OK);
     }
 }
 

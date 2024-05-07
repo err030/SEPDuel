@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 public class Deck {
     @Id
@@ -17,40 +17,11 @@ public class Deck {
     private String name;
     private String description;
     @OneToMany
-    public List<Card> cards;
+    private List<Card> cards;
 
-    public Deck(String name, String description) {
+    public Deck(String name, String description, List<Card> cards) {
         this.name = name;
         this.description = description;
-        this.cards = new ArrayList<Card>();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
         this.cards = cards;
     }
 }
