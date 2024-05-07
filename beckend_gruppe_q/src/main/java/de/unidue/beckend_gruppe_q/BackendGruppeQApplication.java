@@ -22,7 +22,7 @@ public class BackendGruppeQApplication {
 //            cardRepository.save(defenseCard);
 //            Card healCard = new Card("Heal", Rarity.COMMON, 6, 15, "Priest",  "");
 //            cardRepository.save(healCard);
-//            Card specialCard = new Card("O Deus Klaus", Rarity.LEGENDARY, Double.POSITIVE_INFINITY, 0, "",  "");
+//            Card specialCard = new Card("O Deus Klaus", Rarity.LEGENDARY, Integer.MAX_VALUE, 0, "",  "");
 //            cardRepository.save(specialCard);
 //            Card moreAttackCard = new Card("moreAttack", Rarity.COMMON, 25, 5, "Orc", "");
 //            cardRepository.save(moreAttackCard);
@@ -44,12 +44,10 @@ public class BackendGruppeQApplication {
 //            cards.add(moremoreAttackCard);
 //
 //
-//            Deck deck1 = new Deck("dragon1",cards);
-//            Deck deck2 = new Deck("dragon2",cards);
-//            Deck deck3 = new Deck("dragon3",cards);
-//            deckRepository.save(deck1);
-//            deckRepository.save(deck2);
-//            deckRepository.save(deck3);
+//            Deck deck1 = new Deck("dragon1", "", cards);
+//            Deck deck2 = new Deck("dragon2", "", cards);
+//            Deck deck3 = new Deck("dragon3", "", cards);
+//
 //
 //            List<Deck> decks = new ArrayList<>();
 //            decks.add(deck1);
@@ -59,9 +57,7 @@ public class BackendGruppeQApplication {
 //            Player player1 = new Player(decks, cards,"killer1");
 //            Player player2 = new Player(decks, cards,"killer2");
 //            Player player3 = new Player(decks, cards,"killer3");
-//            playerRepository.save(player1);
-//            playerRepository.save(player2);
-//            playerRepository.save(player3);
+//
 //
 //        };
 //    }
