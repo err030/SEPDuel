@@ -21,6 +21,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private LeaderBoardPunkt leaderBoardPunkt;
 
+
     public Long getId() {
         return id;
     }
