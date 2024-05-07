@@ -4,7 +4,6 @@ import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.service.CardCsvParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,11 @@ import java.util.Optional;
 @RestController
 public class AdminController {
 
-    @Autowired
+
     private final CardCsvParser cardCsvParser;
-    @Autowired
+
     private final CardRepository cardRepository;
-    @Autowired
+
     private final UserRepository userRepository;
 
     public AdminController(CardCsvParser cardCsvParser, CardRepository cardRepository, UserRepository userRepository) {
@@ -32,12 +31,14 @@ public class AdminController {
 
     @PostMapping("admin/cards/upload")
     public ResponseEntity<?> uploadCard(@RequestBody MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("Please select a file to upload",HttpStatus.BAD_REQUEST);
+        }
         try {
             cardCsvParser.parse(file.getInputStream());
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>("Successfully uploaded card",HttpStatus.OK);
         } catch (IOException e){
-            e.printStackTrace();
-            return  ResponseEntity.badRequest().body("Error while uploading file");
+            return  new ResponseEntity<>("Failed to upload file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

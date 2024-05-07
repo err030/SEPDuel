@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-        //implement a service to parse CSV files containing card data and save it to the database
+//implement a service to parse CSV files containing card data and save it to the database
 @Service
 public class CardCsvParser {
 
@@ -39,24 +39,9 @@ public class CardCsvParser {
 
 }
 
-// in java strings, we need to escape the backslash itself with another backslash to represent
-// a single backslash \r-->indicates the end of a line \n-->new line
 // This parse method splits CSV file into lines and then splits lines into fields then each field will be
 // saved as the card attributes then the new card will be saved in the database
 
-//    String[] lines = csvFile.split("\\r?\\n");for (String line : lines) {
-//      String[] fields = line.split(",");
-//      String cardName = fields[0];
-//      String cardRarity = fields[1];
-//      int attackPoints = Integer.parseInt(fields[2]);
-//      int defensePoints = Integer.parseInt(fields[3]);
-//      String description = fields[4];
-//      String image = fields[5];
-//      Card card = new Card(cardName,cardRarity,attackPoints,defensePoints,description,image);
-//      cardRepository.save(card);
-//    }
-//我这里可以用上面的方法，但是当我在AdminController中调用这个方法的时候我只能找到toString
-// 或者使用getInputStream提示错误
 //the difference between InputStream and String type is that, InputStream allows the
 //method accept any source that produces a stream of bytes. such as a file,network connection...
 // it provides flexibility
