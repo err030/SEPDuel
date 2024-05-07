@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import {Global} from "../global";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,10 @@ export class DeckService {
 
 
   constructor(private http: HttpClient) {
+    // this.userId = Global.loggedUser.id;
+    this.userId = 1;
     this.apiURL = 'http://localhost:8080/api/players/' + this.userId;
+
   }
 
   setUserId(userId: number): void {
@@ -45,6 +49,10 @@ export class DeckService {
 
   deleteDeck(deckId: number): Observable<any> {
     return this.http.delete(this.apiURL + '/decks/' + deckId);
+  }
+
+  getAllCards(): Observable<any> {
+    return this.http.get(this.apiURL + '/cards');
   }
 
 

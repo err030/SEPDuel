@@ -13,6 +13,7 @@ import { HomepageAdminComponent } from "./component/homepage-admin/homepage-admi
 import {AboutComponent} from "./component/about/about.component";
 import {CardListComponent} from "./component/card-list/card-list.component";
 import {DeckListComponent} from "./component/deck-list/deck-list.component";
+import {AllCardsComponent} from "./component/all-cards/all-cards.component";
 
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
   {path: 'about', component: AboutComponent},
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
+  {path: 'all-cards', component: AllCardsComponent},
 
   {path: '**', redirectTo: 'login'}
 

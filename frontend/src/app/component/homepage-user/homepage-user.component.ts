@@ -12,4 +12,7 @@ import {UserService} from "../../service/user.service";
 })
 export class HomepageUserComponent {
 
+  cards() {
+    window.location.href = "/all-cards";
+  }
 }

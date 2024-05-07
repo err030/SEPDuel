@@ -23,7 +23,7 @@ public class SpecialCardTypeService {
 
             specialCardType.setCardName("O Deus Klaus");
             specialCardType.setCardRarity(Rarity.LEGENDARY);
-            specialCardType.setAttackPoints(Double.POSITIVE_INFINITY);
+            specialCardType.setAttackPoints(Integer.MAX_VALUE);
             specialCardType.setDefensePoints(0);
             specialCardType.setDescription("");
             specialCardType.setImage("");

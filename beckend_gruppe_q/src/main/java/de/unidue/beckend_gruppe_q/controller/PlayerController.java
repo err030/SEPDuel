@@ -65,7 +65,7 @@ public class PlayerController {
     }
 
     //get all cards from player
-    @GetMapping("/api/player/{id}/cards")
+    @GetMapping(path="/api/player/{id}/cards",produces = "application/json")
     public ResponseEntity<List<Card>> getAllCards(@PathVariable Long id) {
         if (!playerRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

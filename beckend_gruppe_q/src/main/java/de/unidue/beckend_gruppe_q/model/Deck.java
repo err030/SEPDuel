@@ -16,7 +16,7 @@ public class Deck {
     private Long id;
     private String name;
     private String description;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE, orphanRemoval = true)
     public List<Card> cards;
 
     public Deck(String name, String description) {
