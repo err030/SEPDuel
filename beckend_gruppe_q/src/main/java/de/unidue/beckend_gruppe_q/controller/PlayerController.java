@@ -22,8 +22,6 @@ public class PlayerController {
     private final DeckRepository deckRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CardRepository cardRepository;
 
     public PlayerController(PlayerRepository playerRepository, DeckRepository deckRepository) {
         this.playerRepository = playerRepository;
@@ -118,25 +116,6 @@ public class PlayerController {
                 .stream()
                 .filter(card -> card.getId().equals(cardId))
                 .findFirst().get(), HttpStatus.OK);
-    }
-
-    //add cards to the deck
-    @PostMapping("api/player{id}/deck{deckId}/card{cardId}/addCardtoDeck")
-    public ResponseEntity<Deck> addCardsToDeck(@PathVariable Long id, @PathVariable Long deckId, @PathVariable Long cardId) {
-        if (!playerRepository.existsById(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!deckRepository.existsById(deckId)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!cardRepository.existsById(cardId)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Card newCard = cardRepository.findById(cardId).get();
-        Deck existingDeck = deckRepository.findById(deckId).get();
-        existingDeck.getCards().add(newCard);
-        deckRepository.save(existingDeck);
-        return new ResponseEntity<>(existingDeck, HttpStatus.OK);
     }
 }
 
