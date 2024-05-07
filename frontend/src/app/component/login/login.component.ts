@@ -109,9 +109,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   // 申请忘记密码
   forgetPasswordRequest()
     : void {
-    /*// 获取用户输入的邮箱地址或用户名
-    const emailOrUsername = this.user.email;*/
-
     // 检查用户输入的邮箱地址或用户名是否存在
     this.userService.checkUserByEmailAndGroupId(this.resetPasswordUser).subscribe({
       next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型

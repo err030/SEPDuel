@@ -1,44 +1,32 @@
 <!-- profile.component.html -->
-<!DOCTYPE html>
-<html lang="en-EN">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Profile Window</title>
-  <link rel="stylesheet" href="profile.component.css"/>
-</head>
-
-<body>
 <div class="box">
   <h2>User Profile</h2>
   <div>
-    <p>Avatar: <img src="user-avatar.jpg" alt="User Avatar"></p>
+    <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>
   </div>
-  <div class="input-box">
-    <p>Username: {{ username }}</p>
-  </div>
-  <div class="input-box">
-    <p>Firstname: {{ firstname }}</p>
-  </div>
-  <div class="input-box">
-    <p>Lastname: {{ lastname }}</p>
-  </div>
-  <div class="input-box">
-    <p>Email: {{ email }}</p>
-  </div>
-  <div class="input-box">
-    <p>Leaderboard Points: {{ leaderboardPoints }}</p>
-  </div>
-  <div class="input-box">
-    <p>SEP Coins: {{ sepCoins }}</p>
-  </div>
-</div>
-<div class="btn-box">
-  <div>
-    <button (click)="passwordReset()">Change Password</button>
-    <button>Back</button>
+
+  <div class="info">
+
+    <p><strong>Username:</strong> {{ loggedUser.username }}</p>
+    <p><strong>Email:</strong> {{ loggedUser.email }}</p>
+    <p><strong>Date of Birth:</strong> {{ loggedUser.birthday }}</p>
+
+    <p><strong>Firstname:</strong> {{ loggedUser.firstname }}</p>
+    <p><strong>Lastname:</strong> {{ loggedUser.lastname }}</p>
+
+    <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ sepCoins }}</p>
+    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ leaderboardPoints }}</p>
   </div>
 </div>
 
-</body>
-</html>
+<div class="btn-box">
+  <div>
+    <button (click)="changePassword()">Change Password</button>
+  </div>
+</div>
+
+<div class="btn-box">
+  <div>
+    <button (click)="goToHomePage()">Back</button>
+  </div>
+</div>

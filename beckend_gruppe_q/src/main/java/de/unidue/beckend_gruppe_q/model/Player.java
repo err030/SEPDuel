@@ -1,16 +1,13 @@
 package de.unidue.beckend_gruppe_q.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.util.List;
 
 
 @Entity
-@Data
 @NoArgsConstructor
 public class Player {
     @Id
@@ -19,16 +16,44 @@ public class Player {
     private String username;
 
     //whenever I save Player,it'll also save the decks as well
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany
     private List<Deck> decks;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Card> cards;
+    @OneToMany
+    public List<Card> cards;
 
     public Player(List<Deck> decks, List<Card> cards, String username) {
         this.decks = decks;
         this.cards = cards;
         this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<Deck> getDecks() {
+        return decks;
+    }
+
+    public void setDecks(List<Deck> decks) {
+        this.decks = decks;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
 

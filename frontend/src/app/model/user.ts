@@ -10,8 +10,10 @@ export class User {
     public groupId: number,
     public id?: number,
     public adminInvitationCode?: string,
-    public birthday?:Date|null,
-    public avatarUrl?:string
+    public birthday?: Date | null,
+    public avatarUrl?: string,
+    public sepCoins?: number,
+    public leaderboardPoints?: number
   ) {
   }
 }
