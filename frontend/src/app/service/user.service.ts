@@ -5,6 +5,7 @@ import {Observable, tap} from "rxjs";
 import {User} from "../model/user";
 import {Router} from "@angular/router";
 import {Global} from "../global";
+import {ConfirmationService} from "primeng/api";
 
 
 @Injectable({
@@ -63,10 +64,21 @@ export class UserService {
   }
 
   // 重置密码
+  /*resetPassword(userId: number, newPassword: string): Observable<any> {
+    const url = Global.userRestServiceUrl + "/reset-password";
+    const requestBody = { userId: userId, newPassword: newPassword };
+    return this.http.post<any>(url, requestBody);
+  }*/
+
+  changeUserPassword(currentPassword: string, newPassword: string): Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/" + currentPassword + "/" + newPassword;
+    return this.http.put<any>(url, this.loggedUser, {headers: this.headers, observe: 'response'})
+  }
   resetPassword(user: User): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/resetpassword";
     return this.http.put<any>(url, user, {headers: this.headers, observe: 'response'});
   }
+
 
   // 通过用户id获取Token
   getTokenByUserId(userId: number): Observable<string> {
@@ -83,11 +95,6 @@ export class UserService {
     });
     return this.http.get<any>(url, {headers: headersWithToken, observe: 'response'});
   }
-/*  //向后端发送请求以发送重置密码链接
-  sendResetPasswordEmail(email: string): Observable<HttpResponse<any>> {
-    const url = Global.userRestServiceUrl + "/resetpassword/email";
-    return this.http.post<any>(url, { email }, { headers: this.headers, observe: 'response' });
-  }*/
 
   // 检查是否有已经登录的用户
   checkLoggedUser(): void {
@@ -126,15 +133,29 @@ export class UserService {
     const url = Global.userRestServiceUrl + "/" + user.email + "/" + user.groupId;
     return this.http.get<any>(url, { observe: 'response' });
   }
-// 验证码
- /* getSecurityCode(): Observable<HttpResponse<any>> {
-    const userId = this.loggedUser?.id; // 使用可选链操作符访问id属性
-    if (!userId) {
-      // 处理loggedUser为null或undefined的情况，这里你可以抛出一个错误或者返回一个合适的Observable
-      throw new Error('Logged user id is null or undefined');    }
-    const url = Global.userRestServiceUrl + "/securitycode/" + userId;
-    return this.http.get<any>(url, {observe: 'response'});
-  }
-*/
 
+  //获取头像
+  getUserAvatarUrl(): string {
+    if (this.loggedUser && this.loggedUser.avatarUrl) {
+      return Global.backendUrl + this.loggedUser.avatarUrl;
+    } else if (this.loggedUser && !this.loggedUser.avatarUrl) {
+      return this.loggedUser.firstname.charAt(0) + this.loggedUser.lastname.charAt(0);
+    } else {
+      return "";
+    }
+  }
+  //上传头像
+  uploadUserAvatar(file: File, userId: number): Observable<HttpResponse<User>> {
+    const url = Global.userRestServiceUrl + "/avatar/" + userId;
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.put<User>(url, formData, {observe: 'response'});
+  }
+
+
+  userLogout() {
+    localStorage.clear();
+    this.loggedUser = null;
+    void this.router.navigateByUrl("/login");
+  }
 }

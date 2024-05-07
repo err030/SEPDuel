@@ -264,6 +264,20 @@ public class UserController {
         }
     }
 
+    @PutMapping("/user/{currentpassword}/{newpassword}")
+    public ResponseEntity<?> changeUserPassword(@PathVariable(name = "currentpassword") String currentPassword, @PathVariable(name = "newpassword") String newPassword, @RequestBody User user) {
+        // 检查用户输入的当前密码是否正确
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            // 如果正确，加密新密码并保存，返回状态码200
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            // 如果不正确，返回状态码401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
     @PostMapping("/user/sepCoins")
     public User sepCoin(@RequestBody User user) {
         // 设置初始的SEP Coin
