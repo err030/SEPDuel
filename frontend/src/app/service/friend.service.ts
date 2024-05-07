@@ -18,7 +18,7 @@ export class FriendService {
   alleFreunde: User[]= [];
 
   //用户名搜索用户
-  searchUserByUsername(userid: number, Username: number): Observable<HttpResponse<friend>>{
+  searchUserByUsername(userid: number, Username: string): Observable<HttpResponse<friend>>{
     const url = `${Global.friendRestServiceUrl}/searchUserByUsername/${userid}/${Username}`;
 
     return this.http.get<friend>(url, {observe: 'response'});
@@ -26,7 +26,7 @@ export class FriendService {
 
 
   sendFriendRequest(currentUserId: number, targetUserId: number): Observable<HttpResponse<any>> {
-    const url = `${Global.friendRestServiceUrl}/sendFriendRequest/${currentUserId}/${targetUserId}`;
+    const url = `http://localhost:8000/friend/sendFriendRequest/${currentUserId}/${targetUserId}`;
 
     return this.http.post<any>(url, null, {observe: 'response'});
   }
