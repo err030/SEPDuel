@@ -17,13 +17,13 @@ export class DeckService {
   constructor(private http: HttpClient) {
     // this.userId = Global.loggedUser.id;
     this.userId = 1;
-    this.apiURL = 'http://localhost:8080/api/players/' + this.userId;
+    this.apiURL = 'http://localhost:8080/api/user/' + this.userId;
 
   }
 
   setUserId(userId: number): void {
     this.userId = userId;
-    this.apiURL = 'http://localhost:8080/api/players/' + this.userId;
+    this.apiURL = 'http://localhost:8080/api/user/' + this.userId;
   }
 
   setDeckId(deckId: number): void {
@@ -31,12 +31,12 @@ export class DeckService {
   }
 
   getDecks(): Observable<any> {
-    return this.http.get(this.apiURL + '/decks');
+    return this.http.get(this.apiURL + '/deck');
   }
 
 
   getDeck(): Observable<any> {
-    return this.http.get(this.apiURL + '/decks/' + this.deckId);
+    return this.http.get(this.apiURL + '/deck/' + this.deckId);
   }
 
   createDeck(): Observable<any> {
@@ -44,15 +44,15 @@ export class DeckService {
   }
 
   updateDeck(deckId: number, deck: any): Observable<any> {
-    return this.http.put(this.apiURL + '/decks/' + deckId, deck);
+    return this.http.put(this.apiURL + '/deck/' + deckId, deck);
   }
 
   deleteDeck(deckId: number): Observable<any> {
-    return this.http.delete(this.apiURL + '/decks/' + deckId);
+    return this.http.delete(this.apiURL + '/deck/' + deckId);
   }
 
   getAllCards(): Observable<any> {
-    return this.http.get(this.apiURL + '/cards');
+    return this.http.get(this.apiURL + '/card');
   }
 
 

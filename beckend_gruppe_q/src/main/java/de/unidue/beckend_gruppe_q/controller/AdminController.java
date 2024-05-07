@@ -2,7 +2,7 @@ package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import de.unidue.beckend_gruppe_q.repository.PlayerRepository;
+import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.service.CardCsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +22,12 @@ public class AdminController {
     @Autowired
     private final CardRepository cardRepository;
     @Autowired
-    private final PlayerRepository playerRepository;
+    private final UserRepository userRepository;
 
-    public AdminController(CardCsvParser cardCsvParser, CardRepository cardRepository, PlayerRepository playerRepository1) {
+    public AdminController(CardCsvParser cardCsvParser, CardRepository cardRepository, UserRepository userRepository) {
         this.cardCsvParser = cardCsvParser;
         this.cardRepository = cardRepository;
-        this.playerRepository = playerRepository1;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("admin/cards/upload")
@@ -54,7 +54,7 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
         cardRepository.delete(card);
-        playerRepository.deleteById(card.getId());
+        userRepository.deleteById(card.getId());
         return ResponseEntity.ok().build();
     }
 }

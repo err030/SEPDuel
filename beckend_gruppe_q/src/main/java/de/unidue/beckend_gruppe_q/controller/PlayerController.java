@@ -13,25 +13,23 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/user/decks")
 public class PlayerController {
 
-    @Autowired
-    private final PlayerRepository playerRepository;
+
     @Autowired
     private final DeckRepository deckRepository;
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public PlayerController(PlayerRepository playerRepository, DeckRepository deckRepository) {
-        this.playerRepository = playerRepository;
+    public PlayerController(UserRepository userRepository, DeckRepository deckRepository) {
+        this.userRepository = userRepository;
         this.deckRepository = deckRepository;
     }
 
     // to add a new deck
-    @PostMapping("api/player/{id}/createDeck")
+    @PostMapping("/api/user/{id}/createDeck")
     public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
-        Optional<Player> player = playerRepository.findById(id);
+        Optional<User> player = userRepository.findById(id);
         if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -41,7 +39,7 @@ public class PlayerController {
     //deckRepository.findById(id) would return an `Optional' and loads the entity's data from the database when invoked
     //deckRepository.getOne(id) gets only a reference of the database and it is deprecated
     //update a deck, include update the name and the cards
-    @PutMapping("/api/player/{id}/updateDeck")
+    @PutMapping("/api/user/{id}/updateDeck")
     public ResponseEntity<Deck> updateDeck(@PathVariable Long id, @RequestBody Deck updateDeck) {
 
         Optional<Deck> existingDeck = deckRepository.findById(id);
@@ -55,7 +53,7 @@ public class PlayerController {
     }
 
     //delete a deck
-    @DeleteMapping("/api/player/{id}/deleteDeck")
+    @DeleteMapping("/api/user/{id}/deleteDeck")
     public ResponseEntity<Deck> deleteDeck(@PathVariable Long id) {
         if (!deckRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,33 +63,47 @@ public class PlayerController {
     }
 
     //get all cards from player
-    @GetMapping(path="/api/player/{id}/cards",produces = "application/json")
+    @GetMapping(path="/api/user/{id}/card",produces = "application/json")
     public ResponseEntity<List<Card>> getAllCards(@PathVariable Long id) {
-        if (!playerRepository.existsById(id)) {
+        if (!userRepository.existsById(id)) {
+            System.out.println("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(playerRepository.findById(id).get().getCards(), HttpStatus.OK);
+        return new ResponseEntity<>(userRepository.findById(id).get().getCards(), HttpStatus.OK);
+    }
+
+    //test use
+
+    @GetMapping("/api/user/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        if (!userRepository.existsById(id)) {
+            System.out.println("User not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+        return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
     }
 
     //get all decks from player
-    @GetMapping("api/player/{id}/decks")
+    @GetMapping("/api/user/{id}/deck")
     public ResponseEntity<List<Deck>> getAllDecks(@PathVariable Long id) {
-        if (playerRepository.findById(id).isEmpty()) {
+        if (userRepository.findById(id).isEmpty()) {
+            System.out.println("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(playerRepository.findById(id).get().getDecks(), HttpStatus.OK);
+        return new ResponseEntity<>(userRepository.findById(id).get().getDecks(), HttpStatus.OK);
     }
 
     //get a deck using deckId from a player using id
-    @GetMapping("api/player/{id}/deck/{deckId}/cards")
+    @GetMapping("/api/user/{id}/deck/{deckId}/card")
     public ResponseEntity<List<Card>> getCardsFromDeck(@PathVariable Long id, @PathVariable Long deckId) {
-        if (!playerRepository.existsById(id)) {
+        if (!userRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!deckRepository.existsById(deckId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(playerRepository.findById(id).get()
+        return new ResponseEntity<>(userRepository.findById(id).get()
                                    .getDecks()
                                    .stream()
                                    .filter(deck -> deck.getId().equals(deckId))
@@ -99,15 +111,15 @@ public class PlayerController {
     }
 
     //get a card using cardId from a deck using deckId from a player using playerId
-    @GetMapping("api/player{id}/deck{deckId}/card{cardId}/card")
+    @GetMapping("/api/user/{id}/deck/{deckId}/card/{cardId}")
     public ResponseEntity<Card> getCardFromDeck(@PathVariable Long id, @PathVariable Long deckId, @PathVariable Long cardId) {
-        if (!playerRepository.existsById(id)) {
+        if (!userRepository.existsById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (!deckRepository.existsById(deckId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(playerRepository.findById(id).get()
+        return new ResponseEntity<>(userRepository.findById(id).get()
                 .getDecks()
                 .stream()
                 .filter(deck -> deck.getId().equals(deckId))
