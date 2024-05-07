@@ -31,10 +31,10 @@ public class PlayerController {
     }
 
     // to add a new deck
-    @PostMapping("api/player/{deck}/createDeck")
-    public ResponseEntity<Deck> createDeck(@RequestBody Deck deck) {
-        Player newPlayer = new Player();
-        if (newPlayer.getDecks().size() > 3 || newPlayer.getCards().size() > 30){
+    @PostMapping("api/player/{id}/createDeck")
+    public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
+        Optional<Player> player = playerRepository.findById(id);
+        if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
