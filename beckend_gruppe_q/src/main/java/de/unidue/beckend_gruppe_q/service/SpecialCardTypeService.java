@@ -1,4 +1,4 @@
-package de.unidue.beckend_gruppe_q.Service;
+package de.unidue.beckend_gruppe_q.service;
 
 
 import de.unidue.beckend_gruppe_q.model.Card;

@@ -148,8 +148,7 @@ isValidEmail(email: string): boolean {
       }
     });
 
-    //默认头像
-    this.user.avatarUrl = 'assets/images/avatar.jpeg';
+
   }
 
   //跳转到登录页面

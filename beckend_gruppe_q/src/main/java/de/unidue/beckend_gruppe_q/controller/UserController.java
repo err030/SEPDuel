@@ -1,8 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 
-import de.unidue.beckend_gruppe_q.Service.EmailService;
-import de.unidue.beckend_gruppe_q.model.LeaderBoardPunkt;
+import de.unidue.beckend_gruppe_q.service.EmailService;
 import de.unidue.beckend_gruppe_q.model.SecurityCode;
 import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.LeaderBoardPunktRepository;
@@ -10,7 +9,6 @@ import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.utility.UserTokenUtil;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
