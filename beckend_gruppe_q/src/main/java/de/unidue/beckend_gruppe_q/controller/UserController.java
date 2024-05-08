@@ -2,12 +2,15 @@ package de.unidue.beckend_gruppe_q.controller;
 
 
 import de.unidue.beckend_gruppe_q.Service.EmailService;
+import de.unidue.beckend_gruppe_q.model.LeaderBoardPunkt;
 import de.unidue.beckend_gruppe_q.model.SecurityCode;
 import de.unidue.beckend_gruppe_q.model.User;
+import de.unidue.beckend_gruppe_q.repository.LeaderBoardPunktRepository;
 import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.utility.UserTokenUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,9 +29,11 @@ public class UserController {
     final SecurityCodeRepository securityCodeRepository;
     final EmailService emailService;
 
+
+
     final BCryptPasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder, LeaderBoardPunktRepository leaderBoardPunktRepository) {
         this.userRepository = userRepository;
         this.securityCodeRepository = securityCodeRepository;
         this.emailService = emailService;
@@ -50,6 +55,8 @@ public class UserController {
         } else {
             // 如果Email还没有注册，则先把密码进行加密
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setSepCoins(500L);
+
             // 然后保存到数据库里
             userRepository.save(user);
             // 注册成功，返回状态码201
@@ -278,10 +285,5 @@ public class UserController {
         }
     }
 
-    @PostMapping("/user/sepCoins")
-    public User sepCoin(@RequestBody User user) {
-        // 设置初始的SEP Coin
-        user.setSepCoins(500L);
-        return userRepository.save(user);
-    }
+
 }
