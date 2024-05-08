@@ -1,8 +1,15 @@
 <!-- profile.component.html -->
 <div class="box">
-  <h2>User Profile</h2>
+  <h2>UserProfile</h2>
   <div>
     <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>
+    <form #avatarForm="ngForm" (ngSubmit)="onAvatarFormSubmit()">
+      <div class="input-box">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)">
+        <button type="submit" [disabled]="!selectedFile">Upload</button>
+        <button type="button" (click)="confirmUpload()" [disabled]="!isUploaded">Confirm</button>
+      </div>
+    </form>
   </div>
 
   <div class="info">

@@ -145,12 +145,14 @@ export class UserService {
     }
   }
   //上传头像
-  uploadUserAvatar(file: File, userId: number): Observable<HttpResponse<User>> {
+  uploadAvatar(file: File, userId: number): Observable<HttpResponse<User>> {
     const url = Global.userRestServiceUrl + "/avatar/" + userId;
     const formData = new FormData();
     formData.append("file", file);
     return this.http.put<User>(url, formData, {observe: 'response'});
   }
+
+
 
 
   userLogout() {
