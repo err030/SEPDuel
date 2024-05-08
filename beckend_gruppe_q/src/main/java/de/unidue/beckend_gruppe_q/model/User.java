@@ -27,10 +27,10 @@ public class User {
     private Long sepCoins;
     @OneToOne(mappedBy = "user")
     private LeaderBoardPunkt leaderBoardPunkt;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Deck> decks = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Card> cards = new ArrayList<>();
 
 
