@@ -18,7 +18,7 @@ public class SpecialCardTypeService {
 
     @PostConstruct
     public void initSpecialCardType() {
-        if (cardRepository.findByCardName("O Deus Klaus")==null) {
+        if (cardRepository.findByCardName("O Deus Klaus").isEmpty()) {
             Card specialCardType = new Card();
 
             specialCardType.setCardName("O Deus Klaus");
