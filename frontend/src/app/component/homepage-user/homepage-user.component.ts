@@ -49,6 +49,10 @@ export class HomepageUserComponent implements OnInit {
   //导航到卡库
 
   //导航到好友列表
+  goToFriendlist() {
+    this.router.navigate(['/friendlist']);
+  }
+  //退出登陆
   userLogout() {
     this.userService.userLogout();
   }

@@ -15,6 +15,7 @@ import {CommonModule} from '@angular/common';
     CommonModule,
     FormsModule
   ],
+  providers:[UserService,MessageService],
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent {

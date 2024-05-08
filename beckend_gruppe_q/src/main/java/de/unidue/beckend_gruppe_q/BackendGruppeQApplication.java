@@ -20,9 +20,9 @@ public class BackendGruppeQApplication {
     public static void main(String[] args) {
         SpringApplication.run(BackendGruppeQApplication.class, args);
     }
-    @Bean
+    /*@Bean
     public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
-        return args -> {
+        return args -> {*/
 //            // create a deck
 //            Deck deck = new Deck();
 //            deck.setName("Deck");
@@ -39,13 +39,13 @@ public class BackendGruppeQApplication {
 //
 //            userRepository.save(user);
 //
-            for (User u : userRepository.findAll()) {
+          /*  for (User u : userRepository.findAll()) {
                 u.cards.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
                 userRepository.save(u);
             }
 
-        };
-    }
+        };*/
+ //   }
 
 }
 
