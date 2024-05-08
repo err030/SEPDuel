@@ -18,10 +18,10 @@ public class SpecialCardTypeService {
 
     @PostConstruct
     public void initSpecialCardType() {
-        if (cardRepository.findByCardName("O Deus Klaus").isEmpty()) {
+        if (cardRepository.findByName("O Deus Klaus").isEmpty()) {
             Card specialCardType = new Card();
 
-            specialCardType.setCardName("O Deus Klaus");
+            specialCardType.setName("O Deus Klaus");
             specialCardType.setCardRarity(Rarity.LEGENDARY);
             specialCardType.setAttackPoints(Integer.MAX_VALUE);
             specialCardType.setDefensePoints(0);
