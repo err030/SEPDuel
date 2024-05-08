@@ -3,7 +3,7 @@ package de.unidue.beckend_gruppe_q.controller;
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
-import de.unidue.beckend_gruppe_q.service.CardCsvParser;
+import de.unidue.beckend_gruppe_q.Service.CardCsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

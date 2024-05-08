@@ -15,7 +15,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "card")
     private Long id;
-    private String cardName;
+    private String name;
     private Rarity cardRarity;
     private int attackPoints;
     private int defensePoints;
@@ -23,8 +23,8 @@ public class Card {
     private String image;
 
 
-    public Card( String cardName, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
-        this.cardName = cardName;
+    public Card( String name, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
+        this.name = name;
         this.cardRarity = cardRarity;
         this.attackPoints = attackPoints;
         this.defensePoints = defensePoints;
