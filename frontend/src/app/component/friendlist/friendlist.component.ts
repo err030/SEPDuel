@@ -22,7 +22,7 @@ import {NgForOf, NgIf} from "@angular/common";
     NgIf,
     NgForOf
   ],
-  providers: [UserService, FriendService],
+  providers: [UserService, FriendService,MessageService],
   templateUrl: './friendlist.component.html',
   styleUrl: './friendlist.component.css'
 })
