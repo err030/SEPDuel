@@ -14,8 +14,8 @@
     <p><strong>Firstname:</strong> {{ loggedUser.firstname }}</p>
     <p><strong>Lastname:</strong> {{ loggedUser.lastname }}</p>
 
-    <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ sepCoins }}</p>
-    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ leaderboardPoints }}</p>
+    <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser.sepCoins }}</p>
+    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderboardPoints }}</p>
   </div>
 </div>
 
