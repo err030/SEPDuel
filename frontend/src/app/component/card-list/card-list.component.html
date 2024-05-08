@@ -1,0 +1,23 @@
+<p>This is the card list component.</p>
+<h1>This is the card list of your deck.</h1>
+<div class="card-search">
+  <input type="text" placeholder="Search by name or description" [(ngModel)]="searchText">
+  <button (click)="search()">Search</button>
+</div>
+
+<div class="card-list">
+  <div *ngFor="let card of deck?.cards">
+    Name: {{card.name}}
+    Description: {{card.description}}
+
+    Cost: {{card.cost}}
+    Attack: {{card.attack}}
+    Defense: {{card.defense}}
+    Rarity: {{getRarity(card)}}
+    <button (click)="selectCard(card)">Select</button>
+    <button (click)="removeCard(card)">Remove</button>
+  </div>
+
+
+</div>
+<router-outlet></router-outlet>

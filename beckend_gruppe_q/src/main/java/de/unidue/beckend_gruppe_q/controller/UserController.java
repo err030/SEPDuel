@@ -2,12 +2,15 @@ package de.unidue.beckend_gruppe_q.controller;
 
 
 import de.unidue.beckend_gruppe_q.Service.EmailService;
+import de.unidue.beckend_gruppe_q.model.LeaderBoardPunkt;
 import de.unidue.beckend_gruppe_q.model.SecurityCode;
 import de.unidue.beckend_gruppe_q.model.User;
+import de.unidue.beckend_gruppe_q.repository.LeaderBoardPunktRepository;
 import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.utility.UserTokenUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,9 +29,11 @@ public class UserController {
     final SecurityCodeRepository securityCodeRepository;
     final EmailService emailService;
 
+
+
     final BCryptPasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder, LeaderBoardPunktRepository leaderBoardPunktRepository) {
         this.userRepository = userRepository;
         this.securityCodeRepository = securityCodeRepository;
         this.emailService = emailService;
@@ -40,6 +45,7 @@ public class UserController {
      */
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody User user) {
+        System.out.println("User: " + user);
         // 先检查新用户的Email在同一个用户组里是否已经被注册了
         // 目前的设定是同一个用户组里面Email必须是唯一的，但是一个Email可以注册为普通用户和管理员
         List<User> list = userRepository.findUserByEmailAndGroupId(user.getEmail(), user.getGroupId());
@@ -48,7 +54,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         } else {
             // 如果Email还没有注册，则先把密码进行加密
-            user.setPasswort(passwordEncoder.encode(user.getPasswort()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setSepCoins(500L);
+
             // 然后保存到数据库里
             userRepository.save(user);
             // 注册成功，返回状态码201
@@ -67,7 +75,7 @@ public class UserController {
         List<User> userByEmailAndGroupId = userRepository.findUserByEmailAndGroupId(email, groupId);
         if (userByEmailAndGroupId != null && !userByEmailAndGroupId.isEmpty()) {
             // 如果存在，则继续检查用户提交的密码和数据库中保存的密码是否一致
-            if (passwordEncoder.matches(password, userByEmailAndGroupId.get(0).getPasswort())) {
+            if (passwordEncoder.matches(password, userByEmailAndGroupId.get(0).getPassword())) {
                 // 如果一致，返回状态码200，并把用户信息放入body中
                 return ResponseEntity.status(HttpStatus.OK).body(userByEmailAndGroupId.get(0));
             } else {
@@ -84,7 +92,7 @@ public class UserController {
      * 根据用户id获取验证码，用于登录时的二次验证
      */
     @GetMapping("/user/securitycode/{userid}")
-    public ResponseEntity<SecurityCode> getSecurityCode(@PathVariable(value = "userid") Long userId) {
+    public ResponseEntity<SecurityCode> getSecurityCodeByUserId(@PathVariable(value = "userid") Long userId) {
         // 先通过用户id检查用户是否存在
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
@@ -110,8 +118,8 @@ public class UserController {
             }
             // 设置邮件内容
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            String emailSubject = "SEP: Ihr Sicherheitscode";
-            String emailText = "Ihr Sicherheitscode lautet: " + code + ", der gültig bis " + format.format(expirationTime) + " ist. Geben Sie diesen Code nicht weiter.";
+            String emailSubject = "SEP: Your Securitycode";
+            String emailText = "Your securitycode is: " + code + ", valid until " + format.format(expirationTime) + " . Do not share this code.";
             try {
                 // 发送邮件
                 emailService.sendEMail(user.getEmail(), emailSubject, emailText);
@@ -160,11 +168,23 @@ public class UserController {
         List<User> list = userRepository.findUserByEmailAndGroupId(email, groupId);
         if (list != null && !list.isEmpty()) {
             // 存在返回状态码200
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(true);
         } else {
             // 不存在返回404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(false);
         }
+    }
+
+    @GetMapping("user/checkusername/{groupid}/{username}")
+    public ResponseEntity<?> checkUserByGroupIdAndUsername(@PathVariable(value = "groupid") Integer groupId,@PathVariable(value = "username") String username){
+        List<User> list = userRepository.findUserByGroupIdAndUsername(groupId,username);
+        if (list != null && !list.isEmpty()) {// 存在返回状态码200
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        } else {
+
+            return ResponseEntity.status(HttpStatus.OK).body(false);
+        }
+
     }
 
     /**
@@ -178,13 +198,13 @@ public class UserController {
             // 如果用户存在，则生成一个6位数的随机字符串，由大写小写字母和数字组成
             String newPassword = RandomStringUtils.randomAlphanumeric(6);
             // 设置Email内容
-            String emailSubject = "SEP: Ihr neues Passwort";
-            String emailText = "Ihr neues Passwort lautet: " + newPassword + ".";
+            String emailSubject = "SEP: Your new password";
+            String emailText = "Your new password is: " + newPassword + ".";
             try {
                 emailService.sendEMail(user.getEmail(), emailSubject, emailText);
                 User resetPasswordUser = list.get(0);
                 // 将新生成的密码加密后保存到数据库中
-                resetPasswordUser.setPasswort(passwordEncoder.encode(newPassword));
+                resetPasswordUser.setPassword(passwordEncoder.encode(newPassword));
                 userRepository.save(resetPasswordUser);
                 // 邮件发送成功返回200
                 return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -208,7 +228,7 @@ public class UserController {
         if (userOptional.isPresent()) {
             // 用户存在，生成Token，返回200，并将Token放到Body中
             User user = userOptional.get();
-            String token = UserTokenUtil.generateUserToken(user.getId(), user.getVorname(), user.getNachname(), user.getEmail(), user.getPasswort(), user.getGroupId());
+            String token = UserTokenUtil.generateUserToken(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword(), user.getGroupId());
             return ResponseEntity.status(HttpStatus.OK).body(token);
         } else {
             // 用户不存在返回404
@@ -250,4 +270,20 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @PutMapping("/user/{currentpassword}/{newpassword}")
+    public ResponseEntity<?> changeUserPassword(@PathVariable(name = "currentpassword") String currentPassword, @PathVariable(name = "newpassword") String newPassword, @RequestBody User user) {
+        // 检查用户输入的当前密码是否正确
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            // 如果正确，加密新密码并保存，返回状态码200
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } else {
+            // 如果不正确，返回状态码401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+
 }

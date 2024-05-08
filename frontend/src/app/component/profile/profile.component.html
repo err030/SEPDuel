@@ -1,0 +1,32 @@
+<!-- profile.component.html -->
+<div class="box">
+  <h2>User Profile</h2>
+  <div>
+    <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>
+  </div>
+
+  <div class="info">
+
+    <p><strong>Username:</strong> {{ loggedUser.username }}</p>
+    <p><strong>Email:</strong> {{ loggedUser.email }}</p>
+    <p><strong>Date of Birth:</strong> {{ loggedUser.birthday }}</p>
+
+    <p><strong>Firstname:</strong> {{ loggedUser.firstname }}</p>
+    <p><strong>Lastname:</strong> {{ loggedUser.lastname }}</p>
+
+    <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser.sepCoins }}</p>
+    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderboardPoints }}</p>
+  </div>
+</div>
+
+<div class="btn-box">
+  <div>
+    <button (click)="changePassword()">Change Password</button>
+  </div>
+</div>
+
+<div class="btn-box">
+  <div>
+    <button (click)="goToHomePage()">Back</button>
+  </div>
+</div>

@@ -19,20 +19,9 @@ public class Deck {
     @OneToMany
     private List<Card> cards;
 
-    public Deck(String name, String description) {
+    public Deck(String name, String description, List<Card> cards) {
         this.name = name;
         this.description = description;
-    }
-
-    public boolean isFull() {
-        return cards.size() >= 30;
-    }
-
-    public boolean addCard(Card card) {
-        if (this.isFull()) {
-            throw new IllegalStateException("Deck is full");
-        } else {
-            return cards.add(card);
-        }
+        this.cards = cards;
     }
 }

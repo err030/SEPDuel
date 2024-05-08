@@ -5,5 +5,5 @@ import de.unidue.beckend_gruppe_q.model.Deck;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DeckRepository extends JpaRepository<Deck, Integer> {
+public interface DeckRepository extends JpaRepository<Deck, Long> {
 }
