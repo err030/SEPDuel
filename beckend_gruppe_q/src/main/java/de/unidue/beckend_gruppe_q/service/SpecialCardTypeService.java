@@ -1,4 +1,4 @@
-package de.unidue.beckend_gruppe_q.service;
+package de.unidue.beckend_gruppe_q.Service;
 
 
 import de.unidue.beckend_gruppe_q.model.Card;
@@ -18,10 +18,10 @@ public class SpecialCardTypeService {
 
     @PostConstruct
     public void initSpecialCardType() {
-        if (cardRepository.findByCardName("O Deus Klaus")==null) {
+        if (cardRepository.findByName("O Deus Klaus")==null) {
             Card specialCardType = new Card();
 
-            specialCardType.setCardName("O Deus Klaus");
+            specialCardType.setName("O Deus Klaus");
             specialCardType.setCardRarity(Rarity.LEGENDARY);
             specialCardType.setAttackPoints(Integer.MAX_VALUE);
             specialCardType.setDefensePoints(0);

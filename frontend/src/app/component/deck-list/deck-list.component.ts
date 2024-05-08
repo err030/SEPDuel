@@ -5,27 +5,31 @@ import {Deck} from "../../model/deck.model";
 import {Card} from "../../model/card.model";
 import {NgForOf} from "@angular/common";
 import {Observable} from "rxjs";
+import {Global} from "../../global";
+import {DeckComponent} from "../deck/deck.component";
+import {CardComponent} from "../card/card.component";
 
 @Component({
   selector: 'app-deck-list',
   standalone: true,
   imports: [
     RouterLink,
-    NgForOf
+    NgForOf,
+    DeckComponent,
+    CardComponent
   ],
   templateUrl: './deck-list.component.html',
   styleUrl: './deck-list.component.css'
 })
 
 export class DeckListComponent implements OnInit{
-  deckId: number = 1;
+  deck?: Deck;
   decks: Deck [] = [];
-  selectedDeck: Deck | undefined;
-  private deckService: any;
-  private router: any;
+  selectedDeck?: Deck;
+  private deckService: DeckService;
 
 
-  constructor(deckService:DeckService) {
+  constructor(deckService:DeckService, private router : Router) {
     this.deckService = deckService;
     deckService.getDecks().subscribe(decks => {
         this.decks = decks;
@@ -42,31 +46,31 @@ export class DeckListComponent implements OnInit{
   }
 
   //return id of new deck
-  createDeck(): number {
-    let deckId: number = -1;
+  createDeck(): Deck {
     this.deckService.createDeck().subscribe((deck : Deck) => {
-        this.deckId = deck.id;
-        alert('Deck created successfully, opening in 3 seconds...');
+        this.deck = deck;
+        Global.currentDeck = deck;
+        alert('Deck created successfully, Click OK to view the deck.');
 
-        setTimeout(() => {
-          this.router.navigate(['card-list', deckId]);
-        }, 3000);
+      this.router.navigate(['/card-list']);
+
       }, (error: any) => {
         console.log(error);
         alert("Error creating deck");
       }
     );
 
-    return deckId;
+    return Global.currentDeck;
   }
 
   selectDeck(deck: Deck): void {
     this.selectedDeck = deck;
     this.deckService.setDeckId(deck.id);
+    Global.currentDeck = deck;
     this.router.navigate(['card-list']);
   }
 
-  removeDeck(deckId: number): void {
-    this.deckService.deleteDeck();
+  deleteDeck(deckId: number): void {
+    this.deckService.deleteDeck(deckId);
   }
 }

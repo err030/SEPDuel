@@ -1,4 +1,4 @@
-package de.unidue.beckend_gruppe_q.service;
+package de.unidue.beckend_gruppe_q.Service;
 
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Rarity;
@@ -25,13 +25,13 @@ public class CardCsvParser {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] fields = line.split(",");
-                String cardName = fields[0];
+                String name = fields[0];
                 String cardRarity = fields[1];
                 int attackPoints = Integer.parseInt(fields[2]);
                 int defensePoints = Integer.parseInt(fields[3]);
                 String description = fields[4];
                 String image = fields[5];
-                Card card = new Card(cardName, Rarity.valueOf(cardRarity),attackPoints,defensePoints,description,image);
+                Card card = new Card(name, Rarity.valueOf(cardRarity),attackPoints,defensePoints,description,image);
                 cardRepository.save(card);
             }
         }

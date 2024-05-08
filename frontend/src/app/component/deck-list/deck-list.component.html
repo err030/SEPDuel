@@ -2,7 +2,9 @@
 <h2>Deck List</h2>
 <ul>
   <li *ngFor="let deck of decks">
-    <a (click)="selectDeck(deck)">{{deck.name}}</a>
+    <app-deck [deck]=deck></app-deck>
+    <button (click)="selectDeck(deck)">Select</button>
+    <button (click)="deleteDeck(deck.id)">Delete</button>
   </li>
 </ul>
 
