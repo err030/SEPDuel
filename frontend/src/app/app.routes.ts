@@ -32,10 +32,10 @@ export const routes: Routes = [
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
 
-  {path: '**', redirectTo: 'login'},
 
-  {path: 'friend-list', component: FriendlistComponent}
+  {path: 'friendlist', component: FriendlistComponent},
 
+  {path: '**', redirectTo: 'login'}
 ];
 
 @NgModule({

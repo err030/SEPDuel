@@ -5,17 +5,24 @@ import {FriendService} from "../../service/friend.service";
 import {Global} from "../../../global";
 import {friend} from "../../model/friend";
 import {FriendRequest} from "../../model/FriendRequest";
-import {NgForm} from "@angular/forms";
+import {FormsModule, NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {forkJoin} from "rxjs";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
+import {NgForOf, NgIf} from "@angular/common";
+
 
 
 @Component({
   selector: 'app-friendlist',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule,
+    NgIf,
+    NgForOf
+  ],
+  providers: [UserService, FriendService],
   templateUrl: './friendlist.component.html',
   styleUrl: './friendlist.component.css'
 })
@@ -48,10 +55,20 @@ export class FriendlistComponent implements OnInit {
   benutzerSuchFormular: any                       //userSearchForm
   zeigenFreundesliste: boolean = false;           //showFriendList
 
+//boolean zu control
+  showAddFriendConfirmationPopup = false;
+  showAddFriendPopup = false;
+  protected showDeleteFriendConfirmation=false;
+  private selectedFriend: User|null = null;
+  protected readonly friend = friend;
+
+
   constructor(private userService: UserService,
               private friendService: FriendService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private confirmationService: ConfirmationService) {
+    console.log('FriendlistComponent instantiated');
   }
 
   private error(summary: string,err: any){
@@ -60,7 +77,7 @@ export class FriendlistComponent implements OnInit {
       summary,
       detail: err
     });
-}
+  }
 
   private success(summary: string, detail: string){
     this.messageService.add({
@@ -68,7 +85,7 @@ export class FriendlistComponent implements OnInit {
       summary,
       detail: detail
     });
-}
+  }
 
 
   async ngOnInit() {
@@ -155,7 +172,7 @@ export class FriendlistComponent implements OnInit {
         }else{
           this.error('Error occurred', err.statusText);
         }
-          this.zielFreund = null;
+        this.zielFreund = null;
       }
     })
 
@@ -245,10 +262,10 @@ export class FriendlistComponent implements OnInit {
           if(isPublic){
             this.success('successful', 'The friends list is set to public');
           }
-        else{
-          this.success('successful', 'The friends list is set to private');
+          else{
+            this.success('successful', 'The friends list is set to private');
+          }
         }
-      }
 
       },
       error:(err) =>{
@@ -290,6 +307,30 @@ export class FriendlistComponent implements OnInit {
   }
 
 
+  goToHomePage(): void {
+      this.router.navigateByUrl('/homepage-user');
+  }
 
+  toggleFunctionality() {
+    this.showAddFriendPopup = !this.showAddFriendPopup;
+  }
 
+  closeAddFriendPopup() {
+    this.showAddFriendPopup = false;
+  }
+
+  closeAddFriendConfirmationPopup() {
+
+  }
+
+  showDeleteFriendConfirmationPopup() {
+    this.showDeleteFriendConfirmation = true;
+  }
+
+  deleteFriend(): void {
+  }
+
+  closeDeleteFriendConfirmationPopup() {
+    this.showDeleteFriendConfirmation = false;
+  }
 }
