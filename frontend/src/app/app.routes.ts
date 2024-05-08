@@ -15,6 +15,7 @@ import {CardListComponent} from "./component/card-list/card-list.component";
 import {DeckListComponent} from "./component/deck-list/deck-list.component";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {ResetPasswordComponent} from "./component/reset-password/reset-password.component";
+import {FriendlistComponent} from "./component/friendlist/friendlist.component";
 
 
 export const routes: Routes = [
@@ -31,7 +32,9 @@ export const routes: Routes = [
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
 
-  {path: '**', redirectTo: 'login'}
+  {path: '**', redirectTo: 'login'},
+
+  {path: 'friend-list', component: FriendlistComponent}
 
 ];
 

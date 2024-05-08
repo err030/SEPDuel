@@ -17,7 +17,7 @@ public class Friend {
     public Integer getStatusVonFreundschaftanfrag() {
         return statusVonFreundschaftanfrag;
     }
-    public void setStatusVonFreundschaftanfrag(){
+    public void setStatusVonFreundschaftanfrag(Integer statusVonFreundschaftanfrag){
         this.statusVonFreundschaftanfrag = statusVonFreundschaftanfrag;
     }
     public Boolean getIstSchonFreunde() {
