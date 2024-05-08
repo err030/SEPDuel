@@ -8,6 +8,7 @@ import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.LeaderBoardPunktRepository;
 import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import de.unidue.beckend_gruppe_q.utility.FileUtil;
 import de.unidue.beckend_gruppe_q.utility.UserTokenUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin
 @RestController
@@ -284,6 +285,54 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
+
+    @PutMapping("/user/avatar/{userid}")
+    public ResponseEntity<User> uploadUserAvatar(@RequestParam("file") MultipartFile multipartFile, @PathVariable(name = "userid") Long userId) {
+        if (!multipartFile.isEmpty()) {
+            // 查找用户是否存在
+            Optional<User> userOptional = userRepository.findById(userId);
+            if (userOptional.isPresent()) {
+                try {
+                    String originalFilename = multipartFile.getOriginalFilename();
+                    String filenameExtension;
+                    // 如果前端发送来的数据没有原始的文件名，则默认扩展名为png
+                    if (originalFilename == null) {
+                        filenameExtension = ".png";
+                    } else {
+                        // 查找文件的扩展名
+                        int filenameExtensionIndex = originalFilename.lastIndexOf(".");
+                        filenameExtension = originalFilename.substring(filenameExtensionIndex);
+                    }
+                    // 使用UUID生成唯一文件名
+                    String newFilename = UUID.randomUUID() + filenameExtension;
+                    File userAvatar = FileUtil.createFile("avatars", newFilename);
+                    if (userAvatar != null) {
+                        // 将前端发送来的头像文件写入硬盘
+                        multipartFile.transferTo(userAvatar);
+                        // 将头像路径保存到数据库
+                        User user = userOptional.get();
+                        user.setAvatarUrl("/avatars/" + newFilename);
+                        User newUser = userRepository.save(user);
+                        // 如果文件保存成功，返回200，同时将新的用户信息返回
+                        return ResponseEntity.status(HttpStatus.OK).body(newUser);
+                    } else {
+                        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+                    }
+                } catch (Exception e) {
+                    // 如果文件保存失败，返回503
+                    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+                }
+            } else {
+                // 如果不存在，返回404
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } else {
+            // 如果请求中没有文件，返回400
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
 
 
 }
