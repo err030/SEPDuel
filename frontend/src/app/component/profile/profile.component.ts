@@ -3,12 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from "../../service/user.service";
 import { Global } from "../../global";
+import {CommonModule} from '@angular/common';
+
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
   standalone: true,
+  imports:[CommonModule],
   providers: [UserService]
 })
 export class ProfileComponent implements OnInit {
@@ -52,7 +55,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  resetPassword(): void {
+  changePassword(): void {
     this.router.navigateByUrl('/reset-password');
   }
 }

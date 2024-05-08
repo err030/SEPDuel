@@ -40,7 +40,7 @@ export class CardListComponent implements OnInit{
   }
 
   getRarity(card: Card): string {
-    return card.cardType.rarity === 1 ? "Rare" : card.cardType.rarity === 2 ? "Legendary" : "Common";
+    return card.rarity;
   }
 
   ngOnInit(): void {
@@ -56,6 +56,6 @@ export class CardListComponent implements OnInit{
   }
 
   search() {
-    this.filteredCards = this.cards?.filter(card => card.cardType.name.toLowerCase().includes(this.searchText.toLowerCase()));
+    this.filteredCards = this.cards?.filter(card => card.name.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 }

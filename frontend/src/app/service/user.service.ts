@@ -64,10 +64,19 @@ export class UserService {
   }
 
   // 重置密码
-  resetPassword(userId: number, newPassword: string): Observable<any> {
+  /*resetPassword(userId: number, newPassword: string): Observable<any> {
     const url = Global.userRestServiceUrl + "/reset-password";
     const requestBody = { userId: userId, newPassword: newPassword };
     return this.http.post<any>(url, requestBody);
+  }*/
+
+  changeUserPassword(currentPassword: string, newPassword: string): Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/" + currentPassword + "/" + newPassword;
+    return this.http.put<any>(url, this.loggedUser, {headers: this.headers, observe: 'response'})
+  }
+  resetPassword(user: User): Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/resetpassword";
+    return this.http.put<any>(url, user, {headers: this.headers, observe: 'response'});
   }
 
 
@@ -145,6 +154,8 @@ export class UserService {
 
 
   userLogout() {
-    //写一下
+    localStorage.clear();
+    this.loggedUser = null;
+    void this.router.navigateByUrl("/login");
   }
 }

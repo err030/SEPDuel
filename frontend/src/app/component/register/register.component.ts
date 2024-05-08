@@ -24,11 +24,24 @@ import { CalendarModule } from 'primeng/calendar';
 export class RegisterComponent {
   user: User = new User("", "", "", "", "",1);
   confirmPassword: string = "";
-
+ /* years: number[] = [];
+  months: number[] = [];
+  days: number[] = [];*/
 
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
   }
+  // 初始化年份、月份和日期选项
+  /*this.years = this.generateOptions(1970, 2006);
+  this.months = Array.from({ length: 12 }, (_, i) => i + 1);
+  this.days = Array.from({ length: 31 }, (_, i) => i + 1);
+}*/
 
+// 辅助函数，用于生成指定范围内的数字数组
+/*
+generateOptions(start: number, end: number): number[] {
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+*/
 
 // 验证邮箱是否符合规则
 isValidEmail(email: string): boolean {
@@ -51,7 +64,7 @@ isValidEmail(email: string): boolean {
   // 提交新用户注册信息
   onRegisterFormSubmit(): void {
     // 检查所有字段是否填写
-    if (!this.user.email || !this.user.username || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.birthday) {
+    if (!this.user.email || !this.user.username || !this.user.password || !this.user.firstname || !this.user.lastname) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -69,15 +82,10 @@ isValidEmail(email: string): boolean {
       });
       return;
     }
-// 如果Admin invitation code是SEP2024，则将用户添加为管理员
-    if (this.user.adminInvitationCode === "SEP2024") {
-      this.user.groupId = 2; // 将 groupId 设置为 2，即管理员
-    }
 
     const emailUser = new User('', '', "", this.user.email, "",1);
     const usernameUser = new User('', '', this.user.username, '',"", 1, undefined, undefined);
-
-    // 检查邮箱是否存在
+  // 检查邮箱是否存在
     this.userService.checkEmailExists(emailUser).subscribe({
       next: (response) => {
         if (response.body) {
@@ -96,6 +104,11 @@ isValidEmail(email: string): boolean {
                   summary: 'Error',
                   detail: 'This username exists already'
                 });
+              } else {
+                // 如果Admin invitation code是SEP2024，则将用户添加为管理员
+                if (this.user.adminInvitationCode == "SEP2024") {
+                  this.user.groupId = 2;
+                }
 
                 // 注册用户
                 this.userService.addUser(this.user).subscribe({
@@ -109,7 +122,9 @@ isValidEmail(email: string): boolean {
                         summary: 'Success',
                         detail: 'You have successfully registered'
                       });
-
+                      // 清空表单数据
+                     /* this.user = new User("", "", "", "", 1);
+                      this.confirmPassword = "";*/
                       // 跳转到登录页面
                       void this.router.navigateByUrl("/login");
                     }
