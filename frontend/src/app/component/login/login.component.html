@@ -35,7 +35,7 @@
 
 
     <div class="btn-box">
-      <p class="passwordForget"><a (click)="showPasswordForgetDialog()">Passwort vergessen</a></p>
+      <p class="passwordForget"><a (click)="showPasswordForgetDialog()">Forget Password?</a></p>
       <div>
         <button type="submit">Sign In</button>
         <button type="button" (click)="goToRegister()">Register</button>
@@ -45,7 +45,7 @@
 
   <p-dialog [(visible)]="showResetPasswordDialog" [style]="{ width: '500px' }">
     <ng-template pTemplate="header">
-      <span class="text-xl font-bold">Password reset</span>
+      <span class="text-xl font-bold">Reset Password</span>
     </ng-template>
     <p>
       We will send a new password to your e-mail address.
