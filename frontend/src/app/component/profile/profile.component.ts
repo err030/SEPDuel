@@ -43,22 +43,16 @@ export class ProfileComponent implements OnInit {
       // 调用 UserService 中的 uploadAvatar 方法上传文件
       this.userService.uploadAvatar(this.selectedFile, this.loggedUser.userId).subscribe(
         (response) => {
-          // 上传成功，可以在这里处理响应，例如更新用户头像 URL
           console.log('Avatar uploaded successfully:', response);
           this.isUploading = false;
         },
         (error) => {
-          // 上传失败，可以在这里处理错误
           console.error('Failed to upload avatar:', error);
           this.isUploading = false;
         }
       );
     }
   }
-  confirmUpload(){
-
-  }
-  isUploaded(){}
 
   getUserDetails(): void {
     const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
