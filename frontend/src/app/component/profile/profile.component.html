@@ -2,7 +2,9 @@
 <div class="box">
   <h2>UserProfile</h2>
   <div>
-    <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>
+    <!--<p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>-->
+    <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar" style="width: 100px; height: 100px;"></p>
+
     <form #avatarForm="ngForm" (ngSubmit)="onAvatarFormSubmit()">
       <div class="input-box">
         <input type="file" accept="image/*" (change)="onFileSelected($event)">

@@ -6,6 +6,7 @@ import {Global} from "../../global";
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {PaginatorModule} from "primeng/paginator";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Component({
@@ -57,17 +58,22 @@ export class ProfileComponent implements OnInit {
   getUserDetails(): void {
     const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
     if (token) {
-      this.userService.getUserByToken(token).subscribe(
-        (response) => {
-          const user = response.body; // 从响应中获取用户信息
-          if (user) {
-            this.sepCoins = user.sepCoins;
-            this.leaderboardPoints = user.leaderboardPoints;
+      this.userService.getUserByToken(token).subscribe({
+        next: (response) => {
+          const user = response.body;
+          if(user){
+            this.sepCoins=user.sepCoins;
+            this.leaderboardPoints=user.leaderboardPoints;
+            if(this.loggedUser.avatarUrl==null){
+              this.loggedUser.avatarUrl="assets/images/user.png";
+            }
           }
         },
-        (error) => {
-          console.error('Failed to get user details:', error);
+        error:(error) =>{
+          console.error('Failed to get user details',error);
         }
+        }
+
       );
     }
   }
