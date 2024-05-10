@@ -50,7 +50,12 @@
 
     <div class="input-box" [class.input-error]="!user.birthday">
       <label>Birthday*</label>
-      <p-calendar [(ngModel)]="user.birthday" class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>
+      <p-calendar [(ngModel)]="user.birthday"
+                  selectionMode="range"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  [readonlyInput]="true"
+                  class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>
     </div>
 
     <div class="input-box">

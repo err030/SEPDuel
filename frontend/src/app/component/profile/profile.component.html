@@ -2,8 +2,7 @@
 <div class="box">
   <h2>UserProfile</h2>
   <div>
-    <!--<p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar"></p>-->
-    <p>Avatar: <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar" style="width: 100px; height: 100px;"></p>
+    <p> <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar" style="width: 100px; height: 100px;"></p>
 
     <form #avatarForm="ngForm" (ngSubmit)="onAvatarFormSubmit()">
       <div class="input-box">
@@ -23,7 +22,7 @@
     <p><strong>Lastname:</strong> {{ loggedUser.lastname }}</p>
 
     <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser.sepCoins }}</p>
-    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderboardPoints }}</p>
+    <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderBoardPunkt }}</p>
   </div>
 </div>
 
