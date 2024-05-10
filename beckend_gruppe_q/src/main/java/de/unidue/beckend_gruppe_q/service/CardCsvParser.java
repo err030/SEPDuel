@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 //implement a service to parse CSV files containing card data and save it to the database
 @Service
 public class CardCsvParser {
-    @Autowired
+
     private final CardRepository cardRepository;
 
     public CardCsvParser(CardRepository cardRepository) {
