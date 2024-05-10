@@ -1,4 +1,4 @@
-
+/*styles.css*/
 body{
   display: flex;
   flex-direction: column;
@@ -220,21 +220,4 @@ body::before{
 } /* 发送验证码按钮鼠标悬停样式 */
 
 
-.eye-icon {
-  width: 24px;
-  height: 24px;
-} /* 眼睛图标样式 （这个想在密码地方做出来，看密码的，还没实现）*/
-
-.box .toggle-password {
-  position: absolute;
-  right: 5px; /* 调整图标距离输入框的位置 */
-  top: 50%; /* 使图标垂直居中 */
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.7); /* 设置图标颜色 */
-} /* 眼睛图标样式 */
-
-.box .toggle-password:hover {
-  color: rgba(255, 255, 255, 1); /* 设置图标鼠标悬停时的颜色 */
-} /* 眼睛图标鼠标悬停样式 */
 
