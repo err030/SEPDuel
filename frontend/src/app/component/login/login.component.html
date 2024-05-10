@@ -15,23 +15,29 @@
   <form (ngSubmit)="onLoginFormSubmit()" #loginForm="ngForm">
 
     <!-- Email 输入框 -->
-    <div class="input-box" [ngClass]="{ 'input-error': (loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid }">
-      <input type="text" [(ngModel)]="user.email" placeholder="Username or Email" name="email" #email="ngModel" required>
+    <div class="input-box"
+         [ngClass]="{ 'input-error': (loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid }">
+      <input type="text" [(ngModel)]="user.email" placeholder="Username or Email" name="email" #email="ngModel"
+             required>
       <!-- 显示错误消息 -->
-      <div class="error-message" *ngIf="(loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid">
+      <div class="error-message"
+           *ngIf="(loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid">
         {{ showFormValidationErrorMessages() || 'Please enter your username or email' }}
       </div>
     </div>
 
     <!-- Password 输入框 -->
-    <div class="input-box" [ngClass]="{ 'input-error': (loginForm.submitted || password.invalid || !user.password) && (password.dirty || password.touched) && !password.valid }">
-      <input type="password" [(ngModel)]="user.password" placeholder="Password" name="password" #password="ngModel" required>
+    <div class="input-box"
+         [ngClass]="{ 'input-error': (loginForm.submitted || password.invalid || !user.password) && (password.dirty || password.touched) && !password.valid }">
+      <input type="password" [(ngModel)]="user.password" placeholder="Password" name="password" #password="ngModel"
+             required>
       <!-- 显示错误消息 -->
-      <div class="error-message" *ngIf="(loginForm.submitted || password.invalid || !user.password) && (password.dirty || password.touched) && !password.valid">
+      <div class="error-message"
+           *ngIf="(loginForm.submitted || password.invalid || !user.password) && (password.dirty || password.touched) && !password.valid">
         {{ showFormValidationErrorMessages() || 'Please enter your password' }}
       </div>
-    </div>
 
+    </div>
 
 
     <div class="btn-box">
@@ -87,8 +93,6 @@
     </form>
   </p-dialog>
 </div>
-
-
 
 
 </body>

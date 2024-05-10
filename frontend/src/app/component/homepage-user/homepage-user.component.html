@@ -9,16 +9,19 @@
 </head>
 
 <body>
-<div>
-  <h1>Welcome to your homepage!</h1>
+<div class="page-container">
+  <div>
 
-  <button (click)="userLogout()"> Log out </button>
-  <button (click)="goToEditProfile()">Profile</button>
-  <button>Card</button>
-  <button (click)="goToFriendlist()">Friends</button>
+    <h1>Welcome to your homepage!</h1>
+    <div class="circle-border"></div>
+    <button id="logout" (click)="userLogout()"> Log out</button>
+    <button id="profile" (click)="goToEditProfile()">Profile</button>
+    <button id="card">Card</button>
+    <button id="friends" (click)="goToFriendlist()">Friends</button>
+  </div>
 </div>
-
+<router-outlet></router-outlet>
 </body>
 </html>
 
-<router-outlet></router-outlet>
+
