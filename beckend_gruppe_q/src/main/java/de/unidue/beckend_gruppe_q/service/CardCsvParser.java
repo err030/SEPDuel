@@ -1,8 +1,9 @@
-package de.unidue.beckend_gruppe_q.Service;
+package de.unidue.beckend_gruppe_q.service;
 
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Rarity;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.InputStreamReader;
 //implement a service to parse CSV files containing card data and save it to the database
 @Service
 public class CardCsvParser {
-
+    @Autowired
     private final CardRepository cardRepository;
 
     public CardCsvParser(CardRepository cardRepository) {
