@@ -8,20 +8,19 @@
   <link rel="stylesheet" href="homepage-user.component.css"/>
 </head>
 
-<body>
-<div class="page-container">
-  <div>
+<body class="homepage-user">
+<div class="box">
+  <h1>Welcome to your homepage!</h1>
 
-    <h1>Welcome to your homepage!</h1>
-    <div class="circle-border"></div>
-    <button id="logout" (click)="userLogout()"> Log out</button>
-    <button id="profile" (click)="goToEditProfile()">Profile</button>
-    <button id="card">Card</button>
-    <button id="friends" (click)="goToFriendlist()">Friends</button>
+  <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
+  <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
+
+  <div class="game-field-box">
+    <div class="btn-box game-field" id="duel">1v1 Duel</div>
+    <div class="btn-box game-field" id="card">Card</div>
   </div>
+
+  <div class="btn-box" id="friends" (click)="goToFriendlist()">Friends</div>
 </div>
-<router-outlet></router-outlet>
 </body>
 </html>
-
-
