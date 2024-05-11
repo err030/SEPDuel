@@ -25,8 +25,9 @@ public class SpecialCardTypeService {
             specialCardType.setCardRarity(Rarity.LEGENDARY);
             specialCardType.setAttackPoints(Integer.MAX_VALUE);
             specialCardType.setDefensePoints(0);
-            specialCardType.setDescription("");
-            specialCardType.setImage("");
+            specialCardType.setDescription("Legend has it that O DEUS KLAUS, the eternal deity, wields infinite power, " +
+                    "casting awe and fear upon all who dare to challenge its divine might.");
+            specialCardType.setImage("/Users/jc/Documents/UNI/gruppe-q/beckend_gruppe_q/src/main/resources/images/cards/O_DEUS_KLAUS.PNG");
 
             this.cardRepository.save(specialCardType);
         }
