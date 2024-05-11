@@ -38,6 +38,18 @@
       </div>
 
     </div>
+    <div class="field col-12 md:col-6">
+      <div class="flex align-items-center">
+        <p-radioButton name="groupId" value="1" [(ngModel)]="user.groupId" id="group_user"></p-radioButton>
+        <label for="group_user" class="ml-2">Player</label>
+      </div>
+    </div>
+    <div class="field col-12 md:col-6">
+      <div class="flex align-items-center">
+        <p-radioButton name="groupId" value="2" [(ngModel)]="user.groupId" id="group_admin"></p-radioButton>
+        <label for="group_admin" class="ml-2">Admin</label>
+      </div>
+    </div>
 
 
     <div class="btn-box">
