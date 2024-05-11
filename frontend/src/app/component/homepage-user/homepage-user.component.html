@@ -1,22 +1,19 @@
 <!-- homepage-user.component.html -->
 <!DOCTYPE html>
 <html lang="en-EN">
-
 <head>
   <meta charset="UTF-8">
   <title>Homepage-User Window</title>
   <link rel="stylesheet" href="homepage-user.component.css"/>
 </head>
-
 <body class="homepage-user">
 <div class="box">
-  <h1>Welcome to your homepage!</h1>
-
+  <h1>Welcome to the SEP Duel</h1>
   <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
   <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
 
   <div class="game-field-box">
-    <div class="btn-box game-field" id="duel">1v1 Duel</div>
+    <div class="game-field dynamic-btn" id="duel">1v1 Duel</div>
     <div class="btn-box game-field" id="card">Card</div>
   </div>
 
