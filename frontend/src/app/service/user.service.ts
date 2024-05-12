@@ -72,7 +72,7 @@ export class UserService {
 
   changeUserPassword(currentPassword: string, newPassword: string): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/" + currentPassword + "/" + newPassword;
-    return this.http.put<any>(url, Global.loggedUser, {headers: this.headers, observe: 'response'})
+    return this.http.put<any>(url, this.loggedUser, {headers: this.headers, observe: 'response'})
   }
   resetPassword(user: User): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/resetpassword";
@@ -151,8 +151,6 @@ export class UserService {
     formData.append("file", file);
     return this.http.put<User>(url, formData, {observe: 'response'});
   }
-
-
 
 
   userLogout() {

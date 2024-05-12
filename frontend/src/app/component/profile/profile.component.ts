@@ -1,6 +1,6 @@
 // profile.component.ts
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {UserService} from "../../service/user.service";
 import {Global} from "../../global";
 import {CommonModule} from '@angular/common';
@@ -14,7 +14,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginatorModule],
+  imports: [CommonModule, FormsModule, PaginatorModule, RouterLink],
   providers: [UserService]
 })
 export class ProfileComponent implements OnInit {
@@ -78,15 +78,4 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  goToHomePage(): void {
-    if (this.loggedUser.groupId == 1) {
-      this.router.navigateByUrl('/homepage-user');
-    } else if (this.loggedUser.groupId == 2) {
-      this.router.navigateByUrl('/homepage-admin');
-    }
-  }
-
-  changePassword(): void {
-    this.router.navigateByUrl('/reset-password');
-  }
 }

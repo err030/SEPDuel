@@ -37,7 +37,7 @@ body.homepage-user {
 }
 
 .homepage-user .btn-box{
-  background: url('/assets/images/btn_bg1.jpg');
+  background: linear-gradient(145deg, #ebe1a8, #72b879);
   color: rgb(55, 37, 19);
   padding: 10px 20px;
   font-size: 18px;
@@ -53,14 +53,14 @@ body.homepage-user {
 }
 
 .homepage-user .btn-box:hover {
-  background: linear-gradient(145deg, #714e2a, #7e633f);
+  background: linear-gradient(145deg, #ebe1a8, #72b879);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* 点击时的高亮效果 */
 }
 
 .game-field-box {
   position: relative;
   text-align: center;
-  bottom: 10px;
+  top: 70px;
   left: 60px;
   width: 300px;
   height: 300px;
@@ -119,8 +119,8 @@ body.homepage-user {
   overflow: hidden;
   z-index: 1;
   width: 310px; /* 按钮的宽度 */
-  background: url('/assets/images/btn_bg2.png'); /* 背景图像 */
-  border: 1px solid #654321; /* 边框 */
+  background: linear-gradient(145deg, #ebe1a8, #72b879); /* 背景图像 */
+  border: 1px solid #72b879; /* 边框 */
   font-family: Herloit, sans-serif; /* 字体 */
 }
 
@@ -131,7 +131,7 @@ body.homepage-user {
   left: 0;
   width: 100%; /* 确保覆盖整个按钮 */
   height: 100%; /* 覆盖整个高度 */
-  background: url('/assets/images/btn_bg2.png'); /* 古铜色背景图 */
+  background: linear-gradient(145deg, #ebe1a8, #72b879); /* 古铜色背景图 */
   border-radius: 10rem; /* 圆角 */
   z-index: -2;
   transition: all .3s;
@@ -144,7 +144,7 @@ body.homepage-user {
   left: 0;
   width: 0%; /* 初始状态不显示 */
   height: 100%; /* 覆盖整个高度 */
-  background-color: #bc8757; /* 更深的古铜色 */
+  background-color: #ebe1a8; /* 更深的古铜色 */
   transition: all .3s;
   border-radius: 10rem; /* 圆角 */
   z-index: -1;
