@@ -1,7 +1,7 @@
 /* homepage-user.component.css */
 @font-face {
-  font-family: DragonHunter;
-  src: url('/assets/fonts/DragonHunter-9Ynxj.otf')
+  font-family: Hippo;
+  src: url('/assets/fonts/HippopotamusApocalypse-Gzly.ttf')
 }
 @font-face {
   font-family: Herloit;
@@ -32,8 +32,8 @@ body.homepage-user {
   align-items: center;
   white-space: nowrap;
   padding-top: 100px;
-  font-size: 48px;
-  font-family: DragonHunter, sans-serif; /* 字体 */
+  font-size: 60px;
+  font-family: Hippo, sans-serif; /* 字体 */
 }
 
 .homepage-user .btn-box{
@@ -60,8 +60,8 @@ body.homepage-user {
 .game-field-box {
   position: relative;
   text-align: center;
-  margin: 50px auto;
-  margin-left: 60px;
+  buttom: 100px;
+  left: 60px;
   width: 300px;
   height: 300px;
   display: flex;
