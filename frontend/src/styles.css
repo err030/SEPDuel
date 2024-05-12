@@ -1,4 +1,8 @@
 /*styles.css*/
+@font-face {
+  font-family: Herloit;
+  src: url('/assets/fonts/HerloitRegular-EaVwn.otf')
+}
 body .background-image-login{
   display: flex;
   flex-direction: column;
@@ -9,7 +13,7 @@ body .background-image-login{
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
-  font-family: 'Bungee', sans-serif;
+  font-family: Herloit, sans-serif;
 } /* 整体样式 */
 
 
@@ -75,7 +79,7 @@ body .background-image-login::before{
 
 .box .input-box > input::placeholder {
   color: rgba(255, 255, 255, 0.7);
-  font-family: 'Bungee', sans-serif;
+  font-family: Herloit, sans-serif;
 } /* 输入框提示文字样式 */
 
 
@@ -164,12 +168,14 @@ body .background-image-login::before{
 } /* 登录按钮样式 */
 
 .box .btn-box > div > button:first-of-type {
+  font-family: Herloit, sans-serif;
   width: 150px;
   border: none; /* 红色按钮边框 */
   background: rgba(197, 81, 58, 0.5); /* 红色按钮背景 */
 } /* 底下两个按钮样式 */
 
 .box .btn-box > div > button:last-of-type {
+  font-family: Herloit, sans-serif;
   width: 150px;
   border: none;
   background: rgba(70, 105, 230, 0.5);
