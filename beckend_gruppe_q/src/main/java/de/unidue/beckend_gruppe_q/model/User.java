@@ -25,8 +25,9 @@ public class User {
     private String avatarUrl;
     private Integer groupId;
     private Long sepCoins;
-    @OneToOne(mappedBy = "user")
-    private LeaderBoardPunkt leaderBoardPunkt;
+    private Long leaderBoardPunkt;
+
+
     @OneToMany
     public List<Deck> decks = new ArrayList<>();
 

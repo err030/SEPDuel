@@ -40,6 +40,19 @@
     </div>
 
 
+        <div class="flex justify-content-between">
+          <p-radioButton name="groupId" value="1" [(ngModel)]="user.groupId" id="group_user"></p-radioButton>
+          <label for="group_user" class="ml-2 label-white">Player</label>
+        </div>
+        <div class="flex justify-content-between">
+          <p-radioButton name="groupId" value="2" [(ngModel)]="user.groupId" id="group_admin"></p-radioButton>
+          <label for="group_admin" class="ml-2 label-white">Admin</label>
+        </div>
+
+
+
+
+
     <div class="btn-box">
       <p class="passwordForget"><a (click)="showPasswordForgetDialog()">Forget Password?</a></p>
       <div>
@@ -68,14 +81,12 @@
             <small class="ml-2">Enter a valid e-mail address</small>
           </div>
         </div>
-        <div class="field col-12 md:col-6">
+        <div class="field col-12 md:flex md:justify-between">
           <div class="flex align-items-center">
             <p-radioButton name="resetPasswordGroupId" value="1" [(ngModel)]="resetPasswordUser.groupId"
                            id="resetPasswordGroup_user"></p-radioButton>
             <label for="resetPasswordGroup_user" class="ml-2">Nutzer</label>
           </div>
-        </div>
-        <div class="field col-12 md:col-6">
           <div class="flex align-items-center">
             <p-radioButton name="resetPasswordGroupId" value="2" [(ngModel)]="resetPasswordUser.groupId"
                            id="resetPasswordGroup_admin"></p-radioButton>
@@ -83,14 +94,12 @@
           </div>
         </div>
         <div class="field col-12 md:col-6"></div>
-        <div class="field col-12 md:col-3">
+        <div class="field col-12 md:flex md:justify-between">
           <button type="submit" [disabled]="resetPasswordForm.invalid">Confirm</button>
-        </div>
-        <div class="field col-12 md:col-3">
-          <button type="button" (click)="showResetPasswordDialog = false">Cancel</button>
         </div>
       </div>
     </form>
+
   </p-dialog>
 </div>
 

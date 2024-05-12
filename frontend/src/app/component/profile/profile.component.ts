@@ -20,7 +20,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 export class ProfileComponent implements OnInit {
   public loggedUser: any;
   public sepCoins: number | undefined;
-  public leaderboardPoints: number | undefined;
+  public leaderBoardPunkt: number | undefined;
   public selectedFile: File | null = null;
   public isUploading: boolean = false;
 
@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
           const user = response.body;
           if(user){
             this.sepCoins=user.sepCoins;
-            this.leaderboardPoints=user.leaderboardPoints;
+            this.leaderBoardPunkt=user.leaderBoardPunkt;
             if(this.loggedUser.avatarUrl==null){
               this.loggedUser.avatarUrl="assets/images/user.png";
             }
