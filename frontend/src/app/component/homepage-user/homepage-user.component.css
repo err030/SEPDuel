@@ -60,7 +60,7 @@ body.homepage-user {
 .game-field-box {
   position: relative;
   text-align: center;
-  buttom: 100px;
+  bottom: 10px;
   left: 60px;
   width: 300px;
   height: 300px;
