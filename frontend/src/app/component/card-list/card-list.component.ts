@@ -75,8 +75,9 @@ export class CardListComponent implements OnInit{
   addCards() {
     // @ts-ignore
     // add a for loop
-    // identify if chongfu
-    this.cardService.selectedCards = this.cards;
+    // identify if repeated
+
+    this.cardService.selectedCards = JSON.parse(JSON.stringify(this.selectedCards));
     this.router.navigate(['all-cards']);
   }
 }
