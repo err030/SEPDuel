@@ -40,14 +40,16 @@
     </div>
 
 
-        <div class="flex justify-content-between">
-          <p-radioButton name="groupId" value="1" [(ngModel)]="user.groupId" id="group_user"></p-radioButton>
-          <label for="group_user" class="ml-2 label-white">Player</label>
-        </div>
-        <div class="flex justify-content-between">
-          <p-radioButton name="groupId" value="2" [(ngModel)]="user.groupId" id="group_admin"></p-radioButton>
-          <label for="group_admin" class="ml-2 label-white">Admin</label>
-        </div>
+    <div class="flex-container">
+      <div class="flex-item">
+        <p-radioButton name="groupId" value="1" [(ngModel)]="user.groupId" id="group_user"></p-radioButton>
+        <label for="group_user" style="color: white;">Player</label>
+      </div>
+      <div class="flex-item">
+        <p-radioButton name="groupId" value="2" [(ngModel)]="user.groupId" id="group_admin"></p-radioButton>
+        <label for="group_admin" style="color: white;">Admin</label>
+      </div>
+    </div>
 
 
 
@@ -62,44 +64,50 @@
     </div>
   </form>
 
-  <p-dialog [(visible)]="showResetPasswordDialog" [style]="{ width: '500px' }">
+  <p-dialog class="custom-dialog" [(visible)]="showResetPasswordDialog" [style]="{ width: '500px' }">
     <ng-template pTemplate="header">
-      <span class="text-xl font-bold">Reset Password</span>
+      <span class="p-text-secondary block mb-5" style="margin-top: 40px;">Reset Password</span>
     </ng-template>
-    <p>
+    <p style="margin-top: 20px; font-size: 18px;" >
       We will send a new password to your e-mail address.
     </p>
     <form (ngSubmit)="forgetPasswordRequest()" #resetPasswordForm="ngForm">
-      <div class="formgrid grid">
-        <div class="field col-12">
-          <label for="resetPasswordEmail">E-Mail-Adresse</label>
-          <input id="resetPasswordEmail" type="email" required email [(ngModel)]="resetPasswordUser.email"
-                 name="resetPasswordEmail"
-                 #resetPasswordEmail="ngModel"
-                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary w-full">
+      <div class="formgrid">
+        <div class="field" style="margin-top: 20px;" >
+          <div class="flex align-items-center">
+            <label for="resetPasswordEmail">E-Mail-Adresse :</label>
+            <input id="resetPasswordEmail" type="email" required email [(ngModel)]="resetPasswordUser.email"
+                   name="resetPasswordEmail"
+                   #resetPasswordEmail="ngModel"
+                   class="text-base">
+          </div>
+
+          <!--<div class="flex align-items-center gap-3 mb-3">
+            <label for="username" class="font-semibold w-6rem">Username</label>
+            <input pInputText id="username" class="flex-auto" autocomplete="off" />
+          </div>-->
+
           <div [hidden]="resetPasswordEmail.valid || resetPasswordEmail.pristine" class="alert_form_input_invalid">
             <small class="ml-2">Enter a valid e-mail address</small>
           </div>
         </div>
-        <div class="field col-12 md:flex md:justify-between">
-          <div class="flex align-items-center">
+        <div class="flex-container" style="margin-top: 15px;">
+          <div class="flex-item">
             <p-radioButton name="resetPasswordGroupId" value="1" [(ngModel)]="resetPasswordUser.groupId"
                            id="resetPasswordGroup_user"></p-radioButton>
-            <label for="resetPasswordGroup_user" class="ml-2">Nutzer</label>
+            <label for="resetPasswordGroup_user">Player</label>
           </div>
-          <div class="flex align-items-center">
+          <div class="flex-item">
             <p-radioButton name="resetPasswordGroupId" value="2" [(ngModel)]="resetPasswordUser.groupId"
                            id="resetPasswordGroup_admin"></p-radioButton>
-            <label for="resetPasswordGroup_admin" class="ml-2">Systemadministrator</label>
+            <label for="resetPasswordGroup_admin">Admin</label>
           </div>
         </div>
-        <div class="field col-12 md:col-6"></div>
-        <div class="field col-12 md:flex md:justify-between">
-          <button type="submit" [disabled]="resetPasswordForm.invalid">Confirm</button>
+        <div class="field" style="margin-top: 20px;">
+          <button type="submit" [disabled]="resetPasswordForm.invalid" style="padding: 10px 20px; font-size: 16px;">Confirm</button>
         </div>
       </div>
     </form>
-
   </p-dialog>
 </div>
 

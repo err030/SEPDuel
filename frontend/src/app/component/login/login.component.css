@@ -24,7 +24,8 @@
 /* 忘记密码那边先把html样式去掉，重新定义 */
 :host ::ng-deep .p-dialog .p-dialog-header,
 :host ::ng-deep .p-dialog .p-dialog-content {
-  background-color: floralwhite; /* 背景色 */
+  background-color: rgba(246, 217, 196, 0.95); /* 背景色 */
+  backdrop-filter: blur(8px);
   color: rgba(23, 23, 23, 0.9); /* 文字颜色 */
   font-family: 'Bungee', sans-serif;
   padding: 0; /* 移除对话框标题和内容区域的内边距 */
@@ -67,6 +68,35 @@
   outline: none;
   padding: 0 10px;
 }
+
+.flex-container {
+  display: flex;
+}
+
+.flex-item {
+  flex: 1;
+  margin-right: 10px; /* 设置按钮之间的间距 */
+}
+
+.flex-item:first-child {
+  margin-left: 20px; /* 设置第一个按钮前面的间距 */
+}
+
+/* reset密码对话框大小 */
+.p-dialog {
+  width: 500px;
+  height: 281px;
+}
+
+.custom-dialog .flex-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-dialog .flex-item {
+  margin-right: 10px; /* 调整按钮之间的右边距 */
+}
+
 
 
 
