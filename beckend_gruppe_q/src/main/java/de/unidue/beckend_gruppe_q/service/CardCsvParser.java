@@ -1,14 +1,16 @@
 package de.unidue.beckend_gruppe_q.service;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Rarity;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //implement a service to parse CSV files containing card data and save it to the database
 @Service
@@ -20,29 +22,28 @@ public class CardCsvParser {
         this.cardRepository = cardRepository;
     }
 
-    public void parse(InputStream csvFile) throws IOException {
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(csvFile))) {
+    public void parse(MultipartFile csvFile) throws IOException, CsvException {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(csvFile.getInputStream()))) {
+            List<Card> cards = new ArrayList<>();
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] fields = line.split(",");
-                String name = fields[0];
-                String cardRarity = fields[1];
-                int attackPoints = Integer.parseInt(fields[2]);
-                int defensePoints = Integer.parseInt(fields[3]);
-                String description = fields[4];
-                String image = fields[5];
-                Card card = new Card(name, Rarity.valueOf(cardRarity),attackPoints,defensePoints,description,image);
-                cardRepository.save(card);
+            boolean isFirstLine = true;
+            while ((line = bufferedReader.readLine()) != null) {
+            if (isFirstLine) {
+                isFirstLine = false;
+                continue;
             }
+            String[] fields = line.split(",");
+            Card card = new Card();
+            card.setName(fields[0]);
+            card.setCardRarity(Rarity.valueOf(fields[1]));
+            card.setAttackPoints(Integer.parseInt(fields[2]));
+            card.setDefensePoints(Integer.parseInt(fields[3]));
+            card.setDescription(fields[4]);
+            card.setImage(fields[5]);
+            cards.add(card);
+            }
+            cardRepository.saveAll(cards);
         }
     }
 
 }
-
-// This parse method splits CSV file into lines and then splits lines into fields then each field will be
-// saved as the card attributes then the new card will be saved in the database
-
-//the difference between InputStream and String type is that, InputStream allows the
-//method accept any source that produces a stream of bytes. such as a file,network connection...
-// it provides flexibility
