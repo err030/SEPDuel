@@ -14,7 +14,8 @@ import {Router, RouterOutlet} from "@angular/router";
     providers: [MessageService, UserService]
 })
 export class HomepageAdminComponent {
-  constructor(private router: Router) {}
+  constructor(private userService: UserService,
+              private router: Router) {}
 
 // 导航到编辑个人资料页面
   goToEditProfile() {
@@ -26,6 +27,6 @@ export class HomepageAdminComponent {
   }
 
   userLogout() {
-    this.userLogout();
+    this.userService.userLogout();
   }
 }

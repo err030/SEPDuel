@@ -1,7 +1,12 @@
+/*verify.component.css*/
 .box::before{
-  height: 400px;
+  height: 300px;
 }
 
 .box{
-  height: 400px;
+  height: 300px;
+}
+
+.input-box p{
+  color: rgba(255, 255, 255, 0.9);
 }

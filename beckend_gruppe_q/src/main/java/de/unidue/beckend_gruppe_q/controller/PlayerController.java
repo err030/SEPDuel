@@ -17,9 +17,9 @@ import java.util.Optional;
 public class PlayerController {
 
 
-    @Autowired
+
     private final DeckRepository deckRepository;
-    @Autowired
+
     private final UserRepository userRepository;
 
     public PlayerController(UserRepository userRepository, DeckRepository deckRepository) {
@@ -56,9 +56,6 @@ public class PlayerController {
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
     }
 
-
-    //deckRepository.findById(id) would return an `Optional' and loads the entity's data from the database when invoked
-    //deckRepository.getOne(id) gets only a reference of the database and it is deprecated
     //update a deck, include update the name and the cards
     @PostMapping("/api/user/{id}/updateDeck")
     public ResponseEntity<Deck> updateDeck(@PathVariable Long id, @RequestBody Deck updateDeck) {

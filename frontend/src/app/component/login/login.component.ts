@@ -6,7 +6,7 @@ import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
-import {NgClass} from "@angular/common";
+import {NgClass, NgOptimizedImage} from "@angular/common";
 import {CommonModule} from '@angular/common';
 import {DialogModule} from "primeng/dialog";
 import {RadioButtonModule} from "primeng/radiobutton";
@@ -24,19 +24,18 @@ import {Global} from "../../global";
     NgClass,
     DialogModule,
     RadioButtonModule,
-    ButtonModule
+    ButtonModule,
+    NgOptimizedImage
   ],
   providers: [UserService, MessageService]
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('loginForm') loginForm: NgForm | undefined;
-
   user: User = new User("", "", "", "", "", 1);
 
   loggedUser: any;
   resetPasswordUser: User = new User("", "", "", "", "",1);
   showResetPasswordDialog: boolean = false;
-
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
   }
 
@@ -162,6 +161,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
 
   goToRegister()
     :

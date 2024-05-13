@@ -7,19 +7,20 @@
   <title>Homepage-User Window</title>
   <link rel="stylesheet" href="homepage-user.component.css"/>
 </head>
-
-<body>
-<div>
-  <h1>Welcome to your homepage!</h1>
-
-  <button (click)="userLogout()"> Log out </button>
-  <button (click)="goToEditProfile()">Profile</button>
+<body class="homepage-user">
+<div class="box">
+  <h1>Welcome to the SEP Duel</h1>
+  <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
+  <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
   <button (click)="goToCards()">Cards</button>
   <button>Friends</button>
   <button (click)="goToDecks()">Decks</button>
-</div>
+  <div class="game-field-box">
+    <div class="game-field dynamic-btn" id="duel">1v1 Duel</div>
+    <div class="btn-box game-field" id="card">Card</div>
+  </div>
 
+  <div class="btn-box" id="friends" (click)="goToFriendlist()">Friends</div>
+</div>
 </body>
 </html>
-
-<router-outlet></router-outlet>
