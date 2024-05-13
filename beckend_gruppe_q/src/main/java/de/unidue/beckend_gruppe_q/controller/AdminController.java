@@ -1,5 +1,6 @@
 package de.unidue.beckend_gruppe_q.controller;
 
+import com.opencsv.exceptions.CsvException;
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
@@ -13,15 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
+@RequestMapping(value = "/api/admin")
 @RestController
 public class AdminController {
 
-    @Autowired
+
     private final CardCsvParser cardCsvParser;
-    @Autowired
+
     private final CardRepository cardRepository;
-    @Autowired
+
     private final UserRepository userRepository;
 
     public AdminController(CardCsvParser cardCsvParser, CardRepository cardRepository, UserRepository userRepository) {
@@ -30,24 +32,28 @@ public class AdminController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("admin/cards/upload")
-    public ResponseEntity<?> uploadCard(@RequestBody MultipartFile file) {
+    @PostMapping("/cards/upload")
+    public ResponseEntity<?> uploadCard(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("Please select a file to upload",HttpStatus.BAD_REQUEST);
+        }
         try {
-            cardCsvParser.parse(file.getInputStream());
-            return ResponseEntity.ok().build();
+            cardCsvParser.parse(file);
+            return new ResponseEntity<>("Successfully uploaded card",HttpStatus.OK);
         } catch (IOException e){
-            e.printStackTrace();
-            return  ResponseEntity.badRequest().body("Error while uploading file");
+            return  new ResponseEntity<>("Failed to upload file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (CsvException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @PostMapping("admin/addCard")
+    @PostMapping("/addCard")
     public ResponseEntity<Card> addCard(@RequestBody Card card) {
         Card addCard = cardRepository.save(card);
         return new ResponseEntity<>(addCard,HttpStatus.CREATED);
     }
 
-    @DeleteMapping("admin/deleteCard")
+    @DeleteMapping("/deleteCard")
     public ResponseEntity<Card> deleteCard(@RequestBody Card card) {
         Optional<Card> deleteCard = cardRepository.findById(card.getId());
         if (deleteCard.isEmpty()) {

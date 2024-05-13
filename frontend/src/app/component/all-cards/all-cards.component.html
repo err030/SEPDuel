@@ -1,8 +1,17 @@
 <p>all-cards works!</p>
-<div class="card" *ngFor="let card of cards">
-  <div class="card-body">
-    <h5 class="card-name">{{card.name}}</h5>
-    <p class="card-text">{{card.description}}</p>
-    <a href="#" class="btn btn-primary">Click me!</a>
+<div class="card-container">
+  <div class="card-row">
+    <div class="card" *ngFor="let card of cards">
+      <app-card [card]="card"></app-card>
+      <button (click)="toggleSelection(card)">{{ isSelected(card) ? 'Remove' : 'Select' }}</button>
+    </div>
+  </div>
+  <p>Cards selected: {{ selectedCards.length }}/30</p>
+</div>
+<div class="selected-card-row">
+  <div class="selected-card" *ngFor="let selectedCard of selectedCards">
+    <app-card [card]="selectedCard"></app-card>
   </div>
 </div>
+<button (click)="clearSelection()">Clear Selection</button>
+<button *ngIf="selectedCards.length > 0 && selectedCards.length < 30" (click)="saveSelection()">Save Selection</button>

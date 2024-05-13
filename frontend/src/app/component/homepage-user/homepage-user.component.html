@@ -1,6 +1,7 @@
 <!-- homepage-user.component.html -->
 <!DOCTYPE html>
 <html lang="en-EN">
+
 <head>
   <meta charset="UTF-8">
   <title>Homepage-User Window</title>
@@ -11,7 +12,9 @@
   <h1>Welcome to the SEP Duel</h1>
   <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
   <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
-
+  <button (click)="goToCards()">Cards</button>
+  <button>Friends</button>
+  <button (click)="goToDecks()">Decks</button>
   <div class="game-field-box">
     <div class="game-field dynamic-btn" id="duel">1v1 Duel</div>
     <div class="btn-box game-field" id="card">Card</div>
