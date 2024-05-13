@@ -30,12 +30,14 @@ public class PlayerController {
     // to add a new deck
     @PostMapping("/api/user/{id}/createDeck")
     public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
-        Optional<User> player = userRepository.findById(id);
-        if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
+        Optional<User> user = userRepository.findById(id);
+        if (user.get().getDecks().size() > 3 || deck.getCards().size() > 30){
             System.out.println("Deck limit reached");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
+        user.get().decks.add(savedDeck);
+        userRepository.save(user.get());
         System.out.println("Deck saved" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
     }
@@ -51,6 +53,7 @@ public class PlayerController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
+        user.decks.add(savedDeck);
         userRepository.save(user);
         System.out.println("Deck saved" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);

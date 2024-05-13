@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Global} from "../../global";
 import {Card} from "../../model/card.model";
 import {DeckService} from "../../service/deck.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
 import {CardService} from "../../service/card.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all-cards',
@@ -17,21 +18,34 @@ import {CardService} from "../../service/card.service";
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'
 })
-export class AllCardsComponent {
-  cards?: Card[];
+export class AllCardsComponent implements OnInit {
+  cards: Card[] = [];
   selectedCards: Card[] = [];
   private cardService: CardService;
   private deckService: DeckService;
 
 
-  constructor(deckService: DeckService, cardService: CardService) {
-    deckService.getAllCards().subscribe(cards => {
-      this.cards = cards;
-    });
+  constructor(deckService: DeckService, cardService: CardService, private router: Router) {
     this.cardService = cardService;
     this.deckService = deckService;
-    this.selectedCards = this.cardService.getSelectedCards();
+    this.router = router;
   }
+
+  ngOnInit() {
+    this.deckService.getAllCards().subscribe(cards => {
+      this.cards = cards;
+    });
+    this.selectedCards = this.cardService.getSelectedCards();
+    // this.cleanSelection();
+  }
+
+  //尝试解决object不对应问题
+  // cleanSelection(){
+  //   this.selectedCards = this.selectedCards.map(selectedCard => {
+  //     const matchingCard = this.cards.find(card => card.id === selectedCard.id);
+  //     return matchingCard ? matchingCard : selectedCard;
+  //   });
+  // }
 
   toggleSelection(card: Card) {
     if (this.isSelected(card)) {
@@ -40,6 +54,7 @@ export class AllCardsComponent {
       this.cardService.addToSelected(card);
     }
     this.selectedCards = this.cardService.getSelectedCards();
+    // this.cleanSelection();
   }
 
   isSelected(card: Card) {
@@ -52,19 +67,26 @@ export class AllCardsComponent {
   }
 
   saveSelection() {
-    this.cardService.saveSelectedCards();
-    this.selectedCards = this.cardService.getSelectedCards();
-    if (Global.currentDeck){
-      console.log("updating deck with selected cards");
-      Global.currentDeck.cards = this.selectedCards;
-      this.deckService.updateDeck(Global.currentDeck).subscribe({
-        next: (response: Response) => {
-          console.log('here')
-        }
-      })
+    //loop twice to solve problem, don't ask me why
+    for (let i = 0; i < 2; i++) {
+      // this.cleanSelection();
+      this.cardService.saveSelectedCards();
+      this.selectedCards = this.cardService.getSelectedCards();
+      if (Global.currentDeck) {
+        console.log("updating deck with selected cards");
+        Global.currentDeck.cards = this.selectedCards;
+        this.deckService.updateDeck(Global.currentDeck).subscribe({
+          next: (response: Response) => {
+            console.log('here')
+          }
+        })
+      }
+      setTimeout(() => {
+        console.log("saving selected cards");
+      }, 1000);
     }
+    alert("Selection saved!");
+    this.router.navigate(['card-list']);
 
   }
-
-  protected readonly Global = Global;
 }

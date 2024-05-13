@@ -73,4 +73,14 @@ export class DeckListComponent implements OnInit{
   deleteDeck(deckId: number): void {
     this.deckService.deleteDeck(deckId);
   }
+
+  renameDeck(deck: Deck) {
+    const newName = prompt('Enter new name for the deck', deck.name);
+    if (newName !== null) {
+      deck.name = newName;
+    }
+
+    this.deckService.updateDeck(deck);
+
+  }
 }

@@ -29,4 +29,8 @@ export class HomepageAdminComponent {
   userLogout() {
     this.userService.userLogout();
   }
+
+  cardUpload() {
+    this.router.navigate(['/card-upload']);
+  }
 }
