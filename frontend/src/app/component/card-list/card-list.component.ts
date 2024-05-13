@@ -74,6 +74,8 @@ export class CardListComponent implements OnInit{
 
   addCards() {
     // @ts-ignore
+    // add a for loop
+    // identify if chongfu
     this.cardService.selectedCards = this.cards;
     this.router.navigate(['all-cards']);
   }

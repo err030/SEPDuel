@@ -57,7 +57,11 @@ export class AllCardsComponent {
     if (Global.currentDeck){
       console.log("updating deck with selected cards");
       Global.currentDeck.cards = this.selectedCards;
-      this.deckService.updateDeck(Global.currentDeck)
+      this.deckService.updateDeck(Global.currentDeck).subscribe({
+        next: (response: Response) => {
+          console.log('here')
+        }
+      })
     }
 
   }
