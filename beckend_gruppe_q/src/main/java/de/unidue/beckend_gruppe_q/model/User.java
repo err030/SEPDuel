@@ -25,12 +25,12 @@ public class User {
     private String avatarUrl;
     private Integer groupId;
     private Long sepCoins;
-    @OneToOne(mappedBy = "user")
-    private LeaderBoardPunkt leaderBoardPunkt;
-    @OneToMany
+    private Long leaderBoardPunkt;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Deck> decks = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Card> cards = new ArrayList<>();
 
 

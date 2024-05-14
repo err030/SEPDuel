@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,9 +17,9 @@ import java.util.Optional;
 public class PlayerController {
 
 
-    @Autowired
+
     private final DeckRepository deckRepository;
-    @Autowired
+
     private final UserRepository userRepository;
 
     public PlayerController(UserRepository userRepository, DeckRepository deckRepository) {
@@ -29,36 +30,68 @@ public class PlayerController {
     // to add a new deck
     @PostMapping("/api/user/{id}/createDeck")
     public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
-        Optional<User> player = userRepository.findById(id);
-        if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
+        Optional<User> user = userRepository.findById(id);
+        if (user.get().getDecks().size() > 3 || deck.getCards().size() > 30){
+            System.out.println("Deck limit reached");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
+        user.get().decks.add(savedDeck);
+        userRepository.save(user.get());
+        System.out.println("Deck saved" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
     }
-    //deckRepository.findById(id) would return an `Optional' and loads the entity's data from the database when invoked
-    //deckRepository.getOne(id) gets only a reference of the database and it is deprecated
-    //update a deck, include update the name and the cards
-    @PutMapping("/api/user/{id}/updateDeck")
-    public ResponseEntity<Deck> updateDeck(@PathVariable Long id, @RequestBody Deck updateDeck) {
 
+    @GetMapping("/api/user/{id}/createDeck")
+    public ResponseEntity<Deck> createDeck( @PathVariable Long id) {
+        Deck deck = new Deck();
+        deck.setName("Something");
+        deck.setCards(new ArrayList<Card>());
+        User user = userRepository.findById(id).get();
+        if (user.getDecks().size() > 3){
+            System.out.println("Deck limit reached");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        Deck savedDeck = deckRepository.save(deck);
+        user.decks.add(savedDeck);
+        userRepository.save(user);
+        System.out.println("Deck saved" + savedDeck.toString());
+        return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
+    }
+
+    //update a deck, include update the name and the cards
+    @PostMapping("/api/user/{userid}/deck/{id}/updateDeck")
+    public ResponseEntity<Deck> updateDeck(@PathVariable Long userid, @PathVariable Long id, @RequestBody Deck updateDeck) {
+        System.out.println("Frontend Called");
         Optional<Deck> existingDeck = deckRepository.findById(id);
         if (existingDeck.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        existingDeck.get().setName(updateDeck.getName()); //update deckName
-        existingDeck.get().setCards(updateDeck.getCards());       //update Cards
-        Deck savedDeck = deckRepository.save(existingDeck.get());
+        Deck d = existingDeck.get();
+        System.out.println(d.toString());
+        d.setName(updateDeck.getName()); //update deckName
+        d.setCards(updateDeck.getCards());       //update Cards
+        User u = userRepository.findById(userid).get();
+        u.decks.remove(d);
+        u.decks.add(d);
+        Deck savedDeck = deckRepository.save(d);
+        userRepository.save(u);
+        System.out.println("Deck updated" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.OK);
     }
 
     //delete a deck
-    @DeleteMapping("/api/user/{id}/deleteDeck")
-    public ResponseEntity<Deck> deleteDeck(@PathVariable Long id) {
-        if (!deckRepository.existsById(id)) {
+    @DeleteMapping("/api/user/{userid}/deck/{deckid}")
+    public ResponseEntity<Deck> deleteDeck(@PathVariable Long userid, @PathVariable Long deckid) {
+        if (!deckRepository.existsById(deckid)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        deckRepository.deleteById(id);
+        User u = userRepository.findById(userid).get();
+        Deck d = deckRepository.findById(deckid).get();
+        u.decks.remove(d);
+        deckRepository.deleteById(deckid);
+
+        userRepository.save(u);
         return ResponseEntity.ok().build();
     }
 

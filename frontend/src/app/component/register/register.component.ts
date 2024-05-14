@@ -28,6 +28,11 @@ export class RegisterComponent {
   months: number[] = [];
   days: number[] = [];*/
 
+
+ /* // 设置最小和最大日期
+  minDate: Date = new Date(1954, 4, 10); // 月份从0开始计算，所以5月是4
+  maxDate: Date = new Date(2012, 4, 10);
+*/
   constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
   }
   // 初始化年份、月份和日期选项
@@ -149,7 +154,7 @@ isValidEmail(email: string): boolean {
     });
 
     //默认头像
-    this.user.avatarUrl = 'assets/images/avatar.jpeg';
+   /* this.user.avatarUrl = 'assets/images/avatar.jpeg';*/
   }
 
   //跳转到登录页面

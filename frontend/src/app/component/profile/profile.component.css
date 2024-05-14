@@ -1,0 +1,101 @@
+/* profile.component.css */
+
+@font-face {
+  font-family: Arial;
+  src: url('/assets/fonts/Holborn-VGvMz.otf');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.profile {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  min-height: 100vh; /* 使用 min-height 确保页面内容少时仍然居中 */
+}
+
+.profile-box {
+  width: 80%; /* 调整为百分比，以适应不同屏幕宽度 */
+  max-width: 400px; /* 设置最大宽度以避免框在大屏幕上过于宽阔 */
+  padding: 20px;
+  border-radius: 20px;
+  background: #2c2c2c;
+  box-shadow: 0px 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 0px 0px 18px -6px #fff200;
+  background-color:rgb(255, 255, 255);
+}
+
+.avatar img {
+  width: 100%;  /* 确保图片完全填充容器 */
+  height: 100%;
+  object-fit: cover;  /* 添加此属性以防图片比例不正常 */
+  border-radius: 50%;
+  box-shadow: 0px 0px 18px -6px #fff200;
+}
+
+
+.profile-box .info {
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.profile-box .info p {
+  color: #d8d3d3;
+  font-weight: 500;
+  text-align: left;
+  letter-spacing: 1px;
+
+}
+
+.info-title {
+  font-family: 'Bungee', sans-serif
+}
+
+.password-btn-box {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* 水平居中按钮 */
+}
+
+.password-btn-box button {
+  background: linear-gradient(145deg, #28b6bd, #72b879);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.password-btn-box button:hover {
+  background: linear-gradient(145deg, #72b879, #28b6bd);
+}
+
+.password-btn-box button:focus {
+  outline: none;
+  box-shadow: 0 0 10px #719ECE;
+}
+
+.back-btn-box button{
+  width: 50px;
+}

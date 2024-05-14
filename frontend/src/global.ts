@@ -14,9 +14,9 @@ export class Global {
   public static birthRestServiceUrl: string = this.backendUrl + "/birth";
   public static favouriteRestServiceUrl: string = this.backendUrl + "/favourite";
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
-  public static themaRestServiceUrl: string=this.backendUrl+"/thema";
-  public static heartRestServiceUrl:string=this.backendUrl+"/heart";
-  public static commentRestServiceUrl:string=this.backendUrl+"/comment";
+  public static themaRestServiceUrl: string = this.backendUrl + "/thema";
+  public static heartRestServiceUrl: string = this.backendUrl + "/heart";
+  public static commentRestServiceUrl: string = this.backendUrl + "/comment";
 
 
   public static databaseFirstnameNewbornId: number = 1;
@@ -27,4 +27,5 @@ export class Global {
   public static databaseStreetId: number = 6;
   public static databaseDeathId: number = 7;
   public static databaseBirthId: number = 8;
+
 }

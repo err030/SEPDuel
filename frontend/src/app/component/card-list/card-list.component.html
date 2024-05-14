@@ -1,4 +1,5 @@
 <p>This is the card list component.</p>
+<button (click)="goToHome()">Back To Homepage</button>
 <h1>This is the card list of your deck.</h1>
 <div class="card-search">
   <input type="text" placeholder="Search by name or description" [(ngModel)]="searchText">
@@ -6,17 +7,22 @@
 </div>
 
 <div class="card-list">
-  <div *ngFor="let card of deck?.cards">
-    Name: {{card.name}}
-    Description: {{card.description}}
-
-    Cost: {{card.cost}}
-    Attack: {{card.attack}}
-    Defense: {{card.defense}}
-    Rarity: {{getRarity(card)}}
-    <button (click)="selectCard(card)">Select</button>
-    <button (click)="removeCard(card)">Remove</button>
+  <div *ngFor="let card of filteredCards">
+    <app-card [card]=card></app-card>
   </div>
+
+  <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length === 0)">
+    <p>Ganz schön leer.</p>
+  </div>
+
+  <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length > 0)">
+    <p>No cards found.</p>
+  </div>
+
+  <div>
+    <button (click)="addCards()">Edit Cards</button>
+  </div>
+
 
 
 </div>

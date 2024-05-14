@@ -1,4 +1,6 @@
 import {User} from "./model/user";
+import {Deck} from "./model/deck.model";
+import {Card} from "./model/card.model";
 
 /**
  * 保存全局变量，比如后端地址等
@@ -31,4 +33,6 @@ export class Global {
   public static databaseBirthId: number = 8;
 
   public static loggedUser: User;
+  public static currentDeck: Deck;
+  public static savedCards: Card[];
 }

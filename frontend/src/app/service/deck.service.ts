@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Global} from "../global";
+import {Deck} from "../model/deck.model";
 
 @Injectable({
   providedIn: 'root'
@@ -40,11 +41,12 @@ export class DeckService {
   }
 
   createDeck(): Observable<any> {
-    return this.http.get(this.apiURL + '/addDeck');
+    return this.http.get(this.apiURL + '/createDeck');
   }
 
-  updateDeck(deckId: number, deck: any): Observable<any> {
-    return this.http.put(this.apiURL + '/deck/' + deckId, deck);
+  updateDeck(deck: Deck): Observable<any> {
+    console.log("Service Requested");
+    return this.http.post(this.apiURL + '/deck/'  + deck.id + '/updateDeck', deck);
   }
 
   deleteDeck(deckId: number): Observable<any> {

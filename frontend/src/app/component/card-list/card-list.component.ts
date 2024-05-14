@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Card} from "../../model/card.model";
 import {Deck} from "../../model/deck.model";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {DeckService} from "../../service/deck.service";
 import {FormsModule} from "@angular/forms";
-import {RouterOutlet} from "@angular/router";
+import {Router, RouterOutlet} from "@angular/router";
+import {CardComponent} from "../card/card.component";
+import {Global} from "../../global";
+import {CardService} from "../../service/card.service";
 
 @Component({
   selector: 'app-card-list',
@@ -12,31 +15,27 @@ import {RouterOutlet} from "@angular/router";
   imports: [
     NgForOf,
     FormsModule,
-    RouterOutlet
+    RouterOutlet,
+    CardComponent,
+    NgIf
   ],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.css'
 })
 
 export class CardListComponent implements OnInit{
-  deck: Deck | undefined;
-  cards: Card[] | undefined;
-  filteredCards: Card[] | undefined;
-  selectedCards: Card[];
-  searchText: string;
+  deck?: Deck;
+  cards?: Card[] = [];
+  filteredCards?: Card[];
+  selectedCards?: Card[];
+  searchText?: string;
+  cardService: CardService;
+  private router: Router;
 
 
-  constructor(deckService:DeckService) {
-    deckService.getDeck().subscribe(deck => {
-      this.deck = deck;
-    }, error => {
-      console.log(error);
-      }
-    );
-    this.cards = this.deck?.cards;
-    this.filteredCards = this.cards;
-    this.selectedCards = [];
-    this.searchText = "";
+  constructor(cardService: CardService, router: Router) {
+    this.cardService = cardService;
+    this.router = router;
   }
 
   getRarity(card: Card): string {
@@ -45,17 +44,43 @@ export class CardListComponent implements OnInit{
 
   ngOnInit(): void {
     console.log("Card List Component initialized");
+    this.deck = Global.currentDeck;
+    this.cards = this?.deck?.cards;
+    this.filteredCards = this.cards;
+    this.selectedCards = [];
+    this.searchText = "";
   }
 
   selectCard(card: Card): void {
-    this.selectedCards.push(card);
+    this.cardService.addToSelected(card);
   }
 
   removeCard(card: Card): void {
-    this.selectedCards = this.selectedCards.filter(c => c.id !== card.id);
+    this.selectedCards = this.selectedCards?.filter(c => c.id !== card.id);
   }
 
   search() {
-    this.filteredCards = this.cards?.filter(card => card.name.toLowerCase().includes(this.searchText.toLowerCase()));
+    if (this.searchText && this.searchText.length > 0) {
+
+      this.filteredCards = this.cards?.filter(card =>
+        // @ts-ignore
+        card.name.toLowerCase().includes(this.searchText.toLowerCase())
+      );
+    } else {
+      alert("Please enter a search term")
+    }
+  }
+
+  addCards() {
+    // @ts-ignore
+    // add a for loop
+    // identify if repeated
+
+    this.cardService.setSelectedCards(this.cards)
+    this.router.navigate(['all-cards'])
+  }
+
+  goToHome() {
+    this.router.navigate(['homepage-user'])
   }
 }
