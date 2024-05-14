@@ -1,4 +1,5 @@
 <p>This is the card list component.</p>
+<button (click)="goToHome()">Back To Homepage</button>
 <h1>This is the card list of your deck.</h1>
 <div class="card-search">
   <input type="text" placeholder="Search by name or description" [(ngModel)]="searchText">
@@ -8,8 +9,6 @@
 <div class="card-list">
   <div *ngFor="let card of filteredCards">
     <app-card [card]=card></app-card>
-    <button (click)="selectCard(card)">Select</button>
-    <button (click)="removeCard(card)">Remove</button>
   </div>
 
   <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length === 0)">

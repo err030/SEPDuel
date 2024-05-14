@@ -8,6 +8,10 @@ import {Global} from "../global";
 export class CardService {
   selectedCards : Card[] = [];
 
+  setSelectedCards(cards: Card[]): void {
+    this.selectedCards = cards;
+  }
+
   addToSelected(card: Card): void {
     this.selectedCards.push(card);
   }
@@ -20,12 +24,13 @@ export class CardService {
   }
 
   getSelectedCards() {
-    return [...this.selectedCards];
+    return this.selectedCards;
   }
 
   clearSelectedCards() {
     this.selectedCards = [];
   }
+
 
   saveSelectedCards() {
     console.log("Saving selected cards");

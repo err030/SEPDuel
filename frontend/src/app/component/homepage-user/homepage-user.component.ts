@@ -2,14 +2,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { UserService } from '../../service/user.service';
-import {Router, RouterOutlet} from '@angular/router'; // 导入路由器模块
+import {Router, RouterLink, RouterOutlet} from '@angular/router'; // 导入路由器模块
 
 @Component({
   selector: 'homepage-user',
   templateUrl: './homepage-user.component.html',
   styleUrls: ['./homepage-user.component.css'],
   imports: [
-    RouterOutlet
+    RouterOutlet,
+    RouterLink
   ],
   standalone: true
 })
@@ -49,6 +50,10 @@ export class HomepageUserComponent implements OnInit {
   //导航到卡库
 
   //导航到好友列表
+  navigateToFriends() {
+    this.router.navigateByUrl('/friendlist').catch(err => console.error('Navigation Error:', err));
+  }
+  //退出登陆
   userLogout() {
     this.userService.userLogout();
   }

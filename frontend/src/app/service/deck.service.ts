@@ -46,7 +46,7 @@ export class DeckService {
 
   updateDeck(deck: Deck): Observable<any> {
     console.log("Service Requested");
-    return this.http.post('http://localhost:8080/api/user/' + deck.id + '/updateDeck', deck);
+    return this.http.post(this.apiURL + '/deck/'  + deck.id + '/updateDeck', deck);
   }
 
   deleteDeck(deckId: number): Observable<any> {

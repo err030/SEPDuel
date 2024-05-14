@@ -25,38 +25,38 @@ public class BackendGruppeQApplication {
         SpringApplication.run(BackendGruppeQApplication.class, args);
     }
 
-//    @Bean
-//    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
-//        return args -> {
-////            create a deck
-////            Deck deck = new Deck();
-////            deck.setName("Deck");
-////            deckRepository.save(deck);
-////            Card card = new Card("kill", Rarity.COMMON, 1, 1, "A card that kills", "");
-////            cardRepository.save(card);
-////            Card card2 = new Card("heal", Rarity.COMMON, 1, 1, "A card that heals", "");
-////            cardRepository.save(card2);
-////
-////            User user = new User();
-////            user.setUsername("admin");
-////            user.cards.add(card);
-////            user.cards.add(card2);
-////
-////            userRepository.save(user);
-//            for (User u : userRepository.findAll()) {
-//                u.cards.clear();
+    @Bean
+    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
+        return args -> {
+//            create a deck
+//            Deck deck = new Deck();
+//            deck.setName("Deck");
+//            deckRepository.save(deck);
+//            Card card = new Card("kill", Rarity.COMMON, 1, 1, "A card that kills", "");
+//            cardRepository.save(card);
+//            Card card2 = new Card("heal", Rarity.COMMON, 1, 1, "A card that heals", "");
+//            cardRepository.save(card2);
+//
+//            User user = new User();
+//            user.setUsername("admin");
+//            user.cards.add(card);
+//            user.cards.add(card2);
+//
+//            userRepository.save(user);
+            for (User u : userRepository.findAll()) {
+                u.cards.clear();
 //                u.decks.clear();
-//                userRepository.save(u);
-//            }
-////
-//            for (User u : userRepository.findAll()) {
-//                u.cards.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
-//                u.cards.add(new Card("桃园结义", Rarity.COMMON, 1, 1, "A card for testing", ""));
-//                u.cards.add(new Card("顺手牵羊", Rarity.COMMON, 1, 1, "A card for testing", ""));
-//                u.cards.add(new Card("无懈可击", Rarity.COMMON, 1, 1, "A card for testing", ""));
-//                u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
-//                userRepository.save(u);
-//            }
+                userRepository.save(u);
+            }
+//
+            for (User u : userRepository.findAll()) {
+                u.cards.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                u.cards.add(new Card("桃园结义", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                u.cards.add(new Card("顺手牵羊", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                u.cards.add(new Card("无懈可击", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                userRepository.save(u);
+            }
 //            User u = userRepository.findById(1L).get();
 //
 //            List<Deck> d = u.decks;
@@ -67,9 +67,6 @@ public class BackendGruppeQApplication {
 //                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
 //            }
 //            userRepository.save(u);
-//        };
-//    }
+        };
+    }
 }
-
-
-

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="register.component.css"/>
 </head>
 
-<body>
+<body class="background-image-login">
 <div class="box">
   <h2>Create an Account</h2>
   <form #registerForm="ngForm" (ngSubmit)="onRegisterFormSubmit()">
@@ -51,6 +51,12 @@
     <div class="input-box" [class.input-error]="!user.birthday">
       <label>Birthday*</label>
       <p-calendar [(ngModel)]="user.birthday" class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>
+      <!--<p-calendar [(ngModel)]="user.birthday"
+                  selectionMode="range"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  [readonlyInput]="true"
+                  class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>-->
     </div>
 
     <div class="input-box">

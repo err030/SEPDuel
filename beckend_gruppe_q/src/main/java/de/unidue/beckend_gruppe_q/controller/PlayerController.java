@@ -30,12 +30,14 @@ public class PlayerController {
     // to add a new deck
     @PostMapping("/api/user/{id}/createDeck")
     public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
-        Optional<User> player = userRepository.findById(id);
-        if (player.get().getDecks().size() > 3 || deck.getCards().size() > 30){
+        Optional<User> user = userRepository.findById(id);
+        if (user.get().getDecks().size() > 3 || deck.getCards().size() > 30){
             System.out.println("Deck limit reached");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
+        user.get().decks.add(savedDeck);
+        userRepository.save(user.get());
         System.out.println("Deck saved" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
     }
@@ -51,33 +53,45 @@ public class PlayerController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         Deck savedDeck = deckRepository.save(deck);
+        user.decks.add(savedDeck);
         userRepository.save(user);
         System.out.println("Deck saved" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.CREATED);
     }
 
     //update a deck, include update the name and the cards
-    @PostMapping("/api/user/{id}/updateDeck")
-    public ResponseEntity<Deck> updateDeck(@PathVariable Long id, @RequestBody Deck updateDeck) {
+    @PostMapping("/api/user/{userid}/deck/{id}/updateDeck")
+    public ResponseEntity<Deck> updateDeck(@PathVariable Long userid, @PathVariable Long id, @RequestBody Deck updateDeck) {
         System.out.println("Frontend Called");
         Optional<Deck> existingDeck = deckRepository.findById(id);
         if (existingDeck.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.println(existingDeck.get().toString());
-        existingDeck.get().setName(updateDeck.getName()); //update deckName
-        existingDeck.get().setCards(updateDeck.getCards());       //update Cards
-        Deck savedDeck = deckRepository.save(existingDeck.get());
+        Deck d = existingDeck.get();
+        System.out.println(d.toString());
+        d.setName(updateDeck.getName()); //update deckName
+        d.setCards(updateDeck.getCards());       //update Cards
+        User u = userRepository.findById(userid).get();
+        u.decks.remove(d);
+        u.decks.add(d);
+        Deck savedDeck = deckRepository.save(d);
+        userRepository.save(u);
+        System.out.println("Deck updated" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.OK);
     }
 
     //delete a deck
-    @DeleteMapping("/api/user/{userid}/deleteDeck/{deckid}")
+    @DeleteMapping("/api/user/{userid}/deck/{deckid}")
     public ResponseEntity<Deck> deleteDeck(@PathVariable Long userid, @PathVariable Long deckid) {
         if (!deckRepository.existsById(deckid)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        User u = userRepository.findById(userid).get();
+        Deck d = deckRepository.findById(deckid).get();
+        u.decks.remove(d);
         deckRepository.deleteById(deckid);
+
+        userRepository.save(u);
         return ResponseEntity.ok().build();
     }
 

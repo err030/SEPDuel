@@ -71,6 +71,37 @@ export class DeckListComponent implements OnInit{
   }
 
   deleteDeck(deckId: number): void {
-    this.deckService.deleteDeck(deckId);
+    this.deckService.deleteDeck(deckId).subscribe(
+      deck => {
+        console.log(deck);
+        alert('Deck deleted successfully');
+      },
+      error => {
+        console.log(error);
+        alert('Error deleting deck');
+      }
+    )
+    //refresh page
+    window.location.reload();
+  }
+
+  renameDeck(deck: Deck) {
+    const newName = prompt('Enter new name for the deck', deck.name);
+    if (newName !== null) {
+      deck.name = newName;
+    }
+    this.deckService.updateDeck(deck).subscribe(
+      deck => {
+        console.log(deck);
+        alert('Deck name updated successfully');
+      }
+    )
+    //refresh page
+    window.location.reload();
+
+  }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
   }
 }
