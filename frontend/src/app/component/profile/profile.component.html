@@ -2,7 +2,9 @@
   <div class="profile-box">
     <h2>Profile</h2>
     <div>
-      <p class="avatar"> <img src="{{ loggedUser.avatarUrl }}" alt="User Avatar" style="width: 100px; height: 100px;"></p>
+      <p class="avatar"> <img [src]="loggedUser.avatarUrl" alt="User Avatar" style="width: 100px; height: 100px;">
+
+      </p>
 
       <form #avatarForm="ngForm" (ngSubmit)="onAvatarFormSubmit()">
         <div class="input-box">
