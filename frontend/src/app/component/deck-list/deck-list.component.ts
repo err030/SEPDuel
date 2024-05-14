@@ -79,8 +79,14 @@ export class DeckListComponent implements OnInit{
     if (newName !== null) {
       deck.name = newName;
     }
-
-    this.deckService.updateDeck(deck);
+    this.deckService.updateDeck(deck).subscribe(
+      deck => {
+        console.log(deck);
+        alert('Deck name updated successfully');
+      }
+    )
+    //refresh page
+    window.location.reload();
 
   }
 }

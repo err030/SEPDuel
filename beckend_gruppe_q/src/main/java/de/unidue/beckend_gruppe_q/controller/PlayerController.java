@@ -67,10 +67,11 @@ public class PlayerController {
         if (existingDeck.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        System.out.println(existingDeck.get().toString());
-        existingDeck.get().setName(updateDeck.getName()); //update deckName
-        existingDeck.get().setCards(updateDeck.getCards());       //update Cards
-        Deck savedDeck = deckRepository.save(existingDeck.get());
+        Deck d = existingDeck.get();
+        System.out.println(d.toString());
+        d.setName(updateDeck.getName()); //update deckName
+        d.setCards(updateDeck.getCards());       //update Cards
+        Deck savedDeck = deckRepository.save(d);
         return new ResponseEntity<>(savedDeck, HttpStatus.OK);
     }
 
