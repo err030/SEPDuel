@@ -31,8 +31,6 @@ export const routes: Routes = [
   {path: 'about', component: AboutComponent},
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
-
-
   {path: 'friendlist', component: FriendlistComponent},
 
   {path: '**', redirectTo: 'login'}

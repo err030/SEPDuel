@@ -1,7 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 
-import de.unidue.beckend_gruppe_q.Service.EmailService;
+import de.unidue.beckend_gruppe_q.service.EmailService;
 import de.unidue.beckend_gruppe_q.model.LeaderBoardPunkt;
 import de.unidue.beckend_gruppe_q.model.SecurityCode;
 import de.unidue.beckend_gruppe_q.model.User;

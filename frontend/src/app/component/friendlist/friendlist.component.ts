@@ -150,7 +150,7 @@ export class FriendlistComponent implements OnInit {
 
   }
 
-  //搜索按钮激活
+  //搜索用户的按钮功能
   BenutzersuchFormularAbsenden(): void{
     let loggedUser = this.angemeldeterBenutzer;
     if(!loggedUser) return ;
@@ -311,26 +311,14 @@ export class FriendlistComponent implements OnInit {
       this.router.navigateByUrl('/homepage-user');
   }
 
-  toggleFunctionality() {
-    this.showAddFriendPopup = !this.showAddFriendPopup;
-  }
-
-  closeAddFriendPopup() {
-    this.showAddFriendPopup = false;
-  }
-
-  closeAddFriendConfirmationPopup() {
-
-  }
-
-  showDeleteFriendConfirmationPopup() {
-    this.showDeleteFriendConfirmation = true;
-  }
 
   deleteFriend(): void {
+
+
+
+
+
   }
 
-  closeDeleteFriendConfirmationPopup() {
-    this.showDeleteFriendConfirmation = false;
-  }
+
 }

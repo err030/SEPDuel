@@ -9,7 +9,7 @@ import de.unidue.beckend_gruppe_q.repository.FriendRequestRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.repository.FriendListRepository;
 import de.unidue.beckend_gruppe_q.repository.FriendListDetailRepository;
-import de.unidue.beckend_gruppe_q.Service.EmailService;
+import de.unidue.beckend_gruppe_q.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
