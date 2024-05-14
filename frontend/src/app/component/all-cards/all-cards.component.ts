@@ -59,6 +59,7 @@ export class AllCardsComponent implements OnInit {
   }
 
   isSelected(card: Card) {
+    //perfect fix for object not corresponding
     return this.selectedCards.some(c => c.id === card.id);
   }
 
@@ -84,5 +85,13 @@ export class AllCardsComponent implements OnInit {
     alert("Selection saved!");
     this.router.navigate(['card-list']);
 
+  }
+
+  goToDecks() {
+    this.router.navigate(['deck-list']);
+  }
+
+  goToHome() {
+    this.router.navigate(['homepage-user']);
   }
 }

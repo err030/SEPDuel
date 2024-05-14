@@ -89,4 +89,8 @@ export class DeckListComponent implements OnInit{
     window.location.reload();
 
   }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
+  }
 }
