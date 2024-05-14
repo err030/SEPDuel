@@ -2,115 +2,114 @@
 <div class="grid">
   <!-- 左侧 -->
   <div class="col-4 leftStyle">
-    <!--<p-tabView [(activeIndex)]="activeIndex" *ngIf="!showNewFriends" (onChange)="resetList()">-->
-    <!-- 聊过天的好友列表 -->
-    <!--<p-tabPanel>
-      <ng-template pTemplate="header">
-        <i class="pi pi-comment"></i>
-        <span>Chats</span>
-      </ng-template>
-      <div class="flex justify-content-center">
-        <p-scroller [items]="chatListFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)"
-                    *ngIf="activeIndex==0">
-          <ng-template pTemplate="item" let-chatListFriend>
-            <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(chatListFriend)"
-                 style="height: 50px;"
-                 (click)="onChatListItemClick(chatListFriend)">
-              <div *ngIf="!chatListFriend.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(chatListFriend) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="chatListFriend.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(chatListFriend)" styleClass="mr-2"></p-avatar>
-              </div>
-              <div class="text-xl font-bold">{{ chatListFriend.firstname }} {{chatListFriend.lastname}}</div>
-            </div>
-          </ng-template>
-        </p-scroller>
-      </div>
-    </p-tabPanel>-->
-
-    <!-- 所有好友列表 -->
-    <p-tabPanel>
-      <ng-template pTemplate="header">
-        <i class="pi pi-book"></i>
-        <span>Freunde</span>
-      </ng-template>
-      <div class="flex justify-content-between gap-2 flex-1 ">
-        <div class="flex align-items-center">
-          <p-button icon="pi pi-user-plus" label="Neue Freunde" styleClass="p-button-text p-button-warning"
-                    (onClick)="openNewFriendsView()"></p-button>
-          <p-badge *ngIf="newFriendRequests" [value]="newFriendRequests"></p-badge>
-        </div>
-        <p-toggleButton *ngIf="isListPublic != null" [(ngModel)]="isListPublic" onLabel="Öffentlich" offLabel="Privat"
-                        onIcon="pi pi-eye"
-                        offIcon="pi pi-eye-slash" [style]="{ width: '8em' }"
-                        (onChange)="updateListStatus()"></p-toggleButton>
-      </div>
-      <p-divider type="solid"></p-divider>
-      <div class="flex justify-content-center">
-        <p-scroller [items]="allFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)" *ngIf="activeIndex==1">
-          <ng-template pTemplate="item" let-friend>
-            <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(friend)"
-                 style="height: 50px;"
-                 (click)="onFriendListItemClick(friend)">
-              <!--<div *ngIf="!friend.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(friend) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="friend.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(friend)" styleClass="mr-2"></p-avatar>
-              </div>-->
-              <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
-            </div>
-          </ng-template>
-        </p-scroller>
-      </div>
-    </p-tabPanel>
-    <!--</p-tabView>-->
-
-    <!-- 新好友列表 -->
-    <div *ngIf="showNewFriends">
-      <div class="grid">
-        <div class="field col-2">
-          <p-button icon="pi pi-chevron-left" styleClass="p-button-text" (onClick)="closeNewFriendsView()"></p-button>
-        </div>
-        <div class="field col-6">
-        </div>
-        <div class="field col-4">
-          <p-button label="Hinzufügen" styleClass="p-button-text"
-                    (onClick)="showUserSearchDialog = true"></p-button>
-        </div>
-      </div>
-      <div class="flex justify-content-center">
-        <p-scroller [items]="friendRequests" [itemSize]="50" scrollHeight="calc(100vh - 172px)">
-          <ng-template pTemplate="item" let-request>
-            <div class="flex flex-row align-items-center gap-2" style="height: 50px;">
-              <!--<div *ngIf="!request.sendUser.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(request.sendUser) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="request.sendUser.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(request.sendUser)" styleClass="mr-2"></p-avatar>
-              </div>-->
-              <div class="flex justify-content-between gap-2 flex-1 ">
-                <div class="text-xl font-bold">{{ request.sendUser.firstname }} {{request.sendUser.lastname}}</div>
-                <div class="flex gap-2" *ngIf="request.requestStatus == 0">
-                  <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success" pTooltip="Annehmen"
-                            tooltipPosition="bottom" (onClick)="acceptOrDenyRequest(request, 1)"></p-button>
-                  <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger" pTooltip="Ablehnen"
-                            tooltipPosition="bottom" (onClick)="acceptOrDenyRequest(request, 2)"></p-button>
+    <p-tabView [(activeIndex)]="activeIndex" *ngIf="!showNewFriends" (onChange)="resetList()">
+      <!-- 聊过天的好友列表 -->
+      <!--<p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-comment"></i>
+          <span>Chats</span>
+        </ng-template>
+        <div class="flex justify-content-center">
+          <p-scroller [items]="chatListFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)"
+                      *ngIf="activeIndex==0">
+            <ng-template pTemplate="item" let-chatListFriend>
+              <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(chatListFriend)"
+                   style="height: 50px;"
+                   (click)="onChatListItemClick(chatListFriend)">
+                <div *ngIf="!chatListFriend.avatarUrl">
+                  <p-avatar [label]=getUserAvatarWord(chatListFriend) styleClass="mr-2"
+                            [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
                 </div>
-                <p-button *ngIf="request.requestStatus == 1" [disabled]="true"
-                          label="Angenommen" styleClass="p-button-rounded p-button-success"></p-button>
-                <p-button *ngIf="request.requestStatus == 2" [disabled]="true"
-                          label="Abgelehnt" styleClass="p-button-rounded p-button-danger"></p-button>
+                <div *ngIf="chatListFriend.avatarUrl">
+                  <p-avatar [image]="getUserAvatarUrl(chatListFriend)" styleClass="mr-2"></p-avatar>
+                </div>
+                <div class="text-xl font-bold">{{ chatListFriend.firstname }} {{chatListFriend.lastname}}</div>
               </div>
-            </div>
-          </ng-template>
-        </p-scroller>
+            </ng-template>
+          </p-scroller>
+        </div>
+      </p-tabPanel>-->
+      <!-- 所有好友列表 -->
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <i class="pi pi-book"></i>
+          <span>Freunde</span>
+        </ng-template>
+        <div class="flex justify-content-between gap-2 flex-1 ">
+          <div class="flex align-items-center">
+            <p-button icon="pi pi-user-plus" label="Neue Freunde" styleClass="p-button-text p-button-warning"
+                      (onClick)="openNewFriendsView()"></p-button>
+            <p-badge *ngIf="newFriendRequests" [value]="newFriendRequests"></p-badge>
+          </div>
+          <p-toggleButton *ngIf="isListPublic != null" [(ngModel)]="isListPublic" onLabel="Öffentlich" offLabel="Privat"
+                          onIcon="pi pi-eye"
+                          offIcon="pi pi-eye-slash" [style]="{ width: '8em' }"
+                          (onChange)="updateListStatus()"></p-toggleButton>
+        </div>
+        <p-divider type="solid"></p-divider>
+        <div class="flex justify-content-center">
+          <p-scroller [items]="allFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)" *ngIf="activeIndex==1">
+            <ng-template pTemplate="item" let-friend>
+              <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(friend)"
+                   style="height: 50px;"
+                   (click)="onFriendListItemClick(friend)">
+               <!-- <div *ngIf="!friend.avatarUrl">
+                  <p-avatar [label]=getUserAvatarWord(friend) styleClass="mr-2"
+                            [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+                </div>
+                <div *ngIf="friend.avatarUrl">
+                  <p-avatar [image]="getUserAvatarUrl(friend)" styleClass="mr-2"></p-avatar>
+                </div>-->
+                <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
+              </div>
+            </ng-template>
+          </p-scroller>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+
+      <div *ngIf="showNewFriends">
+        <div class="grid">
+          <div class="field col-2">
+            <p-button icon="pi pi-chevron-left" styleClass="p-button-text" (onClick)="closeNewFriendsView()"></p-button>
+          </div>
+          <div class="field col-6">
+          </div>
+          <div class="field col-4">
+            <p-button label="Hinzufügen" styleClass="p-button-text"
+                      (onClick)="showUserSearchDialog = true"></p-button>
+          </div>
+        </div>
+        <div class="flex justify-content-center">
+          <p-scroller [items]="friendRequests" [itemSize]="50" scrollHeight="calc(100vh - 172px)">
+            <ng-template pTemplate="item" let-request>
+              <div class="flex flex-row align-items-center gap-2" style="height: 50px;">
+                <!--<div *ngIf="!request.sendUser.avatarUrl">
+                  <p-avatar [label]=getUserAvatarWord(request.sendUser) styleClass="mr-2"
+                            [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+                </div>
+                <div *ngIf="request.sendUser.avatarUrl">
+                  <p-avatar [image]="getUserAvatarUrl(request.sendUser)" styleClass="mr-2"></p-avatar>
+                </div>-->
+                <div class="flex justify-content-between gap-2 flex-1 ">
+                  <div class="text-xl font-bold">{{ request.sendUser.firstname }} {{request.sendUser.lastname}}</div>
+                  <div class="flex gap-2" *ngIf="request.requestStatus == 0">
+                    <p-button icon="pi pi-check" styleClass="p-button-rounded p-button-success" pTooltip="Annehmen"
+                              tooltipPosition="bottom" (onClick)="acceptOrDenyRequest(request, 1)"></p-button>
+                    <p-button icon="pi pi-times" styleClass="p-button-rounded p-button-danger" pTooltip="Ablehnen"
+                              tooltipPosition="bottom" (onClick)="acceptOrDenyRequest(request, 2)"></p-button>
+                  </div>
+                  <p-button *ngIf="request.requestStatus == 1" [disabled]="true"
+                            label="Angenommen" styleClass="p-button-rounded p-button-success"></p-button>
+                  <p-button *ngIf="request.requestStatus == 2" [disabled]="true"
+                            label="Abgelehnt" styleClass="p-button-rounded p-button-danger"></p-button>
+                </div>
+              </div>
+            </ng-template>
+          </p-scroller>
+        </div>
       </div>
-    </div>
+
   </div>
 
   <!-- 右侧 -->
@@ -138,6 +137,7 @@
           <small class="ml-2">Geben Sie gültige E-Mail-Adresse ein</small>
         </div>
       </div>
+
       <div class="field col-6"></div>
       <div class="field col-3">
         <p-button type="submit" label="Suchen" [style]="{'width':'100%'}"
@@ -156,8 +156,8 @@
       <!--<div *ngIf="!targetUserHasAvatar">
         <p-avatar [label]=targetUserAvatarWord styleClass="mr-2"
                   [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-      </div>
-      <div *ngIf="targetUserHasAvatar">
+      </div>-->
+      <!--<div *ngIf="targetUserHasAvatar">
         <p-avatar [image]="targetUserAvatarUrl" styleClass="mr-2"></p-avatar>
       </div>-->
       <div class="flex justify-content-between gap-2 flex-1 ">
@@ -177,3 +177,9 @@
     </div>
   </div>
 </p-dialog>
+
+
+
+
+
+

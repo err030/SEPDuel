@@ -12,13 +12,14 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {LoadingComponent} from "../../loading/loading.component";
-import {TabViewModule} from "primeng/tabview";
+
 import {ButtonModule} from "primeng/button";
 import {BadgeModule} from "primeng/badge";
 import {ToggleButtonModule} from "primeng/togglebutton";
 import {DividerModule} from "primeng/divider";
 import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
+import {TabViewModule} from "primeng/tabview";
 
 
 
@@ -30,7 +31,6 @@ import {DialogModule} from "primeng/dialog";
     NgIf,
     NgForOf,
     LoadingComponent,
-    TabViewModule,
     ButtonModule,
     BadgeModule,
     ToggleButtonModule,
@@ -38,7 +38,8 @@ import {DialogModule} from "primeng/dialog";
     ScrollerModule,
     RouterOutlet,
     DialogModule,
-    NgClass
+    NgClass,
+    TabViewModule
   ],
   providers: [UserService, FriendService,MessageService,ConfirmationService],
   templateUrl: './friendlist.component.html',
@@ -345,4 +346,8 @@ export class FriendlistComponent implements OnInit {
 
 
 }
+
+  resetList() {
+
+  }
 }
