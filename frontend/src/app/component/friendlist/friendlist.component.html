@@ -1,34 +1,8 @@
+<!-- friendlist.component.html -->
 <app-loading [zeigenLadeDialog]="showLoadingDialog"></app-loading>
 <div class="grid">
   <!-- 左侧 -->
   <div class="col-4 leftStyle">
-    <!--<p-tabView [(activeIndex)]="activeIndex" *ngIf="!showNewFriends" (onChange)="resetList()">-->
-    <!-- 聊过天的好友列表 -->
-    <!--<p-tabPanel>
-      <ng-template pTemplate="header">
-        <i class="pi pi-comment"></i>
-        <span>Chats</span>
-      </ng-template>
-      <div class="flex justify-content-center">
-        <p-scroller [items]="chatListFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)"
-                    *ngIf="activeIndex==0">
-          <ng-template pTemplate="item" let-chatListFriend>
-            <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(chatListFriend)"
-                 style="height: 50px;"
-                 (click)="onChatListItemClick(chatListFriend)">
-              <div *ngIf="!chatListFriend.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(chatListFriend) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="chatListFriend.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(chatListFriend)" styleClass="mr-2"></p-avatar>
-              </div>
-              <div class="text-xl font-bold">{{ chatListFriend.firstname }} {{chatListFriend.lastname}}</div>
-            </div>
-          </ng-template>
-        </p-scroller>
-      </div>
-    </p-tabPanel>-->
 
     <!-- 所有好友列表 -->
     <p-tabPanel>
@@ -54,20 +28,12 @@
             <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(friend)"
                  style="height: 50px;"
                  (click)="onFriendListItemClick(friend)">
-              <!--<div *ngIf="!friend.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(friend) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="friend.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(friend)" styleClass="mr-2"></p-avatar>
-              </div>-->
               <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
             </div>
           </ng-template>
         </p-scroller>
       </div>
     </p-tabPanel>
-    <!--</p-tabView>-->
 
     <!-- 新好友列表 -->
     <div *ngIf="showNewFriends">
@@ -86,13 +52,6 @@
         <p-scroller [items]="friendRequests" [itemSize]="50" scrollHeight="calc(100vh - 172px)">
           <ng-template pTemplate="item" let-request>
             <div class="flex flex-row align-items-center gap-2" style="height: 50px;">
-              <!--<div *ngIf="!request.sendUser.avatarUrl">
-                <p-avatar [label]=getUserAvatarWord(request.sendUser) styleClass="mr-2"
-                          [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-              </div>
-              <div *ngIf="request.sendUser.avatarUrl">
-                <p-avatar [image]="getUserAvatarUrl(request.sendUser)" styleClass="mr-2"></p-avatar>
-              </div>-->
               <div class="flex justify-content-between gap-2 flex-1 ">
                 <div class="text-xl font-bold">{{ request.sendUser.firstname }} {{request.sendUser.lastname}}</div>
                 <div class="flex gap-2" *ngIf="request.requestStatus == 0">
@@ -153,13 +112,6 @@
   <!-- 搜索结果 -->
   <div class="col-12" *ngIf="targetFriend">
     <div class="flex flex-row gap-2">
-      <!--<div *ngIf="!targetUserHasAvatar">
-        <p-avatar [label]=targetUserAvatarWord styleClass="mr-2"
-                  [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-      </div>
-      <div *ngIf="targetUserHasAvatar">
-        <p-avatar [image]="targetUserAvatarUrl" styleClass="mr-2"></p-avatar>
-      </div>-->
       <div class="flex justify-content-between gap-2 flex-1 ">
         <div class="text-xl font-bold">{{ targetFriend.user.firstname }} {{targetFriend.user.lastname}}</div>
         <p-button

@@ -1,3 +1,4 @@
+//friendlist.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
@@ -19,7 +20,6 @@ import {ToggleButtonModule} from "primeng/togglebutton";
 import {DividerModule} from "primeng/divider";
 import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
-
 
 
 @Component({
