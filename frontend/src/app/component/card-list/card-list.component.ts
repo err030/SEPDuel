@@ -35,11 +35,6 @@ export class CardListComponent implements OnInit{
 
   constructor(cardService: CardService, router: Router) {
     this.cardService = cardService;
-    this.deck = Global.currentDeck;
-    this.cards = this.deck?.cards;
-    this.filteredCards = this.cards;
-    this.selectedCards = [];
-    this.searchText = "";
     this.router = router;
   }
 
@@ -50,6 +45,10 @@ export class CardListComponent implements OnInit{
   ngOnInit(): void {
     console.log("Card List Component initialized");
     this.deck = Global.currentDeck;
+    this.cards = this?.deck?.cards;
+    this.filteredCards = this.cards;
+    this.selectedCards = [];
+    this.searchText = "";
   }
 
   selectCard(card: Card): void {
@@ -74,7 +73,10 @@ export class CardListComponent implements OnInit{
 
   addCards() {
     // @ts-ignore
-    this.cardService.selectedCards = this.cards;
-    this.router.navigate(['all-cards']);
+    // add a for loop
+    // identify if repeated
+
+    this.cardService.setSelectedCards(this.cards)
+    this.router.navigate(['all-cards'])
   }
 }

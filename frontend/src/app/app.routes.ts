@@ -17,6 +17,7 @@ import {ProfileComponent} from "./component/profile/profile.component";
 import {ResetPasswordComponent} from "./component/reset-password/reset-password.component";
 import {AllCardsComponent} from "./component/all-cards/all-cards.component";
 import {FriendlistComponent} from "./component/friendlist/friendlist.component";
+import {CardUploadComponent} from "./component/card-upload/card-upload.component";
 
 
 export const routes: Routes = [
@@ -33,6 +34,7 @@ export const routes: Routes = [
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
+  {path: "card-upload", component: CardUploadComponent},
 
 
   {path: 'friendlist', component: FriendlistComponent},

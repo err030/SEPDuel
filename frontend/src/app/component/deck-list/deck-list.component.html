@@ -1,13 +1,17 @@
-<p>deck-list works!</p>
-<h2>Deck List</h2>
-<ul>
-  <li *ngFor="let deck of decks">
-    <app-deck [deck]=deck></app-deck>
-    <button (click)="selectDeck(deck)">Select</button>
-    <button (click)="deleteDeck(deck.id)">Delete</button>
-  </li>
-</ul>
-
-<div>
-  <button (click)="createDeck()">Create New Deck</button>
+<!-- deck-list.component.html -->
+<div class="deck-container">
+  <h2>Deck List</h2>
+  <ul class="deck-list">
+    <li *ngFor="let deck of decks">
+      <app-deck [deck]="deck"></app-deck>
+      <div>
+        <button (click)="selectDeck(deck)">Select</button>
+        <button (click)="deleteDeck(deck.id)">Delete</button>
+        <button (click)="renameDeck(deck)">Rename</button>
+      </div>
+    </li>
+  </ul>
+  <div>
+    <button (click)="createDeck()">Create New Deck</button>
+  </div>
 </div>
