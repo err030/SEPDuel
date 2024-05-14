@@ -1,14 +1,53 @@
 
 <html lang="en-EN">
 
-<body class="homepage-user">
+<body >
 <div class="box">
   <h1>Friend List</h1>
+  <div *ngIf="loggedUser">
+    <div>
+      <h2>好友请求</h2>
+      <ul>
+        <li *ngFor="let request of friendRequests">
+          <div>{{ request.schickenUser.firstname }} {{ request.schickenUser.lastname }}</div>
+          <button (click)="acceptOrDenyRequest(request, 1)">Akzeptieren</button>
+          <button (click)="acceptOrDenyRequest(request, 2)">Ablehnen</button>
+        </li>
+      </ul>
+    </div>
 
+    <h3>Friend List</h3>
+
+    <!-- Show friend requests -->
+    <div *ngIf="newFriendRequests">
+      <button (click)="openNewFriendsView()">View Friend Requests ({{ newFriendRequests }})</button>
+    </div>
+
+    <!-- Friend list -->
+    <ul *ngIf="allFriends.length > 0">
+      <li *ngFor="let friend of allFriends">
+        {{ friend.firstname }} {{ friend.lastname }}
+      </li>
+    </ul>
+    <p *ngIf="allFriends.length === 0">Your friend list is empty.</p>
+
+    <!-- List status -->
+    <div>
+      <label>
+        Public List:
+        <input type="checkbox" [(ngModel)]="isListPublic" (change)="updateListStatus()" />
+      </label>
+    </div>
+
+
+
+      <button (click)="closeNewFriendsView()">Close</button>
+    </div>
+  </div>
 
 
   <div class="btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
-</div>
+
 </body>
 </html>
 

@@ -42,6 +42,7 @@ export class AddfriendComponent {
   chatListFriends: User[] = [];
 
 
+
   constructor(private friendService: FriendService, private messageService: MessageService) {}
 
   ngOnInit(): void {
@@ -93,12 +94,13 @@ export class AddfriendComponent {
               summary: 'Erfolgreich',
               detail: 'Die Freundschaftsanfrage wurde gesendet'
             });
+            this.showUserSearchDialog = false;
           }
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: error.statusText });
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
         }
-      });
+      })
     }
   }
   getUserAvatarUrl(user: User): string {
