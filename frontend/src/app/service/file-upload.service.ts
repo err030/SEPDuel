@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import {Global} from "../global";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class FileUploadService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.http.post('/api/upload', formData).pipe(
+    return this.http.post(Global.backendUrl+ "/admin/cards/upload", formData).pipe(
       catchError(this.handleError)
     );
   }

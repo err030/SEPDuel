@@ -34,38 +34,40 @@ public class AdminController {
 
     @PostMapping("/admin/cards/upload")
     public ResponseEntity<List<Card>> uploadCard(@RequestParam("file") MultipartFile multipartFile) {
-//        if (multipartFile.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
-//        }
-//
-//        // 检查文件类型
-//        if (!multipartFile.getOriginalFilename().endsWith(".csv") || !multipartFile.getContentType().equals("text/csv")) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload a CSV file");
-//        }
+        System.out.println(multipartFile.getContentType());
+        System.out.println(multipartFile.getOriginalFilename());
+        System.out.println(multipartFile.getSize());
+        System.out.println("frontend");
+
         if (!multipartFile.isEmpty()) {
+            List<Card> cards = new ArrayList<>();
            try {
+               //character-input bytes->character input efficient
+               //FileReader extends InputStreamReader
                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+               //DEFAULT = CSV value format and skip Header
                CSVFormat csvFormat = CSVFormat.DEFAULT.builder().build();
                Iterable<CSVRecord> csvRecords = csvFormat.parse(bufferedReader);
-               CSVRecord header = csvRecords.iterator().next();
-               String[] headValues = header.values();
-               csvRecords.forEach(record -> {
-                   for (int i = 0; i < headValues.length; i++) {
-                       Card card = new Card();
-                       card.setName(headValues[i]);
-                       card.setCardRarity(Rarity.valueOf(headValues[i]));
-                       card.setAttackPoints(Integer.parseInt(headValues[i]));
-                       card.setDefensePoints(Integer.parseInt(headValues[i]));
-                       card.setDescription(headValues[i]);
-                       card.setImage(headValues[i]);
-                       cardRepository.save(card);
-                   }
-               });
-               Iterable<Card> cardIterable = cardRepository.findAll();
-               List<Card> cardList = new ArrayList<>();
-               cardIterable.forEach(cardList::add);
+              for (CSVRecord csvRecord : csvRecords) {
+                  Card card = new Card();
+                  card.setName(csvRecord.get(0));
+                  String rarity = csvRecord.get(1);
+                  //csvRecord return s string, check and set the Rarity
+                  card.setCardRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
+                                    rarity.equals("Rarity.RARE") ? Rarity.RARE :
+                                            rarity.equals("Rarity.LEGENDARY") ? Rarity.LEGENDARY :
+                                                    null);
+                  card.setAttackPoints(Integer.parseInt(csvRecord.get(2)));
+                  card.setDefensePoints(Integer.parseInt(csvRecord.get(3)));
+                  card.setDescription(csvRecord.get(4));
+                  card.setImage(csvRecord.get(5));
+                  cards.add(card);
+              }
+              cardRepository.saveAll(cards);
                return ResponseEntity.status(HttpStatus.CREATED).body(null);
            } catch (Exception e) {
+               e.printStackTrace();
+               System.out.println(e.getMessage());
                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
            }
         } else {
