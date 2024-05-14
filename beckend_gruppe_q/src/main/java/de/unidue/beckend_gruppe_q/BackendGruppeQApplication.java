@@ -45,7 +45,7 @@ public class BackendGruppeQApplication {
 //            userRepository.save(user);
             for (User u : userRepository.findAll()) {
                 u.cards.clear();
-                u.decks.clear();
+//                u.decks.clear();
                 userRepository.save(u);
             }
 //
