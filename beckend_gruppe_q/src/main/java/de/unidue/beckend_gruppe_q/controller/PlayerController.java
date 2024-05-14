@@ -60,8 +60,8 @@ public class PlayerController {
     }
 
     //update a deck, include update the name and the cards
-    @PostMapping("/api/user/{id}/updateDeck")
-    public ResponseEntity<Deck> updateDeck(@PathVariable Long id, @RequestBody Deck updateDeck) {
+    @PostMapping("/api/user/{userid}/deck/{id}/updateDeck")
+    public ResponseEntity<Deck> updateDeck(@PathVariable Long userid, @PathVariable Long id, @RequestBody Deck updateDeck) {
         System.out.println("Frontend Called");
         Optional<Deck> existingDeck = deckRepository.findById(id);
         if (existingDeck.isEmpty()) {
@@ -71,17 +71,27 @@ public class PlayerController {
         System.out.println(d.toString());
         d.setName(updateDeck.getName()); //update deckName
         d.setCards(updateDeck.getCards());       //update Cards
+        User u = userRepository.findById(userid).get();
+        u.decks.remove(d);
+        u.decks.add(d);
         Deck savedDeck = deckRepository.save(d);
+        userRepository.save(u);
+        System.out.println("Deck updated" + savedDeck.toString());
         return new ResponseEntity<>(savedDeck, HttpStatus.OK);
     }
 
     //delete a deck
-    @DeleteMapping("/api/user/{userid}/deleteDeck/{deckid}")
+    @DeleteMapping("/api/user/{userid}/deck/{deckid}")
     public ResponseEntity<Deck> deleteDeck(@PathVariable Long userid, @PathVariable Long deckid) {
         if (!deckRepository.existsById(deckid)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        User u = userRepository.findById(userid).get();
+        Deck d = deckRepository.findById(deckid).get();
+        u.decks.remove(d);
         deckRepository.deleteById(deckid);
+
+        userRepository.save(u);
         return ResponseEntity.ok().build();
     }
 

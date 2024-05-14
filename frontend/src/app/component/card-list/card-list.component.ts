@@ -79,4 +79,8 @@ export class CardListComponent implements OnInit{
     this.cardService.setSelectedCards(this.cards)
     this.router.navigate(['all-cards'])
   }
+
+  goToHome() {
+    this.router.navigate(['homepage-user'])
+  }
 }
