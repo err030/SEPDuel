@@ -68,7 +68,8 @@
 
 .info-title {
   font-family: Arial, sans-serif;
-
+  letter-spacing: 1px; /* 字母间距 */
+  line-height: 1.5; /* 行间距 */
 }
 
 .password-btn-box {
@@ -93,7 +94,7 @@
   background: linear-gradient(145deg, #72b879, #28b6bd);
 }
 
-.password-btn-box button:focus {
+.password-btn-box button:hover {
   outline: none;
   box-shadow: 0 0 10px #719ECE;
 }
@@ -101,4 +102,8 @@
 .back-btn-box button{
   font-size: 16px;
   width: 60px;
+}
+
+.back-btn-box button:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
