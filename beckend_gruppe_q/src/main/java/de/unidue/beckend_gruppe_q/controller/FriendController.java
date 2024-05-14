@@ -97,10 +97,10 @@ public class FriendController{
             friendListDetailRepository.delete(detail);
         }
     }
-    @GetMapping("/friend/searchFriendByUsername/{userid}/{Username}")
+    @GetMapping("/friend/searchFriendByUsername/{userid}/{username}")
     public ResponseEntity<Friend> searchUserByUsername(@PathVariable(value = "userid") Long currentUserId,
-                                                       @PathVariable(value = "Username") String targetUsername) {
-        List<User> targetUserList = userRepository.findUserByGroupIdAndUsername(1, targetUsername);
+                                                       @PathVariable(value = "username") String username) {
+        List<User> targetUserList = userRepository.findUserByGroupIdAndUsername(1, username);
 
         if (!targetUserList.isEmpty()) {
             Friend friend = new Friend();
