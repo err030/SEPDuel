@@ -2,14 +2,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { UserService } from '../../service/user.service';
-import {Router, RouterOutlet} from '@angular/router'; // 导入路由器模块
+import {Router, RouterLink, RouterOutlet} from '@angular/router'; // 导入路由器模块
 
 @Component({
   selector: 'homepage-user',
   templateUrl: './homepage-user.component.html',
   styleUrls: ['./homepage-user.component.css'],
   imports: [
-    RouterOutlet
+    RouterOutlet,
+    RouterLink
   ],
   standalone: true
 })

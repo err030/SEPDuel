@@ -22,9 +22,9 @@ import {NgForOf, NgIf} from "@angular/common";
     NgIf,
     NgForOf
   ],
-  providers: [UserService, FriendService,MessageService],
+  providers: [UserService, FriendService,MessageService, ConfirmationService],
   templateUrl: './friendlist.component.html',
-  styleUrl: './friendlist.component.css'
+  styleUrls: ['./friendlist.component.css']
 })
 export class FriendlistComponent implements OnInit {
   zeigenLadeDialog: boolean = false;      //showLoadingDialog
@@ -280,7 +280,7 @@ export class FriendlistComponent implements OnInit {
   }
 
   // 点击好友列表中的好友时，显示好友详情
-  klickenAufFreundListItem(freund: User): void{
+  /*klickenAufFreundListItem(freund: User): void{
     this.ausgewahlteFreundeslisteElementID = freund.id;
     this.friendService.gewählterFreund = freund;
     if(!freund.id) return;
@@ -296,7 +296,7 @@ export class FriendlistComponent implements OnInit {
       error:(err) => this.error('Error occurred', err.statusText)
     })
 
-  }
+  }*/
 
   getItemClass(freund: User): string{
     if(freund.id == this.ausgewahlteFreundeslisteElementID){
