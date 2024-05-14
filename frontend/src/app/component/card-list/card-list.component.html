@@ -8,8 +8,6 @@
 <div class="card-list">
   <div *ngFor="let card of filteredCards">
     <app-card [card]=card></app-card>
-    <button (click)="selectCard(card)">Select</button>
-    <button (click)="removeCard(card)">Remove</button>
   </div>
 
   <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length === 0)">

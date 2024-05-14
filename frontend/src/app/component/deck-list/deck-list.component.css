@@ -1,0 +1,29 @@
+/* deck-list.component.css */
+.deck-container {
+  display: flex;
+  flex-direction: column; /* 垂直堆叠元素 */
+  justify-content: center;
+  align-items: center;    /* 水平和垂直居中 */
+  min-height: 100vh;      /* 视窗的最小高度 */
+  padding: 20px;          /* 增加内边距 */
+}
+
+.deck-list {
+  width: 100%;
+  max-width: 600px;       /* 限制最大宽度 */
+  display: flex;
+  flex-direction: column; /* 列布局 */
+  align-items: center;    /* 子元素居中 */
+  gap: 10px;              /* 元素间隙 */
+}
+
+li {
+  width: 100%;
+  background: #f2f2f2;    /* 背景颜色 */
+  padding: 10px;          /* 内边距 */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 阴影效果 */
+  border-radius: 5px;     /* 圆角边框 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

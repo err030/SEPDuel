@@ -57,19 +57,16 @@ public class BackendGruppeQApplication {
                 u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
                 userRepository.save(u);
             }
-            User u = userRepository.findById(1L).get();
-
-            List<Deck> d = u.decks;
-            for (int i = 1; i < 4; i++) {
-                List<Card> c = new ArrayList<>();
-                d.add(new Deck("Deck " + i, "", c));
-
-                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
-            }
-            userRepository.save(u);
+//            User u = userRepository.findById(1L).get();
+//
+//            List<Deck> d = u.decks;
+//            for (int i = 1; i < 4; i++) {
+//                List<Card> c = new ArrayList<>();
+//                d.add(new Deck("Deck " + i, "", c));
+//
+//                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//            }
+//            userRepository.save(u);
         };
     }
 }
-
-
-
