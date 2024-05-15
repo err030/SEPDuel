@@ -6,6 +6,7 @@ import de.unidue.beckend_gruppe_q.model.Rarity;
 import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
+import de.unidue.beckend_gruppe_q.repository.FriendListRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
@@ -26,7 +27,7 @@ public class BackendGruppeQApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
+    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, FriendListRepository friendListRepository) {
         return args -> {
 //            create a deck
 //            Deck deck = new Deck();
@@ -57,7 +58,8 @@ public class BackendGruppeQApplication {
                 u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
                 userRepository.save(u);
             }
-//            User u = userRepository.findById(1L).get();
+
+
 //
 //            List<Deck> d = u.decks;
 //            for (int i = 1; i < 4; i++) {

@@ -40,7 +40,7 @@ public class FriendController{
 
 
     @GetMapping("/friend/getAllFriends/{currentUserId}")
-    public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "currentUserId") Long currentUserId) {
+    public ResponseEntity<List<User>> getAllFriends(@PathVariable Long currentUserId) {
         List<User> userList = new ArrayList<>();
         FriendList friendList = friendListRepository.findByUserId(currentUserId);
         if (friendList != null) {
