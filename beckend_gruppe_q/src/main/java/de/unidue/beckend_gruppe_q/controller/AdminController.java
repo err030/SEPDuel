@@ -34,10 +34,6 @@ public class AdminController {
 
     @PostMapping("/admin/cards/upload")
     public ResponseEntity<List<Card>> uploadCard(@RequestParam("file") MultipartFile multipartFile) {
-        System.out.println(multipartFile.getContentType());
-        System.out.println(multipartFile.getOriginalFilename());
-        System.out.println(multipartFile.getSize());
-        System.out.println("frontend");
 
         if (!multipartFile.isEmpty()) {
             List<Card> cards = new ArrayList<>();
@@ -64,6 +60,18 @@ public class AdminController {
                   cards.add(card);
               }
               cardRepository.saveAll(cards);
+              // check if the legendary card is present
+               if (!cardRepository.existsByName("O DEUS KLAUS")){
+                    Card specialCard = new Card();
+                    specialCard.setName("O DEUS KLAUS");
+                    specialCard.setCardRarity(Rarity.LEGENDARY);
+                    specialCard.setAttackPoints(Integer.MAX_VALUE);
+                    specialCard.setDefensePoints(0);
+                    specialCard.setDescription("Legend has it that O DEUS KLAUS, the eternal deity, wields infinite power, \" +\n" +
+                            "                    \"casting awe and fear upon all who dare to challenge its divine might.");
+                    specialCard.setImage("src/main/resources/images/cards/O_DEUS_KLAUS.PNG");
+                    cardRepository.save(specialCard);
+               }
                return ResponseEntity.status(HttpStatus.CREATED).body(null);
            } catch (Exception e) {
                e.printStackTrace();

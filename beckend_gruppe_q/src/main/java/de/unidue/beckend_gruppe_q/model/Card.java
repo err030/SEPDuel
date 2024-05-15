@@ -16,7 +16,10 @@ public class Card {
     @Column(name = "card")
     private Long id;
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private Rarity cardRarity;
+
     private int attackPoints;
     private int defensePoints;
     private String description;
