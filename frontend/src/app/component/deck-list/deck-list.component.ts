@@ -71,7 +71,18 @@ export class DeckListComponent implements OnInit{
   }
 
   deleteDeck(deckId: number): void {
-    this.deckService.deleteDeck(deckId);
+    this.deckService.deleteDeck(deckId).subscribe(
+      deck => {
+        console.log(deck);
+        alert('Deck deleted successfully');
+      },
+      error => {
+        console.log(error);
+        alert('Error deleting deck');
+      }
+    )
+    //refresh page
+    window.location.reload();
   }
 
   renameDeck(deck: Deck) {

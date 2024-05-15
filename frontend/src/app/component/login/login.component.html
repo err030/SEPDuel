@@ -17,12 +17,12 @@
     <!-- Email 输入框 -->
     <div class="input-box"
          [ngClass]="{ 'input-error': (loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid }">
-      <input type="text" [(ngModel)]="user.email" placeholder="Username or Email" name="email" #email="ngModel"
+      <input type="text" [(ngModel)]="user.email" placeholder="Email" name="email" #email="ngModel"
              required>
       <!-- 显示错误消息 -->
       <div class="error-message"
            *ngIf="(loginForm.submitted || email.invalid || !user.email) && (email.dirty || email.touched) && !email.valid">
-        {{ showFormValidationErrorMessages() || 'Please enter your username or email' }}
+        {{ showFormValidationErrorMessages() || 'Please enter your email' }}
       </div>
     </div>
 
