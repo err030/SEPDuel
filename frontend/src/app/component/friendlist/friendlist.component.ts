@@ -64,6 +64,7 @@ export class FriendlistComponent implements OnInit {
   activeIndex:number=0;
   showNewFriends:boolean=false;
   showUserSearchDialog:boolean=false;
+  showFriendRequests: boolean = false;
 
   chatListFriends: User[] = [];
 
@@ -153,8 +154,11 @@ export class FriendlistComponent implements OnInit {
     }
   }
 
+
+
   // 获取好友请求
-  openNewFriendsView(): void {
+  openFriendRequestDialog(): void {
+    this.showFriendRequests = true;
     if (this.loggedUser && this.loggedUser.id) {
       this.friendService.getFriendRequests(this.loggedUser.id).subscribe({
         next: (response) => {
@@ -170,9 +174,7 @@ export class FriendlistComponent implements OnInit {
     }
   }
 
-  closeNewFriendsView(): void {
-    this.showNewFriends = false;
-  }
+
 
   acceptOrDenyRequest(request: FriendRequest, status: number): void {
     const currentRequestStatus: number = request.freundschaftanfragStatus;
@@ -211,6 +213,16 @@ export class FriendlistComponent implements OnInit {
         this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
       }
     })
+    // 从 friendRequests 数组中移除该请求对象
+    const index = this.friendRequests.indexOf(request);
+    if (index !== -1) {
+      this.friendRequests.splice(index, 1);
+    }
+
+    // 如果没有未处理的好友请求，关闭对话框
+    if (this.friendRequests.length === 0) {
+      this.showFriendRequests = false;
+    }
   }
 
   // 修改好友列表状态
@@ -240,6 +252,7 @@ export class FriendlistComponent implements OnInit {
         }
       })
     }
+
   }
 
   goToAddFriend() {

@@ -7,22 +7,26 @@
   <div *ngIf="loggedUser">
     <div>
       <h2>好友请求</h2>
-      <ul>
+
+
+
+    <!-- Show friend requests -->
+    <div *ngIf="newFriendRequests">
+      <button (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
+    </div>
+
+      <p-dialog class="custom-dialog" [(visible)]="showFriendRequests" [style]="{width:'500px'}">
+        <ng-template pTemplate="header">
+          <span class="p-text-secondary block mb-5" style="margin-top: 40px;">Friend Request</span>
+        </ng-template>
         <li *ngFor="let request of friendRequests">
           <div>{{ request.schickenUser.firstname }} {{ request.schickenUser.lastname }}</div>
           <button (click)="acceptOrDenyRequest(request, 1)">Akzeptieren</button>
           <button (click)="acceptOrDenyRequest(request, 2)">Ablehnen</button>
         </li>
-      </ul>
-    </div>
+      </p-dialog>
 
-    <h3>Friend List</h3>
-
-    <!-- Show friend requests -->
-    <div *ngIf="newFriendRequests">
-      <button (click)="openNewFriendsView()">View Friend Requests ({{ newFriendRequests }})</button>
-    </div>
-
+      <h3>Friend List</h3>
     <!-- Friend list -->
     <ul *ngIf="allFriends.length > 0">
       <li *ngFor="let friend of allFriends">
@@ -41,13 +45,13 @@
 
 
 
-      <button (click)="closeNewFriendsView()">Close</button>
+
     </div>
   </div>
 
 
   <div class="btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
-
+</div>
 </body>
 </html>
 
