@@ -18,6 +18,7 @@ import {ResetPasswordComponent} from "./component/reset-password/reset-password.
 import {AllCardsComponent} from "./component/all-cards/all-cards.component";
 import {FriendlistComponent} from "./component/friendlist/friendlist.component";
 import {CardUploadComponent} from "./component/card-upload/card-upload.component";
+import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 
 
 export const routes: Routes = [
@@ -38,6 +39,7 @@ export const routes: Routes = [
 
 
   {path: 'friendlist', component: FriendlistComponent},
+  {path: 'addfriend', component:AddfriendComponent},
 
   {path: '**', redirectTo: 'login'}
 ];

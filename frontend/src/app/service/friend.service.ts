@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {User} from "../model/user";
 import {Global} from "../../global";
@@ -13,15 +13,20 @@ export class FriendService {
   constructor(private http: HttpClient) {
   }
 
-  gewählterFreund: User | null = null; //selectedFriend
+  selectedFriend: User | null = null;
 
-  gewählterFreundListStatus: boolean | null = null; //selectedFriendListStatus
+  selectedFriendListStatus: boolean | null = null;
 
-  alleFreunde: User[]= []; //allFriend
+  allFriends: User[] = [];
+
+  chatListFriends: User[] = [];
+
+  selectedFriendInChatList: Subject<User> = new Subject<User>;
 
   //用户名搜索用户
-  searchUserByUsername(userid: number, Username: string): Observable<HttpResponse<friend>>{
-    const url = Global.friendRestServiceUrl + "/searchUserByUsername/" + userid + "/" + Username;
+
+  searchUserByEmail(userId: number, email: string): Observable<HttpResponse<friend>> {
+    const url = Global.friendRestServiceUrl + "/searchFriendByEmail/" + userId + "/" + email;
     return this.http.get<friend>(url, {observe: 'response'});
   }
 

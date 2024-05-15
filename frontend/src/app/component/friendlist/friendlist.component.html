@@ -1,8 +1,60 @@
-<!--<p> Hello World!</p>
-<div class="btn-box">
-  <div>
-    <button (click)="goToHomePage()">Back</button>
+
+<html lang="en-EN">
+
+<body >
+<div class="box">
+  <h1>Friend List</h1>
+  <div *ngIf="loggedUser">
+    <div>
+      <h2>好友请求</h2>
+
+
+
+    <!-- Show friend requests -->
+    <div *ngIf="newFriendRequests">
+      <button (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
+    </div>
+
+      <p-dialog class="custom-dialog" [(visible)]="showFriendRequests" [style]="{width:'500px'}">
+        <ng-template pTemplate="header">
+          <span class="p-text-secondary block mb-5" style="margin-top: 40px;">Friend Request</span>
+        </ng-template>
+        <li *ngFor="let request of friendRequests">
+          <div>{{ request.schickenUser.firstname }} {{ request.schickenUser.lastname }}</div>
+          <button (click)="acceptOrDenyRequest(request, 1)">Akzeptieren</button>
+          <button (click)="acceptOrDenyRequest(request, 2)">Ablehnen</button>
+        </li>
+      </p-dialog>
+
+      <h3>Friend List</h3>
+    <!-- Friend list -->
+    <ul *ngIf="allFriends.length > 0">
+      <li *ngFor="let friend of allFriends">
+        {{ friend.firstname }} {{ friend.lastname }}
+      </li>
+    </ul>
+    <p *ngIf="allFriends.length === 0">Your friend list is empty.</p>
+
+    <!-- List status -->
+    <div>
+      <label>
+        Public List:
+        <input type="checkbox" [(ngModel)]="isListPublic" (change)="updateListStatus()" />
+      </label>
+    </div>
+
+
+
+
+    </div>
   </div>
+
+
+  <div class="btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
 </div>
--->
+</body>
+</html>
+
+
+
 
