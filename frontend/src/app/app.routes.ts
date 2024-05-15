@@ -19,6 +19,7 @@ import {AllCardsComponent} from "./component/all-cards/all-cards.component";
 import {FriendlistComponent} from "./component/friendlist/friendlist.component";
 import {CardUploadComponent} from "./component/card-upload/card-upload.component";
 import {AddfriendComponent} from "./component/addfriend/addfriend.component";
+import {FriendComponent} from "./component/friend/friend.component";
 
 
 export const routes: Routes = [
@@ -38,8 +39,16 @@ export const routes: Routes = [
   {path: "card-upload", component: CardUploadComponent},
 
 
-  {path: 'friendlist', component: FriendlistComponent},
   {path: 'addfriend', component:AddfriendComponent},
+
+  {
+    path: 'friendlist',
+    component: FriendlistComponent,
+    canActivateChild: [userAuthGuard],
+    children: [
+      {path: 'friend/:friendId', component: FriendComponent},
+    ]
+  },
 
   {path: '**', redirectTo: 'login'}
 ];

@@ -1,8 +1,7 @@
-
 <html lang="en-EN">
 
 <body >
-<div class="box">
+<div class="col-4 leftStyle">
   <h1>Friend List</h1>
   <div *ngIf="loggedUser">
     <div>
@@ -10,10 +9,10 @@
 
 
 
-    <!-- Show friend requests -->
-    <div *ngIf="newFriendRequests">
-      <button (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
-    </div>
+      <!-- Show friend requests -->
+      <div *ngIf="newFriendRequests">
+        <button (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
+      </div>
 
       <p-dialog class="custom-dialog" [(visible)]="showFriendRequests" [style]="{width:'500px'}">
         <ng-template pTemplate="header">
@@ -27,21 +26,30 @@
       </p-dialog>
 
       <h3>Friend List</h3>
-    <!-- Friend list -->
-    <ul *ngIf="allFriends.length > 0">
-      <li *ngFor="let friend of allFriends">
-        {{ friend.firstname }} {{ friend.lastname }}
-      </li>
-    </ul>
-    <p *ngIf="allFriends.length === 0">Your friend list is empty.</p>
+      <p-scroller [items]="allFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)" *ngIf="allFriends.length > 0">
+        <ng-template pTemplate="item" let-friend>
+          <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(friend)"
+               style="height: 50px;"
+               (click)="onFriendListItemClick(friend)">
+            <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
+          </div>
+        </ng-template>
+        <!-- <ul>
+           <li *ngFor="let friend of allFriends">
+             {{ friend.firstname }} {{ friend.lastname }}
+           </li>
+         </ul>-->
+      </p-scroller>
+      <p *ngIf="allFriends.length === 0">Your friend list is empty.</p>
 
-    <!-- List status -->
-    <div>
-      <label>
-        Public List:
-        <input type="checkbox" [(ngModel)]="isListPublic" (change)="updateListStatus()" />
-      </label>
-    </div>
+      <!-- List status -->
+      <div>
+        <p-toggleButton *ngIf="isListPublic != null" [(ngModel)]="isListPublic" onLabel="Public" offLabel="Private"
+                        onIcon="pi pi-eye"
+                        offIcon="pi pi-eye-slash" [style]="{ width: '8em' }"
+                        (onChange)="updateListStatus()"></p-toggleButton>
+
+      </div>
 
 
 
@@ -52,9 +60,10 @@
 
   <div class="btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
 </div>
+
+<div class="col-8 rightStyle">
+  <!-- 好友详情 -->
+  <router-outlet></router-outlet>
+</div>
 </body>
 </html>
-
-
-
-
