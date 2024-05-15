@@ -14,11 +14,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @CrossOrigin
 @RestController
@@ -330,7 +337,25 @@ public class UserController {
         }
     }
 
-
+//    // 处理头像的GET请求
+//    @GetMapping("/avatars/{filename:.+}")
+//    public ResponseEntity<Resource> getAvatar(@PathVariable String filename) {
+//        try {
+//            Path fileStorageLocation = Paths.get("avatars").toAbsolutePath().normalize();// 假设你的头像存储在服务器的avatars目录
+//            System.out.println(fileStorageLocation.toAbsolutePath().toString());
+//            Path filePath = fileStorageLocation.resolve(filename).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//            if(resource.exists()) {
+//                return ResponseEntity.ok()
+//                        .contentType(MediaType.IMAGE_JPEG) // 或者根据文件类型调整
+//                        .body(resource);
+//            } else {
+//                return ResponseEntity.notFound().build();
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
 
 
 }

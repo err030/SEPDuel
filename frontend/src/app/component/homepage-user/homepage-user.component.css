@@ -37,11 +37,12 @@ body.homepage-user {
 }
 
 .homepage-user .btn-box{
-  background: linear-gradient(145deg, #ebe1a8, #72b879);
+  background: linear-gradient(145deg, #67eae7, #8ec593);
   color: rgb(55, 37, 19);
   padding: 10px 20px;
   font-size: 18px;
   cursor: pointer;
+  border: none;
   border-radius: 5px;
   border-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -53,7 +54,7 @@ body.homepage-user {
 }
 
 .homepage-user .btn-box:hover {
-  background: linear-gradient(145deg, #ebe1a8, #72b879);
+  background: linear-gradient(145deg, #8ec593, #67eae7);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* 点击时的高亮效果 */
 }
 

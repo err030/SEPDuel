@@ -30,6 +30,14 @@
               "src/app/component/register/register.component.css",
               "src/app/component/profile/profile.component.css",
 
+              "src/app/component/card/card.component.css",
+              "src/app/component/card-list/card-list.component.css",
+              "src/app/component/card-upload/card-upload.component.css",
+              "src/app/component/deck/deck.component.css",
+              "src/app/component/deck-list/deck-list.component.css",
+
+              "src/app/component/friendlist/friendlist.component.css",
+
               "src/app/component/homepage-admin/homepage-admin.component.css",
               "src/app/component/homepage-user/homepage-user.component.css",
 

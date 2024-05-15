@@ -40,7 +40,6 @@
   overflow: hidden;
   border-radius: 50%;
   box-shadow: 0px 0px 18px -6px #fff200;
-  background-color:rgb(255, 255, 255);
 }
 
 .avatar img {
@@ -67,7 +66,9 @@
 }
 
 .info-title {
-  font-family: 'Bungee', sans-serif
+  font-family: Arial, sans-serif;
+  letter-spacing: 1px; /* 字母间距 */
+  line-height: 1.5; /* 行间距 */
 }
 
 .password-btn-box {
@@ -85,17 +86,23 @@
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   transition: background 0.3s ease;
+  font-size: 16px;
 }
 
 .password-btn-box button:hover {
   background: linear-gradient(145deg, #72b879, #28b6bd);
 }
 
-.password-btn-box button:focus {
+.password-btn-box button:hover {
   outline: none;
   box-shadow: 0 0 10px #719ECE;
 }
 
 .back-btn-box button{
-  width: 50px;
+  font-size: 16px;
+  width: 60px;
+}
+
+.back-btn-box button:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }

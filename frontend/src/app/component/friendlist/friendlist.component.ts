@@ -6,7 +6,7 @@ import {Global} from "../../global";
 import {friend} from "../../model/friend";
 import {FriendRequest} from "../../model/FriendRequest";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Router, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {forkJoin} from "rxjs";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
@@ -20,6 +20,7 @@ import {DividerModule} from "primeng/divider";
 import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
 import {TabViewModule} from "primeng/tabview";
+import {ScrollPanelModule} from "primeng/scrollpanel";
 
 
 
@@ -39,7 +40,8 @@ import {TabViewModule} from "primeng/tabview";
     RouterOutlet,
     DialogModule,
     NgClass,
-    TabViewModule
+    TabViewModule,
+    ScrollPanelModule
   ],
   providers: [UserService, FriendService,MessageService,ConfirmationService],
   templateUrl: './friendlist.component.html',
@@ -67,6 +69,11 @@ export class FriendlistComponent implements OnInit {
   showFriendRequests: boolean = false;
 
   chatListFriends: User[] = [];
+  friendId: number | null = null;
+  selectedFriend: User | null = null;
+  selectedFriendListStatus: boolean | null = null;
+  friends: User[] = [];
+  showFriendList: boolean = false;
 
 
 
@@ -80,15 +87,16 @@ export class FriendlistComponent implements OnInit {
   showAddFriendConfirmationPopup = false;
   showAddFriendPopup = false;
   protected showDeleteFriendConfirmation=false;
-  private selectedFriend: User|null = null;
   protected readonly friend = friend;
+
 
 
   constructor(private userService: UserService,
               private friendService: FriendService,
               private messageService: MessageService,
               private router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private activatedRoute: ActivatedRoute,) {
     console.log('FriendlistComponent instantiated');
   }
 
@@ -148,10 +156,17 @@ export class FriendlistComponent implements OnInit {
             this.chatListFriends.unshift(value);
             this.selectedChatListItemId = value.id;
           }
-          this.activeIndex = 0;
+          this.activeIndex = 0;this.activatedRoute.paramMap.subscribe(parameters => {
+      const friendIdParam = parameters.get('friendId');
         }
       })*/
+      this.activatedRoute.paramMap.subscribe(parameters => {
+        const friendIdParam = parameters.get('friendId');
+        console.log(friendIdParam); // 确认 friend.id 是否正确获取
+        // 进行其他操作，例如加载 friend 的详细信息
+      });
     }
+
   }
 
 
@@ -255,7 +270,63 @@ export class FriendlistComponent implements OnInit {
 
   }
 
+  // 点击好友列表中的好友时，显示好友详情
+  onFriendListItemClick(friend: User): void {
+    this.selectedFriendListItemId = friend.id;
+    this.friendService.selectedFriend = friend;
+    if (friend.id) {
+      this.friendService.getListStatus(friend.id).subscribe({
+        next: (response) => {
+          if (response.status == 200) {
+            this.friendService.selectedFriendListStatus = response.body;
+            this.friendService.allFriends = this.allFriends;
+            this.friendService.chatListFriends = this.chatListFriends;
+            void this.router.navigateByUrl("/friendlist/friend/" + friend.id);
+          }
+        },
+        error: (error) => {
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        }
+      })
+    }
+  }
+
+  getItemClass(friend: User): string {
+    if (friend.id == this.selectedFriendListItemId) {
+      return 'friendListItemSelected';
+    } else {
+      return 'friendListItemUnselected';
+    }
+  }
+
   goToAddFriend() {
     this.router.navigate(['/addfriend']);
+  }
+
+  getFriendFirstname(friend: User): string {
+    return Global.backendUrl + friend.firstname;
+  }
+
+  // 获取好友信息并显示
+  openFriendList(): void {
+    if (this.selectedFriend && this.selectedFriend.id) {
+      this.friendService.getAllFriends(this.selectedFriend.id).subscribe({
+        next: (response) => {
+          if (response.status == 200 && response.body) {
+            this.friends.length = 0;
+            response.body.forEach(friend => {
+              this.friends.push(friend);
+            })
+            this.showFriendList = true;
+          }
+        },
+        error: (error) => {
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        }
+      })
+    }
+  }
+  selectFriend(friend: any): void {
+    this.selectedFriend = friend;
   }
 }
