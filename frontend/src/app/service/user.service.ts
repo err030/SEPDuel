@@ -1,6 +1,6 @@
 //user.service.ts
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
 import {User} from "../model/user";
 import {Router} from "@angular/router";
@@ -20,6 +20,14 @@ export class UserService {
   loggedUser: User | null = null;
 
   constructor(private http: HttpClient,  private router: Router) {
+    this.restoreUser();
+  }
+  //在服务初始化时恢复用户数据
+  private restoreUser(): void {
+    const userData = localStorage.getItem('loggedUser');
+    if (userData) {
+      this.loggedUser = JSON.parse(userData);
+    }
   }
 
   // 添加新用户
@@ -145,12 +153,34 @@ export class UserService {
     }
   }
   //上传头像
-  uploadAvatar(file: File, userId: number): Observable<HttpResponse<User>> {
+  uploadAvatar(file: File, userId: number): Observable<HttpEvent<User>> {
     const url = Global.userRestServiceUrl + "/avatar/" + userId;
     const formData = new FormData();
     formData.append("file", file);
-    return this.http.put<User>(url, formData, {observe: 'response'});
+    return this.http.put<User>(url, formData, {
+      reportProgress: true,
+      observe: 'events'  // 改变观察类型为事件，以便能处理进度信息
+    });
   }
+
+ //更新头像
+  updateLoggedUserAvatar(newAvatarUrl: string): void {
+    if (this.loggedUser) {
+      this.loggedUser.avatarUrl = newAvatarUrl;
+      // 更新 localStorage 或其他持久化存储的信息
+      localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+    }
+  }
+
+  getAllUser(user: User): Observable<HttpResponse<User[]>> {
+    const url = Global.userRestServiceUrl + "/getAllUser "+ "/" + user.groupId;
+    return this.http.get<User[]>(url, {observe: 'response'});
+  }
+
+
+
+
+
 
 
   userLogout() {
@@ -158,4 +188,6 @@ export class UserService {
     this.loggedUser = null;
     void this.router.navigateByUrl("/login");
   }
+
+
 }

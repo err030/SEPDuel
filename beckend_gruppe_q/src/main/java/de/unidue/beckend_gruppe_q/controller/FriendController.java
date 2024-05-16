@@ -39,19 +39,34 @@ public class FriendController{
     }
 
 
-    @GetMapping("/friend/getAllFriends/{currentUserId}")
-    public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "currentUserId") Long currentUserId) {
-        List<User> userList = new ArrayList<>();
-        FriendList friendList = friendListRepository.findByUserId(currentUserId);
-        if (friendList != null) {
-            List<FriendListDetail> details = friendListDetailRepository.findByFreundListId(friendList.getId());
-            details.forEach(detail -> {
-                Optional<User> userOptional = userRepository.findById(detail.getFreundUserId());
-                userOptional.ifPresent(userList::add);
-            });
+    @GetMapping("/friend/searchFriendByUsername/{userid}/{username}")
+    public ResponseEntity<Friend> searchUserByUsername(@PathVariable(value = "userid") Long currentUserId,
+                                                       @PathVariable(value = "username") String targetUsername) {
+        List<User> userList = userRepository.findUserByUsernameAndGroupId(targetUsername,1);
+        if (!userList.isEmpty()) {
+            Friend friend = new Friend();
+            // 用户信息
+            User user = userList.get(0);
+            friend.setUser(user);
+            // 是否已经添加为好友
+            FriendList currentUserFriendList = friendListRepository.findByUserId(currentUserId);
+            if (currentUserFriendList != null) {
+                FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), user.getId());
+                if (friendListDetail != null) {
+                    friend.setIstSchonFreunde(true);
+                }
+            }
+            // 好友申请状态
+            FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, user.getId());
+            if (friendRequest != null) {
+                friend.setStatusVonFreundschaftanfrag(friendRequest.getFreundschaftanfragStatus());
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(friend);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
+
 
 
     @GetMapping("/friend/getListStatus/{currentUserId}")
@@ -97,25 +112,25 @@ public class FriendController{
             friendListDetailRepository.delete(detail);
         }
     }
-    @GetMapping("/friend/searchFriendByUsername/{userid}/{username}")
-    public ResponseEntity<Friend> searchUserByUsername(@PathVariable(value = "userid") Long currentUserId,
-                                                       @PathVariable(value = "username") String username) {
-        List<User> targetUserList = userRepository.findUserByGroupIdAndUsername(1, username);
-
-        if (!targetUserList.isEmpty()) {
+    @GetMapping("/friend/searchFriendByEmail/{userid}/{email}")
+    public ResponseEntity<Friend> searchUserByEmail(@PathVariable(value = "userid") Long currentUserId,
+                                                    @PathVariable(value = "email") String targetEmail) {
+        List<User> userList = userRepository.findUserByEmailAndGroupId(targetEmail, 1);
+        if (!userList.isEmpty()) {
             Friend friend = new Friend();
-            User targetUser = targetUserList.get(0);
-            friend.setUser(targetUser);
-
+            // 用户信息
+            User user = userList.get(0);
+            friend.setUser(user);
+            // 是否已经添加为好友
             FriendList currentUserFriendList = friendListRepository.findByUserId(currentUserId);
             if (currentUserFriendList != null) {
-                FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), targetUser.getId());
+                FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), user.getId());
                 if (friendListDetail != null) {
                     friend.setIstSchonFreunde(true);
                 }
             }
-
-            FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, targetUser.getId());
+            // 好友申请状态
+            FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, user.getId());
             if (friendRequest != null) {
                 friend.setStatusVonFreundschaftanfrag(friendRequest.getFreundschaftanfragStatus());
             }
@@ -125,24 +140,27 @@ public class FriendController{
         }
     }
 
-    @PostMapping("/friend/sendFriendRequest/{currentUserid}/ {targetUserid}")
+
+    @PostMapping("/friend/sendFriendRequest/{currentUserid}/{targetUserid}")
     public ResponseEntity<?> sendFriendRequest(@PathVariable(value = "currentUserid") Long currentUserId,
                                                @PathVariable(value = "targetUserid") Long targetUserId) {
+        // 检查是否已经发过好友申请
         FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, targetUserId);
-        if(friendRequest != null && friendRequest.getFreundschaftanfragStatus() == 2){
-
-            friendRequest.setFreundschaftanfragStatus(0);
-            friendRequestRepository.save(friendRequest);
-        }else if(friendRequest == null){
+        if (friendRequest != null) {
+            if (friendRequest.getFreundschaftanfragStatus() == 2) {
+                // 如果已经发过申请并且被拒绝，修改请求状态并保存，使得目标用户可以再次审核
+                friendRequest.setFreundschaftanfragStatus(0);
+                friendRequestRepository.save(friendRequest);
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//应该要跳出一个消息提示
+            }
+        } else {
+            // 如果没有发过好友申请，发送新的
             FriendRequest newFriendRequest = new FriendRequest(currentUserId, targetUserId, 0);
             friendRequestRepository.save(newFriendRequest);
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
-        FriendRequestEmail(currentUserId, targetUserId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-
     }
 
     private void FriendRequestEmail(Long currentUserId, Long targetUserId) {
@@ -170,14 +188,34 @@ public class FriendController{
         List<FriendRequest> friendRequests = friendRequestRepository.findByZielUserIdOrderByFreundschaftanfragStatus(currentUserId);
         friendRequests.forEach(request ->{
                     Optional<User> senderOptional = userRepository.findById(request.getSchickenUserId());
-                    senderOptional.ifPresent(sender -> request.setSchickenUser(sender));
+                    senderOptional.ifPresent(request::setSchickenUser);
                 }
         );
         return ResponseEntity.ok().body(friendRequests);
 
     }
 
+
     @PutMapping("/friend/friendRequest")
+    public ResponseEntity<?> acceptOrDenyFriendRequest(@RequestBody FriendRequest friendRequest) {
+        friendRequestRepository.save(friendRequest);
+        if (friendRequest.getFreundschaftanfragStatus() == 1) {
+            // 同意用户请求，把好友信息分别插入当前用户和目标用户的好友列表
+            FriendList currentUserList = friendListRepository.findByUserId(friendRequest.getZielUserId());
+            if (currentUserList == null) {
+                currentUserList = friendListRepository.save(new FriendList(friendRequest.getZielUserId(), true));
+            }
+            FriendList targetUserList = friendListRepository.findByUserId(friendRequest.getSchickenUserId());
+            if (targetUserList == null) {
+                targetUserList = friendListRepository.save(new FriendList(friendRequest.getSchickenUserId(), true));
+            }
+            friendListDetailRepository.save(new FriendListDetail(currentUserList.getId(), friendRequest.getSchickenUserId()));
+            friendListDetailRepository.save(new FriendListDetail(targetUserList.getId(), friendRequest.getZielUserId()));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+   /* @PutMapping("/friend/friendRequest")
     public ResponseEntity<?> acceptOrRejectFriendRequest(@RequestBody FriendRequest friendRequest) {
         friendRequestRepository.save(friendRequest);
 
@@ -190,9 +228,25 @@ public class FriendController{
         }
 
         return ResponseEntity.ok().build();
+    }*/
+
+
+    @GetMapping("/friend/getAllFriends/{currentUserId}")
+    public ResponseEntity<List<User>> getAllFriends(@PathVariable(value = "currentUserId") Long currentUserId) {
+        List<User> userList = new ArrayList<>();
+        FriendList friendList = friendListRepository.findByUserId(currentUserId);
+        if (friendList != null) {
+            List<FriendListDetail> details = friendListDetailRepository.findByFreundListId(friendList.getId());
+            details.forEach(detail -> {
+                Optional<User> userOptional = userRepository.findById(detail.getFreundUserId());
+                userOptional.ifPresent(userList::add);
+            });
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
-    private void updateFriendLists(Long userID1, Long userID2) {
+
+    /*private void updateFriendLists(Long userID1, Long userID2) {
         FriendList currentUserList = updateFriendList(userID1);
         FriendList senderUserList = updateFriendList(userID2);
 
@@ -220,7 +274,7 @@ public class FriendController{
             eMailService.sendEMail(receiver.getEmail(), EmailSubject, EmailContent);
         }
 
-    }
+    }*/
 
 
     @GetMapping("/friend/getNewFriendRequestNumber/{currentUserId}")

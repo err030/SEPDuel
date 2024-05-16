@@ -76,9 +76,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if (response.status === 200) {
           if (response.body){
             this.loggedUser=response.body;
+            Global.loggedUser = this.loggedUser; // 设置 Global.loggedUser
+            localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser)); // 同步到本地存储
           }
-          // 用户登录成功，导航到验证页面
 
+          // 用户登录成功，导航到验证页面
           this.userService.getSecurityCodeByUserId((this.loggedUser.id)).subscribe({
             next: (response) => {
               if(response.status === 201) {

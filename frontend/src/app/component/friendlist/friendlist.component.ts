@@ -1,4 +1,3 @@
-//friendlist.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
@@ -7,7 +6,7 @@ import {Global} from "../../global";
 import {friend} from "../../model/friend";
 import {FriendRequest} from "../../model/FriendRequest";
 import {FormsModule, NgForm} from "@angular/forms";
-import {Router, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {forkJoin} from "rxjs";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
@@ -21,6 +20,8 @@ import {DividerModule} from "primeng/divider";
 import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
 import {TabViewModule} from "primeng/tabview";
+import {ScrollPanelModule} from "primeng/scrollpanel";
+
 
 
 @Component({
@@ -39,7 +40,8 @@ import {TabViewModule} from "primeng/tabview";
     RouterOutlet,
     DialogModule,
     NgClass,
-    TabViewModule
+    TabViewModule,
+    ScrollPanelModule
   ],
   providers: [UserService, FriendService,MessageService,ConfirmationService],
   templateUrl: './friendlist.component.html',
@@ -64,29 +66,15 @@ export class FriendlistComponent implements OnInit {
   activeIndex:number=0;
   showNewFriends:boolean=false;
   showUserSearchDialog:boolean=false;
+  showFriendRequests: boolean = false;
 
   chatListFriends: User[] = [];
-  zeigenLadeDialog: boolean = false;      //showLoadingDialog
+  friendId: number | null = null;
+  selectedFriend: User | null = null;
+  selectedFriendListStatus: boolean | null = null;
+  friends: User[] = [];
+  showFriendList: boolean = false;
 
-  zeigenNeueFreunde: boolean = false;     //showNewFriends
-
-  zeigenUserSearchDialog: boolean = false;  //showUserSearchDialog
-
-  angemeldeterBenutzer: User | null = null; //loggedUser
-
-  zielBenutzerName: string = "";            //targetUserName
-
-  zielFreund: friend | null = null;        //targetFriend
-
-  alleFreunde: User[] = [];                //allFriends
-
-  freundschaftsAnfragen: FriendRequest[] = []; //friendRequests
-
-  neueFreundschaftsanfragen: string = "";  //newFriendRequests
-
-  istListeoffentlich: boolean | null = false; //isListPublic
-
-  ausgewahlteFreundeslisteElementID: number | undefined; //selectedFriendListItemId
 
 
   @ViewChild(NgForm)
@@ -99,15 +87,16 @@ export class FriendlistComponent implements OnInit {
   showAddFriendConfirmationPopup = false;
   showAddFriendPopup = false;
   protected showDeleteFriendConfirmation=false;
-  private selectedFriend: User|null = null;
   protected readonly friend = friend;
+
 
 
   constructor(private userService: UserService,
               private friendService: FriendService,
               private messageService: MessageService,
               private router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private activatedRoute: ActivatedRoute,) {
     console.log('FriendlistComponent instantiated');
   }
 
@@ -151,10 +140,40 @@ export class FriendlistComponent implements OnInit {
           this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
         }
       })
+      // 观察selectedFriendInChatList是否有数据变化，有的话则表示是从好友详情页面跳转过来的，激活Chats页面
+      /*this.friendService.selectedFriendInChatList.subscribe({
+        next: value => {
+          this.selectedChatListItemId = undefined;
+          // 检查该好友是否已经在chatListFriends中
+          for (let user of this.chatListFriends) {
+            if (user.id == value.id) {
+              this.selectedChatListItemId = user.id;
+              break;
+            }
+          }
+          // 如果不存在，添加到chatListFriends的第一个
+          if (this.selectedChatListItemId == undefined) {
+            this.chatListFriends.unshift(value);
+            this.selectedChatListItemId = value.id;
+          }
+          this.activeIndex = 0;this.activatedRoute.paramMap.subscribe(parameters => {
+      const friendIdParam = parameters.get('friendId');
+        }
+      })*/
+      this.activatedRoute.paramMap.subscribe(parameters => {
+        const friendIdParam = parameters.get('friendId');
+        console.log(friendIdParam); // 确认 friend.id 是否正确获取
+        // 进行其他操作，例如加载 friend 的详细信息
+      });
     }
+
   }
 
-  openNewFriendsView(): void {
+
+
+  // 获取好友请求
+  openFriendRequestDialog(): void {
+    this.showFriendRequests = true;
     if (this.loggedUser && this.loggedUser.id) {
       this.friendService.getFriendRequests(this.loggedUser.id).subscribe({
         next: (response) => {
@@ -170,118 +189,16 @@ export class FriendlistComponent implements OnInit {
     }
   }
 
-  closeNewFriendsView(): void {
-    this.showNewFriends = false;
-  }
 
-  resetUserSearchDialog(): void {
-    this.targetFriend = null;
-    this.targetEmail = '';
-    this.userSearchForm.form.markAsPristine();
-    this.userSearchForm.form.markAsUntouched();
-    this.userSearchForm.form.updateValueAndValidity();
-  }
 
-  // 搜索用户
-  onUserSearchFormSubmit(): void {
-    if (this.loggedUser && this.loggedUser.id) {
-      this.friendService.searchUserByUsername(this.loggedUser.id, this.loggedUser.username).subscribe({
-        next: (response) => {
-          if (response.status == 200 && response.body) {
-            this.targetFriend = response.body;
-            console.log(this.targetFriend)
-            /*if (this.targetFriend.user.avatarUrl) {
-              this.targetUserHasAvatar = true;
-              this.targetUserAvatarUrl = this.getUserAvatarUrl(this.targetFriend.user);
-            } else {
-              this.targetUserHasAvatar = false;
-              this.targetUserAvatarWord = this.getUserAvatarWord(this.targetFriend.user);
-            }*/
-          }
-        },
-        error: (error) => {
-          if (error.status == 404) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Nicht gefunden',
-              detail: 'Die eingegebene Email ist nicht vorhanden.'
-            });
-          } else {
-            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-          }
-          this.targetFriend = null;
-        }
-      })
-    }
-  }
-
-  // 发送好友请求
-  sendFriendRequest(): void {
-    if (this.loggedUser && this.loggedUser.id && this.targetFriend && this.targetFriend.user && this.targetFriend.user.id) {
-      this.friendService.sendFriendRequest(this.loggedUser.id, this.targetFriend.user.id).subscribe({
-        next: (response) => {
-          if (response.status == 200) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde gesendet'
-            });
-            this.showUserSearchDialog = false;
-          }
-        },
-        error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-        }
-      })
-    }
-  }
-
-  // 点击好友列表中的好友时，显示好友详情
-  onFriendListItemClick(friend: User): void {
-    this.selectedFriendListItemId = friend.id;
-    this.friendService.selectedFriend = friend;
-    if (friend.id) {
-      this.friendService.getListStatus(friend.id).subscribe({
-        next: (response) => {
-          if (response.status == 200) {
-            this.friendService.selectedFriendListStatus = response.body;
-            this.friendService.allFriends = this.allFriends;
-            //this.friendService.chatListFriends = this.chatListFriends;
-            void this.router.navigateByUrl("/user/friend/" + friend.id);
-          }
-        },
-        error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-        }
-      })
-    }
-  }
-
-  getItemClass(friend: User): string {
-    if (friend.id == this.selectedFriendListItemId) {
-      return 'friendListItemSelected';
-    } else {
-      return 'friendListItemUnselected';
-    }
-  }
-
-  /*getUserAvatarWord(user: User): string {
-    return user.lastname.charAt(0) + user.firstname.charAt(0);
-  }
-
-  getUserAvatarUrl(user: User): string {
-    return Global.backendUrl + user.avatarUrl;
-  }*/
-
-  // 接受或拒绝好友请求
   acceptOrDenyRequest(request: FriendRequest, status: number): void {
-    const currentRequestStatus: number = request.requestStatus;
-    request.requestStatus = status;
+    const currentRequestStatus: number = request.freundschaftanfragStatus;
+    request.freundschaftanfragStatus = status;
     this.friendService.acceptOrRejectFriendRequest(request).subscribe({
       next: (response) => {
         if (response.status == 200) {
           if (status == 1) {
-            this.allFriends.push(request.sendUser);
+            this.allFriends.push(request.schickenUser);
             this.allFriends.sort((friend1, friend2) => friend1.lastname.localeCompare(friend2.lastname));
             this.messageService.add({
               severity: 'success',
@@ -307,10 +224,20 @@ export class FriendlistComponent implements OnInit {
         }
       },
       error: (error) => {
-        request.requestStatus = currentRequestStatus;
+        request.freundschaftanfragStatus = currentRequestStatus;
         this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
       }
     })
+    // 从 friendRequests 数组中移除该请求对象
+    const index = this.friendRequests.indexOf(request);
+    if (index !== -1) {
+      this.friendRequests.splice(index, 1);
+    }
+
+    // 如果没有未处理的好友请求，关闭对话框
+    if (this.friendRequests.length === 0) {
+      this.showFriendRequests = false;
+    }
   }
 
   // 修改好友列表状态
@@ -341,13 +268,65 @@ export class FriendlistComponent implements OnInit {
       })
     }
 
+  }
 
+  // 点击好友列表中的好友时，显示好友详情
+  onFriendListItemClick(friend: User): void {
+    this.selectedFriendListItemId = friend.id;
+    this.friendService.selectedFriend = friend;
+    if (friend.id) {
+      this.friendService.getListStatus(friend.id).subscribe({
+        next: (response) => {
+          if (response.status == 200) {
+            this.friendService.selectedFriendListStatus = response.body;
+            this.friendService.allFriends = this.allFriends;
+            this.friendService.chatListFriends = this.chatListFriends;
+            void this.router.navigateByUrl("/friendlist/friend/" + friend.id);
+          }
+        },
+        error: (error) => {
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        }
+      })
+    }
+  }
 
+  getItemClass(friend: User): string {
+    if (friend.id == this.selectedFriendListItemId) {
+      return 'friendListItemSelected';
+    } else {
+      return 'friendListItemUnselected';
+    }
+  }
 
+  goToAddFriend() {
+    this.router.navigate(['/addfriend']);
+  }
 
-}
+  getFriendFirstname(friend: User): string {
+    return Global.backendUrl + friend.firstname;
+  }
 
-  resetList() {
-
+  // 获取好友信息并显示
+  openFriendList(): void {
+    if (this.selectedFriend && this.selectedFriend.id) {
+      this.friendService.getAllFriends(this.selectedFriend.id).subscribe({
+        next: (response) => {
+          if (response.status == 200 && response.body) {
+            this.friends.length = 0;
+            response.body.forEach(friend => {
+              this.friends.push(friend);
+            })
+            this.showFriendList = true;
+          }
+        },
+        error: (error) => {
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        }
+      })
+    }
+  }
+  selectFriend(friend: any): void {
+    this.selectedFriend = friend;
   }
 }

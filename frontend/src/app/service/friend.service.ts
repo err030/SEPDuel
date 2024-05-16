@@ -24,8 +24,9 @@ export class FriendService {
   selectedFriendInChatList: Subject<User> = new Subject<User>;
 
   //用户名搜索用户
-  searchUserByUsername(userId: number, username: string): Observable<HttpResponse<friend>>{
-    const url = Global.friendRestServiceUrl + "/searchUserByUsername/" + userId + "/" + username;
+
+  searchUserByEmail(userId: number, email: string): Observable<HttpResponse<friend>> {
+    const url = Global.friendRestServiceUrl + "/searchFriendByEmail/" + userId + "/" + email;
     return this.http.get<friend>(url, {observe: 'response'});
   }
 
