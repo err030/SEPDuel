@@ -68,9 +68,11 @@ export class FriendService {
     return this.http.get<any>(url, {observe: 'response'});
   }
 
-  deleteFriend(currentUserId: number, friendId: number): Observable<HttpResponse<any>>{
+  deleteFriend(currentUserId: number, friendId: number): Observable<HttpResponse<any>> {
     const url = Global.friendRestServiceUrl + "/" + currentUserId + "/" + friendId;
     return this.http.delete<any>(url, {observe: 'response'});
   }
+
+
 
 }
