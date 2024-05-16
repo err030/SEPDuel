@@ -1,0 +1,83 @@
+<!--register.component.html-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Register Window</title>
+  <link rel="stylesheet" href="register.component.css"/>
+</head>
+
+<body class="background-image-login">
+<div class="box">
+  <h2>Create an Account</h2>
+  <form #registerForm="ngForm" (ngSubmit)="onRegisterFormSubmit()">
+    <div class="input-box" [class.input-error]="!isValidEmail(user.email)">
+      <label>Email*</label>
+      <input type="email" placeholder="Enter your email" required [(ngModel)]="user.email" name="email">
+      <div *ngIf="user.email && !isValidEmail(user.email)" class="error-message">Invalid email</div>
+    </div>
+
+
+    <div class="input-box" [class.input-error]="!user.password">
+      <label>Password*</label>
+      <input type="password" placeholder="Enter your password" required [(ngModel)]="user.password" name="password">
+    </div>
+
+    <div class="input-box" [class.input-error]="!confirmPassword || user.password !== confirmPassword">
+      <label>Confirm Password*</label>
+      <input type="password" placeholder="Confirm your password" required [(ngModel)]="confirmPassword" name="confirmPassword">
+      <div *ngIf="confirmPassword && user.password !== confirmPassword" class="error-message">Passwords do not match</div>
+    </div>
+
+
+
+    <div class="input-box" [class.input-error]="!user.username">
+      <label>Username*</label>
+      <input type="text" placeholder="Enter your username" required [(ngModel)]="user.username" name="username">
+    </div>
+
+    <div class="input-box" [class.input-error]="!user.firstname">
+      <label>Firstname*</label>
+      <input type="text" placeholder="Enter your first name" required [(ngModel)]="user.firstname" name="firstname">
+    </div>
+
+    <div class="input-box" [class.input-error]="!user.lastname">
+      <label>Lastname*</label>
+      <input type="text" placeholder="Enter your last name" required [(ngModel)]="user.lastname" name="lastname">
+    </div>
+
+
+    <div class="input-box" [class.input-error]="!user.birthday">
+      <label>Birthday*</label>
+      <p-calendar [(ngModel)]="user.birthday" class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>
+      <!--<p-calendar [(ngModel)]="user.birthday"
+                  selectionMode="range"
+                  [minDate]="minDate"
+                  [maxDate]="maxDate"
+                  [readonlyInput]="true"
+                  class="ng-invalid ng-dirty" dateFormat="dd.mm.yy" name="birthday"></p-calendar>-->
+    </div>
+
+    <div class="input-box">
+      <label for="adminInvitationCode">Admin invitation code (optional)</label>
+      <input type="text" id="adminInvitationCode" [(ngModel)]="user.adminInvitationCode" name="adminInvitationCode">
+    </div>
+
+
+
+  </form>
+
+
+
+  <div class="btn-box">
+    <div>
+      <button type="button" (click)="returnToLogin()">Return</button>
+      <button type="submit" (click)="onRegisterFormSubmit()">Next</button>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>

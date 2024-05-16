@@ -1,0 +1,22 @@
+<!-- deck-list.component.html -->
+<div class="deck-container">
+  <h2>Deck List</h2>
+  <div class="create-deck-container">
+    <button class="create-button" (click)="createDeck()">Create New Deck</button>
+  </div>
+  <ul class="deck-list">
+    <li *ngFor="let deck of decks">
+      <app-deck [deck]="deck"></app-deck>
+      <div class="deck-box">
+        <button class="select-button" (click)="selectDeck(deck)">Select</button>
+        <button class="delete-button" (click)="deleteDeck(deck.id)">Delete</button>
+        <button class="rename-button" (click)="renameDeck(deck)">Rename</button>
+      </div>
+    </li>
+    <div>
+    <button class="back-button" (click)="goToHome()">Back</button>
+    </div>
+
+  </ul>
+
+</div>

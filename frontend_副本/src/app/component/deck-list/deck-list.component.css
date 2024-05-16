@@ -1,0 +1,120 @@
+/* deck-list.component.css */
+
+body.deck-list {
+  background-color: rgba(255, 255, 255, 0.73);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh
+}
+
+.deck-container {
+  position: absolute;
+  top: 50%; /* 将框的顶部定位在页面垂直中间 */
+  left: 50%; /* 将框的左侧定位在页面水平中间 */
+  transform: translate(-50%, -50%); /* 通过转换将框居中 */
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: left;
+  color: white;
+  margin: auto;
+}
+
+.deck-container h2 {
+  font-size: 36px;
+  color: #FFF3C1;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.deck-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.deck-list li {
+  margin-bottom: 20px;
+  color: rgb(55, 37, 19);
+  background-color: rgba(255, 255, 255, 0.87); /* 卡组背景颜色设为白色 */
+  border-radius: 10px; /* 使卡组项有圆角效果 */
+  padding: 10px; /* 给卡组项添加内边距 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 给卡组项添加阴影 */
+}
+
+.deck-box {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.select-button, .delete-button, .rename-button {
+  border-radius: 20px;
+  color: rgba(23, 23, 23, 0.9);
+  background: rgb(244, 233, 185);
+  border: none;
+  width: 100px;
+  height: 20px;
+}
+
+.select-button:hover, .delete-button:hover, .rename-button:hover {
+  box-shadow: 0 0 15px rgba(108, 100, 73, 0.66); /* 点击时的高亮效果 */
+}
+
+.button-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-box button {
+  background: linear-gradient(145deg, #67eae7, #8ec593);
+  color: #372513;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  font-family: Herloit, sans-serif;
+}
+
+.button-box button:hover {
+  background: linear-gradient(145deg, #8ec593, #67eae7);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.back-button, .create-button {
+  background: linear-gradient(145deg, #ebe1a8, #72b879);
+  color: #372513;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  font-family: Herloit, sans-serif;
+}
+
+.back-button:hover, .create-button:hover {
+  background: linear-gradient(145deg, #72b879, #ebe1a8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.create-deck-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px; /* 设置 "Create New Deck" 按钮与下面增加的卡组框之间的间距 */
+
+}

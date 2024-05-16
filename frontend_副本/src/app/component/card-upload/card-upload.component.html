@@ -1,0 +1,6 @@
+<!-- card-upload.component.html -->
+<div class="upload-container">
+  <h2>Upload CSV File</h2>
+  <input type="file" (change)="onFileSelected($event)" accept=".csv">
+  <button (click)="upload()">Upload File</button>
+</div>
