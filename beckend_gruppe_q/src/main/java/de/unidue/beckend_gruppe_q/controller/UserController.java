@@ -355,26 +355,11 @@ public class UserController {
 //            return ResponseEntity.badRequest().build();
 //        }
 //    }
-
-    /*@GetMapping("/admin/users/{userId}/friends")
-    public ResponseEntity<List<Friend>> getFriendsByUserId(@PathVariable Long userId) {
-        // 检查用户是否为管理员
-        User currentUser = getCurrentUser();
-        if (!currentUser.getUserGroup().equals(1)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        // 获取指定用户的好友列表
-        List<Friend> friendList = friendService.getFriendsByUserId(userId);
-        return ResponseEntity.ok(friendList);
-    }*/
-
-
-
     @GetMapping("/user/getAllUser/{groupid}")
     public ResponseEntity<List<User>> getAllUserByGroupId(@PathVariable(value = "groupid") Integer groupId) {
         List<User> userList = userRepository.findAllByGroupId(1);
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
+
 
 }
