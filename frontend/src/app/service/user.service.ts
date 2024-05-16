@@ -173,7 +173,7 @@ export class UserService {
   }
 
   getAllUserByGroupId(user: User): Observable<HttpResponse<User[]>> {
-    const url = Global.userRestServiceUrl + "/getAllUser "+ "/" + user.groupId;
+    const url = Global.userRestServiceUrl + "/getAllUser"+ "/" + user.groupId;
     return this.http.get<User[]>(url, {observe: 'response'});
   }
 
