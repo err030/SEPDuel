@@ -1,3 +1,4 @@
+//card-list.component.ts
 import {Component, OnInit} from '@angular/core';
 import {Card} from "../../model/card.model";
 import {Deck} from "../../model/deck.model";
@@ -26,12 +27,16 @@ import {CardService} from "../../service/card.service";
 export class CardListComponent implements OnInit{
   deck?: Deck;
   cards?: Card[] = [];
-  filteredCards?: Card[];
-  selectedCards?: Card[];
+  filteredCards?: Card[] = [];
+  selectedCards?: Card[] = [];
   searchText?: string;
   cardService: CardService;
   private router: Router;
 
+  totalCards = 30;
+  cardsPerPage = 6;
+  currentPage = 1;
+  totalPages = Math.min(5, Math.ceil(this.totalCards / this.cardsPerPage));
 
   constructor(cardService: CardService, router: Router) {
     this.cardService = cardService;
@@ -49,6 +54,34 @@ export class CardListComponent implements OnInit{
     this.filteredCards = this.cards;
     this.selectedCards = [];
     this.searchText = "";
+    this.loadCards();
+    this.updateFilteredCards();
+  }
+
+  loadCards(): void {
+    this.cardService.getAllCards().subscribe(cards => {
+      this.cards = cards;
+      this.updateFilteredCards();
+    });
+  }
+
+  updateFilteredCards(): void {
+    const startIndex = (this.currentPage - 1) * this.cardsPerPage;
+    this.filteredCards = this.cards?.slice(startIndex, startIndex + this.cardsPerPage);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateFilteredCards();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateFilteredCards();
+    }
   }
 
   selectCard(card: Card): void {
@@ -80,7 +113,7 @@ export class CardListComponent implements OnInit{
     this.router.navigate(['all-cards'])
   }
 
-  goToHome() {
-    this.router.navigate(['homepage-user'])
+  goToDeck() {
+    this.router.navigate(['deck-list'])
   }
 }

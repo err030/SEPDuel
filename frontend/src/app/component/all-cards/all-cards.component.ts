@@ -1,3 +1,4 @@
+//all-cards.component.ts
 import {Component, OnInit} from '@angular/core';
 import {Global} from "../../global";
 import {Card} from "../../model/card.model";
@@ -14,7 +15,7 @@ import {delay} from "rxjs";
   imports: [
     NgForOf,
     CardComponent,
-    NgIf,
+    NgIf
   ],
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'
@@ -93,5 +94,8 @@ export class AllCardsComponent implements OnInit {
 
   goToHome() {
     this.router.navigate(['homepage-user']);
+  }
+  goToCards() {
+    this.router.navigate(['card-list']);
   }
 }
