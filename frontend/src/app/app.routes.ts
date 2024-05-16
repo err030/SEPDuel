@@ -20,6 +20,7 @@ import {FriendlistComponent} from "./component/friendlist/friendlist.component";
 import {CardUploadComponent} from "./component/card-upload/card-upload.component";
 import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 import {FriendComponent} from "./component/friend/friend.component";
+import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 
 
 export const routes: Routes = [
@@ -37,7 +38,7 @@ export const routes: Routes = [
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
   {path: "card-upload", component: CardUploadComponent},
-
+  {path: "admin-userlist", component: AdminUserlistComponent},
 
   {path: 'addfriend', component:AddfriendComponent},
 

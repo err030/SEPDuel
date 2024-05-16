@@ -33,4 +33,8 @@ export class HomepageAdminComponent {
   cardUpload() {
     this.router.navigate(['/card-upload']);
   }
+
+  userList() {
+    this.router.navigate(['/admin-userlist'])
+  }
 }
