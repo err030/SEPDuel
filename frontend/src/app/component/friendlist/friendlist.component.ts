@@ -329,4 +329,8 @@ export class FriendlistComponent implements OnInit {
   selectFriend(friend: any): void {
     this.selectedFriend = friend;
   }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
+  }
 }
