@@ -291,7 +291,5 @@ public class FriendController{
         return ResponseEntity.ok(newFriendRequestNumber);
     }
 
-
-
 }
 
