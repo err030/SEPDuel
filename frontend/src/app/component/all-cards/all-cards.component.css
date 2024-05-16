@@ -1,22 +1,105 @@
-.card-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* all-cards.component.css */
+
+.cardLib-container {
+  position: absolute;
+  top: 50%; /* 将框的顶部定位在页面垂直中间 */
+  left: 50%; /* 将框的左侧定位在页面水平中间 */
+  transform: translate(-50%, -50%); /* 通过转换将框居中 */
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  overflow-y:auto;
+  max-height: 100%;
 }
 
-.card-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.card-row, .selected-card-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 两列布局 */
+  gap: 20px; /* 设置列间距 */
+  margin-bottom: 20px;
 }
 
-.card {
-  margin-right: 10px; /* 添加一些右边距以分隔卡片 */
+.card, .selected-card {
+  background-color: rgba(255, 255, 255, 0.87);
+  color: rgba(23, 23, 23, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.selected-card-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 20px; /* 添加一些上边距以分隔两个容器 */
+.select-btn {
+  background: linear-gradient(145deg, #6fcf97, #66BB6A);
+  color: #ffffff;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-btn {
+  background: linear-gradient(145deg, #e57373, #ef5350);
+  color: #ffffff;
+  padding: 5px 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-btn:hover {
+  background: linear-gradient(145deg, #66BB6A, #6fcf97);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.remove-btn:hover {
+  background: linear-gradient(145deg, #ef5350, #e57373);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.clear-selection-btn, .save-selection-btn {
+  padding: 10px 20px;
+  background: linear-gradient(145deg, rgb(158, 101, 220), #35a1ed);
+  color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-selection-btn:hover, .save-selection-btn:hover {
+  background: linear-gradient(145deg, #35a1ed, #9e65dc);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.clear-selection-btn{
+  margin-right: 20px;
+}
+
+.cardBack-button{
+  background: linear-gradient(145deg, #ebe1a8, #72b879);
+  width:100px;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 20px;
+  color: #372513;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cardBack-button:hover:hover{
+  background: linear-gradient(145deg, #72b879, #ebe1a8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }

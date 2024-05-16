@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Global} from "../../global";
 import {Card} from "../../model/card.model";
 import {DeckService} from "../../service/deck.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
 import {CardService} from "../../service/card.service";
 import {Router} from "@angular/router";
@@ -15,7 +15,8 @@ import {delay} from "rxjs";
   imports: [
     NgForOf,
     CardComponent,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'
@@ -88,13 +89,6 @@ export class AllCardsComponent implements OnInit {
 
   }
 
-  goToDecks() {
-    this.router.navigate(['deck-list']);
-  }
-
-  goToHome() {
-    this.router.navigate(['homepage-user']);
-  }
   goToCards() {
     this.router.navigate(['card-list']);
   }

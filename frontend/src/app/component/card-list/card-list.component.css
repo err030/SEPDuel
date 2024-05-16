@@ -99,10 +99,35 @@ body.card-list {
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 20px;
 }
-.editCard-btn, .cardBack-btn {
-  padding: 10px 20px;
+
+.editCard-btn {
+  background: linear-gradient(145deg, rgb(158, 101, 220), #35a1ed);
+  color: white;
+  width:100px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.editCard-btn:hover {
+  background: linear-gradient(145deg, #35a1ed, #9e65dc);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.cardBack-btn{
   background: linear-gradient(145deg, #ebe1a8, #72b879);
   color: #372513;
+  width:100px;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.cardBack-btn:hover {
+  background: linear-gradient(145deg, #72b879, #ebe1a8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.editCard-btn, .cardBack-btn {
   border: none;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -110,17 +135,6 @@ body.card-list {
   transition: all 0.3s ease;
 }
 
-.editCard-btn:hover, .cardBack-btn:hover {
-  background: linear-gradient(145deg, #72b879, #ebe1a8);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-.cardBack-btn{
-  font-size: 16px;
-  margin-top: 20px;
-}
-.editCard-btn{
-  font-size: 14px;
-}
 .editCard-box{
   margin-top: 10px; /* 添加适当的下边距，为卡牌列表留出空间 */
   margin-bottom: 20px; /* 添加适当的下边距，为卡牌列表留出空间 */

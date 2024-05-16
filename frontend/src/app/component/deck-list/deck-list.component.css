@@ -93,8 +93,22 @@ body.deck-list {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.back-button, .create-button {
+.back-button{
+  background: linear-gradient(145deg, #67eae7, #8ec593);
+}
+.back-button:hover{
+  background: linear-gradient(145deg, #8ec593, #67eae7);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+.create-button{
   background: linear-gradient(145deg, #ebe1a8, #72b879);
+}
+.create-button:hover {
+  background: linear-gradient(145deg, #72b879, #ebe1a8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.back-button, .create-button {
   color: #372513;
   padding: 10px 20px;
   font-size: 16px;
@@ -105,11 +119,6 @@ body.deck-list {
   transition: all 0.3s ease;
   margin-top: 20px;
   font-family: Herloit, sans-serif;
-}
-
-.back-button:hover, .create-button:hover {
-  background: linear-gradient(145deg, #72b879, #ebe1a8);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .create-deck-container {
