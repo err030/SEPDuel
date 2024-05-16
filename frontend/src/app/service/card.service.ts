@@ -21,7 +21,7 @@ export class CardService {
   }
 
   removeFromSelected(card : Card): void {
-    const index = this.selectedCards.indexOf(card);
+    const index = this.selectedCards.findIndex(selectedCard => selectedCard.id === card.id);
     if (index !== -1) {
       this.selectedCards.splice(index, 1);
     }
