@@ -1,9 +1,8 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 
+import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.service.EmailService;
-import de.unidue.beckend_gruppe_q.model.SecurityCode;
-import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import de.unidue.beckend_gruppe_q.utility.FileUtil;
@@ -356,6 +355,11 @@ public class UserController {
 //            return ResponseEntity.badRequest().build();
 //        }
 //    }
+    @GetMapping("/user/getAllUser/{groupid}")
+    public ResponseEntity<List<User>> getAllUserByGroupId(@PathVariable(value = "groupid") Integer groupId) {
+        List<User> userList = userRepository.findAllByGroupId(1);
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
+    }
 
 
 }
