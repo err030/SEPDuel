@@ -16,7 +16,7 @@ import {delay} from "rxjs";
     NgForOf,
     CardComponent,
     NgIf,
-    NgClass
+    NgClass,
   ],
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'

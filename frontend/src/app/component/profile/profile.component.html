@@ -2,10 +2,9 @@
   <div class="profile-box">
     <h2>Profile</h2>
     <div>
-      <p class="avatar"> <img [src]="loggedUser.avatarUrl" alt="User Avatar" style="width: 100px; height: 100px;">
-
+      <p class="avatar">
+        <img [src]="loggedUser?.avatarUrl || 'assets/images/user.png'" alt="User Avatar">
       </p>
-
       <form #avatarForm="ngForm" (ngSubmit)="onAvatarFormSubmit()">
         <div class="input-box">
           <input type="file" accept="image/*" (change)="onFileSelected($event)">
@@ -15,13 +14,13 @@
     </div>
 
     <div class="info">
-      <p><strong class="info-title">Username:</strong> {{ loggedUser.username }}</p>
-      <p><strong class="info-title">Email:</strong> {{ loggedUser.email }}</p>
-      <p><strong class="info-title">Date of Birth:</strong> {{ loggedUser.birthday }}</p>
-      <p><strong class="info-title">Firstname:</strong> {{ loggedUser.firstname }}</p>
-      <p><strong class="info-title">Lastname:</strong> {{ loggedUser.lastname }}</p>
-      <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser.sepCoins }}</p>
-      <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderBoardPunkt }}</p>
+      <p><strong class="info-title">Username:</strong> {{ loggedUser?.username }}</p>
+      <p><strong class="info-title">Email:</strong> {{ loggedUser?.email }}</p>
+      <p><strong class="info-title">Date of Birth:</strong> {{ loggedUser?.birthday }}</p>
+      <p><strong class="info-title">Firstname:</strong> {{ loggedUser?.firstname }}</p>
+      <p><strong class="info-title">Lastname:</strong> {{ loggedUser?.lastname }}</p>
+      <p *ngIf="loggedUser?.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser?.sepCoins }}</p>
+      <p *ngIf="loggedUser?.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser?.leaderBoardPunkt }}</p>
     </div>
 
     <div class="password-btn-box">
@@ -35,8 +34,5 @@
         <button routerLink="/homepage-user">Back</button>
       </div>
     </div>
-
   </div>
-
-
 </div>

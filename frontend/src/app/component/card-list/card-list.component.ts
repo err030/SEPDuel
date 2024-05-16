@@ -54,16 +54,9 @@ export class CardListComponent implements OnInit{
     this.filteredCards = this.cards;
     this.selectedCards = [];
     this.searchText = "";
-    this.loadCards();
     this.updateFilteredCards();
   }
 
-  loadCards(): void {
-    this.cardService.getAllCards().subscribe(cards => {
-      this.cards = cards;
-      this.updateFilteredCards();
-    });
-  }
 
   updateFilteredCards(): void {
     const startIndex = (this.currentPage - 1) * this.cardsPerPage;

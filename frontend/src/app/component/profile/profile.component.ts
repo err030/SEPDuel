@@ -1,14 +1,13 @@
-// profile.component.ts
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
-import {UserService} from "../../service/user.service";
-import {Global} from "../../global";
-import {CommonModule} from '@angular/common';
-import {FormsModule} from "@angular/forms";
-import {PaginatorModule} from "primeng/paginator";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-import {HttpEventType, HttpResponse} from "@angular/common/http";
-
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { UserService } from "../../service/user.service";
+import { Global } from "../../global";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from "@angular/forms";
+import { PaginatorModule } from "primeng/paginator";
+import { HttpEventType, HttpResponse } from "@angular/common/http";
+import { ChangeDetectorRef } from '@angular/core';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +18,7 @@ import {HttpEventType, HttpResponse} from "@angular/common/http";
   providers: [UserService]
 })
 export class ProfileComponent implements OnInit {
-  public loggedUser: any;
+  public loggedUser!: User;
   public sepCoins: number | undefined;
   public leaderBoardPunkt: number | undefined;
   public selectedFile: File | null = null;
@@ -27,19 +26,17 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService
-  ) {
-  }
+    private userService: UserService,
+    private changeDetector: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    // 假设Global.loggedUser是在登录成功后设置的
     this.loggedUser = Global.loggedUser;
     if (!this.loggedUser || !this.loggedUser.id) {
       console.error('User data is not loaded or user ID is missing.');
     }
     this.getUserDetails();
   }
-
 
   onFileSelected(event: any) {
     const element = event.currentTarget as HTMLInputElement;
@@ -55,7 +52,6 @@ export class ProfileComponent implements OnInit {
       console.error('No file selected.');
       return;
     }
-    // 确保 loggedUser 和 loggedUser.id 都不是 null 或 undefined
     if (!this.userService.loggedUser || this.userService.loggedUser.id === undefined) {
       console.error('User data is incomplete.');
       return;
@@ -76,9 +72,12 @@ export class ProfileComponent implements OnInit {
           } else if (event instanceof HttpResponse) {
             console.log('Avatar uploaded successfully:', event.body);
             if (event.body && event.body.avatarUrl) {
-              // 确保使用后端提供的完整URL
-              this.loggedUser.avatarUrl = 'http://localhost:8080/avatars/' + event.body.avatarUrl;
-              this.userService.updateLoggedUserAvatar(this.loggedUser.avatarUrl); // 更新服务中的用户信息
+              console.log('event body not null');
+              this.loggedUser.avatarUrl = `${Global.backendUrl}${event.body.avatarUrl}`;
+              this.userService.updateLoggedUserAvatar(this.loggedUser.avatarUrl);
+              console.log('should updated url:', this.loggedUser.avatarUrl);
+              localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+              this.changeDetector.detectChanges();
             }
             this.isUploading = false;
           }
@@ -92,29 +91,35 @@ export class ProfileComponent implements OnInit {
   }
 
 
-
   getUserDetails(): void {
-    const token = localStorage.getItem('token'); // 从 localStorage 中获取 token
+    const token = localStorage.getItem('token');
     if (token) {
       this.userService.getUserByToken(token).subscribe({
-          next: (response) => {
-            const user = response.body;
-            if (user) {
-              this.sepCoins = user.sepCoins;
-              this.leaderBoardPunkt = user.leaderBoardPunkt;
-              if (this.loggedUser.avatarUrl == null) {
-                this.loggedUser.avatarUrl = `${Global.backendUrl}/assets/images/user.png`;
-              } else {
-                this.loggedUser.avatarUrl = `${Global.backendUrl}/${this.loggedUser.avatarUrl}`;
-              }
-            }
-          },
-          error: (error) => {
-            console.error('Failed to get user details', error);
+        next: (response) => {
+          const user = response.body;
+          if (user) {
+            this.updateUserInfo({
+              username: user.username,
+              email: user.email,
+              birthday: user.birthday,
+              firstname: user.firstname,
+              lastname: user.lastname,
+              sepCoins: user.sepCoins,
+              leaderBoardPunkt: user.leaderBoardPunkt,
+              avatarUrl: user.avatarUrl ? `${Global.backendUrl}/avatars/${user.avatarUrl}` : 'assets/images/user.png'
+            });
           }
+        },
+        error: (error) => {
+          console.error('Failed to get user details', error);
         }
-      );
+      });
     }
   }
 
+  updateUserInfo(updatedData: any): void {
+    this.loggedUser = { ...this.loggedUser, ...updatedData };
+    localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+    this.changeDetector.detectChanges();
+  }
 }
