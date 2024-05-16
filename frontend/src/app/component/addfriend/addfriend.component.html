@@ -1,0 +1,18 @@
+<p>Add Friend</p>
+<!-- addfriend.component.html -->
+<div>
+  <h2>Add Friend</h2>
+  <form (submit)="onUserSearchFormSubmit()">
+    <input type="text" name="searchQuery" [(ngModel)]="targetEmail" placeholder="Enter email" required>
+    <button type="submit">Search</button>
+  </form>
+  <div *ngIf="targetFriend">
+    <h3>Search Result</h3>
+    <p>Username: {{ targetFriend.user.username }}</p>
+    <p>Email: {{ targetFriend.user.email }}</p>
+    <div *ngIf="targetUserHasAvatar">
+      <img [src]="targetUserAvatarUrl" alt="User Avatar">
+    </div>
+    <button (click)="sendFriendRequest()">Send Friend Request</button>
+  </div>
+</div>

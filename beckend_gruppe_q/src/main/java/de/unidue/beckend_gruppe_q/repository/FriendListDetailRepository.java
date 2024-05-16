@@ -9,4 +9,6 @@ import java.util.List;
 public interface FriendListDetailRepository extends CrudRepository<FriendListDetail,Long> {
     FriendListDetail findByFreundListIdAndFreundUserId(Long freundListId, Long freundUserId);
     List<FriendListDetail> findByFreundListId(Long listId);
+
+
 }

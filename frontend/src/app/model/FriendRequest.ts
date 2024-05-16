@@ -3,10 +3,10 @@ import {User} from "./user";
 export class FriendRequest {
   constructor(
     public id: number,
-    public sendUserId: number,
-    public targetUserId: number,
-    public requestStatus: number,
-    public sendUser: User
+    public schickenUserId: number,
+    public zielUserId: number,
+    public freundschaftanfragStatus: number,
+    public schickenUser: User
   ){
   }
 }
