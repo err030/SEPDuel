@@ -1,0 +1,188 @@
+
+body .friend-page-container {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; /* 设置背景为白色 */
+}
+
+.friend-page-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden; /* 隐藏内部滚动条 */
+}
+
+/* 左侧列样式，占比40% */
+.friend-page-container .col-4 {
+  width: 20%; /* 调整为40%宽度 */
+  padding: 20px;
+  background-color: #f4f4f4; /* 淡灰色背景 */
+  overflow-y: auto; /* 超出内容滚动 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 右侧列样式，占比60% */
+.friend-page-container .col-8 {
+  width: 80%; /* 调整为60%宽度 */
+  padding: 20px;
+  background-color: #fff; /* 白色背景 */
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* 标题和子标题样式 */
+.friend-page-container h1, h2, h3 {
+  color: #333; /* 深灰色文字 */
+  margin-bottom: 20px;
+}
+
+.status-request-box{
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 按钮之间的间距 */
+  margin-bottom: 20px;
+}
+
+.friend-request-btn{
+  margin-bottom: 10px;
+  background-color: #faedb2;
+  border-radius: 5px;
+  border:none;
+  box-shadow: 0 0 5px rgba(138, 133, 112, 0.46);
+  color:black;
+  width:200px;
+  height:20px;
+}
+.friend-request-btn:hover{
+  background-color: #f6deb1;
+}
+
+/* 好友请求和添加好友按钮框 */
+.add-friend-btn-box {
+  background-color: #3b8c48;
+  color: white;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8em; /* 与切换按钮相同宽度 */
+}
+.add-friend-btn-box:hover {
+  background-color: #357a42; /* 按钮悬停颜色 */
+}
+
+/* 按钮样式 */
+.friendBack-button {
+  position: absolute;
+  padding: 10px 30px;
+  background-color: #ff6a00;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  bottom: 20px;
+}
+
+.friendBack-button:hover {
+  background-color: #d15802;
+}
+
+/* 列表状态切换按钮 */
+.friend-page-container .p-toggleButton {
+  margin-top: 10px;
+  padding: 10px 15px;
+}
+.friend-page-container .p-toggleButton.p-button-text.p-toggleButton-active {
+  background-color: #2196f3; /* 蓝色背景 - 公共 */
+  color: white;
+}
+
+.friend-page-container::ng-deep .p-toggleButton.p-button-text:not(.p-toggleButton-active) {
+  background-color: #f06292; /* 粉色背景 - 私有(无法显示） */
+  color: white;
+}
+
+/* 好友项样式 */
+.friend-page-container .p-scroller {
+  border: none;
+  margin-bottom: 20px;
+}
+
+.friend-page-container .flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5); /* 为好友单独设置框 */
+  border-radius: 4px;
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.friend-page-container .text-xl {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.request-dialog{
+  border-radius: 8px; /* 圆角边框 */
+  overflow: hidden; /* 隐藏内部元素溢出部分 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+  width: 480px;
+  height: 360px;
+}
+
+.request-dialog .p-dialog-content {
+  padding: 20px; /* 内边距 */
+  display: flex; /* 使用Flex布局 */
+  flex-direction: column; /* 垂直排列子元素 */
+  align-items: center; /* 子元素水平居中 */
+  text-align: center; /* 文本居中 */
+}
+
+.request-dialog li {
+  list-style-type: none; /* 去掉列表符号 */
+  width: 100%; /* 宽度占满容器 */
+  padding: 10px 0; /* 上下间距 */
+  border-bottom: 1px solid #ccc; /* 列表项之间的分隔线 */
+}
+
+.request-dialog li:last-child {
+  border-bottom: none; /* 最后一个列表项没有分隔线 */
+}
+.request-dialog button {
+  padding: 8px 16px; /* 内边距 */
+  border: none; /* 无边框 */
+  border-radius: 4px; /* 圆角 */
+  cursor: pointer; /* 鼠标手势 */
+  margin: 5px; /* 间距 */
+  font-weight: bold; /* 字体加粗 */
+}
+.request-title{
+  text-align: center; /* 确保标题文本居中 */
+  margin-bottom: auto; /* 将标题推向顶部 */
+}
+.friend-accept-btn {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  background-color: #4CAF50; /* 绿色背景 */
+  color: white; /* 白色文字 */
+}
+.friend-decline-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: #f44336; /* 红色背景 */
+  color: white; /* 白色文字 */
+}
+.request-dialog button:hover {
+  opacity: 0.8; /* 鼠标悬停时透明度变化 */
+}
