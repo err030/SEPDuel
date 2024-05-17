@@ -12,7 +12,23 @@
   <h2>Add Friend</h2>
   <form (submit)="onUserSearchFormSubmit()">
     <input type="text" name="searchQuery" [(ngModel)]="targetEmail" placeholder="Enter email" required>
-    <button type="submit">Search</button>
+<!--    <button type="submit">Search</button>-->
+
+
+    <button (click)="onUserSearchFormSubmit()" class="search-button">Search</button>
+
+    <p-dialog header="错误" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>Die eingegebene Email ist nicht vorhanden.</p>
+      <p-footer>
+        <button pButton type="button" label="close" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
+    <!--<p-dialog header="错误" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>Die eingegebene Email ist nicht vorhanden.</p>
+      <p-footer>
+        <button pButton type="button" label="关闭" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>-->
   </form>
   <div *ngIf="targetFriend">
     <h3>Search Result</h3>
@@ -23,6 +39,10 @@
     </div>
     <button (click)="sendFriendRequest()">Send Friend Request</button>
   </div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
 </div>
 
 </html>
