@@ -148,7 +148,7 @@ export class FriendComponent implements OnInit {
 
         }
       });*/
-      const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
+     /* const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
       if(result){
         if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
           this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
@@ -179,7 +179,7 @@ export class FriendComponent implements OnInit {
         }
       }
     }
-  }*/
+  }*!/*/
 
 
 
