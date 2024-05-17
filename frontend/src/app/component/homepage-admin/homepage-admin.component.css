@@ -73,6 +73,12 @@ button#profile:hover, button#editCard:hover, button#cardUpload:hover {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
+button#userlist{
+  background: rgba(137, 212, 225, 0.86);
+  color: rgba(245, 227, 227, 0.9);
+  border: 1px solid rgba(137, 212, 225, 0.86);
+}
+
 .central-buttons {
   display: flex;
   flex-direction: column;

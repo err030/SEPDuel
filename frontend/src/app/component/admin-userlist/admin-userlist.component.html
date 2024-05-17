@@ -1,4 +1,6 @@
-<div class="container">
+<html lang="en-EN">
+<body >
+<div class="col-4 leftStyle">
   <h2>Admin User List</h2>
 
   <p-table [value]="allUser" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
@@ -11,9 +13,26 @@
     </ng-template>
     <ng-template pTemplate="body" let-user>
       <tr>
-        <td>{{ user.firstname }} {{ user.lastname }}</td>
-        <td>{{ user.email }}</td>
+        <td>
+          <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(user)"
+               style="height: 50px;"
+               (click)="onUserListItemClick(user)">
+            <div class="text-xl font-bold">{{ user.firstname }} {{user.lastname}}</div>
+          </div>
+
+        </td>
+        <td>
+          <div>{{ user.email }}</div>
+        </td>
       </tr>
     </ng-template>
+
   </p-table>
 </div>
+
+<div class="col-4 rightStyle">
+  <!-- 好友详情 -->
+  <router-outlet></router-outlet>
+</div>
+</body>
+</html>

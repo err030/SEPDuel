@@ -81,9 +81,30 @@ export class FriendComponent implements OnInit {
       })
     }
   }
+  deleteFriend(friend:User):void{
+    if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
+      this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
+        next: (response) => {
+          if (response.status == 200) {
+            for (let i = 0; i < this.friendService.allFriends.length; i++) {
+              if (this.friendService.allFriends[i].id == friend.id) {
+                this.friendService.allFriends.splice(i, 1);
+              }
+            }
+            for (let i = 0; i < this.friendService.chatListFriends.length; i++) {
+              if (this.friendService.chatListFriends[i].id == friend.id) {
+                this.friendService.chatListFriends.splice(i, 1);
+              }
+            }
+            this.selectedFriend = null;
+          }
+          }
+        })
+      }
+    }
 
   // 删除用户
-  deleteFriend(friend: User): void {
+ /* deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id) {
      /* this.confirmationService.confirm({
         message: 'Sind Sie sicher, dass Sie diesen Freund löschen möchten?',
@@ -158,7 +179,7 @@ export class FriendComponent implements OnInit {
         }
       }
     }
-  }
+  }*/
 
 
 

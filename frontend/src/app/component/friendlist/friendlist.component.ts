@@ -270,6 +270,7 @@ export class FriendlistComponent implements OnInit {
 
   }
 
+
   // 点击好友列表中的好友时，显示好友详情
   onFriendListItemClick(friend: User): void {
     this.selectedFriendListItemId = friend.id;
@@ -328,5 +329,9 @@ export class FriendlistComponent implements OnInit {
   }
   selectFriend(friend: any): void {
     this.selectedFriend = friend;
+  }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
   }
 }
