@@ -1,0 +1,94 @@
+@font-face {
+  font-family: 'Hippo';
+  src: url('/assets/fonts/HippopotamusApocalypse-Gzly.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Herloit';
+  src: url('/assets/fonts/HerloitRegular-EaVwn.otf') format('opentype');
+}
+
+body.add-friend-page {
+  background-image: url('/assets/images/AddFriend-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+  font-family: 'Herloit', sans-serif;
+}
+
+h2 {
+  color: #333;
+  text-align: center;
+  font-size: 36px;
+  font-family: 'Hippo', sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input[type="text"] {
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 18px;
+  border: 2px solid #8ec593;
+  border-radius: 5px;
+  width: 250px;
+}
+
+button.add-friend-page {
+  background: linear-gradient(145deg, #67eae7, #8ec593);
+  color: #372513;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin: 10px;
+  font-family: 'Herloit', sans-serif;
+  width: 200px;
+}
+
+button:hover {
+  background: linear-gradient(145deg, #8ec593, #67eae7);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+div {
+  background-color: rgba(255, 255, 255, 0.8); /* 背景颜色带透明度 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h3 {
+  color: #333;
+  font-size: 24px;
+  font-family: 'Hippo', sans-serif;
+}
+
+p {
+  color: #555;
+  font-size: 18px;
+  margin: 10px 0;
+  font-family: 'Herloit', sans-serif;
+}
+
+img {
+  border-radius: 50%;
+  margin: 10px 0;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
