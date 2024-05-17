@@ -1,19 +1,28 @@
-<p>all-cards works!</p>
-<button (click)="goToHome()">Back To Homepage</button>
-<button (click)="goToDecks()">Back To Deck List</button>
-<div class="card-container">
+<!--all-cards.component.html-->
+<div class="cardLib-container">
+
   <div class="card-row">
     <div class="card" *ngFor="let card of cards">
       <app-card [card]="card"></app-card>
-      <button (click)="toggleSelection(card)">{{ isSelected(card) ? 'Remove' : 'Select' }}</button>
+      <button [ngClass]="{'select-btn': !isSelected(card), 'remove-btn': isSelected(card)}"  (click)="toggleSelection(card)">{{ isSelected(card) ? 'Remove' : 'Select' }}
+      </button>
     </div>
   </div>
-  <p>Cards selected: {{ selectedCards.length }}/30</p>
-</div>
-<div class="selected-card-row">
-  <div class="selected-card" *ngFor="let selectedCard of selectedCards">
-    <app-card [card]="selectedCard"></app-card>
+  <p>------ Cards selected: {{ selectedCards.length }}/30 ------</p>
+
+
+  <div class="selected-card-row">
+    <div class="selected-card" *ngFor="let selectedCard of selectedCards">
+      <app-card [card]="selectedCard"></app-card>
+    </div>
   </div>
+  <div class="selected-btn">
+    <button class="clear-selection-btn" *ngIf="selectedCards.length > 0" (click)="clearSelection()">Clear Selection
+    </button>
+    <button class="save-selection-btn" *ngIf="selectedCards.length > 0 && selectedCards.length < 30"
+            (click)="saveSelection()">Save Selection
+    </button>
+  </div>
+
+  <button class="cardBack-button" (click)="goToCards()">Back</button>
 </div>
-<button (click)="clearSelection()">Clear Selection</button>
-<button *ngIf="selectedCards.length > 0 && selectedCards.length < 30" (click)="saveSelection()">Save Selection</button>

@@ -58,10 +58,6 @@ export class HomepageUserComponent implements OnInit {
     this.userService.userLogout();
   }
 
-  goToCards() {
-    this.router.navigate(['/all-cards']); // 跳转到卡库页面的路由
-  }
-
   goToDecks() {
     this.router.navigate(['/deck-list']); // 跳转到卡组页面的路由
   }

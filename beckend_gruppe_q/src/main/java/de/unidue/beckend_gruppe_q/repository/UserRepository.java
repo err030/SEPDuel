@@ -16,5 +16,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findUserByUsernameAndGroupId(String username, Integer groupId);
 
     List<User> findAllByGroupId(Integer groupId);
+    List<User> findAll();
+
+
+
+
 }
 

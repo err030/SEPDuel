@@ -1,8 +1,9 @@
+//all-cards.component.ts
 import {Component, OnInit} from '@angular/core';
 import {Global} from "../../global";
 import {Card} from "../../model/card.model";
 import {DeckService} from "../../service/deck.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
 import {CardService} from "../../service/card.service";
 import {Router} from "@angular/router";
@@ -15,6 +16,7 @@ import {delay} from "rxjs";
     NgForOf,
     CardComponent,
     NgIf,
+    NgClass,
   ],
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'
@@ -77,21 +79,24 @@ export class AllCardsComponent implements OnInit {
       if (Global.currentDeck) {
         console.log("updating deck with selected cards");
         Global.currentDeck.cards = this.selectedCards;
-        await this.deckService.updateDeck(Global.currentDeck).toPromise();  // 使用 await 等待异步操作完成
+        try {
+          await this.deckService.updateDeck(Global.currentDeck).toPromise();
+        } catch (error : any) {
+          console.error("Error updating deck:", error);
+          alert("Cards could not be saved. They could be already added in another deck.");
+          return;  // 退出循环，避免重复执行
+        }
+      }
       }
       await delay(1000);  // 等待 1000 毫秒
       console.log("saving selected cards");
-    }
+
     alert("Selection saved!");
     this.router.navigate(['card-list']);
 
   }
 
-  goToDecks() {
-    this.router.navigate(['deck-list']);
-  }
-
-  goToHome() {
-    this.router.navigate(['homepage-user']);
+  goToCards() {
+    this.router.navigate(['card-list']);
   }
 }

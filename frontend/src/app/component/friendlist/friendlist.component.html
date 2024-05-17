@@ -1,37 +1,45 @@
 <html lang="en-EN">
 
-<body >
-<div class="col-4 leftStyle">
-  <h1>Friend List</h1>
-  <div *ngIf="loggedUser">
-    <div>
-      <h2>好友请求</h2>
-
-
-
+<body>
+<div class="friend-page-container">
+  <div class="col-4 leftStyle">
+    <h1>Friend List</h1>
+    <div *ngIf="loggedUser">
+      <div>
       <!-- Show friend requests -->
-      <div *ngIf="newFriendRequests">
-        <button (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
+      <h2>Requests</h2>
+      <div class="friend-request-box" *ngIf="newFriendRequests">
+        <button class="friend-request-btn" (click)="openFriendRequestDialog()">View Friend Requests ({{ newFriendRequests }})</button>
       </div>
 
-      <p-dialog class="custom-dialog" [(visible)]="showFriendRequests" [style]="{width:'500px'}">
+      <p-dialog class="request-dialog" [(visible)]="showFriendRequests" [style]="{width:'500px'}">
         <ng-template pTemplate="header">
-          <span class="p-text-secondary block mb-5" style="margin-top: 40px;">Friend Request</span>
+          <span class="request-title" style="margin-top: 40px;">Friend Request</span>
         </ng-template>
         <li *ngFor="let request of friendRequests">
           <div>{{ request.schickenUser.firstname }} {{ request.schickenUser.lastname }}</div>
-          <button (click)="acceptOrDenyRequest(request, 1)">Akzeptieren</button>
-          <button (click)="acceptOrDenyRequest(request, 2)">Ablehnen</button>
+          <button class="friend-accept-btn" (click)="acceptOrDenyRequest(request, 1)">Accept</button>
+          <button class="friend-decline-btn" (click)="acceptOrDenyRequest(request, 2)">Decline</button>
         </li>
       </p-dialog>
 
-      <h3>Friend List</h3>
-      <p-scroller [items]="allFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)" *ngIf="allFriends.length > 0">
+      <div class="add-friend-btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
+
+      <!-- List status and Add Friends buttons -->
+      <div class="status-request-box">
+        <p-toggleButton *ngIf="isListPublic != null" [(ngModel)]="isListPublic" onLabel="Public" offLabel="Private"
+                        onIcon="pi pi-eye"
+                        offIcon="pi pi-eye-slash" [style]="{ width: '8em' }"
+                        (onChange)="updateListStatus()"></p-toggleButton>
+      </div>
+
+      <p-scroller [items]="allFriends" [itemSize]="50" scrollHeight="calc(100vh - 250px)"
+                  *ngIf="allFriends.length > 0">
         <ng-template pTemplate="item" let-friend>
           <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(friend)"
                style="height: 50px;"
                (click)="onFriendListItemClick(friend)">
-            <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
+            <div class="text-xl font-bold">{{ friend.firstname }} {{ friend.lastname }}</div>
           </div>
         </ng-template>
         <!-- <ul>
@@ -42,28 +50,19 @@
       </p-scroller>
       <p *ngIf="allFriends.length === 0">Your friend list is empty.</p>
 
-      <!-- List status -->
-      <div>
-        <p-toggleButton *ngIf="isListPublic != null" [(ngModel)]="isListPublic" onLabel="Public" offLabel="Private"
-                        onIcon="pi pi-eye"
-                        offIcon="pi pi-eye-slash" [style]="{ width: '8em' }"
-                        (onChange)="updateListStatus()"></p-toggleButton>
-
+      <div class="friendBack-btn-box">
+        <button class="friendBack-button" (click)="goToHome()">Back</button>
       </div>
-
-
-
 
     </div>
   </div>
-
-
-  <div class="btn-box" id="friends" (click)="goToAddFriend()">Add Friends</div>
 </div>
 
 <div class="col-8 rightStyle">
   <!-- 好友详情 -->
   <router-outlet></router-outlet>
 </div>
+</div>
 </body>
+
 </html>
