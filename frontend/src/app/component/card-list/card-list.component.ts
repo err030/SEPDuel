@@ -83,4 +83,8 @@ export class CardListComponent implements OnInit{
   goToHome() {
     this.router.navigate(['homepage-user'])
   }
+
+  goToDecks() {
+    this.router.navigate(['deck-list'])
+  }
 }
