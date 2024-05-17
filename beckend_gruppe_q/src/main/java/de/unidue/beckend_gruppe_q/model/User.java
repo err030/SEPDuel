@@ -33,6 +33,9 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Card> cards = new ArrayList<>();
 
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    public List<User> friends = new ArrayList<>();
+
 
 
     @Override

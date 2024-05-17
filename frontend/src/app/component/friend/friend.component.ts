@@ -106,7 +106,7 @@ export class FriendComponent implements OnInit {
   // 删除用户
  /* deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id) {
-      this.confirmationService.confirm({
+     /* this.confirmationService.confirm({
         message: 'Sind Sie sicher, dass Sie diesen Freund löschen möchten?',
         header: 'Freund löschen',
         icon: 'pi pi-info-circle',
@@ -143,8 +143,41 @@ export class FriendComponent implements OnInit {
               }
             })
           }
+        },
+        reject: () => {
+
         }
-      });
+      });*/
+      const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
+      if(result){
+        if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
+          this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
+            next: (response) => {
+              if (response.status == 200) {
+                for (let i = 0; i < this.friendService.allFriends.length; i++) {
+                  if (this.friendService.allFriends[i].id == friend.id) {
+                    this.friendService.allFriends.splice(i, 1);
+                  }
+                }
+                for (let i = 0; i < this.friendService.chatListFriends.length; i++) {
+                  if (this.friendService.chatListFriends[i].id == friend.id) {
+                    this.friendService.chatListFriends.splice(i, 1);
+                  }
+                }
+                this.selectedFriend = null;
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Erfolgreich',
+                  detail: 'Der Freund wurde gelöscht'
+                });
+              }
+            },
+            error: (error) => {
+              this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+            }
+          })
+        }
+      }
     }
   }*/
 
