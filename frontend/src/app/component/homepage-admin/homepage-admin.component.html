@@ -8,16 +8,14 @@
   <link rel="stylesheet" href="homepage-admin.component.css"/>
 </head>
 
-<body>
-<div>
-  <h1>Welcome to your homepage!</h1>
-
-
-  <button id="logout" (click)="userLogout()"> Log out</button>
-  <button (click)="goToEditProfile()">Profile</button>
-  <button (click)="goToEditCard()">EditCard</button>
-  <button (click)="cardUpload()">Card Upload (.csv)</button>
-  <button (click)="userList()">Player List</button>
+<body class="homepage-admin">
+<h1>Welcome to your homepage!</h1>
+<button id="logout" (click)="userLogout()"> Log out</button>
+<div class="central-buttons">
+  <button id="profile" (click)="goToEditProfile()">Profile</button>
+  <button id="editCard" (click)="goToEditCard()">EditCard</button>
+  <button id="cardUpload" (click)="cardUpload()">Card Upload (.csv)</button>
+  <button id="userlist"(click)="userList()">Player List</button>
 </div>
 
 </body>

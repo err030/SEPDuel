@@ -11,4 +11,6 @@ public interface FriendRequestRepository extends CrudRepository<FriendRequest, L
     FriendRequest findBySchickenUserIdAndZielUserId(Long schickenUserId, Long zielUserId);
     List<FriendRequest> findByZielUserId(Long zielUserId);
     List<FriendRequest> findByZielUserIdOrderByFreundschaftanfragStatus(Long zielUserId);
+
+
 }
