@@ -49,12 +49,12 @@ public class AdminController {
                   card.setName(csvRecord.get(0));
                   String rarity = csvRecord.get(1);
                   //csvRecord return s string, check and set the Rarity
-                  card.setCardRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
+                  card.setRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
                                     rarity.equals("Rarity.RARE") ? Rarity.RARE :
                                             rarity.equals("Rarity.LEGENDARY") ? Rarity.LEGENDARY :
                                                     null);
-                  card.setAttackPoints(Integer.parseInt(csvRecord.get(2)));
-                  card.setDefensePoints(Integer.parseInt(csvRecord.get(3)));
+                  card.setAttack(Integer.parseInt(csvRecord.get(2)));
+                  card.setDefense(Integer.parseInt(csvRecord.get(3)));
                   card.setDescription(csvRecord.get(4));
                   card.setImage(csvRecord.get(5));
                   cards.add(card);
@@ -64,15 +64,16 @@ public class AdminController {
                if (!cardRepository.existsByName("O DEUS KLAUS")){
                     Card specialCard = new Card();
                     specialCard.setName("O DEUS KLAUS");
-                    specialCard.setCardRarity(Rarity.LEGENDARY);
-                    specialCard.setAttackPoints(Integer.MAX_VALUE);
-                    specialCard.setDefensePoints(0);
+                    specialCard.setRarity(Rarity.LEGENDARY);
+                    specialCard.setAttack(Integer.MAX_VALUE);
+                    specialCard.setDefense(0);
                     specialCard.setDescription("Legend has it that O DEUS KLAUS, the eternal deity, wields infinite power, \" +\n" +
                             "                    \"casting awe and fear upon all who dare to challenge its divine might.");
-                    specialCard.setImage("src/main/resources/images/cards/O_DEUS_KLAUS.PNG");
+                    specialCard.setImage("/O_DEUS_KLAUS.PNG");
                     cardRepository.save(specialCard);
                }
-               return ResponseEntity.status(HttpStatus.CREATED).body(null);
+               List<Card> allCards = cardRepository.findAll();
+               return ResponseEntity.status(HttpStatus.CREATED).body(allCards);
            } catch (Exception e) {
                e.printStackTrace();
                System.out.println(e.getMessage());
@@ -83,25 +84,24 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/admin/addCard")
-    public ResponseEntity<Card> addCard(@RequestBody Card card) {
-        List<Card> cardList = cardRepository.findByName(card.getName());
-        if (!cardList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
-        cardRepository.save(card);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
-    }
+//    @PostMapping("/admin/addCard")
+//    public ResponseEntity<Card> addCard(@RequestBody Card card) {
+//        List<Card> cardList = cardRepository.findByName(card.getName());
+//        if (!cardList.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+//        }
+//        cardRepository.save(card);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+//    }
 
-    @DeleteMapping("/admin/deleteCard")
-    public ResponseEntity<Card> deleteCard(@RequestBody Card card) {
-        Optional<Card> deleteCard = cardRepository.findById(card.getId());
-        if (deleteCard.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        cardRepository.delete(card);
-        userRepository.deleteById(card.getId());
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/admin/deleteCard/{id}")
+    public ResponseEntity<Card> deleteCard(@PathVariable Long id) {
+       try {
+           cardRepository.deleteById(id);
+           return ResponseEntity.noContent().build();
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+       }
     }
 }
 

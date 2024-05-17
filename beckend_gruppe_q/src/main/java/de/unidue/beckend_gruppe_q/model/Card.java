@@ -18,19 +18,19 @@ public class Card {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Rarity cardRarity;
+    private Rarity rarity;
 
-    private int attackPoints;
-    private int defensePoints;
+    private int attack;
+    private int defense;
     private String description;
     private String image;
 
 
-    public Card( String name, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
+    public Card(String name, Rarity rarity, int attack, int defense, String description, String image) {
         this.name = name;
-        this.cardRarity = cardRarity;
-        this.attackPoints = attackPoints;
-        this.defensePoints = defensePoints;
+        this.rarity = rarity;
+        this.attack = attack;
+        this.defense = defense;
         this.description = description;
         this.image = image;
     }
