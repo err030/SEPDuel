@@ -109,4 +109,8 @@ export class CardListComponent implements OnInit{
   goToDeck() {
     this.router.navigate(['deck-list'])
   }
+
+  goToDecks() {
+    this.router.navigate(['deck-list'])
+  }
 }

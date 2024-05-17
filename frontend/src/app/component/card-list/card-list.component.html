@@ -1,45 +1,30 @@
-<!-- card-list.component.html -->
-<div class="cards-container">
-  <h1>This is the card list of your deck.</h1>
-
-  <div class="card-search">
-    <input type="text" placeholder="Search by name or description" [(ngModel)]="searchText">
-    <button class="searchCard-btn" (click)="search()">Search</button>
-  </div>
-  <div class="editCard-box">
-    <button class="editCard-btn" (click)="addCards()">Edit Cards</button>
-  </div>
-
-
-  <div class="card-list">
-    <div class="cards-row">
-      <div class="card-item" *ngFor="let card of filteredCards">
-        <app-card [card]=card></app-card>
-      </div>
-    </div>
-
-    <div class="blank-msg"
-         *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length === 0)">
-      <p>Please add some cards in this list</p>
-    </div>
-
-    <div class="error-msg"
-         *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length > 0)">
-      <p>No cards found</p>
-    </div>
-
-    <button class="previous-btn" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
-
-    <span>Page {{ currentPage }} of {{ totalPages }}</span>
-
-    <button class="nextPage-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
-
-
-    <div>
-      <button class="cardBack-btn" (click)="goToDeck()">Back</button>
-    </div>
-
-
-  </div>
-  <router-outlet></router-outlet>
+<p>This is the card list component.</p>
+<button (click)="goToHome()">Back To Homepage</button>
+<button (click)="goToDecks()">Back To Deck List</button>
+<h1>This is the card list of your deck.</h1>
+<div class="card-search">
+  <input type="text" placeholder="Search by name or description" [(ngModel)]="searchText">
+  <button (click)="search()">Search</button>
 </div>
+
+<div class="card-list">
+  <div *ngFor="let card of filteredCards">
+    <app-card [card]=card></app-card>
+  </div>
+
+  <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length === 0)">
+    <p>Ganz schön leer.</p>
+  </div>
+
+  <div *ngIf="(filteredCards == null || filteredCards!.length === 0) && (searchText == null || searchText!.length > 0)">
+    <p>No cards found.</p>
+  </div>
+
+  <div>
+    <button (click)="addCards()">Edit Cards</button>
+  </div>
+
+
+
+</div>
+<router-outlet></router-outlet>
