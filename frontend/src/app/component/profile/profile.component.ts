@@ -125,4 +125,13 @@ export class ProfileComponent implements OnInit {
     localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
     this.changeDetector.detectChanges();
   }
+
+  goToHome(){
+    if(this.loggedUser.groupId == 1){
+      this.router.navigate(['/homepage-user']);
+    }
+    else if(this.loggedUser.groupId == 2){
+      this.router.navigate(['/homepage-admin']);
+    }
+  }
 }

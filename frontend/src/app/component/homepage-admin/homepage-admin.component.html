@@ -2,22 +2,22 @@
 <!DOCTYPE html>
 <html lang="en-EN">
 
-<head>
+<head class="admin">
   <meta charset="UTF-8">
-  <title>Homepage-User Window</title>
+  <title class="admin-page-title">Homepage-User Window</title>
   <link rel="stylesheet" href="homepage-admin.component.css"/>
 </head>
 
-<body>
-<div>
+<body class="admin-page-body">
+<div class="admin-page-container">
   <h1>Welcome to your homepage!</h1>
 
 
   <button id="logout" (click)="userLogout()"> Log out</button>
-  <button (click)="goToEditProfile()">Profile</button>
-  <button (click)="goToEditCard()">EditCard</button>
-  <button (click)="cardUpload()">Card Upload (.csv)</button>
-  <button (click)="userList()">Player List</button>
+  <button id="profile-btn" (click)="goToEditProfile()">Profile</button>
+  <button id="admin-editCard-btn" (click)="goToEditCard()">EditCard</button>
+  <button id="upload-btn" (click)="cardUpload()">Card Upload (.csv)</button>
+  <button id="playerList-btn" (click)="userList()">Player List</button>
 </div>
 
 </body>

@@ -1,11 +1,11 @@
 <html lang="en-EN">
-<body >
-<div class="col-4 leftStyle">
+<body class="admin-userList-page">
+<div class="admin-userList-page-container">
   <h2>Admin User List</h2>
 
-  <p-table [value]="allUser" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+  <p-table class="userList-table" [value]="allUser" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-    <ng-template pTemplate="header">
+    <ng-template class="user-info-header" pTemplate="header">
       <tr>
         <th>Name</th>
         <th>Email</th>
@@ -14,15 +14,15 @@
     <ng-template pTemplate="body" let-user>
       <tr>
         <td>
-          <div class="flex flex-row align-items-center gap-2" [ngClass]="getItemClass(user)"
+          <div class="admin-userList-item" [ngClass]="getItemClass(user)"
                style="height: 50px;"
                (click)="onUserListItemClick(user)">
-            <div class="text-xl font-bold">{{ user.firstname }} {{user.lastname}}</div>
+            <div class="admin-user-box">{{ user.firstname }} {{user.lastname}}</div>
           </div>
 
         </td>
         <td>
-          <div>{{ user.email }}</div>
+          <div class="admin-user-email">{{ user.email }}</div>
         </td>
       </tr>
     </ng-template>
@@ -30,7 +30,7 @@
   </p-table>
 </div>
 
-<div class="col-4 rightStyle">
+<div class="admin-user-friendList-detail-container">
   <!-- 好友详情 -->
   <router-outlet></router-outlet>
 </div>
