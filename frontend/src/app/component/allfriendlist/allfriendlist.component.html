@@ -1,10 +1,11 @@
-<div class="flex justify-content-left" style="height: 100%; margin-left: 200px" *ngIf="selectedFriend">
+<p>allfriendlist works!</p>
+<div class="flex justify-content-left" style="height: 100%; margin-left: 200px" *ngIf="selectedUser">
   <div class="flex flex-row align-items-center">
     <div class="flex flex-column">
       <div class="flex flex-row align-items-center">
         <div class="flex flex-column align-items-start gap-3">
-          <div class="text-xl font-bold">{{ selectedFriend.firstname }} {{selectedFriend.lastname}}</div>
-          <div>Email: {{ selectedFriend.email }}</div>
+          <div class="text-xl font-bold">{{ selectedUser.firstname }} {{selectedUser.lastname}}</div>
+          <div>Email: {{ selectedUser.email }}</div>
         </div>
       </div>
       <div class="flex flex-column">
@@ -12,14 +13,9 @@
       </div>
       <div class="flex flex-column">
         <div class="flex flex-row align-items-center gap-3">
-          <p-button *ngIf="selectedFriendListStatus!=null && selectedFriendListStatus" label="Freundesliste"
+          <p-button label="Friendesliste"
                     icon="pi pi-book"
                     styleClass="p-button-help" (onClick)="openFriendList()"></p-button>
-          <p-button *ngIf="selectedFriendListStatus!= null && !selectedFriendListStatus" label="Freundesliste (privat)"
-                    [disabled]="true"
-                    icon="pi pi-book" styleClass="p-button-help"></p-button>
-         <!-- <p-button label="Löschen" icon="pi pi-trash" styleClass="p-button-danger"
-                    (onClick)="deleteFriend(selectedFriend)"></p-button>-->
         </div>
       </div>
     </div>
