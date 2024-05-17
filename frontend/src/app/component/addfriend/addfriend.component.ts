@@ -9,13 +9,15 @@ import {FriendRequest} from "../../model/FriendRequest";
 import {User} from "../../model/user";
 import {friend} from "../../model/friend";
 import {NgIf} from "@angular/common";
+import {DialogModule} from "primeng/dialog";
 
 @Component({
   selector: 'app-addfriend',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    DialogModule
   ],
   providers: [UserService, FriendService,MessageService,ConfirmationService],
   templateUrl: './addfriend.component.html',
@@ -23,6 +25,7 @@ import {NgIf} from "@angular/common";
 })
 export class AddfriendComponent {
   loggedUser: any;
+  shownoticDialog: boolean = false;
 
   showLoadingDialog: boolean = false;
   activeIndex: number = 0;
@@ -40,7 +43,7 @@ export class AddfriendComponent {
   selectedChatListItemId: number | undefined;
   newFriendRequests: string = "";
   chatListFriends: User[] = [];
-
+  errorMessage: string = "";
 
 
   constructor(private friendService: FriendService, private messageService: MessageService) {}
@@ -69,18 +72,30 @@ export class AddfriendComponent {
         },
         error: (error) => {
           if (error.status == 404) {
-            this.messageService.add({
+            /*this.messageService.add({
               severity: 'error',
               summary: 'Nicht gefunden',
               detail: 'Die eingegebene Email ist nicht vorhanden.'
-            });
+            });*/
+            // this.errorMessage = "Die eingegebene Email ist nicht vorhanden."
+            this.shownoticDialog = true;
           } else {
-            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+            /*this.messageService.add({
+              severity: 'error',
+              summary: 'Fehler',
+              detail: error.statusText});*/
+            this.errorMessage = 'Fehler: ' + error.statusText;
           }
           this.targetFriend = null;
         }
       })
     }
+  }
+  showDialog() {
+    this.shownoticDialog = true;
+  }
+  hideDialog() {
+    this.shownoticDialog = false;
   }
 
   // 发送好友请求
