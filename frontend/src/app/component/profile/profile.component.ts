@@ -31,7 +31,10 @@ export class ProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loggedUser = Global.loggedUser;
+    const storedUser = localStorage.getItem('loggedUser');
+    if(storedUser) {
+      this.loggedUser = JSON.parse(storedUser);
+    }
     if (!this.loggedUser || !this.loggedUser.id) {
       console.error('User data is not loaded or user ID is missing.');
     }
@@ -106,7 +109,7 @@ export class ProfileComponent implements OnInit {
               lastname: user.lastname,
               sepCoins: user.sepCoins,
               leaderBoardPunkt: user.leaderBoardPunkt,
-              avatarUrl: user.avatarUrl ? `${Global.backendUrl}/avatars/${user.avatarUrl}` : 'assets/images/user.png'
+              avatarUrl: user.avatarUrl ? `${Global.backendUrl}${user.avatarUrl}` : 'assets/images/user.png'
             });
           }
         },
