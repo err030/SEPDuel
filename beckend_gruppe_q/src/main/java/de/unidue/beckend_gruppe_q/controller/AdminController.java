@@ -4,6 +4,7 @@ import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Rarity;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@Transactional
 public class AdminController {
 
 
@@ -59,7 +61,7 @@ public class AdminController {
                   card.setImage(csvRecord.get(5));
                   cards.add(card);
               }
-              cardRepository.saveAll(cards);
+                  cardRepository.saveAll(cards);
               // check if the legendary card is present
                if (!cardRepository.existsByName("O DEUS KLAUS")){
                     Card specialCard = new Card();
@@ -70,10 +72,11 @@ public class AdminController {
                     specialCard.setDescription("Legend has it that O DEUS KLAUS, the eternal deity, wields infinite power, \" +\n" +
                             "                    \"casting awe and fear upon all who dare to challenge its divine might.");
                     specialCard.setImage("/O_DEUS_KLAUS.PNG");
+                    cards.add(specialCard);
                     cardRepository.save(specialCard);
                }
                List<Card> allCards = cardRepository.findAll();
-               return ResponseEntity.status(HttpStatus.CREATED).body(allCards);
+               return ResponseEntity.status(HttpStatus.CREATED).body(cards);
            } catch (Exception e) {
                e.printStackTrace();
                System.out.println(e.getMessage());
@@ -84,24 +87,23 @@ public class AdminController {
         }
     }
 
-//    @PostMapping("/admin/addCard")
-//    public ResponseEntity<Card> addCard(@RequestBody Card card) {
-//        List<Card> cardList = cardRepository.findByName(card.getName());
-//        if (!cardList.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-//        }
-//        cardRepository.save(card);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(null);
-//    }
-
-    @DeleteMapping("/admin/deleteCard/{id}")
-    public ResponseEntity<Card> deleteCard(@PathVariable Long id) {
+    @DeleteMapping("/admin/deleteCard/{name}")
+    public ResponseEntity<Card> deleteCard(@PathVariable String name) {
+        System.out.println("Frontend Called" + name);
        try {
-           cardRepository.deleteById(id);
+           cardRepository.deleteByName(name);
+           System.out.println("Repo deleted");
            return ResponseEntity.noContent().build();
        } catch (Exception e) {
+           e.printStackTrace();
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
        }
+    }
+
+    @GetMapping("/admin/getAllCards")
+    public ResponseEntity<List<Card>> getAllCards() {
+        List<Card> allCards = cardRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(allCards);
     }
 }
 

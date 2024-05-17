@@ -35,8 +35,8 @@ export class FileUploadService {
       'Something bad happened; please try again later.');
   }
 
-  deleteCard(cardId: number): Observable<void> {
-    const url = `${Global.backendUrl}/admin/deleteCard/${cardId}`;
+  deleteCard(name:string): Observable<void> {
+    const url = `${Global.backendUrl}/admin/deleteCard/${name}`;
     return this.http.delete<void>(url).pipe(catchError(this.handleError));
   }
 }

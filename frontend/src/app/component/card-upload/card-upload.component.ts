@@ -1,9 +1,11 @@
 // card-upload.component.ts
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FileUploadService } from '../../service/file-upload.service';
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import { Card } from '../../model/card.model';
 import {Global} from "../../global";
+import {CardService} from "../../service/card.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-card-upload',
@@ -16,11 +18,15 @@ import {Global} from "../../global";
   ],
   styleUrls: ['./card-upload.component.css']
 })
-export class CardUploadComponent {
+export class CardUploadComponent implements OnInit{
   selectedFile!: File;
   cards: Card[] = []
 
-  constructor(private uploadService: FileUploadService) { }
+  constructor(private uploadService: FileUploadService, private http: HttpClient) { }
+
+  ngOnInit() {
+  this.getAllCards()
+  }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
@@ -34,14 +40,23 @@ export class CardUploadComponent {
 
       // error: (error) => console.error('Upload failed', error)
 
+    this.getAllCards()
+
+  }
+
+  getAllCards(): void {
+    this.http.get(Global.backendUrl + "/admin/getAllCards").subscribe(
+      (card:any) => this.cards = card,
+      error => console.log("error", error)
+    )
   }
 
   // protected readonly Card = Card;
 
-  deleteCard(cardId: number) {
-    this.uploadService.deleteCard(cardId).subscribe(
+  deleteCard(name: string) {
+    this.uploadService.deleteCard(name).subscribe(
       () => {
-        this.cards = this.cards.filter(card => card.id !== cardId);
+        this.cards = this.cards.filter(card => card.name !== name);
       },
       error => console.error('Delete failed: ' + error)
     )
