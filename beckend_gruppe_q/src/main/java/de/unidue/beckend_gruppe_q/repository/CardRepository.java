@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findByName(String oDeusKlaus);
+
+    boolean existsByName(String oDeusKlaus);
+
+    void deleteByName(String name);
 }

@@ -16,18 +16,21 @@ public class Card {
     @Column(name = "card")
     private Long id;
     private String name;
-    private Rarity cardRarity;
-    private int attackPoints;
-    private int defensePoints;
+
+    @Enumerated(EnumType.STRING)
+    private Rarity rarity;
+
+    private int attack;
+    private int defense;
     private String description;
     private String image;
 
 
-    public Card( String name, Rarity cardRarity, int attackPoints, int defensePoints, String description, String image) {
+    public Card(String name, Rarity rarity, int attack, int defense, String description, String image) {
         this.name = name;
-        this.cardRarity = cardRarity;
-        this.attackPoints = attackPoints;
-        this.defensePoints = defensePoints;
+        this.rarity = rarity;
+        this.attack = attack;
+        this.defense = defense;
         this.description = description;
         this.image = image;
     }
