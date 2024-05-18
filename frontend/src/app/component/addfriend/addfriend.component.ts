@@ -43,7 +43,7 @@ export class AddfriendComponent {
 
 
 
-  constructor(private friendService: FriendService, private messageService: MessageService) {}
+  constructor(private friendService: FriendService, private messageService: MessageService, private router: Router) {}
 
   ngOnInit(): void {
     this.loggedUser = Global.loggedUser;
@@ -69,6 +69,7 @@ export class AddfriendComponent {
         },
         error: (error) => {
           if (error.status == 404) {
+            alert("User not found");
             this.messageService.add({
               severity: 'error',
               summary: 'Nicht gefunden',
@@ -89,6 +90,7 @@ export class AddfriendComponent {
       this.friendService.sendFriendRequest(this.loggedUser.id, this.targetFriend.user.id).subscribe({
         next: (response) => {
           if (response.status == 200) {
+            alert("Friend request sent successfully!");
             this.messageService.add({
               severity: 'success',
               summary: 'Erfolgreich',
@@ -98,12 +100,26 @@ export class AddfriendComponent {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          if(error.status == 400) {
+            alert("You have already sent a friend request to this user");
+            this.messageService.add({
+              severity: 'error',
+              summary: 'already sent request',
+              detail: 'You have already sent a friend request to this user'
+            });
+          }
+          else {
+            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          }
         }
       })
     }
   }
   getUserAvatarUrl(user: User): string {
     return Global.backendUrl + user.avatarUrl;
+  }
+
+  goToFriendsPage(){
+    this.router.navigate(['/friendlist']);
   }
 }

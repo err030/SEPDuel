@@ -1,0 +1,115 @@
+/* 全局设置 */
+body.addfriend {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+/* 容器设置 */
+.af-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* 头部样式 */
+.af-header h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* 表单样式，行内排列 */
+form {
+  display: flex;
+  width: 100%;
+}
+
+.af-input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 5px; /* 与搜索按钮间隔 */
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px; /* 右侧无圆角 */
+}
+
+.af-search-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0; /* 左侧无圆角 */
+  cursor: pointer;
+}
+
+.af-search-button:hover {
+  background-color: #45a049;
+}
+.af-container h3{
+  margin-top: 20px;
+}
+/* 搜索结果框样式 */
+.af-result-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.af-input{
+  font-size: 18px;
+  font-family: DIN Alternate  , sans-serif;
+}
+
+.af-avatar img {
+  width: 50px; /* 小型头像 */
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#username, #email {
+  color: #555;
+  margin: 2px 0;
+}
+
+/* 添加好友按钮 */
+.af-add-friend-button {
+  background-color: #2196F3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.af-add-friend-button:hover {
+  background-color: #1e88e5;
+}
+
+/* 返回按钮固定在左下角 */
+.af-back-box {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+}
+
+.af-back-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.af-back-btn:hover {
+  background-color: #d32f2f;
+}
