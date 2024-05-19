@@ -6,7 +6,6 @@ import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {FriendService} from "../../service/friend.service";
 import {Global} from "../../global";
 import {TableModule} from "primeng/table";
-import {friend} from "../../model/friend";
 import {NgClass, NgForOf} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 
@@ -25,10 +24,9 @@ import {DialogModule} from "primeng/dialog";
   styleUrl: './admin-userlist.component.css'
 })
 export class AdminUserlistComponent implements OnInit{
-  showAuditList: boolean = true;
-  auditRequests: any;
+
   public loggedUser: any;
-  allComment:Comment [] =[];
+
   allUser:User[]=[];
   selectedUserListItemId: number | undefined;
   friendId: number | null = null;
