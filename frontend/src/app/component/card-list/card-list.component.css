@@ -50,10 +50,11 @@ body.card-list {
   border-radius: 5px 0 0 5px;
   border: 2px solid rgba(23, 23, 23, 0.9);
   width: 70%;
+  font-family: DIN Alternate  , sans-serif;
 }
 
 .searchCard-btn {
-  padding: 10px 20px;
+  padding: 13px 20px;
   border: none;
   border-radius: 0 5px 5px 0;
   background: linear-gradient(145deg, #67eae7, #8ec593);
@@ -91,14 +92,15 @@ body.card-list {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.blank-msg, .error-message p {
+#no-cards-msg {
   font-size: 16px;
+  color: rgba(250, 29, 29, 0.9);
+}
+.blank-msg{
   color: rgba(255, 255, 255, 0.9);
 }
-
-.blank-msg, .error-message{
+.blank-msg, .error-msg{
   text-align: center;
-  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 20px;
 }
 

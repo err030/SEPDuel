@@ -61,8 +61,14 @@ export class CardListComponent implements OnInit{
   updateFilteredCards(): void {
     const startIndex = (this.currentPage - 1) * this.cardsPerPage;
     this.filteredCards = this.cards?.slice(startIndex, startIndex + this.cardsPerPage);
+    this.checkIfLastPage();
   }
 
+  checkIfLastPage(): void {
+    if (this.filteredCards && this.filteredCards.length < this.cardsPerPage) {
+      this.totalPages = this.currentPage; // 更新总页数如果当前页未填满
+    }
+  }
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
