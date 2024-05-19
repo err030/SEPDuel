@@ -46,7 +46,7 @@ export class AddfriendComponent {
   errorMessage: string = "";
 
 
-  constructor(private friendService: FriendService, private messageService: MessageService) {}
+  constructor(private friendService: FriendService, private messageService: MessageService, private router: Router,) {}
 
   ngOnInit(): void {
     this.loggedUser = Global.loggedUser;
@@ -120,5 +120,9 @@ export class AddfriendComponent {
   }
   getUserAvatarUrl(user: User): string {
     return Global.backendUrl + user.avatarUrl;
+  }
+
+  goToFriendsPage(){
+    this.router.navigate(['/friendlist']);
   }
 }
