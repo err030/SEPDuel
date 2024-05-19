@@ -1,28 +1,54 @@
-<body class="addfriend">
 <!-- addfriend.component.html -->
-<div class="af-container">
-  <div class="af-header">
-    <h2>Add Friend</h2>
-  </div>
-  <form (submit)="onUserSearchFormSubmit()">
-    <input class="af-input" type="text" name="searchQuery" [(ngModel)]="targetEmail" placeholder="Enter email" required>
-    <button class="af-search-button" type="submit">Search</button>
-  </form>
+<!DOCTYPE>
+<html lang="en-EN">
 
+<head>
+  <meta charset="UTF-8">
+  <title>Add Friend</title>
+  <link rel="stylesheet" href="addfriend.component.css">
+</head>
+
+<div>
+  <h2>Add Friend</h2>
+  <form (submit)="onUserSearchFormSubmit()">
+    <input type="text" name="searchQuery" [(ngModel)]="targetEmail" placeholder="Enter email" required>
+<!--    <button type="submit">Search</button>-->
+
+
+    <button (click)="onUserSearchFormSubmit()" class="search-button">Search</button>
+
+    <p-dialog header="Error" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>Die eingegebene Email ist nicht vorhanden.</p>
+      <p-footer>
+        <button pButton type="button" label="close" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
+    <!--<p-dialog header="错误" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>Die eingegebene Email ist nicht vorhanden.</p>
+      <p-footer>
+        <button pButton type="button" label="关闭" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>-->
+  </form>
   <div *ngIf="targetFriend">
     <h3>Search Result</h3>
-    <div class="af-result-box">
-      <div class="af-avatar" *ngIf="targetUserHasAvatar">
-        <img [src]="targetUserAvatarUrl" alt="User Avatar">
-      </div>
-      <p id="username">Username: {{ targetFriend.user.username }}</p>
-      <p id="email">Email: {{ targetFriend.user.email }}</p>
+    <p>Username: {{ targetFriend.user.username }}</p>
+    <p>Email: {{ targetFriend.user.email }}</p>
+    <div *ngIf="targetUserHasAvatar">
+      <img [src]="targetUserAvatarUrl" alt="User Avatar">
     </div>
-    <button class="af-add-friend-button" (click)="sendFriendRequest()">Send Friend Request</button>
+    <button (click)="sendFriendRequest()">Send Friend Request</button>
+    <p-dialog header="Information" [(visible)]="showRequestDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>The request is already accepted or in process.</p>
+      <p-footer>
+        <button pButton type="button" label="close" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
+  </div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
   </div>
 
-  <div class="af-back-box">
-    <button class="af-back-btn" (click)="goToFriendsPage()">Back</button>
-  </div>
 </div>
-</body>
+
+</html>

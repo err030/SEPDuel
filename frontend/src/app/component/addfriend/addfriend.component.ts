@@ -26,6 +26,7 @@ import {DialogModule} from "primeng/dialog";
 export class AddfriendComponent {
   loggedUser: any;
   shownoticDialog: boolean = false;
+  showRequestDialog: boolean = false;
 
   showLoadingDialog: boolean = false;
   activeIndex: number = 0;
@@ -96,7 +97,9 @@ export class AddfriendComponent {
   }
   hideDialog() {
     this.shownoticDialog = false;
+    this.showRequestDialog = false;
   }
+
 
   // 发送好友请求
   sendFriendRequest(): void {
@@ -113,7 +116,8 @@ export class AddfriendComponent {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          //this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          this.showRequestDialog = true;
         }
       })
     }
