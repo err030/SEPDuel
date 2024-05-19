@@ -19,8 +19,6 @@ import { User } from '../../model/user';
 })
 export class ProfileComponent implements OnInit {
   public loggedUser!: User;
-  public sepCoins: number | undefined;
-  public leaderBoardPunkt: number | undefined;
   public selectedFile: File | null = null;
   public isUploading: boolean = false;
 
