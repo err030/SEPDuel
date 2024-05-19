@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {FriendService} from "../../service/friend.service";
 import {Global} from "../../global";
 import {DividerModule} from "primeng/divider";
@@ -77,7 +77,7 @@ export class FriendComponent implements OnInit {
   deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id) {
 
-      const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
+      const result = confirm("Are you sure to delete this friend?");
       if(result){
         if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
           this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
