@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {FriendService} from "../../service/friend.service";
@@ -96,7 +96,7 @@ export class FriendlistComponent implements OnInit {
               private messageService: MessageService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private activatedRoute: ActivatedRoute,) {
+              private activatedRoute: ActivatedRoute,private changeDetector: ChangeDetectorRef) {
     console.log('FriendlistComponent instantiated');
   }
 
@@ -104,7 +104,7 @@ export class FriendlistComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loggedUser = Global.loggedUser;
+    this.loggedUser = this.userService.loggedUser;
     if (this.loggedUser && this.loggedUser.id) {
       // 获取当前用户的所有好友
       this.friendService.getAllFriends(this.loggedUser.id).subscribe({
@@ -140,33 +140,8 @@ export class FriendlistComponent implements OnInit {
           this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
         }
       })
-      // 观察selectedFriendInChatList是否有数据变化，有的话则表示是从好友详情页面跳转过来的，激活Chats页面
-      /*this.friendService.selectedFriendInChatList.subscribe({
-        next: value => {
-          this.selectedChatListItemId = undefined;
-          // 检查该好友是否已经在chatListFriends中
-          for (let user of this.chatListFriends) {
-            if (user.id == value.id) {
-              this.selectedChatListItemId = user.id;
-              break;
-            }
-          }
-          // 如果不存在，添加到chatListFriends的第一个
-          if (this.selectedChatListItemId == undefined) {
-            this.chatListFriends.unshift(value);
-            this.selectedChatListItemId = value.id;
-          }
-          this.activeIndex = 0;this.activatedRoute.paramMap.subscribe(parameters => {
-      const friendIdParam = parameters.get('friendId');
-        }
-      })*/
-      this.activatedRoute.paramMap.subscribe(parameters => {
-        const friendIdParam = parameters.get('friendId');
-        console.log(friendIdParam); // 确认 friend.id 是否正确获取
-        // 进行其他操作，例如加载 friend 的详细信息
-      });
-    }
 
+    }
   }
 
 
@@ -268,6 +243,12 @@ export class FriendlistComponent implements OnInit {
       })
     }
 
+  }
+
+  updateUserInfo(updatedData: any): void {
+    this.loggedUser = { ...this.loggedUser, ...updatedData };
+    localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+    this.changeDetector.detectChanges();
   }
 
 
