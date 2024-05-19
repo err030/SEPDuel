@@ -108,6 +108,14 @@ export class AddfriendComponent {
               detail: 'You have already sent a friend request to this user'
             });
           }
+          else if (error.status === 409) {
+            alert("You are already friends with this user");
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Already friends',
+              detail: 'You are already friends with this user'
+            });
+          }
           else {
             this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
           }
