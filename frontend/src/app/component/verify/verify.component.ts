@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
-import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {User} from "../../model/user";
 import {Global} from "../../global";
 @Component({
   selector: 'app-verify',
@@ -13,10 +11,10 @@ import {Global} from "../../global";
   imports: [
     FormsModule
   ],
-  providers: [MessageService, UserService]
+  providers: [UserService]
 })
 export class VerifyComponent implements OnInit {
-  constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
 
   }
 
@@ -54,19 +52,11 @@ export class VerifyComponent implements OnInit {
         // 验证码无效，根据返回的状态值显示相应的错误信息
         error: (error) => {
           if (error.status == 401) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'The security code you entered has expired'
-            });
+            alert("The security code you entered has expired");
           } else if (error.status == 404) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'The security code entered is invalid'
-            });
+            alert("The security code entered is invalid");
           } else {
-            this.messageService.add({severity: 'error', summary: 'Error', detail: error.statusText});
+            alert("Something went wrong");
           }
         }
       })
@@ -76,11 +66,7 @@ export class VerifyComponent implements OnInit {
     console.log("ID:" + this.loggedUser.id)
     if (!this.loggedUser || !this.loggedUser.id) {
       // 如果 loggedUser 或其 id 为空，显示错误消息并返回
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'User information is missing or invalid. Please log in again.'
-      });
+      alert("User information is missing or invalid. Please log in again");
       return;
     }
   console.log("GET Token")
@@ -101,14 +87,10 @@ export class VerifyComponent implements OnInit {
         } else if (this.loggedUser.groupId == 2) {
           this.router.navigateByUrl('/homepage-admin');
         }
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'You have successfully logged in'
-        });
+        alert("You have successfully logged in");
       },
       error: (error) => {
-        this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        alert("error");
       }
     })
   }

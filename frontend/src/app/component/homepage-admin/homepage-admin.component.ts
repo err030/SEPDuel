@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {MessageService} from "primeng/api";
 import {UserService} from "../../service/user.service";
 import {Router, RouterOutlet} from "@angular/router";
 
@@ -11,7 +10,7 @@ import {Router, RouterOutlet} from "@angular/router";
     imports: [
         RouterOutlet
     ],
-    providers: [MessageService, UserService]
+    providers: [UserService]
 })
 export class HomepageAdminComponent {
   constructor(private userService: UserService,

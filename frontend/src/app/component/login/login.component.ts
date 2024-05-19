@@ -2,7 +2,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
-import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {FormsModule, NgForm} from "@angular/forms";
@@ -27,22 +26,24 @@ import {Global} from "../../global";
     ButtonModule,
     NgOptimizedImage
   ],
-  providers: [UserService, MessageService]
+  providers: [UserService]
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('loginForm') loginForm: NgForm | undefined;
   user: User = new User("", "", "", "", "", 1);
 
   loggedUser: any;
-  resetPasswordUser: User = new User("", "", "", "", "",1);
+  resetPasswordUser: User = new User("", "", "", "", "", 1);
   showResetPasswordDialog: boolean = false;
-  constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
+
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.markFormFieldsAsTouched();
     this.userService.checkLoggedUser();
   }
+
   ngAfterViewInit(): void { // 在 ngAfterViewInit 钩子中调用 markFormFieldsAsTouched()
     this.markFormFieldsAsTouched();
   }
@@ -74,8 +75,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
       next: (response: HttpResponse<User>) => {
         if (response.status === 200) {
-          if (response.body){
-            this.loggedUser=response.body;
+          if (response.body) {
+            this.loggedUser = response.body;
             Global.loggedUser = this.loggedUser; // 设置 Global.loggedUser
             localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser)); // 同步到本地存储
           }
@@ -83,7 +84,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           // 用户登录成功，导航到验证页面
           this.userService.getSecurityCodeByUserId((this.loggedUser.id)).subscribe({
             next: (response) => {
-              if(response.status === 201) {
+              if (response.status === 201) {
                 Global.loggedUser = this.loggedUser;
                 this.router.navigate(['/verify']);
               }
@@ -91,22 +92,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
           });
         } else {
           // 用户登录失败，显示错误消息
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to login. Please try again later.' });
+          alert("Failed to login");
         }
       },
       error: (error) => {
         // 处理用户登录失败的错误情况
         console.error(error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to login. Please try again later.' });
+        alert("Failed to login");
       }
     });
   }
 
 
-
   showPasswordForgetDialog(): void {
     this.showResetPasswordDialog = true;
   }
+
   // 申请忘记密码
   forgetPasswordRequest()
     : void {
@@ -120,54 +121,31 @@ export class LoginComponent implements OnInit, AfterViewInit {
             next: (response: HttpResponse<any>) => { // 显式声明 response 参数的类型
               // 发送成功
               if (response.status === 200) {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Success',
-                  detail: 'An email with password reset instructions has been sent to your email address.'
-                });
-
+                alert('Password reset email sent to your email address');
               } else {
                 // 发送失败
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail: 'Failed to send password reset email. Please try again later.'
-                });
+                alert("Failed to send password reset email. Please try again later.");
               }
             },
             error: (error: any) => { // 显式声明 error 参数的类型
-              // 发送失败
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Failed to send password reset email. Please try again later.'
-              });
+              // 其他报错
+              alert("Error");
             }
           });
         } else {
           // 用户不存在，显示错误消息
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'This email or username does not exist'
-          });
+          alert("User doesn't exist");
         }
       },
       error: (error: any) => { // 显式声明 error 参数的类型
         // 其他错误，显示通用错误消息
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to send password reset email. Please try again later.'
-        });
+        alert("Error");
       }
     });
   }
 
 
-  goToRegister()
-    :
-    void {
+  goToRegister(): void {
     this.router.navigateByUrl('/register')
       .then((navigationSuccess: boolean) => {
         if (navigationSuccess) {
@@ -178,7 +156,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         }
       });
   }
-
 
 
 }

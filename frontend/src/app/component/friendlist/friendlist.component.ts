@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {FriendService} from "../../service/friend.service";
@@ -7,9 +7,7 @@ import {friend} from "../../model/friend";
 import {FriendRequest} from "../../model/FriendRequest";
 import {FormsModule, NgForm} from "@angular/forms";
 import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
-import {forkJoin} from "rxjs";
-import {ConfirmationService, MessageService} from "primeng/api";
-import {HttpResponse} from "@angular/common/http";
+import {ConfirmationService} from "primeng/api";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {LoadingComponent} from "../../loading/loading.component";
 
@@ -21,7 +19,6 @@ import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
 import {TabViewModule} from "primeng/tabview";
 import {ScrollPanelModule} from "primeng/scrollpanel";
-
 
 
 @Component({
@@ -43,68 +40,43 @@ import {ScrollPanelModule} from "primeng/scrollpanel";
     TabViewModule,
     ScrollPanelModule
   ],
-  providers: [UserService, FriendService,MessageService,ConfirmationService],
+  providers: [UserService, FriendService, ConfirmationService],
   templateUrl: './friendlist.component.html',
   styleUrl: './friendlist.component.css'
 })
 export class FriendlistComponent implements OnInit {
 
   public loggedUser: any;
-  targetEmail: string = "";
 
-  targetFriend: friend | null = null;
-  targetUserHasAvatar: boolean = false;
-  targetUserAvatarUrl: string = "";
-  targetUserAvatarWord: string = "";
   friendRequests: FriendRequest[] = [];
   allFriends: User[] = [];
   isListPublic: boolean | null = false;
   selectedFriendListItemId: number | undefined;
-  selectedChatListItemId: number | undefined;
+
   newFriendRequests: string = "";
-  showLoadingDialog: boolean=false;
-  activeIndex:number=0;
-  showNewFriends:boolean=false;
-  showUserSearchDialog:boolean=false;
+  showNewFriends: boolean = false;
   showFriendRequests: boolean = false;
 
   chatListFriends: User[] = [];
-  friendId: number | null = null;
-  selectedFriend: User | null = null;
-  selectedFriendListStatus: boolean | null = null;
-  friends: User[] = [];
-  showFriendList: boolean = false;
-
 
 
   @ViewChild(NgForm)
 
   benutzerSuchFormular: any                       //userSearchForm
-  zeigenFreundesliste: boolean = false;           //showFriendList
-  userSearchForm: any;
 
-//boolean zu control
-  showAddFriendConfirmationPopup = false;
-  showAddFriendPopup = false;
-  protected showDeleteFriendConfirmation=false;
   protected readonly friend = friend;
 
 
-
-  constructor(private userService: UserService,
-              private friendService: FriendService,
-              private messageService: MessageService,
-              private router: Router,
-              private confirmationService: ConfirmationService,
-              private activatedRoute: ActivatedRoute,private changeDetector: ChangeDetectorRef) {
+  constructor(
+    private friendService: FriendService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,) {
     console.log('FriendlistComponent instantiated');
   }
 
 
-
-
   ngOnInit() {
-    this.loggedUser = this.userService.loggedUser;
+    this.loggedUser = Global.loggedUser;
     if (this.loggedUser && this.loggedUser.id) {
       // 获取当前用户的所有好友
       this.friendService.getAllFriends(this.loggedUser.id).subscribe({
@@ -115,7 +87,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error");
         }
       })
       // 获取当前用户的好友列表状态（是否公开）
@@ -126,7 +98,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error")
         }
       })
       // 获取当前用户有多少个未处理的好友请求
@@ -137,13 +109,17 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error")
         }
       })
 
+      this.activatedRoute.paramMap.subscribe(parameters => {
+        const friendIdParam = parameters.get('friendId');
+        console.log(friendIdParam); // 确认 friend.id 是否正确获取
+      });
     }
-  }
 
+  }
 
 
   // 获取好友请求
@@ -158,12 +134,11 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error")
         }
       })
     }
   }
-
 
 
   acceptOrDenyRequest(request: FriendRequest, status: number): void {
@@ -175,17 +150,9 @@ export class FriendlistComponent implements OnInit {
           if (status == 1) {
             this.allFriends.push(request.schickenUser);
             this.allFriends.sort((friend1, friend2) => friend1.lastname.localeCompare(friend2.lastname));
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde angenommen'
-            });
+            alert("User has accepted")
           } else if (status == 2) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde abgelehnt'
-            });
+            alert("User has rejected")
           }
           if (this.newFriendRequests) {
             let newFriendRequestsNumber = parseInt(this.newFriendRequests);
@@ -200,7 +167,7 @@ export class FriendlistComponent implements OnInit {
       },
       error: (error) => {
         request.freundschaftanfragStatus = currentRequestStatus;
-        this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        alert("error")
       }
     })
     // 从 friendRequests 数组中移除该请求对象
@@ -222,33 +189,19 @@ export class FriendlistComponent implements OnInit {
         next: (response) => {
           if (response.status == 200) {
             if (this.isListPublic) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Die Freundesliste ist auf öffentlich eingestellt'
-              });
+              alert("Friend list is now public")
             } else {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Die Freundesliste ist auf privat eingestellt'
-              });
+              alert("Friend list is now private")
             }
           }
         },
         error: (error) => {
           this.isListPublic = !this.isListPublic;
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error")
         }
       })
     }
 
-  }
-
-  updateUserInfo(updatedData: any): void {
-    this.loggedUser = { ...this.loggedUser, ...updatedData };
-    localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
-    this.changeDetector.detectChanges();
   }
 
 
@@ -267,7 +220,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error")
         }
       })
     }
@@ -283,33 +236,6 @@ export class FriendlistComponent implements OnInit {
 
   goToAddFriend() {
     this.router.navigate(['/addfriend']);
-  }
-
-  getFriendFirstname(friend: User): string {
-    return Global.backendUrl + friend.firstname;
-  }
-
-  // 获取好友信息并显示
-  openFriendList(): void {
-    if (this.selectedFriend && this.selectedFriend.id) {
-      this.friendService.getAllFriends(this.selectedFriend.id).subscribe({
-        next: (response) => {
-          if (response.status == 200 && response.body) {
-            this.friends.length = 0;
-            response.body.forEach(friend => {
-              this.friends.push(friend);
-            })
-            this.showFriendList = true;
-          }
-        },
-        error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-        }
-      })
-    }
-  }
-  selectFriend(friend: any): void {
-    this.selectedFriend = friend;
   }
 
   goToHome() {

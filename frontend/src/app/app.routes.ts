@@ -10,7 +10,6 @@ import {HomepageUserComponent} from "./component/homepage-user/homepage-user.com
 import {HomepageAdminComponent} from "./component/homepage-admin/homepage-admin.component";
 
 
-import {AboutComponent} from "./component/about/about.component";
 import {CardListComponent} from "./component/card-list/card-list.component";
 import {DeckListComponent} from "./component/deck-list/deck-list.component";
 import {ProfileComponent} from "./component/profile/profile.component";
@@ -34,7 +33,6 @@ export const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'reset-password', component: ResetPasswordComponent},
 
-  {path: 'about', component: AboutComponent},
   {path: 'card-list', component: CardListComponent},
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
