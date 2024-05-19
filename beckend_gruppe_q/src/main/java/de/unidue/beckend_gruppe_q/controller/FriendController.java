@@ -127,6 +127,16 @@ public class FriendController{
     @PostMapping("/friend/sendFriendRequest/{currentUserid}/{targetUserid}")
     public ResponseEntity<?> sendFriendRequest(@PathVariable(value = "currentUserid") Long currentUserId,
                                                @PathVariable(value = "targetUserid") Long targetUserId) {
+        // 检查是否已经是好友
+        FriendList currentUserFriendList = friendListRepository.findByUserId(currentUserId);
+        if (currentUserFriendList != null) {
+            FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), targetUserId);
+            if (friendListDetail != null) {
+                System.out.println("Already friends");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Already friends");
+            }
+        }
+
         // 检查是否已经发过好友申请
         FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, targetUserId);
         if (friendRequest != null) {
@@ -137,7 +147,7 @@ public class FriendController{
                 friendRequestEmail(currentUserId,targetUserId);
                 return ResponseEntity.status(HttpStatus.OK).body(null);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);//应该要跳出一个消息提示
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Already sent request");//应该要跳出一个消息提示
             }
         } else {
             // 如果没有发过好友申请，发送新的
