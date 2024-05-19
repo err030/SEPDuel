@@ -31,8 +31,7 @@ export class AdminUserlistComponent implements OnInit{
   selectedUserListItemId: number | undefined;
   friendId: number | null = null;
   selectedUser: User | null = null;
-  showFriendList: boolean = false;
-  friends: User[] = [];
+
 
   constructor(private activatedRoute: ActivatedRoute,
               private userService: UserService,
@@ -76,28 +75,7 @@ export class AdminUserlistComponent implements OnInit{
     }
   }
 
-  openFriendlistDialog(user: User): void {
-    this.showFriendList = true;
-    this.selectedUserListItemId = user.id;
-    this.friendService.selectedFriend = user;
-    if (this.selectedUser && this.selectedUser.id) {
-      this.friendService.getAllFriends(this.selectedUser.id).subscribe({
-        next: (response) => {
-          if (response.status == 200 && response.body) {
-            this.friends.length = 0;
-            response.body.forEach(friend => {
-              this.friends.push(friend);
-            })
-            this.showFriendList = true;
-            console.log(response.body);
-          }
-        },
-        error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-        }
-      })
-    }
-  }
+
 
   onUserListItemClick(user: User): void {
     this.selectedUserListItemId = user.id;
