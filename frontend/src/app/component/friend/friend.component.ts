@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {FriendService} from "../../service/friend.service";
 import {Global} from "../../global";
 import {DividerModule} from "primeng/divider";

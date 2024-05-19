@@ -145,9 +145,11 @@ public class FriendController{
                 friendRequest.setFreundschaftanfragStatus(0);
                 friendRequestRepository.save(friendRequest);
                 friendRequestEmail(currentUserId,targetUserId);
-                return ResponseEntity.status(HttpStatus.OK).body(null);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Already sent request");//应该要跳出一个消息提示
+                return ResponseEntity.status(HttpStatus.OK).body("Friend request sent again");
+            } else if(friendRequest.getFreundschaftanfragStatus() == 0){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already pending");
+            }else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already approved");
             }
         } else {
             // 如果没有发过好友申请，发送新的
