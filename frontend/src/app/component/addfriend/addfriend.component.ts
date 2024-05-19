@@ -9,15 +9,13 @@ import {FriendRequest} from "../../model/FriendRequest";
 import {User} from "../../model/user";
 import {friend} from "../../model/friend";
 import {NgIf} from "@angular/common";
-import {DialogModule} from "primeng/dialog";
 
 @Component({
   selector: 'app-addfriend',
   standalone: true,
   imports: [
     FormsModule,
-    NgIf,
-    DialogModule
+    NgIf
   ],
   providers: [UserService, FriendService,MessageService,ConfirmationService],
   templateUrl: './addfriend.component.html',
@@ -25,8 +23,6 @@ import {DialogModule} from "primeng/dialog";
 })
 export class AddfriendComponent {
   loggedUser: any;
-  shownoticDialog: boolean = false;
-  showRequestDialog: boolean = false;
 
   showLoadingDialog: boolean = false;
   activeIndex: number = 0;
@@ -44,10 +40,10 @@ export class AddfriendComponent {
   selectedChatListItemId: number | undefined;
   newFriendRequests: string = "";
   chatListFriends: User[] = [];
-  errorMessage: string = "";
 
 
-  constructor(private friendService: FriendService, private messageService: MessageService) {}
+
+  constructor(private friendService: FriendService, private messageService: MessageService, private router: Router) {}
 
   ngOnInit(): void {
     this.loggedUser = Global.loggedUser;
@@ -73,33 +69,20 @@ export class AddfriendComponent {
         },
         error: (error) => {
           if (error.status == 404) {
-            /*this.messageService.add({
+            alert("User not found");
+            this.messageService.add({
               severity: 'error',
               summary: 'Nicht gefunden',
               detail: 'Die eingegebene Email ist nicht vorhanden.'
-            });*/
-            // this.errorMessage = "Die eingegebene Email ist nicht vorhanden."
-            this.shownoticDialog = true;
+            });
           } else {
-            /*this.messageService.add({
-              severity: 'error',
-              summary: 'Fehler',
-              detail: error.statusText});*/
-            this.errorMessage = 'Fehler: ' + error.statusText;
+            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
           }
           this.targetFriend = null;
         }
       })
     }
   }
-  showDialog() {
-    this.shownoticDialog = true;
-  }
-  hideDialog() {
-    this.shownoticDialog = false;
-    this.showRequestDialog = false;
-  }
-
 
   // 发送好友请求
   sendFriendRequest(): void {
@@ -107,6 +90,7 @@ export class AddfriendComponent {
       this.friendService.sendFriendRequest(this.loggedUser.id, this.targetFriend.user.id).subscribe({
         next: (response) => {
           if (response.status == 200) {
+            alert("Friend request sent successfully!");
             this.messageService.add({
               severity: 'success',
               summary: 'Erfolgreich',
@@ -116,13 +100,25 @@ export class AddfriendComponent {
           }
         },
         error: (error) => {
-          //this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-          this.showRequestDialog = true;
+          if(error.status == 400) {
+            alert("You have already sent a friend request to this user");
+          }
+          else if (error.status === 409) {
+            alert("You are already friends with this user");
+
+          }
+          else {
+            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          }
         }
       })
     }
   }
   getUserAvatarUrl(user: User): string {
     return Global.backendUrl + user.avatarUrl;
+  }
+
+  goToFriendsPage(){
+    this.router.navigate(['/friendlist']);
   }
 }

@@ -1,0 +1,76 @@
+
+body.admin-userList-page {
+  display: flex; /* 使用 flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  min-height: 100vh; /* 至少占满视窗的高度 */
+  margin: 0; /* 移除默认的 margin */
+  padding: 20px; /* 添加一些 padding 防止内容紧贴边缘 */
+  background-color: #f4f4f4; /* 背景色 */
+}
+
+.admin-userList-page-container {
+  width: 80%;
+  max-width: 600px; /* 限制最大宽度 */
+  padding: 20px;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Styling for headers within the user list */
+.admin-userList-page-container h2 {
+  color: #333; /* Darker text for better readability */
+  text-align: center; /* Center-aligning the title */
+}
+
+/* Table styling */
+.userList-table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Remove gaps between borders */
+}
+
+.userList-table th {
+  background-color: rgba(42, 124, 95, 0.76); /* Blue background for headers */
+  color: white; /* White text for headers */
+  padding: 10px; /* Padding for aesthetic spacing */
+  text-align: left; /* Align text to the left */
+}
+
+.userList-table td {
+  background-color: #fff; /* White background for table cells */
+  color: #666; /* Medium grey text color */
+  padding: 10px; /* Uniform padding */
+  vertical-align: middle; /* Center content vertically */
+}
+
+/* Styling for individual user items */
+.admin-userList-item {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.admin-user-email {
+  color: #555; /* Slightly darker text for email for distinction */
+}
+
+/* Hover effect for rows in the table */
+.userList-table tr:hover {
+  background-color: #e8f4ff; /* Light blue background on hover */
+}
+
+/* Detail container styling */
+.admin-user-friendList-detail-container {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f9f9f9; /* Very light grey background */
+  border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .admin-userList-page-container {
+    width: 95%; /* More width for smaller screens */
+  }
+}

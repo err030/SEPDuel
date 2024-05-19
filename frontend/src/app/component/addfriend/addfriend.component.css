@@ -1,95 +1,115 @@
-/*@font-face {
-  font-family: 'Hippo';
-  src: url('/assets/fonts/HippopotamusApocalypse-Gzly.ttf') format('truetype');
+/* 全局设置 */
+body.addfriend {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
 }
 
-@font-face {
-  font-family: 'Herloit';
-  src: url('/assets/fonts/HerloitRegular-EaVwn.otf') format('opentype');
-}
-
-body.add-friend-page {
-  background-image: url('/assets/images/AddFriend-bg.png');
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
+/* 容器设置 */
+.af-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin: 0;
-  height: 100vh;
-  font-family: 'Herloit', sans-serif;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
 }
 
-h2 {
+/* 头部样式 */
+.af-header h2 {
   color: #333;
-  text-align: center;
-  font-size: 36px;
-  font-family: 'Hippo', sans-serif;
+  margin-bottom: 10px;
 }
 
+/* 表单样式，行内排列 */
 form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
 }
 
-input[type="text"] {
+.af-input {
+  flex: 1;
   padding: 10px;
-  margin: 10px 0;
-  font-size: 18px;
-  border: 2px solid #8ec593;
-  border-radius: 5px;
-  width: 250px;
+  margin-right: 5px; /* 与搜索按钮间隔 */
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px; /* 右侧无圆角 */
 }
 
-button.add-friend-page {
-  background: linear-gradient(145deg, #67eae7, #8ec593);
-  color: #372513;
+.af-search-button {
   padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
   border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
-  margin: 10px;
-  font-family: 'Herloit', sans-serif;
-  width: 200px;
+  border-radius: 0 4px 4px 0; /* 左侧无圆角 */
+  cursor: pointer;
 }
 
-button:hover {
-  background: linear-gradient(145deg, #8ec593, #67eae7);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+.af-search-button:hover {
+  background-color: #45a049;
+}
+.af-container h3{
+  margin-top: 20px;
+}
+/* 搜索结果框样式 */
+.af-result-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 20px;
 }
 
-div {
-  background-color: rgba(255, 255, 255, 0.8); !* 背景颜色带透明度 *!
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h3 {
-  color: #333;
-  font-size: 24px;
-  font-family: 'Hippo', sans-serif;
-}
-
-p {
-  color: #555;
+.af-input{
   font-size: 18px;
-  margin: 10px 0;
-  font-family: 'Herloit', sans-serif;
+  font-family: DIN Alternate  , sans-serif;
 }
 
-img {
+.af-avatar img {
+  width: 50px; /* 小型头像 */
+  height: 50px;
   border-radius: 50%;
-  margin: 10px 0;
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+  margin-right: 10px;
 }
-*/
+
+#username, #email {
+  color: #555;
+  margin: 2px 0;
+}
+
+/* 添加好友按钮 */
+.af-add-friend-button {
+  background-color: #2196F3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.af-add-friend-button:hover {
+  background-color: #1e88e5;
+}
+
+/* 返回按钮固定在左下角 */
+.af-back-box {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+}
+
+.af-back-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.af-back-btn:hover {
+  background-color: #d32f2f;
+}

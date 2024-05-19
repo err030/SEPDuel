@@ -1,90 +1,68 @@
+/* homepage-admin.component.css */
+/* Using custom fonts */
+@font-face {
+  font-family: Hippo;
+  src: url('/assets/fonts/HippopotamusApocalypse-Gzly.ttf');
+}
+@font-face {
+  font-family: Herloit;
+  src: url('/assets/fonts/HerloitRegular-EaVwn.otf');
+}
+*{
+  font-family: Arial, sans-serif;
+}
 
-
-body.homepage-admin{
-  background-color: #f0f0f0; /* 背景颜色  */
+/* Styling for the body that wraps the homepage */
+body.admin-page-body {
+  background-color: rgb(43, 45, 48);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0;
-  height: 100vh;
-  font-family: Herloit, sans-serif;
+  min-height: 100vh;
 }
 
-h1 {
-  color: #333; /* 深色文字 */
+/* General styling for the header */
+.admin-page-container h1 {
+  color: #FFF3C1;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   text-align: center;
-  padding-top: 20px;
-  font-size: 48px;
+  font-size: 60px;
   font-family: Hippo, sans-serif;
 }
 
-button {
+/* Styling for all buttons within the admin page container */
+.admin-page-container button {
   background: linear-gradient(145deg, #67eae7, #8ec593);
-  color: #372513;
+  color: rgb(55, 37, 19);
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: 22px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  margin: 10px;
-  font-family: Herloit, sans-serif;
-  width: 200px;
+  margin: 5px;  /* Add some space around buttons */
+  font-family: Arial, sans-serif;
 }
 
-button:hover {
+/* Hover effect for buttons */
+.admin-page-container button:hover {
   background: linear-gradient(145deg, #8ec593, #67eae7);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-button#logout {
+/* Specific styling for the logout button using its ID for more specificity */
+#logout {
   position: absolute;
-  color:antiquewhite;
-  background: rgba(237, 77, 77, 0.72);
-  border: none;
-  width: 90px;
+  bottom: 20px;
   right: 20px;
-  bottom: 10px;
-  margin-bottom: 20px;
-  font-size: 12px;
+  background: rgba(237, 77, 77, 0.8);
+  color: white;
+  font-size: 16px;
 }
 
-button#profile {
-  background: rgba(58, 56, 53, 0.6);
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-button#editCard {
-  background: rgba(99, 157, 207, 0.7);
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(99, 157, 207, 0.7);
-}
-
-button#cardUpload {
-  background: rgba(172, 255, 92, 0.86);
-  color: rgba(55, 55, 55, 0.9);
-  border: 1px solid rgba(172, 255, 92, 0.76);
-}
-
-button#profile:hover, button#editCard:hover, button#cardUpload:hover {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-}
-
-button#userlist{
-  background: rgba(137, 212, 225, 0.86);
-  color: rgba(245, 227, 227, 0.9);
-  border: 1px solid rgba(137, 212, 225, 0.86);
-}
-
-.central-buttons {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  margin-top: -150px;
-}

@@ -21,10 +21,6 @@ export class HomepageAdminComponent {
   goToEditProfile() {
     this.router.navigate(['/profile']); // 跳转到编辑个人资料页面的路由
   }
-  //导航到管理卡库
-  goToEditCard(){
-
-  }
 
   userLogout() {
     this.userService.userLogout();
