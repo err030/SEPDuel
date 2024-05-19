@@ -81,7 +81,8 @@ export class FriendComponent implements OnInit {
       })
     }
   }
-  deleteFriend(friend:User):void{
+
+  /*deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
       this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
         next: (response) => {
@@ -98,15 +99,17 @@ export class FriendComponent implements OnInit {
             }
             this.selectedFriend = null;
           }
-          }
-        })
-      }
+        }
+      })
     }
+  }*/
 
   // 删除用户
- /* deleteFriend(friend: User): void {
+  deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id) {
+
      /* this.confirmationService.confirm({
+
         message: 'Sind Sie sicher, dass Sie diesen Freund löschen möchten?',
         header: 'Freund löschen',
         icon: 'pi pi-info-circle',
@@ -148,7 +151,8 @@ export class FriendComponent implements OnInit {
 
         }
       });*/
-     /* const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
+
+      const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
       if(result){
         if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
           this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
@@ -179,8 +183,8 @@ export class FriendComponent implements OnInit {
         }
       }
     }
-  }*!/*/
-
-
+  }
 
 }
+
+
