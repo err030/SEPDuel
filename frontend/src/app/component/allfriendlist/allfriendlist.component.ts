@@ -54,13 +54,7 @@ export class AllfriendlistComponent implements OnInit{
     })
   }
 
-  getFriendAvatarWord(friend: User): string {
-    return friend.lastname.charAt(0) + friend.firstname.charAt(0);
-  }
 
-  getFriendAvatarUrl(friend: User): string {
-    return Global.backendUrl + friend.avatarUrl;
-  }
 
   // 获取好友信息并显示
   openFriendList(): void {

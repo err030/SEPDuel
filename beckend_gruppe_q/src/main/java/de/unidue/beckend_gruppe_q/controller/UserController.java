@@ -336,25 +336,7 @@ public class UserController {
         }
     }
 
-//    // 处理头像的GET请求
-//    @GetMapping("/avatars/{filename:.+}")
-//    public ResponseEntity<Resource> getAvatar(@PathVariable String filename) {
-//        try {
-//            Path fileStorageLocation = Paths.get("avatars").toAbsolutePath().normalize();// 假设你的头像存储在服务器的avatars目录
-//            System.out.println(fileStorageLocation.toAbsolutePath().toString());
-//            Path filePath = fileStorageLocation.resolve(filename).normalize();
-//            Resource resource = new UrlResource(filePath.toUri());
-//            if(resource.exists()) {
-//                return ResponseEntity.ok()
-//                        .contentType(MediaType.IMAGE_JPEG) // 或者根据文件类型调整
-//                        .body(resource);
-//            } else {
-//                return ResponseEntity.notFound().build();
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
+
     @GetMapping("/user/getAllUser/{groupid}")
     public ResponseEntity<List<User>> getAllUserByGroupId(@PathVariable(value = "groupid") Integer groupId) {
         List<User> userList = userRepository.findAllByGroupId(1);

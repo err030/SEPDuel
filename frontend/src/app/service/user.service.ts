@@ -178,12 +178,6 @@ export class UserService {
     return this.http.get<User[]>(url, {observe: 'response'});
   }
 
-
-
-
-
-
-
   userLogout() {
     localStorage.clear();
     this.loggedUser = null;

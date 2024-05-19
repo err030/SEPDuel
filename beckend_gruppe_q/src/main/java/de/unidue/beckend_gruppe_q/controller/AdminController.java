@@ -4,6 +4,7 @@ import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Rarity;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
+@Transactional
 public class AdminController {
 
 
@@ -34,38 +36,50 @@ public class AdminController {
 
     @PostMapping("/admin/cards/upload")
     public ResponseEntity<List<Card>> uploadCard(@RequestParam("file") MultipartFile multipartFile) {
-//        if (multipartFile.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
-//        }
-//
-//        // 检查文件类型
-//        if (!multipartFile.getOriginalFilename().endsWith(".csv") || !multipartFile.getContentType().equals("text/csv")) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please upload a CSV file");
-//        }
+
         if (!multipartFile.isEmpty()) {
+            List<Card> cards = new ArrayList<>();
            try {
+               //character-input bytes->character input efficient
+               //FileReader extends InputStreamReader
                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+               //DEFAULT = CSV value format and skip Header
                CSVFormat csvFormat = CSVFormat.DEFAULT.builder().build();
                Iterable<CSVRecord> csvRecords = csvFormat.parse(bufferedReader);
-               CSVRecord header = csvRecords.iterator().next();
-               String[] headValues = header.values();
-               csvRecords.forEach(record -> {
-                   for (int i = 0; i < headValues.length; i++) {
-                       Card card = new Card();
-                       card.setName(headValues[i]);
-                       card.setCardRarity(Rarity.valueOf(headValues[i]));
-                       card.setAttackPoints(Integer.parseInt(headValues[i]));
-                       card.setDefensePoints(Integer.parseInt(headValues[i]));
-                       card.setDescription(headValues[i]);
-                       card.setImage(headValues[i]);
-                       cardRepository.save(card);
-                   }
-               });
-               Iterable<Card> cardIterable = cardRepository.findAll();
-               List<Card> cardList = new ArrayList<>();
-               cardIterable.forEach(cardList::add);
-               return ResponseEntity.status(HttpStatus.CREATED).body(null);
+              for (CSVRecord csvRecord : csvRecords) {
+                  Card card = new Card();
+                  card.setName(csvRecord.get(0));
+                  String rarity = csvRecord.get(1);
+                  //csvRecord return s string, check and set the Rarity
+                  card.setRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
+                                    rarity.equals("Rarity.RARE") ? Rarity.RARE :
+                                            rarity.equals("Rarity.LEGENDARY") ? Rarity.LEGENDARY :
+                                                    null);
+                  card.setAttack(Integer.parseInt(csvRecord.get(2)));
+                  card.setDefense(Integer.parseInt(csvRecord.get(3)));
+                  card.setDescription(csvRecord.get(4));
+                  card.setImage(csvRecord.get(5));
+                  cards.add(card);
+              }
+                  cardRepository.saveAll(cards);
+              // check if the legendary card is present
+               if (!cardRepository.existsByName("O DEUS KLAUS")){
+                    Card specialCard = new Card();
+                    specialCard.setName("O DEUS KLAUS");
+                    specialCard.setRarity(Rarity.LEGENDARY);
+                    specialCard.setAttack(Integer.MAX_VALUE);
+                    specialCard.setDefense(0);
+                    specialCard.setDescription("Legend has it that O DEUS KLAUS, the eternal deity, wields infinite power, \" +\n" +
+                            "                    \"casting awe and fear upon all who dare to challenge its divine might.");
+                    specialCard.setImage("/O_DEUS_KLAUS.PNG");
+                    cards.add(specialCard);
+                    cardRepository.save(specialCard);
+               }
+               List<Card> allCards = cardRepository.findAll();
+               return ResponseEntity.status(HttpStatus.CREATED).body(cards);
            } catch (Exception e) {
+               e.printStackTrace();
+               System.out.println(e.getMessage());
                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
            }
         } else {
@@ -73,25 +87,23 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/admin/addCard")
-    public ResponseEntity<Card> addCard(@RequestBody Card card) {
-        List<Card> cardList = cardRepository.findByName(card.getName());
-        if (!cardList.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
-        cardRepository.save(card);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    @DeleteMapping("/admin/deleteCard/{name}")
+    public ResponseEntity<Card> deleteCard(@PathVariable String name) {
+        System.out.println("Frontend Called" + name);
+       try {
+           cardRepository.deleteByName(name);
+           System.out.println("Repo deleted");
+           return ResponseEntity.noContent().build();
+       } catch (Exception e) {
+           e.printStackTrace();
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+       }
     }
 
-    @DeleteMapping("/admin/deleteCard")
-    public ResponseEntity<Card> deleteCard(@RequestBody Card card) {
-        Optional<Card> deleteCard = cardRepository.findById(card.getId());
-        if (deleteCard.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        cardRepository.delete(card);
-        userRepository.deleteById(card.getId());
-        return ResponseEntity.ok().build();
+    @GetMapping("/admin/getAllCards")
+    public ResponseEntity<List<Card>> getAllCards() {
+        List<Card> allCards = cardRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(allCards);
     }
 }
 

@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 import {ActivatedRoute, Router} from "@angular/router";
-import {UserService} from "../../service/user.service";
 import {FriendService} from "../../service/friend.service";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {Global} from "../../global";
 import {DividerModule} from "primeng/divider";
 import {ButtonModule} from "primeng/button";
@@ -34,11 +32,8 @@ export class FriendComponent implements OnInit {
 
 
   constructor(private activatedRoute: ActivatedRoute,
-              private userService: UserService,
               private friendService: FriendService,
-              private messageService: MessageService,
-              private confirmationService: ConfirmationService,
-              private router: Router) {
+              ) {
   }
 
   ngOnInit(): void {
@@ -54,13 +49,7 @@ export class FriendComponent implements OnInit {
     })
   }
 
-  getFriendAvatarWord(friend: User): string {
-    return friend.lastname.charAt(0) + friend.firstname.charAt(0);
-  }
 
-  getFriendAvatarUrl(friend: User): string {
-    return Global.backendUrl + friend.avatarUrl;
-  }
 
   // 获取好友信息并显示
   openFriendList(): void {
@@ -76,81 +65,17 @@ export class FriendComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert("error");
         }
       })
     }
   }
 
-  /*deleteFriend(friend: User): void {
-    if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
-      this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
-        next: (response) => {
-          if (response.status == 200) {
-            for (let i = 0; i < this.friendService.allFriends.length; i++) {
-              if (this.friendService.allFriends[i].id == friend.id) {
-                this.friendService.allFriends.splice(i, 1);
-              }
-            }
-            for (let i = 0; i < this.friendService.chatListFriends.length; i++) {
-              if (this.friendService.chatListFriends[i].id == friend.id) {
-                this.friendService.chatListFriends.splice(i, 1);
-              }
-            }
-            this.selectedFriend = null;
-          }
-        }
-      })
-    }
-  }*/
+
 
   // 删除用户
   deleteFriend(friend: User): void {
     if (this.loggedUser && this.loggedUser.id) {
-
-     /* this.confirmationService.confirm({
-
-        message: 'Sind Sie sicher, dass Sie diesen Freund löschen möchten?',
-        header: 'Freund löschen',
-        icon: 'pi pi-info-circle',
-        acceptLabel: 'Ja',
-        rejectLabel: 'Nein',
-        defaultFocus: 'reject',
-        acceptButtonStyleClass: 'p-button-danger',
-        rejectButtonStyleClass: 'p-button-secondary',
-        accept: () => {
-          if (this.loggedUser && this.loggedUser.id && friend && friend.id) {
-            this.friendService.deleteFriend(this.loggedUser.id, friend.id).subscribe({
-              next: (response) => {
-                if (response.status == 200) {
-                  for (let i = 0; i < this.friendService.allFriends.length; i++) {
-                    if (this.friendService.allFriends[i].id == friend.id) {
-                      this.friendService.allFriends.splice(i, 1);
-                    }
-                  }
-                  for (let i = 0; i < this.friendService.chatListFriends.length; i++) {
-                    if (this.friendService.chatListFriends[i].id == friend.id) {
-                      this.friendService.chatListFriends.splice(i, 1);
-                    }
-                  }
-                  this.selectedFriend = null;
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Erfolgreich',
-                    detail: 'Der Freund wurde gelöscht'
-                  });
-                }
-              },
-              error: (error) => {
-                this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
-              }
-            })
-          }
-        },
-        reject: () => {
-
-        }
-      });*/
 
       const result = confirm("Sind Sie sicher, dass Sie diesen Freund löschen möchten?");
       if(result){
@@ -169,15 +94,11 @@ export class FriendComponent implements OnInit {
                   }
                 }
                 this.selectedFriend = null;
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Erfolgreich',
-                  detail: 'Der Freund wurde gelöscht'
-                });
+                alert("This friend is already deleted")
               }
             },
             error: (error) => {
-              this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+              alert("error")
             }
           })
         }
