@@ -93,26 +93,28 @@ public class FriendController{
     }
 
 
-    @GetMapping("/friend/searchFriendByEmail/{userid}/{email}")
+    @GetMapping("/friend/searchFriendByEmail/{userid}/{email}")//通过Mapping将URL传递的参数与Controller方法中自己定义的参数绑定起来
     public ResponseEntity<Friend> searchUserByEmail(@PathVariable(value = "userid") Long currentUserId,
                                                     @PathVariable(value = "email") String targetEmail) {
-        List<User> userList = userRepository.findUserByEmailAndGroupId(targetEmail, 1);
-        if (!userList.isEmpty()) {
+        List<User> targetUserList = userRepository.findUserByEmailAndGroupId(targetEmail, 1);
+        if (!targetUserList.isEmpty()) {
             Friend friend = new Friend();
             // 用户信息
-            User user = userList.get(0);
-            friend.setUser(user);
+            User targetUser = targetUserList.get(0); //获取找到的目标用户列表的第一个用户
+            friend.setUser(targetUser); //将目标用户信息添加到Friend对象中
             // 是否已经添加为好友
             FriendList currentUserFriendList = friendListRepository.findByUserId(currentUserId);
             if (currentUserFriendList != null) {
-                FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), user.getId());
+                //     //获取每一个好友关系的id 对这些id进行遍历，如果有与目标用户id相同的FriendUserId，则说明已经添加为好友
+                FriendListDetail friendListDetail = friendListDetailRepository.findByFreundListIdAndFreundUserId(currentUserFriendList.getId(), targetUser.getId());
                 if (friendListDetail != null) {
                     friend.setIstSchonFreunde(true);
                 }
             }
             // 好友申请状态
-            FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, user.getId());
+            FriendRequest friendRequest = friendRequestRepository.findBySchickenUserIdAndZielUserId(currentUserId, targetUser.getId());
             if (friendRequest != null) {
+                //因为 101行 new了一个新的friend对象，需要把Friend里的3个属性都给 新的friend对象赋值上。
                 friend.setStatusVonFreundschaftanfrag(friendRequest.getFreundschaftanfragStatus());
             }
             return ResponseEntity.status(HttpStatus.OK).body(friend);

@@ -17,7 +17,7 @@
 
     <button (click)="onUserSearchFormSubmit()" class="search-button">Search</button>
 
-    <p-dialog header="错误" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+    <p-dialog header="Error" [(visible)]="shownoticDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
       <p>Die eingegebene Email ist nicht vorhanden.</p>
       <p-footer>
         <button pButton type="button" label="close" (click)="hideDialog()" class="ui-button-secondary"></button>
@@ -38,6 +38,12 @@
       <img [src]="targetUserAvatarUrl" alt="User Avatar">
     </div>
     <button (click)="sendFriendRequest()">Send Friend Request</button>
+    <p-dialog header="Information" [(visible)]="showRequestDialog" [modal]="true" [responsive]="true" [style]="{ width: '400px' }">
+      <p>The request is already accepted or in process.</p>
+      <p-footer>
+        <button pButton type="button" label="close" (click)="hideDialog()" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
   </div>
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
