@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {FriendService} from "../../service/friend.service";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {Global} from "../../global";
 import {FormsModule} from "@angular/forms";
@@ -17,7 +16,7 @@ import {NgIf} from "@angular/common";
     FormsModule,
     NgIf
   ],
-  providers: [UserService, FriendService,MessageService,ConfirmationService],
+  providers: [UserService, FriendService],
   templateUrl: './addfriend.component.html',
   styleUrl: './addfriend.component.css'
 })
@@ -43,7 +42,7 @@ export class AddfriendComponent {
 
 
 
-  constructor(private friendService: FriendService, private messageService: MessageService, private router: Router) {}
+  constructor(private friendService: FriendService, private router: Router) {}
 
   ngOnInit(): void {
     this.loggedUser = Global.loggedUser;
@@ -70,13 +69,8 @@ export class AddfriendComponent {
         error: (error) => {
           if (error.status == 404) {
             alert("User not found");
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Nicht gefunden',
-              detail: 'Die eingegebene Email ist nicht vorhanden.'
-            });
           } else {
-            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+            alert("Error: " + error.statusText);
           }
           this.targetFriend = null;
         }
@@ -91,11 +85,6 @@ export class AddfriendComponent {
         next: (response) => {
           if (response.status == 200) {
             alert("Friend request sent successfully!");
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde gesendet'
-            });
             this.showUserSearchDialog = false;
           }
         },
@@ -108,7 +97,7 @@ export class AddfriendComponent {
 
           }
           else {
-            this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+            alert("Error: " + error.statusText);
           }
         }
       })

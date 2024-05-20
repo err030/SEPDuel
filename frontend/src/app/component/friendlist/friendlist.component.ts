@@ -8,7 +8,6 @@ import {FriendRequest} from "../../model/FriendRequest";
 import {FormsModule, NgForm} from "@angular/forms";
 import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {forkJoin} from "rxjs";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {HttpResponse} from "@angular/common/http";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {LoadingComponent} from "../../loading/loading.component";
@@ -43,7 +42,7 @@ import {ScrollPanelModule} from "primeng/scrollpanel";
     TabViewModule,
     ScrollPanelModule
   ],
-  providers: [UserService, FriendService,MessageService,ConfirmationService],
+  providers: [UserService, FriendService],
   templateUrl: './friendlist.component.html',
   styleUrl: './friendlist.component.css'
 })
@@ -93,10 +92,9 @@ export class FriendlistComponent implements OnInit {
 
   constructor(private userService: UserService,
               private friendService: FriendService,
-              private messageService: MessageService,
               private router: Router,
-              private confirmationService: ConfirmationService,
-              private activatedRoute: ActivatedRoute,private changeDetector: ChangeDetectorRef) {
+              private activatedRoute: ActivatedRoute,
+              private changeDetector: ChangeDetectorRef) {
     console.log('FriendlistComponent instantiated');
   }
 
@@ -115,7 +113,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
       // 获取当前用户的好友列表状态（是否公开）
@@ -126,7 +124,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
       // 获取当前用户有多少个未处理的好友请求
@@ -137,7 +135,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
 
@@ -158,7 +156,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
     }
@@ -175,17 +173,9 @@ export class FriendlistComponent implements OnInit {
           if (status == 1) {
             this.allFriends.push(request.schickenUser);
             this.allFriends.sort((friend1, friend2) => friend1.lastname.localeCompare(friend2.lastname));
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde angenommen'
-            });
+            alert('Friend request accepted')
           } else if (status == 2) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Erfolgreich',
-              detail: 'Die Freundschaftsanfrage wurde abgelehnt'
-            });
+            alert('Friend request rejected')
           }
           if (this.newFriendRequests) {
             let newFriendRequestsNumber = parseInt(this.newFriendRequests);
@@ -200,7 +190,7 @@ export class FriendlistComponent implements OnInit {
       },
       error: (error) => {
         request.freundschaftanfragStatus = currentRequestStatus;
-        this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+        alert(error.statusText)
       }
     })
     // 从 friendRequests 数组中移除该请求对象
@@ -222,23 +212,15 @@ export class FriendlistComponent implements OnInit {
         next: (response) => {
           if (response.status == 200) {
             if (this.isListPublic) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Die Freundesliste ist auf öffentlich eingestellt'
-              });
+              alert('Your friend list is now public');
             } else {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Die Freundesliste ist auf privat eingestellt'
-              });
+              alert('Your friend list is now private');
             }
           }
         },
         error: (error) => {
           this.isListPublic = !this.isListPublic;
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
     }
@@ -267,7 +249,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
     }
@@ -303,7 +285,7 @@ export class FriendlistComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: 'Fehler', detail: error.statusText});
+          alert(error.statusText)
         }
       })
     }

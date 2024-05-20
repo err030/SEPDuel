@@ -2,7 +2,7 @@
 <div class="deck-container">
   <h2>Deck List</h2>
   <div class="create-deck-container">
-    <button class="create-button" (click)="createDeck()">Create New Deck</button>
+    <button class="create-button" *ngIf="decks.length < 3 "(click)="createDeck()">Create New Deck</button>
   </div>
   <ul class="deck-list">
     <li *ngFor="let deck of decks">

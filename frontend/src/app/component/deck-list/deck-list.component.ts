@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {DeckService} from "../../service/deck.service";
 import {Deck} from "../../model/deck.model";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Global} from "../../global";
 import {DeckComponent} from "../deck/deck.component";
 import {CardComponent} from "../card/card.component";
@@ -14,7 +14,8 @@ import {CardComponent} from "../card/card.component";
     RouterLink,
     NgForOf,
     DeckComponent,
-    CardComponent
+    CardComponent,
+    NgIf
   ],
   templateUrl: './deck-list.component.html',
   styleUrl: './deck-list.component.css'

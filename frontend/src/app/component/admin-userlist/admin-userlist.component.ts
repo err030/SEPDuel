@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
-import {ConfirmationService, MessageService} from "primeng/api";
 import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {FriendService} from "../../service/friend.service";
 import {Global} from "../../global";
@@ -19,7 +18,7 @@ import {DialogModule} from "primeng/dialog";
     NgForOf,
     RouterOutlet
   ],
-  providers: [UserService, FriendService,MessageService,ConfirmationService],
+  providers: [UserService, FriendService],
   templateUrl: './admin-userlist.component.html',
   styleUrl: './admin-userlist.component.css'
 })
@@ -35,7 +34,6 @@ export class AdminUserlistComponent implements OnInit{
 
   constructor(private activatedRoute: ActivatedRoute,
               private userService: UserService,
-              private messageService: MessageService,
               private friendService: FriendService,
               private router: Router) {
   }

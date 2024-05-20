@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 import { User } from '../../model/user';
@@ -19,7 +18,7 @@ import { CalendarModule } from 'primeng/calendar';
     NgClass,
     CalendarModule
    ],
-   providers: [UserService, MessageService]
+   providers: [UserService]
 })
 export class RegisterComponent {
   user: User = new User("", "", "", "", "",1);
@@ -33,7 +32,7 @@ export class RegisterComponent {
   minDate: Date = new Date(1954, 4, 10); // 月份从0开始计算，所以5月是4
   maxDate: Date = new Date(2012, 4, 10);
 
-  constructor(private messageService: MessageService, private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
   }
   // 初始化年份、月份和日期选项
   /*this.years = this.generateOptions(1970, 2006);
@@ -70,21 +69,13 @@ isValidEmail(email: string): boolean {
   onRegisterFormSubmit(): void {
     // 检查所有字段是否填写
     if (!this.user.email || !this.user.username || !this.user.password || !this.user.firstname || !this.user.lastname) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please fill in all fields'
-      });
+      alert("Please fill in all fields");
       return;
     }
 
     // 检查密码是否一致
     if (this.user.password !== this.confirmPassword) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Passwords do not match'
-      });
+      alert("Passwords do not match");
       return;
     }
 
@@ -94,21 +85,13 @@ isValidEmail(email: string): boolean {
     this.userService.checkEmailExists(emailUser).subscribe({
       next: (response) => {
         if (response.body) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'This email has already been registered'
-          });
+          alert("This email already exists");
         } else {
           // 检查用户名是否存在
           this.userService.checkUsernameExists(usernameUser).subscribe({
             next: (response) => {
               if (response.body) {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail: 'This username exists already'
-                });
+                alert("Username already exists");
               } else {
                 // 如果Admin invitation code是SEP2024，则将用户添加为管理员
                 if (this.user.adminInvitationCode == "SEP2024") {
@@ -122,11 +105,7 @@ isValidEmail(email: string): boolean {
                     // 如果状态码为201
                     if (response.status == 201) {
                       // 显示注册成功的信息
-                      this.messageService.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'You have successfully registered'
-                      });
+                      alert("Registration successful");
                      /* // 清空表单数据
                       this.user = new User("", "", "", "", ,  );
                       this.confirmPassword = "";*/
@@ -137,19 +116,19 @@ isValidEmail(email: string): boolean {
                   // 如果请求失败
                   error: (error) => {
                     // 如果是其他错误，通过error.statusText显示错误信息
-                    this.messageService.add({ severity: 'error', summary: 'Fehler', detail: error.statusText });
+                    alert(error.statusText);
                   }
                 });
               }
             },
             error: (error) => {
-              this.messageService.add({ severity: 'error', summary: 'Fehler', detail: error.statusText });
+              alert(error.statusText);
             }
           });
         }
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Fehler', detail: error.statusText });
+        alert(error.statusText);
       }
     });
 
