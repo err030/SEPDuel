@@ -1,8 +1,11 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.Card;
+import de.unidue.beckend_gruppe_q.model.Deck;
 import de.unidue.beckend_gruppe_q.model.Rarity;
+import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
+import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
@@ -29,9 +32,12 @@ public class AdminController {
 
     private final UserRepository userRepository;
 
-    public AdminController(CardRepository cardRepository, UserRepository userRepository) {
+    private final DeckRepository deckRepository;
+
+    public AdminController(CardRepository cardRepository, UserRepository userRepository, DeckRepository deckRepository) {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
+        this.deckRepository = deckRepository;
     }
 
     @PostMapping("/admin/cards/upload")
@@ -95,6 +101,13 @@ public class AdminController {
     public ResponseEntity<Card> deleteCard(@PathVariable String name) {
         System.out.println("Frontend Called" + name);
        try {
+           List<User> users = userRepository.findByCardsName(name);
+           List<Deck> decks = deckRepository.findByCardsName(name);
+           users.forEach(user -> user.cards.removeIf(card -> card.getName().equals(name)));
+           decks.forEach(deck -> deck.cards.removeIf(card -> card.getName().equals(name)));
+           userRepository.saveAll(users);
+           deckRepository.saveAll(decks);
+           System.out.println("User and Deck updated");
            cardRepository.deleteByName(name);
            System.out.println("Repo deleted");
            return ResponseEntity.noContent().build();

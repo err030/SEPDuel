@@ -17,7 +17,7 @@ public class Deck {
     private String name;
     private String description;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Card> cards;
+    public List<Card> cards;
 
     public Deck(String name, String description, List<Card> cards) {
         this.name = name;
