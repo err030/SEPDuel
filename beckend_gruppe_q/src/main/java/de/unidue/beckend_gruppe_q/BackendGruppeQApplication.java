@@ -18,16 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-@Transactional
+//@Transactional
 public class BackendGruppeQApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BackendGruppeQApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
-        return args -> {
+//    @Bean
+//    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
+//        return args -> {
 ////            create a deck
 ////            Deck deck = new Deck();
 ////            deck.setName("Deck");
@@ -49,21 +49,21 @@ public class BackendGruppeQApplication {
 //                userRepository.save(u);
 //            }
 ////          展示需要这段代码生成测试卡片
-            for (User u : userRepository.findAll()) {
-                if (u.getCards().stream().anyMatch(card -> "test".equals(card.getName()) || "桃园结义".equals(card.getName()) || "顺手牵羊".equals(card.getName()) || "无懈可击".equals(card.getName()) || "铁索连环".equals(card.getName()))) {}
-                else {
-                    u.decks.clear();
-                    u.cards.clear();
-                    userRepository.save(u);
-                    u.cards.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                    u.cards.add(new Card("桃园结义", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                    u.cards.add(new Card("顺手牵羊", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                    u.cards.add(new Card("无懈可击", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                    u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                    userRepository.save(u);
-
-                }
-            }
+//            for (User u : userRepository.findAll()) {
+//                if (u.getCards().stream().anyMatch(card -> "test".equals(card.getName()) || "桃园结义".equals(card.getName()) || "顺手牵羊".equals(card.getName()) || "无懈可击".equals(card.getName()) || "铁索连环".equals(card.getName()))) {}
+//                else {
+//                    u.decks.clear();
+//                    u.cards.clear();
+//                    userRepository.save(u);
+//                    u.cards.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                    u.cards.add(new Card("桃园结义", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                    u.cards.add(new Card("顺手牵羊", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                    u.cards.add(new Card("无懈可击", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                    u.cards.add(new Card("铁索连环", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                    userRepository.save(u);
+//
+//                }
+//            }
 
 ////            User u = userRepository.findById(1L).get();
 ////
@@ -75,6 +75,6 @@ public class BackendGruppeQApplication {
 ////                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
 ////            }
 ////            userRepository.save(u);
-        };
-    }
-}
+        }
+//    }
+//}

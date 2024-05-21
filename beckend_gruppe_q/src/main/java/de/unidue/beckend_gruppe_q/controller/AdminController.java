@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RestController
 @Transactional
 public class AdminController {
@@ -47,8 +47,12 @@ public class AdminController {
                CSVFormat csvFormat = CSVFormat.DEFAULT.builder().build();
                Iterable<CSVRecord> csvRecords = csvFormat.parse(bufferedReader);
               for (CSVRecord csvRecord : csvRecords) {
+                  String name = csvRecord.get(0);
+                  if(cardRepository.existsByName(name)) {
+                      continue;
+                  }
                   Card card = new Card();
-                  card.setName(csvRecord.get(0));
+                  card.setName(name);
                   String rarity = csvRecord.get(1);
                   //csvRecord return s string, check and set the Rarity
                   card.setRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
@@ -76,7 +80,7 @@ public class AdminController {
                     cardRepository.save(specialCard);
                }
                List<Card> allCards = cardRepository.findAll();
-               return ResponseEntity.status(HttpStatus.CREATED).body(cards);
+               return ResponseEntity.status(HttpStatus.CREATED).body(allCards);
            } catch (Exception e) {
                e.printStackTrace();
                System.out.println(e.getMessage());
