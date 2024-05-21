@@ -106,11 +106,13 @@ isValidEmail(email: string): boolean {
                     if (response.status == 201) {
                       // 显示注册成功的信息
                       alert("Registration successful");
-                     /* // 清空表单数据
-                      this.user = new User("", "", "", "", ,  );
-                      this.confirmPassword = "";*/
+                      this.userService.userLogout();
+
+                      /* // 清空表单数据
+                       this.user = new User("", "", "", "", ,  );
+                       this.confirmPassword = "";*/
                       // 跳转到登录页面
-                      void this.router.navigateByUrl("/login");
+                      this.router.navigateByUrl("/login");
                     }
                   },
                   // 如果请求失败

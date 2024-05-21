@@ -74,6 +74,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   onLoginFormSubmit(): void {
     this.userService.getUserByEmailAndPasswordAndGroupId(this.user).subscribe({
       next: (response: HttpResponse<User>) => {
+        // bug fix, no idea why
+        this.loggedUser = response.body;
+        Global.loggedUser = this.loggedUser
         if (response.status === 200) {
           if (response.body) {
             this.loggedUser = response.body;
