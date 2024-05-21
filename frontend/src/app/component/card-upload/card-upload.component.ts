@@ -21,11 +21,12 @@ import {HttpClient} from "@angular/common/http";
 export class CardUploadComponent implements OnInit{
   selectedFile!: File;
   cards: Card[] = []
+  uniqueCards: Card[] = []
 
   constructor(private uploadService: FileUploadService, private http: HttpClient) { }
 
   ngOnInit() {
-  this.getAllCards()
+    this.getAllCards()
   }
 
   onFileSelected(event: any): void {
@@ -46,9 +47,22 @@ export class CardUploadComponent implements OnInit{
 
   getAllCards(): void {
     this.http.get(Global.backendUrl + "/admin/getAllCards").subscribe(
-      (card:any) => this.cards = card,
+      (card:any) => {
+        this.cards = this.uniqueCardsByName(card)
+      },
       error => console.log("error", error)
     )
+  }
+
+  uniqueCardsByName(cards: Card[]): Card[] {
+    const names = new Set();
+    return cards.filter(card => {
+      if (!names.has(card.name)) {
+        names.add(card.name);
+        return true;
+      }
+      return false;
+    });
   }
 
   // protected readonly Card = Card;
