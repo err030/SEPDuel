@@ -8,6 +8,7 @@ import {CardComponent} from "../card/card.component";
 import {CardService} from "../../service/card.service";
 import {Router} from "@angular/router";
 import {delay} from "rxjs";
+import {Deck} from "../../model/deck.model";
 
 @Component({
   selector: 'app-all-cards',
@@ -35,11 +36,23 @@ export class AllCardsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.deckService.getAllCards().subscribe(cards => {
-      this.cards = cards;
+    this.deckService.getDecks().subscribe(decks => {
+      let otherDecks = decks.filter((deck : Deck) => deck.id !== Global.currentDeck.id);
+      let otherCards: Card[] = [];
+
+      // 收集非当前Deck的所有卡片
+      otherDecks.forEach((deck:Deck) => {
+        otherCards.push(...deck.cards);
+      });
+
+      // 获取所有卡片，并过滤掉在otherCards中的卡片
+      this.deckService.getAllCards().subscribe(allCards => {
+        this.cards = allCards.filter((card:Card) => !otherCards.some(otherCard => otherCard.id === card.id));
+      });
     });
+
     this.selectedCards = this.cardService.getSelectedCards();
-    // this.cleanSelection();
+    // this.cleanSelection(); // 如果需要的话，可以取消注释这行代码
   }
 
   //尝试解决object不对应问题
