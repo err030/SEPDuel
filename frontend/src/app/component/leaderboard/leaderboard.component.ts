@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from "@angular/router";
+import { Router,RouterOutlet } from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
 import { NgForOf } from "@angular/common";
@@ -24,7 +24,7 @@ export class LeaderboardComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 0;
 
-  constructor(private userService: UserService, private router: RouterOutlet) { }
+  constructor(private userService: UserService, private routerOutlet: RouterOutlet, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.getLeaderboard().subscribe(response => {
@@ -84,5 +84,9 @@ export class LeaderboardComponent implements OnInit {
       this.currentPage--;
       this.updateDisplayedPlayers();
     }
+  }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
   }
 }

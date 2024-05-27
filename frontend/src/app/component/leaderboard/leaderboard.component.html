@@ -24,6 +24,9 @@
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
       <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
     </div>
+    <div>
+      <button class="lg-back-button" (click)="goToHome()">Back</button>
+    </div>
   </div>
 </div>
 </body>

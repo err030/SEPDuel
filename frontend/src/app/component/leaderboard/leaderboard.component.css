@@ -1,0 +1,120 @@
+body.leaderboard {
+  background-color: rgba(255, 255, 255, 0.73);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.leaderboard-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: left;
+  color: white;
+  margin: auto;
+}
+
+.leaderboard-box h2 {
+  font-size: 36px;
+  color: #FFF3C1;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.leaderboard-box ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.leaderboard-box li {
+  margin-bottom: 20px;
+  color: rgb(55, 37, 19);
+  background-color: rgba(255, 255, 255, 0.87);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.lb-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.lb-search input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+}
+
+.lb-search button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(244, 233, 185);
+  color: rgba(23, 23, 23, 0.9);
+}
+
+.lb-search button:hover {
+  box-shadow: 0 0 15px rgba(108, 100, 73, 0.66);
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background: linear-gradient(145deg, #67eae7, #8ec593);
+  color: #372513;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.pagination button:hover {
+  background: linear-gradient(145deg, #8ec593, #67eae7);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.lg-back-button {
+  background: linear-gradient(145deg, #ef80b8, #e6b3f1);
+  color: #372513;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  font-family: Herloit, sans-serif;
+}
+
+.lg-back-button:hover {
+  background: linear-gradient(145deg, #e6b3f1, #ef80b8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
