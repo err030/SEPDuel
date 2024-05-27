@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,10 @@ public class User {
     private String avatarUrl;
     private Integer groupId;
     private Long sepCoins;
+
+    @Setter
+    @Getter
+    @Column(name = "leader_board_punkt")
     private Long leaderBoardPunkt;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

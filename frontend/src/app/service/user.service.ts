@@ -184,5 +184,14 @@ export class UserService {
     void this.router.navigateByUrl("/login");
   }
 
+// 获取排行榜
+  getLeaderboard(): Observable<HttpResponse<User[]>> {
+    return this.http.get<User[]>(`${Global.userRestServiceUrl}/leaderboard`, { headers: this.headers, observe: 'response' });
+  }
+
+  updateLeaderboard(userId: number, newScore: number): Observable<HttpResponse<User>> {
+    const url = `${Global.userRestServiceUrl}/user/${userId}/score`;
+    return this.http.put<User>(url, newScore, { headers: this.headers, observe: 'response' });
+  }
 
 }

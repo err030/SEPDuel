@@ -21,6 +21,7 @@ import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 import {FriendComponent} from "./component/friend/friend.component";
 import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 import {AllfriendlistComponent} from "./component/allfriendlist/allfriendlist.component";
+import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 
 
 export const routes: Routes = [
@@ -58,6 +59,8 @@ export const routes: Routes = [
       {path: 'friend/:friendId', component: FriendComponent},
     ]
   },
+
+  {path: 'leaderboard', component: LeaderboardComponent},
 
   {path: '**', redirectTo: 'login'}
 ];
