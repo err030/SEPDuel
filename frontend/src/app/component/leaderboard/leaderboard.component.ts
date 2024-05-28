@@ -31,8 +31,8 @@ export class LeaderboardComponent implements OnInit {
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
-        // 测试状态能不能显示在页面
-        this.leaderboard.forEach(user => user.status = 'dueling');
+        // 测试状态能不能显示在页面 后端建起来后删除35行
+        this.leaderboard.forEach(user => user.status = 'online');
 
         this.updateDisplayedPlayers();
       }
