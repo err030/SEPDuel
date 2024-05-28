@@ -73,7 +73,7 @@ body.leaderboard {
 }
 
 .status.online {
-  background-color: green;
+  background-color: #79c179;
 }
 
 .status.offline {
@@ -81,7 +81,7 @@ body.leaderboard {
 }
 
 .status.dueling {
-  background-color: orange;
+  background-color: #dc7955;
 }
 
 .send-duel-button {

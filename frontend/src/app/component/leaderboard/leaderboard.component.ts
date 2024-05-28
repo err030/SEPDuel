@@ -32,7 +32,7 @@ export class LeaderboardComponent implements OnInit {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
         // 测试状态能不能显示在页面
-        this.leaderboard.forEach(user => user.status = 'offline');
+        this.leaderboard.forEach(user => user.status = 'dueling');
 
         this.updateDisplayedPlayers();
       }
