@@ -13,7 +13,8 @@ export class User {
     public birthday?: Date | null,
     public avatarUrl?: string,
     public sepCoins?: number,
-    public leaderBoardPunkt?: number
+    public leaderBoardPunkt?: number,
+    public status?: string
   ) {
   }
 }

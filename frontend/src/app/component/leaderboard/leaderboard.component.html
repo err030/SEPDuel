@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Leaderboard Window</title>
   <link rel="stylesheet" href="leaderboard.component.css"/>
 </head>
@@ -15,16 +16,19 @@
       <button (click)="search()">Search</button>
     </div>
     <ul>
-      <li *ngFor="let user of displayedUsers">
-        {{ user.username }} - {{ user.leaderBoardPunkt }} points
+      <li *ngFor="let user of displayedUsers; let i = index">
+        <span class="rank">{{ (currentPage - 1) * usersPerPage + i + 1 }}.</span>
+        <span class="username">{{ user.username }} - {{ user.leaderBoardPunkt }} points</span>
+        <span class="status {{ user.status }}">{{ user.status }}</span>
+        <button class="send-duel-button" (click)="sendDuel(user)">Send Duel</button>
       </li>
     </ul>
     <div class="pagination">
-      <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      <button *ngIf="currentPage > 1" (click)="previousPage()">Previous</button>
       <span>Page {{ currentPage }} of {{ totalPages }}</span>
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      <button *ngIf="currentPage < totalPages" (click)="nextPage()">Next</button>
     </div>
-    <div>
+    <div class="lg-back-button-container">
       <button class="lg-back-button" (click)="goToHome()">Back</button>
     </div>
   </div>

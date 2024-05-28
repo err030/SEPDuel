@@ -9,26 +9,26 @@ body.leaderboard {
   align-items: center;
   margin: 0;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .leaderboard-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
-  width: 80%;
+  width: 90%;
   max-width: 600px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   text-align: left;
   color: white;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .leaderboard-box h2 {
-  font-size: 36px;
+  font-size: 40px;
   color: #FFF3C1;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
@@ -38,56 +38,108 @@ body.leaderboard {
 .leaderboard-box ul {
   list-style-type: none;
   padding: 0;
+  width: 100%;
 }
 
 .leaderboard-box li {
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
   color: rgb(55, 37, 19);
   background-color: rgba(255, 255, 255, 0.87);
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.lb-search {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.lb-search input {
-  padding: 10px;
-  font-size: 16px;
   border-radius: 5px;
-  border: none;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: 400px;
+}
+
+.rank {
+  width: 30px;
+  text-align: right;
   margin-right: 10px;
 }
 
-.lb-search button {
-  padding: 10px 20px;
-  font-size: 16px;
+.username {
+  flex: 1;
+}
+
+.status {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.status.online {
+  background-color: green;
+}
+
+.status.offline {
+  background-color: rgba(177, 175, 175, 0.7);
+}
+
+.status.dueling {
+  background-color: orange;
+}
+
+.send-duel-button {
+  padding: 5px 10px;
+  font-size: 14px;
   border-radius: 5px;
   border: none;
   background-color: rgb(244, 233, 185);
   color: rgba(23, 23, 23, 0.9);
 }
 
+.send-duel-button:hover {
+  box-shadow: 0 0 10px rgba(108, 100, 73, 0.66);
+}
+
+.lb-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.lb-search input {
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+  flex: 1;
+}
+
+.lb-search button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(244, 233, 185);
+  color: rgba(23, 23, 23, 0.9);
+  flex: 0;
+}
+
 .lb-search button:hover {
-  box-shadow: 0 0 15px rgba(108, 100, 73, 0.66);
+  box-shadow: 0 0 10px rgba(108, 100, 73, 0.66);
 }
 
 .pagination {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .pagination button {
   background: linear-gradient(145deg, #67eae7, #8ec593);
   color: #372513;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 5px 10px;
+  font-size: 14px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
@@ -97,24 +149,29 @@ body.leaderboard {
 
 .pagination button:hover {
   background: linear-gradient(145deg, #8ec593, #67eae7);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
-
+.lg-back-button-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: -80px;
+}
 .lg-back-button {
-  background: linear-gradient(145deg, #ef80b8, #e6b3f1);
+  background: linear-gradient(145deg, #ffd994, #efa96f);
   color: #372513;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 5px 10px;
+  font-size: 14px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  margin-top: 20px;
+  margin-top: 10px;
   font-family: Herloit, sans-serif;
 }
 
 .lg-back-button:hover {
-  background: linear-gradient(145deg, #e6b3f1, #ef80b8);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  background: linear-gradient(145deg, #efa96f, #ffd994);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }

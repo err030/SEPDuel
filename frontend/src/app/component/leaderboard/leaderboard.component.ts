@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router,RouterOutlet } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
-import { NgForOf } from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -10,7 +10,8 @@ import { FormsModule } from "@angular/forms";
   standalone: true,
   imports: [
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
@@ -22,7 +23,7 @@ export class LeaderboardComponent implements OnInit {
 
   usersPerPage: number = 10;
   currentPage: number = 1;
-  totalPages: number = 0;
+  totalPages: number = 2;
 
   constructor(private userService: UserService, private routerOutlet: RouterOutlet, private router: Router) { }
 
@@ -30,7 +31,9 @@ export class LeaderboardComponent implements OnInit {
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
-        this.totalPages = Math.ceil(this.leaderboard.length / this.usersPerPage);
+        // 测试状态能不能显示在页面
+        this.leaderboard.forEach(user => user.status = 'offline');
+
         this.updateDisplayedPlayers();
       }
     });
@@ -43,7 +46,7 @@ export class LeaderboardComponent implements OnInit {
       );
       if (filtered.length > 0) {
         this.leaderboard = filtered;
-        this.currentPage = 1; // 重置为第一页
+        this.currentPage = 1;
         this.totalPages = Math.ceil(filtered.length / this.usersPerPage);
         this.updateDisplayedPlayers();
       } else {
@@ -88,5 +91,9 @@ export class LeaderboardComponent implements OnInit {
 
   goToHome() {
     this.router.navigate(['/homepage-user']);
+  }
+
+  sendDuel(user: User) {
+    alert(`Sent duel request to ${user.username}`);
   }
 }
