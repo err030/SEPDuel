@@ -181,17 +181,17 @@ export class UserService {
   userLogout() {
     localStorage.clear();
     this.loggedUser = null;
-    void this.router.navigateByUrl("/login");
+    this.router.navigateByUrl("/login");
   }
+
 
 // 获取排行榜
   getLeaderboard(): Observable<HttpResponse<User[]>> {
     return this.http.get<User[]>(`${Global.userRestServiceUrl}/leaderboard`, { headers: this.headers, observe: 'response' });
   }
 
-  updateLeaderboard(userId: number, newScore: number): Observable<HttpResponse<User>> {
-    const url = `${Global.userRestServiceUrl}/user/${userId}/score`;
-    return this.http.put<User>(url, newScore, { headers: this.headers, observe: 'response' });
+  //更新用户状态
+  updateUserStatus(userId: number, status: string): Observable<any> {
+    return this.http.post(`${Global.userRestServiceUrl}/${userId}/status`, {status});
   }
-
 }

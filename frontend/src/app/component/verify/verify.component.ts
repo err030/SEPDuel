@@ -87,6 +87,7 @@ export class VerifyComponent implements OnInit {
         } else if (this.loggedUser.groupId == 2) {
           this.router.navigateByUrl('/homepage-admin');
         }
+        this.userService.updateUserStatus(this.loggedUser.id, 'online').subscribe();
         alert("You have successfully logged in");
       },
       error: (error) => {

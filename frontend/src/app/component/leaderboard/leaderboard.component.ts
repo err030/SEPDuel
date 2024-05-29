@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
-import {NgForOf, NgIf} from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -23,17 +23,17 @@ export class LeaderboardComponent implements OnInit {
 
   usersPerPage: number = 10;
   currentPage: number = 1;
-  totalPages: number = 2;
+  totalPages: number = 1;
 
-  constructor(private userService: UserService, private routerOutlet: RouterOutlet, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
-        // 测试状态能不能显示在页面 后端建起来后删除35行
-        this.leaderboard.forEach(user => user.status = 'online');
-
+        // Initialize the status to an empty string if not provided by the backend
+        this.leaderboard.forEach(user => user.status = user.status || '');
+        this.totalPages = Math.ceil(this.leaderboard.length / this.usersPerPage);
         this.updateDisplayedPlayers();
       }
     });
