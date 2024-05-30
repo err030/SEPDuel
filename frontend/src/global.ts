@@ -7,6 +7,7 @@ export class Global {
 
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
 
+  public static chatGroupServiceUrl: string = this.backendUrl + "/chatgroup";
 
 
 
