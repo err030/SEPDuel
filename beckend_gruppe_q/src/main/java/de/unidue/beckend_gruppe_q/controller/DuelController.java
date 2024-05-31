@@ -117,7 +117,7 @@ public class DuelController {
 
 
     //reserved
-    @GetMapping("/api/duel/{id}/endround/")
+    @GetMapping("/api/duel/{id}/end/")
     public Duel endRound(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {

@@ -1,0 +1,20 @@
+<p>duel-board works!</p>
+<div *ngIf="duel">
+  <h2>Duel: {{ duel.id }}</h2>
+  <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
+  <h4>Round: {{ duel.playerTurn }}</h4>
+  <div>
+    <h4>{{ duel.playerB.name }}'s Table</h4>
+    <div *ngFor="let card of duel.playerB.table">
+      <app-card [card]=card></app-card>
+    </div>
+  </div>
+  <div>
+    <h4>Player 1's Hand</h4>
+    <div *ngFor="let card of duel.playerA.hand">
+        <app-card [card]=card></app-card>
+        <button *ngIf="!this.duel.playerA.hasSummoned" (click)="summonCard(card.id)">Summon</button>
+    </div>
+    <button *ngIf="!this.duel.gameFinished" (click)="endTurn()">End Turn</button>
+  </div>
+</div>
