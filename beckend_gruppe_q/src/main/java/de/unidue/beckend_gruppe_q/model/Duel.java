@@ -51,17 +51,33 @@ public class Duel {
     }
 
     public void nextRound() {
-        this.currentPlayer = Objects.equals(this.currentPlayer, playerA) ? playerB : playerA;
+        if (checkIfGameFinished()) {
+            return;
+        }
+        this.playerTurn++;
+        this.currentPlayer = this.getOpponent();
         this.drawCard(this.currentPlayer);
+        this.currentPlayer.setHasSummoned(false);
     }
 
     public void drawCard(Player player) {
+        if (checkIfGameFinished()) {
+            return;
+        }
             this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
             this.currentPlayer.hand.add(this.lastPlayerCard);
 
         }
 
     public void attack(Card attacker, Card defender) {
+        if (checkIfGameFinished()) {
+            return;
+        }
+        if (defender == null) {
+            this.getOpponent().setHp(this.getOpponent().getHp() - attacker.getAttack());
+            checkIfGameFinished();
+            return;
+        }
         // 减少防守方的防御值
         defender.setDefense(defender.getDefense() - attacker.getAttack());
         if (defender.getDefense() <= 0) {
@@ -75,22 +91,25 @@ public class Duel {
         }
     }
 
-    public void attack(Card attacker, Player player) {
-        player.setHp(player.getHp() - attacker.getAttack());
-        checkIfGameFinished();
-    }
-
 
     public boolean checkIfGameFinished() {
         if (playerA.isDead() || playerB.isDead()) {
             this.gameFinished = true;
             this.winnerId = playerA.getHp() > playerB.getHp() ? playerA.getId() : playerB.getId();
+            System.out.println("Game finished, winner is " + this.winnerId);
             return true;
         }
         return false;
     }
 
+    public Player getOpponent() {
+        return Objects.equals(this.currentPlayer, playerA) ? playerB : playerA;
+    }
+
     public void sacrificeCard(long... cardIds) {
+        if (checkIfGameFinished()) {
+            return;
+        }
         // 验证桌面上至少有两张卡
         if (this.currentPlayer.table.size() < 2) {
             return;
@@ -164,6 +183,23 @@ public class Duel {
     public boolean existsInTable(Card card) {
 
         return this.currentPlayer.table.contains(card);
+    }
+
+    public boolean existsInHand(Card card) {
+        return this.currentPlayer.hand.contains(card);
+    }
+
+    public void summon(Card card) {
+        if (this.currentPlayer.table.size() >= 5 || this.currentPlayer.hasSummoned()) {
+            throw new IllegalArgumentException("Cannot summon card, table is full or has already summoned");
+        }
+        this.currentPlayer.hand.remove(card);
+        this.currentPlayer.table.add(card);
+        this.currentPlayer.setHasSummoned(true);
+    }
+
+    public void endGame() {
+        this.gameFinished = true;
     }
 }
 

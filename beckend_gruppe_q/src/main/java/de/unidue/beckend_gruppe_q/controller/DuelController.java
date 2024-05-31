@@ -1,9 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.Deck;
-import de.unidue.beckend_gruppe_q.model.Duel;
-import de.unidue.beckend_gruppe_q.model.Player;
-import de.unidue.beckend_gruppe_q.model.User;
+import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +16,7 @@ public class DuelController {
 
     private UserRepository userRepository;
     private DeckRepository deckRepository;
+    private CardRepository cardRepository;
 
     private Player player1;
     private Player player2;
@@ -76,19 +75,57 @@ public class DuelController {
     }
 
     @GetMapping("/api/duel/{id}/sacrifice/")
-    public Duel sacrificeCard(@PathVariable long id, @RequestParam long card1Id, @RequestParam long card2Id, @RequestParam long card3Id) {
+    public Duel sacrificeCard(@PathVariable long id, @RequestParam long... cardIds) {
         Duel duel = duels.get(id);
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
-        duel.sacrificeCard(card1Id, card2Id, card3Id);
+        duel.sacrificeCard(cardIds);
+        return duel;
+    }
+
+    @GetMapping("/api/duel/{id}/attack/{attackerId}/{defenderId}/")
+    public Duel attack(@PathVariable long id, @PathVariable long attackerId, @PathVariable(required = false) long defenderId) {
+        Duel duel = duels.get(id);
+        if (duel == null) {
+            throw new IllegalStateException("Duel not found");
+        }
+        Card atk = cardRepository.findById(attackerId).get();
+        Card def = null;
+        if (defenderId > 0) {
+            def = cardRepository.findById(defenderId).get();
+        }
+        duel.attack(atk, def);
+        return duel;
+    }
+
+    @GetMapping("/api/duel/{id}/summon/{cardId}/")
+    public Duel summon(@PathVariable long id, @PathVariable long cardId) {
+        Duel duel = duels.get(id);
+        if (duel == null) {
+            throw new IllegalStateException("Duel not found");
+        }
+        Card card = cardRepository.findById(cardId).get();
+        if (duel.existsInHand(card)) {
+            duel.summon(card);
+        } else {
+            throw new IllegalStateException("Card does not exist");
+        }
+
         return duel;
     }
 
 
-
+    //reserved
+    @GetMapping("/api/duel/{id}/endround/")
+    public Duel endRound(@PathVariable long id) {
+        Duel duel = duels.get(id);
+        if (duel == null) {
+            throw new IllegalStateException("Duel not found");
+        }
+        duel.nextRound();
+        return duel;
     }
-
 
 
 }

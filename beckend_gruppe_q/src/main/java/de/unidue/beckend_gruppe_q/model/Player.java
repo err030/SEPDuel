@@ -24,5 +24,9 @@ public class Player {
         this.name = u.getUsername();
         this.deck = d;
     }
+
+    public boolean hasSummoned() {
+        return this.hasSummoned;
+    }
 }
 
