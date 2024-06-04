@@ -21,6 +21,7 @@ import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 import {FriendComponent} from "./component/friend/friend.component";
 import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 import {AllfriendlistComponent} from "./component/allfriendlist/allfriendlist.component";
+import {DuelBoardComponent} from "./component/duel-board/duel-board.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 
 
@@ -38,6 +39,7 @@ export const routes: Routes = [
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
   {path: "card-upload", component: CardUploadComponent},
+  {path: 'duel', component: DuelBoardComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},

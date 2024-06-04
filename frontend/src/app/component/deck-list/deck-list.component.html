@@ -1,6 +1,7 @@
 <!-- deck-list.component.html -->
 <div class="deck-container">
   <h2>Deck List</h2>
+  <button (click)="testDuel()">Test Duel</button>
   <div class="create-deck-container">
     <button class="create-button" *ngIf="decks.length < 3 "(click)="createDeck()">Create New Deck</button>
   </div>
