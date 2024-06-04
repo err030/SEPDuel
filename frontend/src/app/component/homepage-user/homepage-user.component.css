@@ -107,6 +107,15 @@ body.homepage-user {
   right: 20px;
   top: 20px;
 }
+.homepage-user .box .btn-box#chat {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(59, 172, 132, 0.86);
+  border: 1px solid rgba(78, 218, 168, 0.76);
+  width: 120px;
+  right: 20px;
+  top: 80px;
+}
 
 /* 动态按钮 */
 .dynamic-btn {

@@ -61,4 +61,11 @@ export class HomepageUserComponent implements OnInit {
   goToDecks() {
     this.router.navigate(['/deck-list']); // 跳转到卡组页面的路由
   }
+
+
+// 导航到聊天页面
+//   navigateToChat() {
+//   this.router.navigateByUrl('chat/:friendId').catch(err => console.error('Navigation Error:', err));
+// }
+
 }

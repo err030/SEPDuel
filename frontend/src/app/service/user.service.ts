@@ -66,6 +66,12 @@ export class UserService {
     return this.http.get<any>(url, {observe: 'response'});
   }
 
+  //通过用户id获取用户信息
+  getUserByUserId(userId:number):Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/" + userId;
+    return this.http.get<any>(url, {observe: 'response'});
+  }
+
   // 检查验证码是否有效
   checkSecurityCode(userId: number, securityCode: string): Observable<HttpResponse<any>> {
     const url = Global.userRestServiceUrl + "/securitycode/" + userId + "/" + securityCode;

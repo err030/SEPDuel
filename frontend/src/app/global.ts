@@ -9,8 +9,8 @@ export class Global {
   public static backendUrl: string = "http://localhost:8080";
   public static userRestServiceUrl: string = this.backendUrl + "/user";
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
+  public static chatGroupServiceUrl: string = this.backendUrl + "/chatgroup";
 
-  
 
   public static loggedUser: User;
   public static currentDeck: Deck;
