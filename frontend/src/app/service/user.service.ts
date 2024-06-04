@@ -19,6 +19,7 @@ export class UserService {
   });
 
   loggedUser: User | null = null;
+  selectedUser: User | null = null;
 
   constructor(private http: HttpClient,  private router: Router) {
     this.restoreUser();
@@ -191,7 +192,12 @@ export class UserService {
   }
 
   //更新用户状态
-  updateUserStatus(userId: number, status: string): Observable<any> {
+  /*updateUserStatus(userId: number, status: string): Observable<any> {
     return this.http.post(`${Global.userRestServiceUrl}/${userId}/status`, {status});
+  }*/
+
+  updateUserStatus(currentUserId: number, status: number): Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/updateUserStatus/" + currentUserId + "/" + status;
+    return this.http.put<any>(url, status, {observe: 'response'});
   }
 }

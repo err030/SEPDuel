@@ -26,6 +26,7 @@ public class User {
     private String avatarUrl;
     private Integer groupId;
     private Long sepCoins;
+    private Integer status; //0:online, 1:
 
     @Setter
     @Getter

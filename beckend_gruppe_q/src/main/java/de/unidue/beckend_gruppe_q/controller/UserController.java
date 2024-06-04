@@ -381,4 +381,24 @@ public class UserController {
         }
     }
 
+    @PutMapping("/user/updateUserStatus/{currentUserId}/{status}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable(value = "currentUserId") Long currentUserId,
+                                              @PathVariable(value = "status") Integer status) {
+        User user = userRepository.findById(currentUserId).orElse(null);
+        if (user != null) {
+            // 更新用户状态
+            user.setStatus(status);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(status);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+   /* public ResponseEntity<User> updateUserStatus(@PathVariable("userId") Long userId, @RequestBody Map<String, Integer> statusRequest) {
+        User updatedUser = userService.updateUserStatus(userId, statusRequest.get("status"));
+        return ResponseEntity.ok(updatedUser);
+    }*/
+
+
+
 }

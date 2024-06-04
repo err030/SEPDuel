@@ -13,6 +13,7 @@ public class FriendRequest {
     @Transient
     private User schickenUser;
 
+
     public FriendRequest() {
     }
 

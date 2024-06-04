@@ -67,7 +67,7 @@ export class HomepageUserComponent implements OnInit {
   //退出登陆
   userLogout() {
     if (this.loggedUser && this.loggedUser.id) {
-      this.userService.updateUserStatus(this.loggedUser.id, 'offline').subscribe({
+      this.userService.updateUserStatus(this.loggedUser.id, 2).subscribe({
         next: () => {
           this.completeLogout();
         },

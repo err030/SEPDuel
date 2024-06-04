@@ -6,6 +6,7 @@ export class Global {
   public static userRestServiceUrl: string = this.backendUrl + "/user";
 
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
+  public  static duelRequestRestServiceUrl:string=this.backendUrl + "/duelRequest";
 
 
 
