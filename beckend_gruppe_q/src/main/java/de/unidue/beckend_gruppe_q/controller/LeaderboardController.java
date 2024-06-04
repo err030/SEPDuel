@@ -50,12 +50,11 @@ public class LeaderboardController {
 
     @GetMapping("/duelRequest/getDuelRequests/{currentUserid}")
     public ResponseEntity<List<DuelRequest>> getDuelRequests(@PathVariable(value = "currentUserid") Long currentUserId) {
-        System.out.println("getduelRequest");
         List<DuelRequest> duelRequests = duelRequestRepository.findByReceivedUserIdOrderByDuellanfragStatus(currentUserId);
         duelRequests.forEach(request -> {
             Optional<User> senderOptional = userRepository.findById(request.getSendUserId());
             senderOptional.ifPresent(request::setSendUser);
-            System.out.println(request.getSendUser().toString());
+
         });
         return ResponseEntity.ok().body(duelRequests);
     }
@@ -63,44 +62,36 @@ public class LeaderboardController {
 
     @PutMapping("/duelRequest/updateDuelRequest")
     public ResponseEntity<?> acceptOrDenyDuelRequest(@RequestBody DuelRequest duelRequest) {
-        Optional<DuelRequest> optionalDuelRequest = duelRequestRepository.findById(duelRequest.getId());
-
-        if (optionalDuelRequest.isPresent()) {
-            DuelRequest existingDuelRequest = optionalDuelRequest.get();
-
-            // 更新状态为接受(3)或拒绝(4)
-            if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 4) {
-                existingDuelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
-
-                // 更新 sendUser 和 receivedUser 的状态
-                if (existingDuelRequest.getSendUser() != null && existingDuelRequest.getReceivedUser() != null) {
-                    if (duelRequest.getDuellanfragStatus() == 3) {
-                        existingDuelRequest.getSendUser().setStatus(3);
-                        existingDuelRequest.getReceivedUser().setStatus(3);
-                    } else {
-                        existingDuelRequest.getSendUser().setStatus(4);
-                        existingDuelRequest.getReceivedUser().setStatus(4);
-                    }
+        duelRequestRepository.save(duelRequest);
+        // 更新状态为接受(3)或拒绝(4)
+        if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 4) {
+            duelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
+            // 更新 sendUser 和 receivedUser 的状态
+            if (duelRequest.getSendUser() != null && duelRequest.getReceivedUser() != null) {
+                if (duelRequest.getDuellanfragStatus() == 3) {
+                    duelRequest.getSendUser().setStatus(3);
+                    duelRequest.getReceivedUser().setStatus(3);
                 } else {
-                    // 如果 sendUser 或 receivedUser 为空,返回 400 Bad Request
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("sendUser or receivedUser cannot be null");
+                    duelRequest.getSendUser().setStatus(4);
+                    duelRequest.getReceivedUser().setStatus(4);
                 }
-
-                // 保存更新的 DuelRequest 和 User 实体
-                duelRequestRepository.save(existingDuelRequest);
-                userRepository.save(existingDuelRequest.getSendUser());
-                userRepository.save(existingDuelRequest.getReceivedUser());
-
-                // 返回更新后的状态给前端
-                return ResponseEntity.status(HttpStatus.OK).body(existingDuelRequest.getDuellanfragStatus());
             } else {
-                // 如果状态不是3或4，返回400 Bad Request
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid duellanfrag status");
+                // 如果 sendUser 或 receivedUser 为空,返回 400 Bad Request
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("sendUser or receivedUser cannot be null");
             }
+            // 保存更新的 DuelRequest 和 User 实体
+            duelRequestRepository.save(duelRequest);
+            userRepository.save(duelRequest.getSendUser());
+            userRepository.save(duelRequest.getReceivedUser());
+
+            // 返回更新后的状态给前端
+            return ResponseEntity.status(HttpStatus.OK).body(duelRequest.getDuellanfragStatus());
         } else {
-            // 如果找不到对应的 DuelRequest，返回404 Not Found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("DuelRequest not found");
+            // 如果状态不是3或4，返回400 Bad Request
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid duellanfrag status");
         }
+
+
     }
 }
 
