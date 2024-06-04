@@ -16,8 +16,8 @@ export class DeckService {
 
 
   constructor(private http: HttpClient) {
-    // this.userId = Global.loggedUser.id;
-    this.userId = 1;
+    Global.loggedUser = JSON.parse(localStorage.getItem('loggedUser') || '{}');
+    this.userId = Global.loggedUser.id;
     this.apiURL = 'http://localhost:8080/api/user/' + this.userId;
 
   }

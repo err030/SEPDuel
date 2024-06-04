@@ -42,6 +42,10 @@ export class DeckListComponent implements OnInit{
 
   ngOnInit(): void {
     console.log("Deck List Component initialized");
+    // @ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'))
+    console.log(Global.currentDeck);
+    this.selectedDeck = Global.currentDeck;
   }
 
   //return id of new deck
@@ -66,7 +70,16 @@ export class DeckListComponent implements OnInit{
     this.selectedDeck = deck;
     this.deckService.setDeckId(deck.id);
     Global.currentDeck = deck;
+    localStorage.setItem('currentDeck', JSON.stringify(deck));
     this.router.navigate(['card-list']);
+  }
+
+  setSelectedDeck(deck: Deck): void {
+    this.selectedDeck = deck;
+    this.deckService.setDeckId(deck.id);
+    Global.currentDeck = deck;
+    localStorage.setItem('currentDeck', JSON.stringify(deck));
+    console.log(Global.currentDeck);
   }
 
   deleteDeck(deckId: number): void {
@@ -103,4 +116,6 @@ export class DeckListComponent implements OnInit{
   goToHome() {
     this.router.navigate(['/homepage-user']);
   }
+
+  protected readonly Global = Global;
 }
