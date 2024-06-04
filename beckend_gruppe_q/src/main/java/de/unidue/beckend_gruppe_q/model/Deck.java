@@ -24,4 +24,8 @@ public class Deck {
         this.description = description;
         this.cards = cards;
     }
+
+    public void shuffle() {
+        java.util.Collections.shuffle(cards);
+    }
 }

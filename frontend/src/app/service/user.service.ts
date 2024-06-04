@@ -29,6 +29,9 @@ export class UserService {
     const userData = localStorage.getItem('loggedUser');
     if (userData) {
       this.loggedUser = JSON.parse(userData);
+      //omg how could someone forget this line
+      //@ts-ignore
+      Global.loggedUser = this.loggedUser;
     }
   }
 

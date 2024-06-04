@@ -9,6 +9,7 @@ export class Global {
   public static backendUrl: string = "http://localhost:8080";
   public static userRestServiceUrl: string = this.backendUrl + "/user";
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
+  public static duelRestServiceUrl: string = this.backendUrl + "/api/duel";
   public  static duelRequestRestServiceUrl:string=this.backendUrl + "/duelRequest";
 
 

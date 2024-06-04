@@ -3,14 +3,10 @@ import {Card} from "./card.model";
 
 export interface Player {
   id: number;
-  deck: Card[];
+  name: string;
   hp: number;
-  maxHp: number;
-  mp: number;
-  maxMp: number;
-  handSize: number;
-  deckSize: number;
+  hasSummoned: boolean;
+  deck: Deck;
   hand: Card[];
-  discardPile: Card[];
-  isDead: boolean;
+  table: Card[];
 }

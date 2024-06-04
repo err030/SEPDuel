@@ -2,13 +2,13 @@ import { Card } from "./card.model"
 import { Deck } from "./deck.model"
 import { Player } from "./player.model";
 
-export interface Game {
-  gameId: number;
-  player: Player[];
+export interface Duel {
+  id: number;
+  playerA: Player;
+  playerB: Player;
+  currentPlayer: Player;
   gameFinished: boolean;
-  winner: number;
-  tableCard: Card[];
+  winnerId: number;
   playerTurn: number;
-  drawCardsCounter: number;
   lastPlayerCard: Card;
 }
