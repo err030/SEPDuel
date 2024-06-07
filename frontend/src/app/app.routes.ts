@@ -63,7 +63,7 @@ export const routes: Routes = [
     ]
   },
 
-  { path: 'chat/:friendId',
+  { path: 'chat',
     component: ChatComponent,
     canActivateChild: [userAuthGuard],
     children: [

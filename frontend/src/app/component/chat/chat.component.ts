@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit {
  // selectedFriendListItemId: number | undefined;
   selectedChatListItemId: number | undefined; //现在 正在聊天的对象
   activeIndex: number = 0;
-  showChatListFriends: boolean = false;
+  // showChatListFriends: boolean = false;
   chatListFriends: User[] = [];
   allFriends: User[] = [];
   isListPublic: boolean | null = false;
@@ -120,12 +120,12 @@ export class ChatComponent implements OnInit {
         }
       })
       // 获取路由参数id
-      console.log(this.route)
+      // console.log(this.route)
       this.route.paramMap.subscribe(params => {
-        console.log(params, '===params');
+        // console.log(params, '===params');
         const selectedFriendIdParam = params.get('friendId');
         //判断是从哪个按钮 来自 Friend界面 还是主界面的chatten
-        console.log(selectedFriendIdParam,'===selectedFriendIdParam' );
+        // console.log(selectedFriendIdParam,'===selectedFriendIdParam' );
         if (selectedFriendIdParam != null) {
           this.selectedFriendId = parseInt(selectedFriendIdParam); //从好友列表 选中具体的好友后获取他的 Userid (= value.id) selectedFriendId是个全局变量
           // this.loggedUser = Global.loggedUser;
@@ -144,7 +144,7 @@ export class ChatComponent implements OnInit {
           循环的目的: 只知道聊天对象的id  但是不知道聊天对象是谁，为了获取到对象
            */
           if (this.selectedChatListItemId == undefined) {
-           console.log(this.allFriends);
+           console.log('this.allFriends: ', this.allFriends);
             for (let friend of this.allFriends) {
               console.log(friend,friend.id,this.selectedFriendId);
               if (friend.id == this.selectedFriendId){
@@ -156,8 +156,9 @@ export class ChatComponent implements OnInit {
                   this.changeDetector.detectChanges(); //手动刷新 试图
                 })
                 console.log(this.chatListFriends);
-                this.showChatListFriends = true
+                // this.showChatListFriends = true
                 this.selectedChatListItemId = this.selectedFriendId;
+                console.log(this.selectedChatListItemId)
                 break;
               }
             }
@@ -174,6 +175,9 @@ export class ChatComponent implements OnInit {
         if (response.status == 200&&response.body) {
           console.log(response.body)
           this.currentUserChatGroupList = response.body;
+          setTimeout(() => {
+            this.changeDetector.detectChanges(); //手动刷新 试图
+          })
         }
       },
       error: (error) => {
@@ -184,8 +188,10 @@ export class ChatComponent implements OnInit {
   }
 
   resetList(): void {
+    console.log('reset list')
     this.selectedFriendId = 0;
-    void this.router.navigateByUrl('/chat/');
+    // void this.router.navigateByUrl(this.activeIndex == 0 ? '/chat/0' : '/chat/0/group_message/0');
+    this.router.navigateByUrl('/chat');
   }
 
   getItemClass(friend: User): string {
@@ -216,7 +222,7 @@ export class ChatComponent implements OnInit {
   onChatListItemClick(chatListFriend: User): void {
     this.selectedFriendId = chatListFriend.id;
     this.friendService.selectedFriend = chatListFriend;
-    void this.router.navigateByUrl("/chat/" + chatListFriend.id + "/user_message/" + chatListFriend.id);
+    void this.router.navigateByUrl("/chat/user_message/" + chatListFriend.id);
   }
 
   onChatGroupListItemClick(chatGroup: Chatgroup): void {
@@ -310,6 +316,9 @@ export class ChatComponent implements OnInit {
         if (response.status == 200&&response.body) {
           //console.log(response.body)
           this.currentUserChatGroupList = response.body;
+          setTimeout(() => {
+            this.changeDetector.detectChanges(); //手动刷新 试图
+          })
         }
       },
       error: (error) => {
