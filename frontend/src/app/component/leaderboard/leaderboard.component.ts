@@ -12,6 +12,7 @@ import {FriendRequest} from "../../model/FriendRequest";
 import {DuelRequest} from "../../model/DuelRequest";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 @Component({
   selector: 'app-leaderboard',
@@ -174,7 +175,7 @@ export class LeaderboardComponent implements OnInit {
             alert('对决请求已接受');
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
-          } else if (status == 4) {
+          } else if (status == 0) {
             // 拒绝对决请求
             alert('对决请求已拒绝');
           }

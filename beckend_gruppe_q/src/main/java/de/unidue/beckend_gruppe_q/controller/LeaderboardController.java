@@ -21,10 +21,7 @@ public class LeaderboardController {
         this.duelRequestRepository = duelRequestRepository;
     }
 
-    @GetMapping("/leaderboard")
-    public List<User> getLeaderboard() {
-        return userRepository.findAllByOrderByLeaderBoardPunktDesc();
-    }
+
 
     @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}")
     public ResponseEntity<?> sendDuelRequest(@PathVariable(value = "currentUserid") Long currentUserId,
@@ -64,16 +61,17 @@ public class LeaderboardController {
     public ResponseEntity<?> acceptOrDenyDuelRequest(@RequestBody DuelRequest duelRequest) {
         duelRequestRepository.save(duelRequest);
         // 更新状态为接受(3)或拒绝(4)
-        if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 4) {
+        if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 0) {
             duelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
             // 更新 sendUser 和 receivedUser 的状态
             if (duelRequest.getSendUser() != null && duelRequest.getReceivedUser() != null) {
                 if (duelRequest.getDuellanfragStatus() == 3) {
                     duelRequest.getSendUser().setStatus(3);
                     duelRequest.getReceivedUser().setStatus(3);
+                    
                 } else {
-                    duelRequest.getSendUser().setStatus(4);
-                    duelRequest.getReceivedUser().setStatus(4);
+                    duelRequest.getSendUser().setStatus(0);
+                    duelRequest.getReceivedUser().setStatus(0);
                 }
             } else {
                 // 如果 sendUser 或 receivedUser 为空,返回 400 Bad Request

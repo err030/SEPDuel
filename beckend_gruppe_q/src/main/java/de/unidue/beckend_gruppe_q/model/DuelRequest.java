@@ -11,7 +11,7 @@ public class DuelRequest {
     private Long id;
     private Long sendUserId;
     private Long receivedUserId;
-    private Integer duellanfragStatus = 0; // 0: online, 1: busy, 2:offline,3:accept, 4:reject
+    private Integer duellanfragStatus = 0; // 0: online, 1: busy, 2:offline,3:accept,( 0:reject
     @Transient
     private User sendUser;
     @Transient

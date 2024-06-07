@@ -45,7 +45,7 @@
   <li *ngFor="let request of duelRequests">
     <div>{{ request.sendUser.firstname }} {{ request.sendUser.lastname }}</div>
     <button class="friend-accept-btn" (click)="acceptOrRejectDuelRequest(request, 3)">Accept</button>
-    <button class="friend-decline-btn" (click)="acceptOrRejectDuelRequest(request, 4)">Reject</button>
+    <button class="friend-decline-btn" (click)="acceptOrRejectDuelRequest(request, 0)">Reject</button>
   </li>
 </p-dialog>
 <button *ngIf="showInitiateDuelButton" (click)="initiateDuel()">主动决斗</button>
