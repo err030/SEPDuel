@@ -65,7 +65,7 @@ export class HomepageUserComponent implements OnInit {
 
 // 导航到聊天页面
 //   navigateToChat() {
-//   this.router.navigateByUrl('chat/:friendId').catch(err => console.error('Navigation Error:', err));
+//   this.router.navigateByUrl(':friendId').catch(err => console.error('Navigation Error:', err));
 // }
 
 }

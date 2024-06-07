@@ -15,15 +15,16 @@ import {NgClass, NgIf} from "@angular/common";
 import {AvatarModule} from "primeng/avatar";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
+import { Scroller } from 'primeng/scroller'
 
 
 
 interface Message {
   uuid: string;
   fromUuid: string;
-  chatGroupId: number | undefined;
+  chatGroupId?: number | undefined;
   msgContent: string;
-  sender: '';
+  sender: number;
   senderType: 'me' | 'friend';
   msgType: string;
   recipient: '',
@@ -62,8 +63,7 @@ export class ChatGroupMessageComponent implements OnInit{
   showGroupUserList: boolean = false;
   groupUserList: User[] = [];
 
-  @ViewChild('scoller')
-  scroller: any;
+  @ViewChild('scroller') scroller!: Scroller;
 
   socket$: WebSocketSubject<{ fromUuid: string; chatGroupId: number; sender: string; senderType: string; msgType: string; msgContent: string }> | undefined;
   public messages: { id: string, message: string }[] = [];
@@ -83,6 +83,7 @@ export class ChatGroupMessageComponent implements OnInit{
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(parameters => {
       const groupIdParam = parameters.get('groupId');
+      console.log('groupIdParam: ', groupIdParam)
       if (groupIdParam != null) {
         this.groupId = parseInt(groupIdParam);
         this.loggedUser = this.userService.loggedUser;
@@ -98,6 +99,10 @@ export class ChatGroupMessageComponent implements OnInit{
         //@ts-ignore
         this.allMSGs = this.msgList.filter(message => (message.chatGroupId === this.selectedChatGroup?.id));
 
+        setTimeout(() => {
+          this.scroller.scrollToIndex(999999, 'smooth');
+        }, 100);
+
         console.log('chat allMSGs :', this.allMSGs);
       }
     })
@@ -108,6 +113,7 @@ export class ChatGroupMessageComponent implements OnInit{
 
     this.socket$.subscribe(
       (message) => {
+        if (!message.chatGroupId || message.chatGroupId != this.selectedChatGroup?.id) return
         console.log('Received message:', message);
 
         if (message != null && message.msgType != undefined && message.msgType == 'server') {
@@ -127,6 +133,21 @@ export class ChatGroupMessageComponent implements OnInit{
           return;
         }
 
+        if(message!=null&&message.msgType!=undefined&&message.msgType=='backToMsgRead'){
+
+          console.log("Nachrichtenverarbeitung gelesen oder ungelesen：",message.fromUuid);
+          //    this.editMsgReadState(message.fromUuid);
+          //Das hier macht das gleiche wie editMsgReadState nur ohne Fehler.
+          this.allMSGs.forEach(msg => {
+            if(message.fromUuid == msg.uuid)
+            {
+              msg.isRead=true;
+            }
+          });
+          localStorage.setItem("msgList",JSON.stringify(this.allMSGs));
+          return;
+        }
+
 
         const temp = JSON.stringify(this.allMSGs);
         //console.log(temp);
@@ -135,7 +156,7 @@ export class ChatGroupMessageComponent implements OnInit{
 
         const msg: Message = {
           // @ts-ignore
-          fromUuid: message.fromUuid,
+          fromUuid: message.uuid,
           chatGroupId: message.chatGroupId,
           // @ts-ignore
           msgContent: message.msgContent,
@@ -150,7 +171,34 @@ export class ChatGroupMessageComponent implements OnInit{
         that.allMSGs.push(msg);
         this.msgList.push(msg);
 
+        setTimeout(() => {
+          this.scroller.scrollToIndex(999999, 'smooth');
+        }, 100);
+
         localStorage.setItem("groupMsgList", JSON.stringify(this.msgList));
+
+        let backToMsg: Message = {
+          // @ts-ignore
+          uuid: msg.fromUuid,
+
+          // @ts-ignore
+
+          isRead: true,
+          msgType: 'backToMsgRead', // 正确使用msgType属性
+
+          // @ts-ignore
+          recipient: msg.sender,
+          fromUuid: msg.fromUuid,
+          chatGroupId: this.selectedChatGroup?.id,
+          sender: this.loggedUser?.id as number,
+        };
+        console.log("backToMsg.uuid:",msg.fromUuid);
+        if(msg.chatGroupId==this.selectedChatGroup?.id && msg.recipient.split(',').includes(this.loggedUser?.id + '')){
+          console.log(backToMsg);
+          // @ts-ignore
+          that.socket$.next(backToMsg);
+          return;
+        }
       },
       (error) => console.error('WebSocket error:', error),
       () => console.log('WebSocket connection closed')
@@ -206,8 +254,8 @@ export class ChatGroupMessageComponent implements OnInit{
 
     this.message = '';
     setTimeout(() => {
-      this.scroller.scrollToIndex(this.allMSGs.length, 'smooth');
-    }, 50);
+      this.scroller.scrollToIndex(999999, 'smooth');
+    }, 100);
   }
 
   public deleteMessage(id: string): void {
@@ -270,7 +318,7 @@ export class ChatGroupMessageComponent implements OnInit{
         sender: this.loggedUser.id,
         senderType: 'me',
         // @ts-ignore
-        recipient: this.friendId,
+        recipient: this.selectedChatGroup?.chatUserIds,
         isRead: false
       };
 
@@ -278,8 +326,8 @@ export class ChatGroupMessageComponent implements OnInit{
       this.socket$.next(message);
 
       setTimeout(() => {
-        this.scroller.scrollToIndex(this.allMSGs.length, 'smooth');
-      }, 50);
+        this.scroller.scrollToIndex(999999, 'smooth');
+      }, 100);
     }
   }
 

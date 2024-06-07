@@ -12,9 +12,12 @@ import {NgClass, NgIf} from "@angular/common";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
+import {AvatarModule} from "primeng/avatar";
+import { Scroller } from 'primeng/scroller'
 
 interface Message {
   uuid:string;
+  chatGroupId?: string;
   fromUuid:string;
   msgContent: string;
   sender: '';
@@ -36,7 +39,8 @@ interface Message {
     DialogModule,
     FormsModule,
     ButtonModule,
-    NgIf
+    NgIf,
+    AvatarModule
   ],
   templateUrl: './chat-user-message.component.html',
   styleUrls: ['./chat-user-message.component.css']
@@ -54,8 +58,7 @@ export class ChatUserMessageComponent implements OnInit {
   textareaInput: string = '';
   allFriends: User[] = [];
 
-  @ViewChild('scroller')
-  scroller: any;
+  @ViewChild('scroller') scroller!: Scroller;
 
   socket$: WebSocketSubject<{ fromUuid: string; senderType: string; msgType: string; msgContent: string }> | undefined;
   public messages: { id: string, message: string }[] = [];
@@ -140,24 +143,32 @@ export class ChatUserMessageComponent implements OnInit {
           }
           console.log(this.msgList)
           //@ts-ignore
-          this.allMSGs = this.msgList.filter(message => (message.sender === this.loggedUser?.id && message.recipient === this.friendId) || (message.sender === this.friendId && message.recipient === this.loggedUser?.id));
+          this.allMSGs = this.msgList.filter(message => (message.sender === this.loggedUser?.id && message.recipient === this.selectedFriendId) || (message.sender === this.selectedFriendId && message.recipient === this.loggedUser?.id)).filter(i => !i.chatGroupId);
           console.log(this.allMSGs);
           setTimeout(() => {
             this.changeDetector.detectChanges(); //手动刷新 试图
           })
           this.showAllMSGs = true;
 
+          setTimeout(() => {
+            this.scroller.scrollToIndex(999999, 'smooth');
+          }, 100);
+
           console.log('chat allMSGs :', this.allMSGs);
         }
       })
 
       this.socket$ = new WebSocketSubject('ws://localhost:8080/websocket/'+this.loggedUser?.id);
+      /*
+      WebSocket知识点 是一个长连接，服务器去和客户端始终保持连接， 消息发送方与接收方必须同时在线才能实现信息的传递  使用的是 UDP协议 好处是 1.节约资源  缺点是 1.延迟 2.不能保证接收方 是否真的能收到消息
+       */
 
       // 处理收到的消息
       let that = this;
 
       this.socket$.subscribe(
-        (message) => {
+        (message: any) => {
+          if (message.chatGroupId) return
           console.log('Received message:', message);
 
           if(message!=null&&message.msgType!=undefined&&message.msgType=='server'){
@@ -212,7 +223,7 @@ export class ChatUserMessageComponent implements OnInit {
             // @ts-ignore
             msgContent: message.msgContent,
             // @ts-ignore
-            sender: this.friendId,
+            sender: this.selectedFriendId,
             senderType:'friend',
             // @ts-ignore
             recipient:this.loggedUser.id
@@ -220,6 +231,10 @@ export class ChatUserMessageComponent implements OnInit {
           console.log(msg);
           that.allMSGs.push(msg);
           this.msgList.push(msg);
+
+          setTimeout(() => {
+            this.scroller.scrollToIndex(999999, 'smooth');
+          }, 100);
 
           localStorage.setItem("msgList",JSON.stringify(this.msgList));
 
@@ -267,14 +282,14 @@ export class ChatUserMessageComponent implements OnInit {
   //sendet alle ungelesenen nachrichten nochmal außer die
   send_All_Unread_Messages_Again(current_message : Message | null): void
   {
-    this.allMSGs.forEach(c_message => {
-      if(c_message.isRead == false && c_message !== current_message)
-      {
-        // @ts-ignore
-        this.socket$.next(c_message);
-      }
-    });
-    console.log("send_All_Unread_Messages_Again");
+    // this.allMSGs.forEach(c_message => {
+    //   if(c_message.isRead == false && c_message !== current_message)
+    //   {
+    //     // @ts-ignore
+    //     this.socket$.next(c_message);
+    //   }
+    // });
+    // console.log("send_All_Unread_Messages_Again");
   }
 
   sendMessage(): void {
@@ -284,7 +299,7 @@ export class ChatUserMessageComponent implements OnInit {
     const temp=JSON.stringify(this.allMSGs);
     this.allMSGs=[];
     this.allMSGs=JSON.parse(temp);
-    const msgUuid = Math.floor(Math.random() * 1000000);
+    const msgUuid = Math.floor(Math.random() * 100000);
     const message: Message = {
       // @ts-ignore
       uuid:msgUuid,
@@ -293,9 +308,11 @@ export class ChatUserMessageComponent implements OnInit {
       sender: this.loggedUser.id,
       senderType:'me',
       // @ts-ignore
-      recipient:this.friendId,
-      isRead:false
+      recipient:this.selectedFriendId,
+      isRead:false,
+      msgType: 'user_chat'
     };
+    console.log('message:', message, 'this.selectedFriendId:', this.selectedFriendId);
     this.allMSGs.push(message);
     this.msgList.push(message);
 
@@ -310,8 +327,8 @@ export class ChatUserMessageComponent implements OnInit {
 
     this.message = '';
     setTimeout(() => {
-      this.scroller.scrollToIndex(this.allMSGs.length, 'smooth');
-    }, 50);
+      this.scroller.scrollToIndex(999999, 'smooth');
+    }, 100);
   }
 
   public deleteMessage(id: string): void {

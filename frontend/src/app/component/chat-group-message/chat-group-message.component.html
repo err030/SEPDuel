@@ -9,20 +9,24 @@
   <div class="flex align-items-center justify-content-center ml-2 mr-2 message_dialog_history">
     <p-scroller [items]="allMSGs" [itemSize]="50" #scroller [appendOnly]="true">
       <ng-template pTemplate="item" let-message>
-        <div class="message-row" [ngClass]="{'message-sent-by-me': message.senderType === 'me', 'message-sent-by-friend': message.senderType === 'friend'}">
-          <div class="text-xl font-bold">
+        <div class="message-row mb-4" [ngClass]="{'message-sent-by-me': message.senderType === 'me', 'message-sent-by-friend': message.senderType === 'friend'}">
+          <div class="text-xl font-bold" [ngClass]="{'text-right': message.senderType === 'me'}">
             <p-avatar *ngIf="message.senderType === 'friend'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
                       [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
             {{ message.msgContent }}
             <p-avatar *ngIf="message.senderType === 'me'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
                       [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
-            <!--            <div *ngIf="message.senderType === 'me'&&!message.isRead"><button (click)="deleteMessage(message.uuid)">Delete</button> &nbsp;-->
-            <!--              <button (click)="editMessage(message.uuid)">Edit</button>&nbsp;<button (click)="resetSendMsg(message.uuid)">send</button></div>-->
+            <div *ngIf="message.senderType === 'me'&&!message.isRead" class="mt-2">
+              <button (click)="deleteMessage(message.uuid)">Delete</button>
+              <button (click)="editMessage(message.uuid)" class="ml-1">Edit</button>
+              <!-- <button (click)="resetSendMsg(message.uuid)" class="ml-1">send</button> -->
+            </div>
           </div>
         </div>
       </ng-template>
 
     </p-scroller>
+    
     <p-dialog [(visible)]="showUnReadMsgDialog" [style]="{ width: '500px',right:0 }">
       <ng-template pTemplate="header">
         <span class="text-xl font-bold">Diese Nachricht bearbeiten</span>

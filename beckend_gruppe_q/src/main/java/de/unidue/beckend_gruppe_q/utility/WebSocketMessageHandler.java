@@ -6,17 +6,18 @@ import de.unidue.beckend_gruppe_q.service.MessageService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
-public class WebSocketMessageHandler {
+public class WebSocketMessageHandler implements WebSocketConfigurer {
 
     private final MessageService messageService;
     public WebSocketMessageHandler(MessageService messageService) {
         this.messageService = messageService;
     }
-    //@Override  Problem : Extract method ‘registerWebSocketHandlers’ to new interface
+    @Override  //Problem  : Extract method ‘registerWebSocketHandlers’ to new interface
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new SocketHandler(), "/webSocketServer");
     }

@@ -110,7 +110,7 @@ export class FriendComponent implements OnInit {
 
 
   chatWithFriend(selectedFriend: User) {
-    this.router.navigate(['/chat/' + selectedFriend.id + '/user_message/' + selectedFriend.id]);
+    this.router.navigate(['/chat/user_message/' + selectedFriend.id]);
   }
 }
 
