@@ -39,7 +39,7 @@ export const routes: Routes = [
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
   {path: "card-upload", component: CardUploadComponent},
-  {path: 'duel', component: DuelBoardComponent},
+  {path: 'duel/:duelId', component: DuelBoardComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},

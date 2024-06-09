@@ -19,7 +19,7 @@ export class LeaderboardService {
 
   sendDuelRequest(currentUserId: number, targetUserId: number ): Observable<HttpResponse<any>> {
     const url = Global.duelRequestRestServiceUrl + "/sendDuelRequest/" + currentUserId + "/" + targetUserId;
-    return this.http.post<any>(url, null, {observe: 'response'});
+    return this.http.post<any>(url, {sendUserDeck:Global.currentDeck}, {observe: 'response'});
   }
 
   getDuelRequests(currentUserId: number): Observable<HttpResponse<DuelRequest[]>>{

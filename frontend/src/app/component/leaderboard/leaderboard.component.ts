@@ -43,6 +43,7 @@ export class LeaderboardComponent implements OnInit {
   newDuelRequests: number=0;
   showInitiateDuelButton: boolean = false;
   selectedUserId: number | undefined;
+  currentRequestId: number | null = null;
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router) { }
 
@@ -130,6 +131,10 @@ export class LeaderboardComponent implements OnInit {
     this.selectedUser = user;
     this.selectedUserId = user.id;
     this.userService.selectedUser = user;
+    if (Global.currentDeck){} else {
+      alert("Please select a deck first");
+      this.router.navigate(['/deck-list']);
+    }
     if (this.loggedUser && this.loggedUser.id && this.selectedUser && this.selectedUser.id) {
       if (this.loggedUser.status === 0 && this.selectedUser.status === 0) {
         this.leaderboardService.sendDuelRequest(this.loggedUser.id, this.selectedUser.id)
@@ -165,7 +170,14 @@ export class LeaderboardComponent implements OnInit {
     }
   }
   acceptOrRejectDuelRequest(request: DuelRequest, status: number): void {
+    if (Global.currentDeck) {
+      request.receivedUserDeck = Global.currentDeck;
+    } else {
+      alert("Please select a deck first");
+      this.router.navigate(['/deck-list']);
+    }
     const currentRequestStatus: number = request.duellanfragStatus;
+    this.currentRequestId = request.id;
     request.duellanfragStatus = status;
     this.leaderboardService.acceptOrDenyDuelRequest(request).subscribe({
       next: (response) => {
@@ -202,8 +214,9 @@ export class LeaderboardComponent implements OnInit {
     }
   }
   initiateDuel(): void {
+
     // 跳转到Duel页面
-    this.router.navigate(['/duel']);
+    this.router.navigate([`/duel/${this.currentRequestId}`]);
 
     // 隐藏"主动决斗"按钮
     this.showInitiateDuelButton = false;
