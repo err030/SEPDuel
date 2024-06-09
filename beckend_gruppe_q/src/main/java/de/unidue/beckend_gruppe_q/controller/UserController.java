@@ -388,8 +388,11 @@ public class UserController {
         if (user != null) {
             // 更新用户状态
             user.setStatus(status);
+            System.out.println(user.toString() + status);
             userRepository.save(user);
-            return ResponseEntity.ok().body(status);
+//            fixed bug
+//            return ResponseEntity.ok().body(status);
+              return ResponseEntity.ok().body(user);
         } else {
             return ResponseEntity.notFound().build();
         }

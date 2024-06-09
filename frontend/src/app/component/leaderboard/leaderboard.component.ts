@@ -44,12 +44,17 @@ export class LeaderboardComponent implements OnInit {
   showInitiateDuelButton: boolean = false;
   selectedUserId: number | undefined;
   currentRequestId: number | null = null;
+  duelId: number | null = null;
+  sentRequest: DuelRequest | null = null;
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router) { }
 
   ngOnInit(): void {
     console.log('Global.loggedUser:', Global.loggedUser);
     this.loggedUser = Global.loggedUser;
+    //for testing only
+    // this.loggedUser.status = 0;
+    // @ts-ignore
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
@@ -67,7 +72,19 @@ export class LeaderboardComponent implements OnInit {
         this.selectedUser = this.userService.selectedUser;
       }
     })
+    if (this.sentRequest){
+      localStorage.setItem("sentRequest",JSON.stringify(this.sentRequest))
+    } else {
+      // @ts-ignore
+      this.sentRequest = JSON.parse(localStorage.getItem("sentRequest"));
+    }
     this.checkNewDuelRequests();
+    //for testing only
+    // this.duelRequests.forEach(request => {
+    //   request.duellanfragStatus = 0;
+    // })
+    // @ts-ignore
+    // this.selectedUser.status = 0;
   }
 
   search() {
@@ -131,14 +148,21 @@ export class LeaderboardComponent implements OnInit {
     this.selectedUser = user;
     this.selectedUserId = user.id;
     this.userService.selectedUser = user;
-    if (Global.currentDeck){} else {
-      alert("Please select a deck first");
-      this.router.navigate(['/deck-list']);
+    //@ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
+    console.log("currentDeck:", Global.currentDeck);
+    if (!Global.currentDeck){
+        alert("Please select a deck first");
+        this.router.navigate(['/deck-list']);
+        return;
     }
     if (this.loggedUser && this.loggedUser.id && this.selectedUser && this.selectedUser.id) {
       if (this.loggedUser.status === 0 && this.selectedUser.status === 0) {
-        this.leaderboardService.sendDuelRequest(this.loggedUser.id, this.selectedUser.id)
+        this.leaderboardService.sendDuelRequest(this.loggedUser.id, this.selectedUser.id, Global.currentDeck.id)
           .subscribe((response: HttpResponse<any>) => {
+            console.log('response body:', response.body);
+            this.sentRequest = response.body;
+            localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest))
             alert("Duel request sent");
             // 假设请求发送成功后，更新用户状态
             this.loggedUser!.status = 1;
@@ -170,17 +194,20 @@ export class LeaderboardComponent implements OnInit {
     }
   }
   acceptOrRejectDuelRequest(request: DuelRequest, status: number): void {
-    if (Global.currentDeck) {
-      request.receivedUserDeck = Global.currentDeck;
-    } else {
+    //@ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
+    console.log("currentDeck:", Global.currentDeck);
+    if (!Global.currentDeck){
       alert("Please select a deck first");
       this.router.navigate(['/deck-list']);
+      return;
     }
     const currentRequestStatus: number = request.duellanfragStatus;
     this.currentRequestId = request.id;
     request.duellanfragStatus = status;
     this.leaderboardService.acceptOrDenyDuelRequest(request).subscribe({
       next: (response) => {
+        console.log('response:', response);
         if (response.status == 200) {
           if (status == 3) {
             // 接受对决请求
@@ -216,7 +243,7 @@ export class LeaderboardComponent implements OnInit {
   initiateDuel(): void {
 
     // 跳转到Duel页面
-    this.router.navigate([`/duel/${this.currentRequestId}`]);
+    this.router.navigate([`/duel/${this.duelId}`]);
 
     // 隐藏"主动决斗"按钮
     this.showInitiateDuelButton = false;
@@ -231,12 +258,29 @@ export class LeaderboardComponent implements OnInit {
               this.duelRequests = response.body;
               this.newDuelRequests=this.duelRequests.length;
             }
+            //update sent request status
+            if (this.sentRequest){
+              this.leaderboardService.getDuelRequestById(this.sentRequest.id).subscribe(response => {
+                if (response.status == 200 && response.body) {
+                  this.sentRequest = response.body;
+                }
+              })
+            }
+            // check if request already accepted
+            if (this.duelRequests.some(r => r.duellanfragStatus === 3)) {
+              this.showInitiateDuelButton = true;
+              this.duelId = this.duelRequests.find(r => r.duellanfragStatus === 3)!.id;
+            }
+            if (this.sentRequest && this.sentRequest.duellanfragStatus === 3){
+              this.showInitiateDuelButton = true;
+              this.duelId = this.sentRequest.id;
+            }
           },
           error: (error) => {
             console.error("Error fetching duel requests:", error);
           }
         })
       }
-    }, 5000);
-  }// 每5秒钟检查一次
+    }, 1000);
+  }// 每1秒钟检查一次
 }

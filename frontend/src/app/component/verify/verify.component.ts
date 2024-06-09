@@ -80,7 +80,8 @@ export class VerifyComponent implements OnInit {
             // 将登录用户信息保存到UserService里
 
             this.loggedUser = response.body;
-            this.loggedUser.status = 0;
+            console.log(this.loggedUser);
+            // this.loggedUser.status = 0;
             this.userService.loggedUser = this.loggedUser;
             Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
             localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser)); // 同步到本地存储

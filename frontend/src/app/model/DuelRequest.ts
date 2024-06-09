@@ -9,8 +9,7 @@ export class DuelRequest {
     public duellanfragStatus: number,
     public sendUser: User,
     public receivedUser: User,
-    public sendUserDeck: Deck,
-    public receivedUserDeck: Deck
+    public sendDeckId: number
   ){
   }
 }
