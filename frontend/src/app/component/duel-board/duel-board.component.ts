@@ -27,12 +27,13 @@ export class DuelBoardComponent implements OnInit {
       try {
         this.loadDuel(this.duelId);
       } catch (e) {
-        this.duelService.createDuel(this.duelId, this.duelService.sendUserDeck, this.duelService.receivedUserDeck ).subscribe({
-          next: (data) => {
-            this.duelId = data.id;
-            this.loadDuel(this.duelId);
-          }
-        });
+        // this.duelService.createDuel(this.duelId, this.duelService.sendUserDeckId, this.duelService.receivedUserDeck ).subscribe({
+        //   next: (data) => {
+        //     this.duelId = data.id;
+        //     this.loadDuel(this.duelId);
+        //   }
+        // });
+        console.error('Error loading duel:', e);
       }
     })
   }

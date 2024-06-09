@@ -38,7 +38,7 @@
   <button class="friend-request-btn" (click)="openDuelRequestDialog()">View Duel Requests ({{ newDuelRequests }})</button>
 </div>
 <li *ngIf="sentRequest">
-  <div>You sent the following request:</div>
+  <div>You sent the following request to:</div>
   <div>{{ sentRequest?.receivedUser?.firstname }} {{ sentRequest?.receivedUser?.lastname }}</div>
   <div>Status: {{ sentRequest?.duellanfragStatus }}</div>
 </li>
@@ -53,7 +53,11 @@
   </li>
 
 </p-dialog>
-<button *ngIf="showInitiateDuelButton" (click)="initiateDuel()">主动决斗</button>
+<div class="initiate-duel-container" >
+  <button class="enter-duel-btn" *ngIf="showInitiateDuelButton && sentRequest === duelRequest" (click)="enterDuel()">Enter Duel</button>
+  <button class="initiate-duel-btn" *ngIf="showInitiateDuelButton && sentRequest !== duelRequest" (click)="initiateDuel()">Initiate Duel</button>
+
+</div>
 </body>
 
 </html>

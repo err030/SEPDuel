@@ -1,11 +1,13 @@
 package de.unidue.beckend_gruppe_q.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class Player {
     private long id;
     private String name;

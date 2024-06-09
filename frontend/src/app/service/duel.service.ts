@@ -20,8 +20,8 @@ export class DuelService {
     return this.http.get(`${this.apiUrl}/${duelId}`);
   }
 
-  createDuel(duelId: number, senderDeck: Deck | undefined, receiverDeck: Deck | undefined): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create/${duelId}/`, {sendUserDeck: senderDeck,receivedUserDeck: receiverDeck}, {observe: 'response'});
+  createDuel(duelId: number, senderDeckId: number, receiverDeckId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/create/${duelId}/${senderDeckId}/${receiverDeckId}`, {observe: 'response'});
   }
 
   summonCard(duelId: number, cardId: number): Observable<any> {

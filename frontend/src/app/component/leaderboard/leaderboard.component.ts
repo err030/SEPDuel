@@ -13,6 +13,9 @@ import {DuelRequest} from "../../model/DuelRequest";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
 import { WebSocketSubject } from 'rxjs/webSocket';
+import { DuelService } from "../../service/duel.service";
+import {Deck} from "../../model/deck.model";
+import {Duel} from "../../model/duel.model";
 
 @Component({
   selector: 'app-leaderboard',
@@ -44,10 +47,11 @@ export class LeaderboardComponent implements OnInit {
   showInitiateDuelButton: boolean = false;
   selectedUserId: number | undefined;
   currentRequestId: number | null = null;
-  duelId: number | null = null;
+  duelRequest?: DuelRequest;
   sentRequest: DuelRequest | null = null;
+  senderDeck?: Deck;
 
-  constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router, private duelService: DuelService) { }
 
   ngOnInit(): void {
     console.log('Global.loggedUser:', Global.loggedUser);
@@ -78,6 +82,7 @@ export class LeaderboardComponent implements OnInit {
       // @ts-ignore
       this.sentRequest = JSON.parse(localStorage.getItem("sentRequest"));
     }
+    console.log("sentRequest:", this.sentRequest);
     this.checkNewDuelRequests();
     //for testing only
     // this.duelRequests.forEach(request => {
@@ -241,9 +246,23 @@ export class LeaderboardComponent implements OnInit {
     }
   }
   initiateDuel(): void {
+    // @ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
+    console.log("currentDeck:", Global.currentDeck);
+    if (!Global.currentDeck){
+      alert("Please select a deck first");
+      this.router.navigate(['/deck-list']);
+      return;
+    }
 
     // 跳转到Duel页面
-    this.router.navigate([`/duel/${this.duelId}`]);
+    // @ts-ignore
+    this.duelService.createDuel(this.duelRequest.id, this.duelRequest.sendDeckId, Global.currentDeck.id).subscribe(
+      (response) => {
+        this.router.navigate([`/duel/${this.duelRequest?.id}`]);
+      }
+    )
+
 
     // 隐藏"主动决斗"按钮
     this.showInitiateDuelButton = false;
@@ -262,18 +281,19 @@ export class LeaderboardComponent implements OnInit {
             if (this.sentRequest){
               this.leaderboardService.getDuelRequestById(this.sentRequest.id).subscribe(response => {
                 if (response.status == 200 && response.body) {
-                  this.sentRequest = response.body;
+                  // @ts-ignore
+                  this.sentRequest.duellanfragStatus = response.body.duellanfragStatus;
                 }
               })
             }
             // check if request already accepted
             if (this.duelRequests.some(r => r.duellanfragStatus === 3)) {
               this.showInitiateDuelButton = true;
-              this.duelId = this.duelRequests.find(r => r.duellanfragStatus === 3)!.id;
+              this.duelRequest = this.duelRequests.find(r => r.duellanfragStatus === 3);
             }
             if (this.sentRequest && this.sentRequest.duellanfragStatus === 3){
               this.showInitiateDuelButton = true;
-              this.duelId = this.sentRequest.id;
+              this.duelRequest = this.sentRequest;
             }
           },
           error: (error) => {
@@ -283,4 +303,7 @@ export class LeaderboardComponent implements OnInit {
       }
     }, 1000);
   }// 每1秒钟检查一次
+  enterDuel() {
+    this.router.navigate([`/duel/${this.duelRequest?.id}`]);
+  }
 }
