@@ -27,10 +27,13 @@ public class User {
     private Long sepCoins;
     private Long leaderBoardPunkt;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Lootbox> lootboxes = new ArrayList<>();
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Deck> decks = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Card> cards = new ArrayList<>();
 
 //    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -21,6 +21,8 @@ import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 import {FriendComponent} from "./component/friend/friend.component";
 import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 import {AllfriendlistComponent} from "./component/allfriendlist/allfriendlist.component";
+import {LootboxComponent} from "./component/lootbox/lootbox.component";
+
 
 
 export const routes: Routes = [
@@ -37,6 +39,7 @@ export const routes: Routes = [
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
   {path: "card-upload", component: CardUploadComponent},
+  {path: "lootbox", component: LootboxComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},
