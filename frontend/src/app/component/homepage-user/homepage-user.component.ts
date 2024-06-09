@@ -79,8 +79,9 @@ export class HomepageUserComponent implements OnInit {
     } else {
       console.error('Logged user or user ID is not available');
       this.completeLogout(); // Logout even if no user is detected
-      this.userService.userLogout();
     }
+    this.userService.userLogout();
+
   }
 
   private completeLogout() {
