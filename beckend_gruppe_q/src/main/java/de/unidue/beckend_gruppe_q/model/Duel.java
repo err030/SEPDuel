@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Duel {
 
-    @Id
-    @GeneratedValue
     private long id;
     private Player playerA;
     private Player playerB;

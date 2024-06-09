@@ -51,23 +51,19 @@ public class DuelController {
         User user1 = ouser1.get();
         User user2 = ouser2.get();
 
-        Player player1 = new Player();
-        Player player2 = new Player();
-
-        player1.setId(user1.getId());
-        player1.setDeck(deckRepository.findById(Deck1Id).get());
-        player2.setId(user2.getId());
-        player2.setDeck(deckRepository.findById(Deck2Id).get());
+        Player player1 = new Player(user1, deckRepository.findById(Deck1Id).get());
+        Player player2 = new Player(user2, deckRepository.findById(Deck2Id).get());
 
         Duel duel = new Duel(player1, player2);
         duel.setId(duelId);
         duels.put(duel.getId(), duel);
         System.out.println("Duel created: " + duel);
+        duel.start();
 
         return duel;
     }
 
-    @GetMapping("/api/duel/{id}/start/")
+    @GetMapping("/api/duel/{id}/start")
     public Duel startDuel(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
@@ -77,7 +73,7 @@ public class DuelController {
         return duel;
     }
 
-    @GetMapping("/api/duel/{id}/next/")
+    @GetMapping("/api/duel/{id}/next")
     public Duel nextRound(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
@@ -87,7 +83,7 @@ public class DuelController {
         return duel;
     }
 
-    @GetMapping("/api/duel/{id}/sacrifice/")
+    @GetMapping("/api/duel/{id}/sacrifice")
     public Duel sacrificeCard(@PathVariable long id, @RequestParam long... cardIds) {
         Duel duel = duels.get(id);
         if (duel == null) {
@@ -104,7 +100,7 @@ public class DuelController {
         this.duelRequestRepository = duelRequestRepository;
     }
 
-    @GetMapping("/api/duel/{id}/attack/{attackerId}/{defenderId}/")
+    @GetMapping("/api/duel/{id}/attack/{attackerId}/{defenderId}")
     public Duel attack(@PathVariable long id, @PathVariable long attackerId, @PathVariable(required = false) long defenderId) {
         Duel duel = duels.get(id);
         if (duel == null) {
@@ -119,7 +115,7 @@ public class DuelController {
         return duel;
     }
 
-    @GetMapping("/api/duel/{id}/summon/{cardId}/")
+    @GetMapping("/api/duel/{id}/summon/{cardId}")
     public Duel summon(@PathVariable long id, @PathVariable long cardId) {
         Duel duel = duels.get(id);
         if (duel == null) {
@@ -137,7 +133,7 @@ public class DuelController {
 
 
     //reserved
-    @GetMapping("/api/duel/{id}/end/")
+    @GetMapping("/api/duel/{id}/end")
     public Duel endRound(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
