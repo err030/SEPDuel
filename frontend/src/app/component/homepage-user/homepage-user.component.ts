@@ -97,4 +97,11 @@ export class HomepageUserComponent implements OnInit {
   goToLootbox() {
     this.router.navigate(['/lootbox']);
   }
+
+
+// 导航到聊天页面
+//   navigateToChat() {
+//   this.router.navigateByUrl(':friendId').catch(err => console.error('Navigation Error:', err));
+// }
+
 }

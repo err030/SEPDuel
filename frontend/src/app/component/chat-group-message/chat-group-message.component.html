@@ -1,0 +1,91 @@
+<!--<p>chat-group-message works!</p>-->
+<div class="flex flex-column card-container" *ngIf="selectedChatGroup">
+
+  <div class="flex align-items-center justify-content-center font-bold ml-2 mr-2 message_dialog_header" *ngIf="selectedChatGroup">
+    {{selectedChatGroup.name}}  <p-button label="Mitglieder dieser Gruppe" styleClass="p-button-text p-button-warning" (onClick)="openFriendList()"></p-button>
+  </div>
+  <p-divider type="solid"></p-divider>
+
+  <div class="flex align-items-center justify-content-center ml-2 mr-2 message_dialog_history">
+    <p-scroller [items]="allMSGs" [itemSize]="50" #scroller [appendOnly]="true">
+      <ng-template pTemplate="item" let-message>
+        <div class="message-row mb-4" [ngClass]="{'message-sent-by-me': message.senderType === 'me', 'message-sent-by-friend': message.senderType === 'friend'}">
+          <div class="text-xl font-bold" [ngClass]="{'text-right': message.senderType === 'me'}">
+            <p-avatar *ngIf="message.senderType === 'friend'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
+                      [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+            {{ message.msgContent }}
+            <p-avatar *ngIf="message.senderType === 'me'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
+                      [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+            <div *ngIf="message.senderType === 'me'&&!message.isRead" class="mt-2">
+              <button (click)="deleteMessage(message.uuid)">Delete</button>
+              <button (click)="editMessage(message.uuid)" class="ml-1">Edit</button>
+              <!-- <button (click)="resetSendMsg(message.uuid)" class="ml-1">send</button> -->
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+    </p-scroller>
+    
+    <p-dialog [(visible)]="showUnReadMsgDialog" [style]="{ width: '500px',right:0 }">
+      <ng-template pTemplate="header">
+        <span class="text-xl font-bold">Diese Nachricht bearbeiten</span>
+      </ng-template>
+      <div class="formgrid grid">
+        <div class="field col-12">
+          <input id="editUnReadMsg" type="text"  [(ngModel)]="editUnReadMsg" name="unReadMsg"
+                 class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-12 md:col-3">
+          <p-button (click)="confirmEditMessage(editMsgUuid)" label="Bestätigen" [style]="{'width':'100%'}"
+          ></p-button>
+        </div>
+        <div class="field col-12 md:col-3">
+          <p-button (click)="showUnReadMsgDialog = false" label="Abbrechen"
+                    styleClass="p-button-secondary"></p-button>
+        </div>
+      </div>
+    </p-dialog>
+  </div>
+  <p-divider type="solid"></p-divider>
+
+  <div class="flex align-items-top justify-content-center ml-2 mr-2 message_dialog_inputField" style="width: 100%">
+    <div class="grid" style="width: 100%">
+      <div class="col-12 pt-2 pb-2 pl-0 pr-0" style="width: 100%">
+        <textarea pInputTextarea rows="3" style=" width: 100%; height: 100%" [(ngModel)]="textareaInput"></textarea>
+      </div>
+      <div class="col"></div>
+      <div class="col-fixed pt-0 pb-2 pl-0 pr-0" style="width: 110px">
+        <p-button label="Senden" icon="pi pi-arrow-circle-right" (onClick)="sendMessage()"></p-button>
+      </div>
+    </div>
+  </div>
+
+
+  <p-dialog [(visible)]="showGroupUserList" [style]="{ 'min-width': '400px' }">
+    <ng-template pTemplate="header">
+      <span class="text-xl font-bold">Freundliste</span>
+    </ng-template>
+    <div class="flex justify-content-center">
+      <p-scroller [items]="groupUserList" [itemSize]="50" scrollHeight="calc(100vh - 550px)" >
+        <ng-template pTemplate="item" let-friend>
+          <div class="flex flex-row align-items-center gap-2"
+               style="height: 50px;">
+            <div *ngIf="!friend.avatarUrl">
+              <p-avatar [label]=getUserAvatarWord(friend) styleClass="mr-2"
+                        [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+            </div>
+            <div *ngIf="friend.avatarUrl">
+              <p-avatar [image]="getGroupUserAvatarUrl(friend)" styleClass="mr-2"></p-avatar>
+            </div>
+            <div class="text-xl font-bold">{{ friend.firstname }} {{friend.lastname}}</div>
+
+          </div>
+        </ng-template>
+      </p-scroller>
+
+    </div>
+
+  </p-dialog>
+
+</div>

@@ -11,6 +11,7 @@ export class Global {
   public static friendRestServiceUrl: string = this.backendUrl + "/friend";
   public static duelRestServiceUrl: string = this.backendUrl + "/api/duel";
   public  static duelRequestRestServiceUrl:string=this.backendUrl + "/duelRequest";
+  public static chatGroupServiceUrl: string = this.backendUrl + "/chatgroup";
 
 
 

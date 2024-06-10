@@ -1,3 +1,51 @@
+
+@import "primeng/resources/themes/saga-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family);
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+.alert_form_input_invalid {
+  background: var(--red-200);
+  color: var(--red-800);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.home_content {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 70px 1fr 50px;
+  padding: 6px;
+}
+
+.home_main {
+  background-color: var(--gray-200);
+}
+
+.home_menu_bar {
+  height: 70px;
+}
+
+.home_main {
+  height: calc(100vh - 70px);
+  position: relative;
+  background: var(--gray-100);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
 /*styles.css*/
 @font-face {
   font-family: Herloit;

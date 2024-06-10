@@ -18,6 +18,10 @@
           <p-button *ngIf="selectedFriendListStatus!= null && !selectedFriendListStatus" label="Freundesliste (privat)"
                     [disabled]="true"
                     icon="pi pi-book" styleClass="p-button-help"></p-button>
+
+          <p-button label="Chatten" icon="pi pi-trash" styleClass="p-button-danger"
+                    (onClick)="chatWithFriend(selectedFriend)"></p-button>
+
           <p-button label="Löschen" icon="pi pi-trash" styleClass="p-button-danger"
                     (onClick)="deleteFriend(selectedFriend)"></p-button>
         </div>
