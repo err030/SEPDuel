@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-EN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard Window</title>
+  <link rel="stylesheet" href="leaderboard.component.css"/>
+</head>
+<body class="leaderboard">
+<div class="leaderboard-container">
+  <div class="leaderboard-box">
+    <h2>Leaderboard</h2>
+    <div class="lb-search">
+      <input type="text" placeholder="Search by username" [(ngModel)]="searchText">
+      <button (click)="search()">Search</button>
+    </div>
+    <ul>
+      <li *ngFor="let user of displayedUsers; let i = index">
+        <span class="rank">{{ (currentPage - 1) * usersPerPage + i + 1 }}.</span>
+        <span class="username">{{ user.username }} - {{ user.leaderBoardPunkt }} points</span>
+        <span class="status {{ user.status }}">{{ user.status }}</span>
+        <button class="send-duel-button" (click)="sendDuelRequest(user)">Send Duel</button>
+      </li>
+    </ul>
+    <div class="pagination">
+      <button *ngIf="currentPage > 1" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button *ngIf="currentPage < totalPages" (click)="nextPage()">Next</button>
+    </div>
+    <div class="lg-back-button-container">
+      <button class="lg-back-button" (click)="goToHome()">Back</button>
+    </div>
+  </div>
+</div>
+<h3>Requests</h3>
+<div class="friend-request-box" *ngIf="newDuelRequests!==0">
+  <button class="friend-request-btn" (click)="openDuelRequestDialog()">View Duel Requests ({{ newDuelRequests }})</button>
+</div>
+
+<p-dialog class="request-dialog" [(visible)]="showDuelRequests" [style]="{width:'500px'}">
+  <ng-template pTemplate="header">
+    <span class="request-title" style="margin-top: 40px;">Duel Request</span>
+  </ng-template>
+  <li *ngFor="let request of duelRequests">
+    <div>{{ request.sendUser.firstname }} {{ request.sendUser.lastname }}</div>
+    <button class="friend-accept-btn" (click)="acceptOrRejectDuelRequest(request, 3)">Accept</button>
+    <button class="friend-decline-btn" (click)="acceptOrRejectDuelRequest(request, 0)">Reject</button>
+  </li>
+</p-dialog>
+<button *ngIf="showInitiateDuelButton" (click)="initiateDuel()">主动决斗</button>
+</body>
+
+</html>

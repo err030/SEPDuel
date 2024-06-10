@@ -21,37 +21,46 @@ import {CardComponent} from "../card/card.component";
   styleUrl: './deck-list.component.css'
 })
 
-export class DeckListComponent implements OnInit{
+export class DeckListComponent implements OnInit {
   deck?: Deck;
   decks: Deck [] = [];
   selectedDeck?: Deck;
   private deckService: DeckService;
 
 
-  constructor(deckService:DeckService, private router : Router) {
+  constructor(deckService: DeckService, private router: Router) {
     this.deckService = deckService;
-    deckService.getDecks().subscribe(decks => {
-        this.decks = decks;
-      }, error => {
-        console.log(error);
-      }
-    );
+
 
   }
 
 
   ngOnInit(): void {
     console.log("Deck List Component initialized");
+    console.log("Global.loggedUser.id: ", Global.loggedUser.id);
+    // @ts-ignore
+    this.deckService.setUserId(Global.loggedUser.id);
+    console.log("SET userid: ", this.deckService.userId);
+    this.deckService.getDecks().subscribe(decks => {
+        this.decks = decks;
+      }, error => {
+        console.log(error);
+      }
+    );
+    // @ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'))
+    console.log(Global.currentDeck);
+    this.selectedDeck = Global.currentDeck;
   }
 
   //return id of new deck
   createDeck(): Deck {
-    this.deckService.createDeck().subscribe((deck : Deck) => {
+    this.deckService.createDeck().subscribe((deck: Deck) => {
         this.deck = deck;
         Global.currentDeck = deck;
         alert('Deck created successfully, Click OK to view the deck.');
 
-      this.router.navigate(['/card-list']);
+        this.router.navigate(['/card-list']);
 
       }, (error: any) => {
         console.log(error);
@@ -66,7 +75,16 @@ export class DeckListComponent implements OnInit{
     this.selectedDeck = deck;
     this.deckService.setDeckId(deck.id);
     Global.currentDeck = deck;
+    localStorage.setItem('currentDeck', JSON.stringify(deck));
     this.router.navigate(['card-list']);
+  }
+
+  setSelectedDeck(deck: Deck): void {
+    this.selectedDeck = deck;
+    this.deckService.setDeckId(deck.id);
+    Global.currentDeck = deck;
+    localStorage.setItem('currentDeck', JSON.stringify(deck));
+    console.log(Global.currentDeck);
   }
 
   deleteDeck(deckId: number): void {
@@ -102,5 +120,13 @@ export class DeckListComponent implements OnInit{
 
   goToHome() {
     this.router.navigate(['/homepage-user']);
+  }
+
+  protected readonly Global = Global;
+
+  testDuel() {
+    console.log("testDuel");
+
+    this.router.navigate(['/duel']);
   }
 }

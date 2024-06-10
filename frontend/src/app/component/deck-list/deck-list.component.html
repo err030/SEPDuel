@@ -1,6 +1,7 @@
 <!-- deck-list.component.html -->
 <div class="deck-container">
   <h2>Deck List</h2>
+  <button (click)="testDuel()">Test Duel</button>
   <div class="create-deck-container">
     <button class="create-button" *ngIf="decks.length < 3 "(click)="createDeck()">Create New Deck</button>
   </div>
@@ -8,6 +9,7 @@
     <li *ngFor="let deck of decks">
       <app-deck [deck]="deck"></app-deck>
       <div class="deck-box">
+        <input type="checkbox" [checked]="Global.currentDeck?.id === deck.id" (change)="setSelectedDeck(deck)">
         <button class="select-button" (click)="selectDeck(deck)">Select</button>
         <button class="delete-button" (click)="deleteDeck(deck.id)">Delete</button>
         <button class="rename-button" (click)="renameDeck(deck)">Rename</button>

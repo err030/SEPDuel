@@ -357,5 +357,48 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
+    /**
+     * 获取排行榜
+     */
+    @GetMapping("/user/leaderboard")
+    public ResponseEntity<List<User>> getLeaderboard() {
+        List<User> leaderboard = userRepository.findAllByOrderByLeaderBoardPunktDesc();
+        return new ResponseEntity<>(leaderboard, HttpStatus.OK);
+    }
+    /**
+     * 更新用户积分
+     */
+    @PutMapping("/user/{userid}/score")
+    public ResponseEntity<User> updateLeaderboard(@PathVariable(name = "userid") Long userId, @RequestBody Long newScore) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setLeaderBoardPunkt(newScore);
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("/user/updateUserStatus/{currentUserId}/{status}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable(value = "currentUserId") Long currentUserId,
+                                              @PathVariable(value = "status") Integer status) {
+        User user = userRepository.findById(currentUserId).orElse(null);
+        if (user != null) {
+            // 更新用户状态
+            user.setStatus(status);
+            userRepository.save(user);
+            return ResponseEntity.ok().body(status);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+   /* public ResponseEntity<User> updateUserStatus(@PathVariable("userId") Long userId, @RequestBody Map<String, Integer> statusRequest) {
+        User updatedUser = userService.updateUserStatus(userId, statusRequest.get("status"));
+        return ResponseEntity.ok(updatedUser);
+    }*/
+
+
 
 }

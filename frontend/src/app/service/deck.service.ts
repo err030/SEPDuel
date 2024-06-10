@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Global} from "../global";
@@ -7,17 +7,17 @@ import {Deck} from "../model/deck.model";
 @Injectable({
   providedIn: 'root'
 })
-export class DeckService {
+export class DeckService{
   deckId: number = 0;
   private apiURL: string;
-  private userId: number | undefined;
+  userId: number | undefined;
 
 
 
 
   constructor(private http: HttpClient) {
-    // this.userId = Global.loggedUser.id;
-    this.userId = 1;
+    Global.loggedUser = JSON.parse(localStorage.getItem('loggedUser') || '{}');
+    this.userId = Global.loggedUser.id;
     this.apiURL = 'http://localhost:8080/api/user/' + this.userId;
 
   }
