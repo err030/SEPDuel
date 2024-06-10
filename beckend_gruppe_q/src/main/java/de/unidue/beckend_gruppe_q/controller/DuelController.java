@@ -70,6 +70,7 @@ public class DuelController {
             throw new IllegalStateException("Duel not found");
         }
         duel.start();
+
         return duel;
     }
 

@@ -21,11 +21,12 @@ export class DuelBoardComponent implements OnInit {
   private duelId: number = 1;
   constructor(private duelService: DuelService, private route: ActivatedRoute) { }
 
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.duelId = params['duelId'];
       try {
-        this.loadDuel(this.duelId);
+        this.refreshDuel()
       } catch (e) {
         // this.duelService.createDuel(this.duelId, this.duelService.sendUserDeckId, this.duelService.receivedUserDeck ).subscribe({
         //   next: (data) => {
@@ -36,12 +37,21 @@ export class DuelBoardComponent implements OnInit {
         console.error('Error loading duel:', e);
       }
     })
+    console.log('DuelBoardComponent initialized');
+    console.log(this.duel);
+    console.log("Player A:", this.duel.playerA);
+
+    console.log("Player B:", this.duel.playerB);
+
+    console.log("Current player:", this.duel.currentPlayer)
   }
 
   loadDuel(duelId: number) {
     this.duelService.getDuel(duelId).subscribe({
       next: (data) => {
         this.duel = data;
+        this.normalize();
+        console.log('Duel loaded successfully:', data);
       },
       error: (error) => {
         console.error('Error fetching duel:', error);
@@ -73,6 +83,21 @@ export class DuelBoardComponent implements OnInit {
         console.error('Error ending turn:', error);
       }
     });
+  }
+
+  normalize() {
+    let playerC;
+    if (!this.duelService.initializer) {
+      playerC = this.duel.playerA;
+      this.duel.playerA = this.duel.playerB;
+      this.duel.playerB = playerC;
+    }
+  }
+
+  refreshDuel() {
+    setInterval(() => {
+      this.loadDuel(this.duelId);
+    }, 1000)
   }
 
 
