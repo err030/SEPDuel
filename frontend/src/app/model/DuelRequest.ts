@@ -1,4 +1,5 @@
 import {User} from "./user";
+import {Deck} from "./deck.model";
 
 export class DuelRequest {
   constructor(
@@ -7,7 +8,8 @@ export class DuelRequest {
     public receivedUserId: number,
     public duellanfragStatus: number,
     public sendUser: User,
-    public receivedUser: User
+    public receivedUser: User,
+    public sendDeckId: number
   ){
   }
 }

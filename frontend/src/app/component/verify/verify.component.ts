@@ -78,13 +78,17 @@ export class VerifyComponent implements OnInit {
         this.userService.updateUserStatus(this.loggedUser.id, 0).subscribe({
           next: (response) => {
             // 将登录用户信息保存到UserService里
-            this.loggedUser.status = 0;
-            this.userService.loggedUser = this.loggedUser;
+
             this.loggedUser = response.body;
+            console.log(this.loggedUser);
+            // this.loggedUser.status = 0;
+            this.userService.loggedUser = this.loggedUser;
+            Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
+            localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser)); // 同步到本地存储
           }
         });
-        Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
-        localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser)); // 同步到本地存储
+        // Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
+        // localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser)); // 同步到本地存储
 
         // 根据用户组跳转至相应的页面
         if (this.loggedUser.groupId == 1) {

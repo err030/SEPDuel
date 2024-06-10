@@ -1,6 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -15,32 +16,43 @@ import java.util.Optional;
 public class LeaderboardController {
     private final UserRepository userRepository;
     private final DuelRequestRepository duelRequestRepository;
+    private final DeckRepository deckRepository;
 
-    public LeaderboardController(UserRepository userRepository, DuelRequestRepository duelRequestRepository) {
+    public LeaderboardController(UserRepository userRepository, DuelRequestRepository duelRequestRepository, DeckRepository deckRepository) {
         this.userRepository = userRepository;
         this.duelRequestRepository = duelRequestRepository;
+        this.deckRepository = deckRepository;
     }
 
 
 
-    @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}")
+    @GetMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
     public ResponseEntity<?> sendDuelRequest(@PathVariable(value = "currentUserid") Long currentUserId,
-                                             @PathVariable(value = "targetUserid") Long targetUserId) {
+                                             @PathVariable(value = "targetUserid") Long targetUserId,
+                                             @PathVariable(value = "sendDeckId") Long sendDeckId) {
+        System.out.println("sendDuelRequest");
+        System.out.println("currentUserid: " + currentUserId);
+        System.out.println("targetUserId: " + targetUserId);
+        System.out.println("sendDeckId: " + sendDeckId);
         Optional<User> currentUser = userRepository.findById(currentUserId);
         Optional<User> targetUser = userRepository.findById(targetUserId);
         if (currentUser.isPresent() && targetUser.isPresent()) {
             if (currentUser.get().getStatus() == 0 && targetUser.get().getStatus() == 0) {
                 DuelRequest newDuelRequest = new DuelRequest(currentUserId, targetUserId, 1);
+                newDuelRequest.setSendUser(currentUser.get());
+                newDuelRequest.setReceivedUser(targetUser.get());
+                newDuelRequest.setSendDeckId(sendDeckId);
                 currentUser.get().setStatus(1);
                 targetUser.get().setStatus(1);
                 userRepository.save(currentUser.get());
                 userRepository.save(targetUser.get());
                 duelRequestRepository.save(newDuelRequest);
-                return ResponseEntity.status(HttpStatus.OK).body(null);
+                return ResponseEntity.status(HttpStatus.OK).body(newDuelRequest);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User can not play the game right now.");
             }
         } else {
+            System.out.println("User not found." + currentUserId + " " + targetUserId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -50,15 +62,28 @@ public class LeaderboardController {
         List<DuelRequest> duelRequests = duelRequestRepository.findByReceivedUserIdOrderByDuellanfragStatus(currentUserId);
         duelRequests.forEach(request -> {
             Optional<User> senderOptional = userRepository.findById(request.getSendUserId());
+            Optional<User> receiverOptional = userRepository.findById(request.getReceivedUserId());
             senderOptional.ifPresent(request::setSendUser);
+            receiverOptional.ifPresent(request::setReceivedUser);
 
         });
         return ResponseEntity.ok().body(duelRequests);
     }
 
+    @GetMapping("/duelRequest/getDuelRequest/{duelRequestId}")
+    public ResponseEntity<DuelRequest> getDuelRequest(@PathVariable(value = "duelRequestId") Long duelRequestId) {
+        Optional<DuelRequest> duelRequestOptional = duelRequestRepository.findById(duelRequestId);
+        if (duelRequestOptional.isPresent()) {
+            return ResponseEntity.ok().body(duelRequestOptional.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+    }
+
 
     @PutMapping("/duelRequest/updateDuelRequest")
     public ResponseEntity<?> acceptOrDenyDuelRequest(@RequestBody DuelRequest duelRequest) {
+        System.out.println("Request received: " + duelRequest.toString());
         duelRequestRepository.save(duelRequest);
         // 更新状态为接受(3)或拒绝(4)
         if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 0) {
@@ -72,15 +97,19 @@ public class LeaderboardController {
                 } else {
                     duelRequest.getSendUser().setStatus(0);
                     duelRequest.getReceivedUser().setStatus(0);
+                    duelRequestRepository.delete(duelRequest);
+
+                    return ResponseEntity.status(HttpStatus.OK).body(null);
                 }
+                userRepository.save(duelRequest.getSendUser());
+                userRepository.save(duelRequest.getReceivedUser());
             } else {
                 // 如果 sendUser 或 receivedUser 为空,返回 400 Bad Request
+                System.out.println("sendUser or receivedUser cannot be null");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("sendUser or receivedUser cannot be null");
             }
             // 保存更新的 DuelRequest 和 User 实体
             duelRequestRepository.save(duelRequest);
-            userRepository.save(duelRequest.getSendUser());
-            userRepository.save(duelRequest.getReceivedUser());
 
             // 返回更新后的状态给前端
             return ResponseEntity.status(HttpStatus.OK).body(duelRequest.getDuellanfragStatus());

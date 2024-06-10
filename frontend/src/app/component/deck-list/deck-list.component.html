@@ -9,8 +9,8 @@
     <li *ngFor="let deck of decks">
       <app-deck [deck]="deck"></app-deck>
       <div class="deck-box">
-        <input type="checkbox" [checked]="Global.currentDeck?.id === deck.id" (change)="setSelectedDeck(deck)">
-        <button class="select-button" (click)="selectDeck(deck)">Select</button>
+        Set for duel: <input type="checkbox" [checked]="Global.currentDeck?.id === deck.id" (change)="setSelectedDeck(deck)">
+        <button class="select-button" (click)="selectDeck(deck)">View</button>
         <button class="delete-button" (click)="deleteDeck(deck.id)">Delete</button>
         <button class="rename-button" (click)="renameDeck(deck)">Rename</button>
       </div>

@@ -3,6 +3,7 @@ import { Duel } from '../../model/duel.model';
 import {DuelService} from "../../service/duel.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-duel-board',
@@ -18,10 +19,23 @@ import {CardComponent} from "../card/card.component";
 export class DuelBoardComponent implements OnInit {
   protected duel!: Duel;
   private duelId: number = 1;
-  constructor(private duelService: DuelService) { }
+  constructor(private duelService: DuelService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadDuel(this.duelId)
+    this.route.params.subscribe(params => {
+      this.duelId = params['duelId'];
+      try {
+        this.loadDuel(this.duelId);
+      } catch (e) {
+        // this.duelService.createDuel(this.duelId, this.duelService.sendUserDeckId, this.duelService.receivedUserDeck ).subscribe({
+        //   next: (data) => {
+        //     this.duelId = data.id;
+        //     this.loadDuel(this.duelId);
+        //   }
+        // });
+        console.error('Error loading duel:', e);
+      }
+    })
   }
 
   loadDuel(duelId: number) {

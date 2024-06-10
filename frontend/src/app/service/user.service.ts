@@ -27,7 +27,7 @@ export class UserService {
   //在服务初始化时恢复用户数据
   private restoreUser(): void {
     const userData = localStorage.getItem('loggedUser');
-    if (userData) {
+    if (userData && (!this.loggedUser || !Global.loggedUser)) {
       this.loggedUser = JSON.parse(userData);
       //omg how could someone forget this line
       //@ts-ignore

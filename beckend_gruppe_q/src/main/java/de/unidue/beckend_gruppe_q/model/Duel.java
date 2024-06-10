@@ -15,10 +15,9 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Duel {
 
-    @Id
-    @GeneratedValue
     private long id;
     private Player playerA;
     private Player playerB;

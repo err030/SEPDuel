@@ -43,6 +43,7 @@ export const routes: Routes = [
   {path: "card-upload", component: CardUploadComponent},
   {path: "lootbox", component: LootboxComponent},
   {path: 'duel', component: DuelBoardComponent},
+  {path: 'duel/:duelId', component: DuelBoardComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},

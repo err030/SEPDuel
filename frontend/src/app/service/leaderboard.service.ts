@@ -17,9 +17,9 @@ export class LeaderboardService {
 
   }
 
-  sendDuelRequest(currentUserId: number, targetUserId: number ): Observable<HttpResponse<any>> {
-    const url = Global.duelRequestRestServiceUrl + "/sendDuelRequest/" + currentUserId + "/" + targetUserId;
-    return this.http.post<any>(url, null, {observe: 'response'});
+  sendDuelRequest(currentUserId: number, targetUserId: number, deckId: number): Observable<HttpResponse<any>> {
+    const url = Global.duelRequestRestServiceUrl + "/sendDuelRequest/" + currentUserId + "/" + targetUserId + "/" + deckId;
+    return this.http.get<any>(url,{observe: 'response'});
   }
 
   getDuelRequests(currentUserId: number): Observable<HttpResponse<DuelRequest[]>>{
@@ -30,6 +30,11 @@ export class LeaderboardService {
   acceptOrDenyDuelRequest(duelRequest: DuelRequest): Observable<HttpResponse<any>>{
        const url = Global.duelRequestRestServiceUrl + "/updateDuelRequest";
        return this.http.put<any>(url, duelRequest, {observe: 'response'});
+  }
+
+  getDuelRequestById(duelRequestId: number): Observable<HttpResponse<DuelRequest>>{
+    const url = Global.duelRequestRestServiceUrl + "/getDuelRequest/" + duelRequestId;
+    return this.http.get<DuelRequest>(url, {observe: 'response'});
   }
 
 }

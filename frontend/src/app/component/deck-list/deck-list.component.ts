@@ -47,9 +47,12 @@ export class DeckListComponent implements OnInit {
         console.log(error);
       }
     );
-    // @ts-ignore
-    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'))
-    console.log(Global.currentDeck);
+
+    if (!Global.currentDeck){
+      // @ts-ignore
+      Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'))
+      console.log(Global.currentDeck);
+    }
     this.selectedDeck = Global.currentDeck;
   }
 
