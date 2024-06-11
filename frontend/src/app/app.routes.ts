@@ -21,6 +21,9 @@ import {AddfriendComponent} from "./component/addfriend/addfriend.component";
 import {FriendComponent} from "./component/friend/friend.component";
 import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 import {AllfriendlistComponent} from "./component/allfriendlist/allfriendlist.component";
+import {ChatComponent} from "./component/chat/chat.component";
+import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
+import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 import {DuelBoardComponent} from "./component/duel-board/duel-board.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 import {LootboxComponent} from "./component/lootbox/lootbox.component";
@@ -62,12 +65,24 @@ export const routes: Routes = [
     canActivateChild: [userAuthGuard],
     children: [
       {path: 'friend/:friendId', component: FriendComponent},
+
     ]
+  },
+
+  { path: 'chat',
+    component: ChatComponent,
+    canActivateChild: [userAuthGuard],
+    children: [
+      { path: 'user_message/:friendId', component: ChatUserMessageComponent },
+      { path: 'group_message/:groupId', component: ChatGroupMessageComponent }
+    ]
+
   },
 
   {path: 'leaderboard', component: LeaderboardComponent},
 
   {path: '**', redirectTo: 'login'}
+
 ];
 
 @NgModule({

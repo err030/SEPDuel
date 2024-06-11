@@ -1,0 +1,27 @@
+.grid{
+  display: flex;
+  height: calc(100vh - 80px); /* 确保整个容器占满视窗 */
+}
+
+.leftStyle {
+  background-color: white;
+  height: calc(100vh - 80px);
+  width: 33.33%; /* 左侧占3分之一宽度 */
+  overflow-y: auto; /* 添加滚动支持 */
+}
+
+.rightStyle {
+  height: calc(100vh - 80px);
+  width: 66.66%; /* 右侧占3分之二宽度 */
+  background-color: white; /* 根据需要设置背景颜色 */;
+  overflow-y: auto; /* 添加滚动支持 */
+  padding: 10px;
+}
+
+.friendListItemSelected {
+  background-color: var(--surface-300) !important;
+}
+
+.friendListItemUnselected {
+  background-color: var(--surface-0) !important;
+}
