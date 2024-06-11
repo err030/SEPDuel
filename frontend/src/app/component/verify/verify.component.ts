@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {Router, RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Global} from "../../global";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-verify',
@@ -11,12 +12,13 @@ import {Global} from "../../global";
   styleUrls: ['./verify.component.css'],
   imports: [
     FormsModule,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   providers: [UserService]
 })
 export class VerifyComponent implements OnInit {
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private cdr: ChangeDetectorRef) {
 
   }
 
@@ -93,6 +95,8 @@ export class VerifyComponent implements OnInit {
 
         alert("You have successfully logged in");
         this.isLoggedIn = true;
+        this.cdr.detectChanges();
+        this.navigateToHomepage();
 
       },
       error: (error) => {
@@ -108,10 +112,19 @@ export class VerifyComponent implements OnInit {
 
   // 根据用户组跳转至相应的页面
   navigateToHomepage(): void {
-    if (this.loggedUser.groupId == 1) {
-      this.router.navigateByUrl('/homepage-user');
-    } else if (this.loggedUser.groupId == 2) {
-      this.router.navigateByUrl('/homepage-admin');
+    if (this.isLoggedIn && this.loggedUser) {
+      if (this.loggedUser.groupId == 1) {
+        this.router.navigateByUrl('/homepage-user');
+      } else if (this.loggedUser.groupId == 2) {
+        // Check if the user is an admin
+        if (this.loggedUser.role === 'admin') {
+          this.router.navigateByUrl('/homepage-admin');
+        } else {
+          // If not an admin, redirect to user homepage
+          this.router.navigateByUrl('/homepage-user');
+        }
+      }
     }
   }
+
 }
