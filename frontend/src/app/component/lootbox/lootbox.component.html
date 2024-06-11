@@ -1,0 +1,19 @@
+<div *ngIf="lootboxes.length > 0">
+  <div *ngFor="let lootbox of lootboxes" class="lootbox-wrapper">
+    <div [ngClass]="{'bronze-lootbox': lootbox.lootboxType === 'BRONZE', 'silver-lootbox': lootbox.lootboxType === 'SILVER', 'gold-lootbox': lootbox.lootboxType === 'GOLD'}" class="lootbox">
+      <div class="lootbox-content">
+        <h3>{{ lootbox.lootboxType }} </h3>
+      </div>
+      <div class="lootbox-actions">
+        <button (click)="buyLootbox(lootbox.id)">Buy</button>
+        <button (click)="openLootbox(lootbox.id)">Open</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="lootboxes.length === 0">
+  <p>No lootboxes available.</p>
+</div>
+<div *ngIf="cards.length > 0" >
+  <app-card-display *ngFor="let card of cards" [card]="card"></app-card-display>
+</div>
