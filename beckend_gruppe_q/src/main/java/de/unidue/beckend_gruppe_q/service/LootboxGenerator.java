@@ -129,7 +129,10 @@ public class LootboxGenerator {
         if (cards.isEmpty()) {
             throw new IllegalStateException("No cards found");
         }
-        return cards.get(random.nextInt(cards.size()));
+        Card card = cards.get(random.nextInt(cards.size()));
+        Card cardCopy = new Card(card.getName(), card.getRarity(), card.getAttack(), card.getDefense(), card.getDescription(), card.getImage());
+
+        return cardCopy;
     }
 
     /**
