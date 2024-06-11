@@ -27,3 +27,10 @@
   padding: 0 10px;
   letter-spacing: 1px;
 }
+
+.btn-box .cancel-button{
+  background-color: rgba(135, 134, 134, 0.76);
+}
+.btn-box .cancel-button:hover{
+  background-color: rgba(151, 150, 150, 0.76);
+}
