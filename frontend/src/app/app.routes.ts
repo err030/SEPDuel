@@ -25,6 +25,7 @@ import {DuelBoardComponent} from "./component/duel-board/duel-board.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 import {LootboxComponent} from "./component/lootbox/lootbox.component";
 
+
 import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
@@ -66,7 +67,6 @@ export const routes: Routes = [
     canActivateChild: [userAuthGuard],
     children: [
       {path: 'friend/:friendId', component: FriendComponent},
-
     ]
   },
 
@@ -83,7 +83,6 @@ export const routes: Routes = [
   {path: 'leaderboard', component: LeaderboardComponent},
 
   {path: '**', redirectTo: 'login'}
-
 ];
 
 @NgModule({

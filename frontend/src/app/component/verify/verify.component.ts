@@ -84,20 +84,22 @@ export class VerifyComponent implements OnInit {
             // this.loggedUser.status = 0;
             this.userService.loggedUser = this.loggedUser;
             Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
-            localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser)); // 同步到本地存储
+            localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser));// 同步到本地存储
+            if (this.loggedUser.groupId == 1) {
+              this.router.navigateByUrl('/homepage-user');
+            } else if (this.loggedUser.groupId == 2) {
+              this.router.navigateByUrl('/homepage-admin');
+            }
+
+            alert("You have successfully logged in");
           }
         });
         // Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
         // localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser)); // 同步到本地存储
 
         // 根据用户组跳转至相应的页面
-        if (this.loggedUser.groupId == 1) {
-          this.router.navigateByUrl('/homepage-user');
-        } else if (this.loggedUser.groupId == 2) {
-          this.router.navigateByUrl('/homepage-admin');
-        }
+        //@ts-ignore
 
-        alert("You have successfully logged in");
 
       },
       error: (error) => {

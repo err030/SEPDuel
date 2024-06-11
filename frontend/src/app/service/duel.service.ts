@@ -11,7 +11,7 @@ export class DuelService {
   private apiUrl = Global.duelRestServiceUrl;
   public sendUserDeck: Deck | undefined;
   public receivedUserDeck: Deck | undefined;
-
+  initializer = true;
 
   constructor(private http: HttpClient) { }
 

@@ -28,6 +28,20 @@ public class Duel {
     private Card lastPlayerCard;
 
 
+    @Override
+    public String toString() {
+        return "Duel{" +
+                "id=" + id +
+                ", playerA=" + playerA +
+                ", playerB=" + playerB +
+                ", currentPlayer=" + currentPlayer +
+                ", gameFinished=" + gameFinished +
+                ", winnerId=" + winnerId +
+                ", playerTurn=" + playerTurn +
+                ", lastPlayerCard=" + lastPlayerCard +
+                '}';
+    }
+
     public Duel(Player playerA, Player playerB) {
         this.playerA = playerA;
         this.playerB = playerB;
@@ -47,6 +61,7 @@ public class Duel {
         this.playerB.table.clear();
         this.playerA.deck.shuffle();
         this.playerB.deck.shuffle();
+        System.out.println("Duel started: " + this.toString());
     }
 
     public void nextRound() {

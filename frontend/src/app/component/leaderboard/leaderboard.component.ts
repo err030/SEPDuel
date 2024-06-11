@@ -259,6 +259,7 @@ export class LeaderboardComponent implements OnInit {
     // @ts-ignore
     this.duelService.createDuel(this.duelRequest.id, this.duelRequest.sendDeckId, Global.currentDeck.id).subscribe(
       (response) => {
+        this.duelService.initializer = true;
         this.router.navigate([`/duel/${this.duelRequest?.id}`]);
       }
     )
@@ -304,6 +305,7 @@ export class LeaderboardComponent implements OnInit {
     }, 1000);
   }// 每1秒钟检查一次
   enterDuel() {
+    this.duelService.initializer = false;
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
   }
 }
