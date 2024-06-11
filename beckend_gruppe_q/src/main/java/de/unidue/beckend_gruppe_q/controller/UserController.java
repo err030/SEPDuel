@@ -2,6 +2,7 @@ package de.unidue.beckend_gruppe_q.controller;
 
 
 import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.service.EmailService;
 import de.unidue.beckend_gruppe_q.repository.SecurityCodeRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
@@ -36,12 +37,14 @@ public class UserController {
 
 
     final BCryptPasswordEncoder passwordEncoder;
+    private final CardRepository cardRepository;
 
-    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository, SecurityCodeRepository securityCodeRepository, EmailService emailService, BCryptPasswordEncoder passwordEncoder, CardRepository cardRepository) {
         this.userRepository = userRepository;
         this.securityCodeRepository = securityCodeRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.cardRepository = cardRepository;
     }
 
     /**
@@ -72,6 +75,7 @@ public class UserController {
                 user.cards.add(new Card("Cat", Rarity.COMMON, 1, 1, "A card for testing", ""));
                 user.cards.add(new Card("Rabbit", Rarity.COMMON, 1, 1, "A card for testing", ""));
                 user.cards.add(new Card("Elephant", Rarity.COMMON, 1, 1, "A card for testing", ""));
+                cardRepository.saveAll(user.cards);
                 userRepository.save(user);
 
             }
