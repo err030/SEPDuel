@@ -1,6 +1,7 @@
 package de.unidue.beckend_gruppe_q.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
