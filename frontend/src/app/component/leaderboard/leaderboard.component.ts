@@ -1,21 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
 import { NgForOf, NgIf } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {Global} from "../../global";
 import {LeaderboardService} from "../../service/leaderboard.service";
-import {friend} from "../../model/friend";
 import {HttpResponse} from "@angular/common/http";
-import {FriendRequest} from "../../model/FriendRequest";
 import {DuelRequest} from "../../model/DuelRequest";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
-import { WebSocketSubject } from 'rxjs/webSocket';
 import { DuelService } from "../../service/duel.service";
-import {Deck} from "../../model/deck.model";
-import {Duel} from "../../model/duel.model";
 
 @Component({
   selector: 'app-leaderboard',
@@ -49,20 +44,15 @@ export class LeaderboardComponent implements OnInit {
   currentRequestId: number | null = null;
   duelRequest?: DuelRequest;
   sentRequest: DuelRequest | null = null;
-  senderDeck?: Deck;
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router, private duelService: DuelService) { }
 
   ngOnInit(): void {
     console.log('Global.loggedUser:', Global.loggedUser);
     this.loggedUser = Global.loggedUser;
-    //for testing only
-    // this.loggedUser.status = 0;
-    // @ts-ignore
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
-        // Initialize the status to an empty string if not provided by the backend
         this.leaderboard.forEach(user => user.status = user.status !== undefined ? user.status : 0);
         this.totalPages = Math.ceil(this.leaderboard.length / this.usersPerPage);
         this.updateDisplayedPlayers();
@@ -123,10 +113,28 @@ export class LeaderboardComponent implements OnInit {
     });
   }
 
+  getStatusText(status: number | undefined): string {
+    switch (status) {
+      case 0:
+        return 'online';
+      case 1:
+        return 'busy';
+      case 2:
+        return 'offline';
+      case 3:
+        return 'dueling';
+      default:
+        return 'unknown';
+    }
+  }
+
   updateDisplayedPlayers() {
     const startIndex = (this.currentPage - 1) * this.usersPerPage;
-    this.displayedUsers = this.leaderboard.slice(startIndex, startIndex + this.usersPerPage);
+    this.displayedUsers = this.leaderboard
+      .filter(user => user.groupId !== 2) // 过滤掉管理员用户
+      .slice(startIndex, startIndex + this.usersPerPage);
   }
+
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
@@ -165,11 +173,8 @@ export class LeaderboardComponent implements OnInit {
       if (this.loggedUser.status === 0 && this.selectedUser.status === 0) {
         this.leaderboardService.sendDuelRequest(this.loggedUser.id, this.selectedUser.id, Global.currentDeck.id)
           .subscribe((response: HttpResponse<any>) => {
-            console.log('response body:', response.body);
             this.sentRequest = response.body;
-            localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest))
-            alert("Duel request sent");
-            // 假设请求发送成功后，更新用户状态
+            localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
             this.loggedUser!.status = 1;
             this.selectedUser!.status = 1;
           }, error => {

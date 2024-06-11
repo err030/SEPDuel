@@ -65,9 +65,9 @@
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.clear-selection-btn, .save-selection-btn {
+.clear-selection-btn, .save-selection-btn{
   padding: 10px 20px;
-  background: linear-gradient(145deg, rgb(158, 101, 220), #35a1ed);
+  background: linear-gradient(145deg, rgb(111, 207, 151), #66bb6a);
   color: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 5px;
@@ -75,9 +75,16 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
+.clear-selection-btn{
+  background: linear-gradient(145deg, #e489d8, #33d4e1);
+}
+.clear-selection-btn:hover{
+  background: linear-gradient(145deg, #33d4e1, #e489d8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
 
-.clear-selection-btn:hover, .save-selection-btn:hover {
-  background: linear-gradient(145deg, #35a1ed, #9e65dc);
+.save-selection-btn:hover {
+  background: linear-gradient(145deg, #62ae25, #439553);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
