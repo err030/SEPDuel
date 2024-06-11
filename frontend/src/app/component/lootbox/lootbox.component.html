@@ -1,6 +1,10 @@
 <div *ngIf="lootboxes.length > 0">
   <div *ngFor="let lootbox of lootboxes" class="lootbox-wrapper">
-    <div [ngClass]="{'bronze-lootbox': lootbox.lootboxType === 'BRONZE', 'silver-lootbox': lootbox.lootboxType === 'SILVER', 'gold-lootbox': lootbox.lootboxType === 'GOLD'}" class="lootbox">
+    <div [ngClass]="{
+    'bronze-lootbox': lootbox.lootboxType === 'BRONZE',
+    'silver-lootbox': lootbox.lootboxType === 'SILVER',
+    'gold-lootbox': lootbox.lootboxType === 'GOLD'}"
+         class="lootbox">
       <div class="lootbox-content">
         <h3>{{ lootbox.lootboxType }} </h3>
       </div>
