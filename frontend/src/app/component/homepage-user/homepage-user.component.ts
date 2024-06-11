@@ -93,4 +93,8 @@ export class HomepageUserComponent implements OnInit {
   goToDecks() {
     this.router.navigate(['/deck-list']); // 跳转到卡组页面的路由
   }
+
+  goToLootbox() {
+    this.router.navigate(['/lootbox']);
+  }
 }
