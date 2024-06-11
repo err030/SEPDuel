@@ -133,6 +133,7 @@ export class ChatGroupMessageComponent implements OnInit{
           return;
         }
 
+        // 检查消息是否已被阅读 没有任何改动
         if(message!=null&&message.msgType!=undefined&&message.msgType=='backToMsgRead'){
 
           console.log("Nachrichtenverarbeitung gelesen oder ungelesen：",message.fromUuid);
@@ -165,7 +166,8 @@ export class ChatGroupMessageComponent implements OnInit{
           // @ts-ignore
           recipient: this.selectedChatGroup?.chatUserIds,
           senderType: 'friend',
-          msgType: 'group_chat'
+          msgType: 'group_chat',
+          isRead: false
         };
         console.log(msg);
         that.allMSGs.push(msg);
@@ -187,14 +189,13 @@ export class ChatGroupMessageComponent implements OnInit{
           msgType: 'backToMsgRead', // 正确使用msgType属性
 
           // @ts-ignore
-          recipient: msg.sender,
+          recipient: this.selectedChatGroup?.chatUserIds,
           fromUuid: msg.fromUuid,
           chatGroupId: this.selectedChatGroup?.id,
           sender: this.loggedUser?.id as number,
         };
         console.log("backToMsg.uuid:",msg.fromUuid);
         if(msg.chatGroupId==this.selectedChatGroup?.id && msg.recipient.split(',').includes(this.loggedUser?.id + '')){
-          console.log(backToMsg);
           // @ts-ignore
           that.socket$.next(backToMsg);
           return;
@@ -260,15 +261,13 @@ export class ChatGroupMessageComponent implements OnInit{
 
   public deleteMessage(id: string): void {
 
-    this.allMSGs = this.allMSGs.filter(message => message.uuid !== id);
-
+   this.allMSGs = this.allMSGs.filter(message => message.uuid !== id);
     const localMsgList = localStorage.getItem('groupMsgList');
     if (localMsgList != undefined && localMsgList != null && localMsgList != '') {
       let msgListObj = JSON.parse(localMsgList);
       msgListObj = msgListObj.filter((message: Message) => message.uuid !== id);
       localStorage.setItem("groupMsgList", JSON.stringify(msgListObj));
     }
-
   }
 
   public editMessage(id: string): void {
