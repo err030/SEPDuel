@@ -1,0 +1,8 @@
+<div *ngIf="card" class="card">
+     <h3>{{card.name}}{{card.rarity}}</h3>
+      <p>Attack: {{ card.attack }}</p>
+      <p>Defense: {{ card.defense }}</p>
+      <p>{{ card.description }}</p>
+  <img [src]="Global.backendUrl + card.image" alt="{{card.image}} Image" width="100" height="150">
+</div>
+

@@ -20,8 +20,9 @@ import {ScrollerModule} from "primeng/scroller";
 import {DialogModule} from "primeng/dialog";
 import {TabViewModule} from "primeng/tabview";
 import {ScrollPanelModule} from "primeng/scrollpanel";
-
-
+import {MessageService}  from "primeng/api";
+import {ChatgroupService} from "../../service/chatgroup.service";
+import {Chatgroup} from "../../model/chatgroup";
 
 @Component({
   selector: 'app-friendlist',
@@ -81,6 +82,11 @@ export class FriendlistComponent implements OnInit {
   benutzerSuchFormular: any                       //userSearchForm
   zeigenFreundesliste: boolean = false;           //showFriendList
   userSearchForm: any;
+  chatGroupName: string | undefined;
+  selectedItems = [];
+  chatGroupUsers: User[] = [];
+  currentUserChatGroupList: Chatgroup[] = [];
+  selectedChatGroupListItemId: number | undefined;
 
 //boolean zu control
   showAddFriendConfirmationPopup = false;
@@ -88,13 +94,15 @@ export class FriendlistComponent implements OnInit {
   protected showDeleteFriendConfirmation=false;
   protected readonly friend = friend;
 
-
+  //@ts-ignore
+newChatGroup:Chatgroup = new Chatgroup("","","",[],0,0 );
 
   constructor(private userService: UserService,
               private friendService: FriendService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private chatgroupService: ChatgroupService) {
     console.log('FriendlistComponent instantiated');
   }
 
@@ -138,8 +146,41 @@ export class FriendlistComponent implements OnInit {
           alert(error.statusText)
         }
       })
-
+      // 观察selectedFriendInChatList是否有数据变化，
+      // 有的话则表示是从好友详情页面跳转过来的，激活Chats页面
+      // this.friendService.selectedFriendInChatList.subscribe({
+      //   next: value =>{
+      //     this.selectedChatListItemId = undefined;
+      //     // 检查该好友是否已经在chatListFriends中
+      //     for(let user of this.chatListFriends){
+      //       if(user.id == value.id){
+      //         this.selectedChatListItemId = user.id;
+      //         break;
+      //       }
+      //     }
+      //     // 如果不存在，添加到chatListFriends的第一个
+      //     if(this.selectedChatListItemId == undefined){
+      //       this.chatListFriends.unshift(value);
+      //       this.selectedChatListItemId = value.id;
+      //     }
+      //     this.activeIndex = 0;
+      //   }
+      //
+      // })
     }
+
+    //聊天群组列表
+    // this.chatgroupService.getChatGroupListByUserId(this.loggedUser.id).subscribe({
+    //   next: (response) =>{
+    //     if(response.status == 200 && response.body){
+    //       console.log(response.body)
+    //       this.currentUserChatGroupList = response.body;
+    //     }
+    //   },
+    //    error: (error)=> {
+    //     console.log("error message:", error.statusText);
+    //    }
+    // })
   }
 
 
@@ -263,6 +304,14 @@ export class FriendlistComponent implements OnInit {
     }
   }
 
+  getGroupClass(chatgroup: Chatgroup): string{
+    if(chatgroup.id == this.selectedChatGroupListItemId){
+      return 'chatGroupListItemSelected';
+    }else{
+      return 'chatGroupListItemUnselected';
+    }
+  }
+
   goToAddFriend() {
     this.router.navigate(['/addfriend']);
   }
@@ -297,4 +346,34 @@ export class FriendlistComponent implements OnInit {
   goToHome() {
     this.router.navigate(['/homepage-user']);
   }
+
+
+  onChatListItemClick(chatListFriend: User): void {
+    this.selectedFriendListItemId = chatListFriend.id;
+    this.friendService.selectedFriend = chatListFriend;
+    void this.router.navigateByUrl("/friendlist/user_message" + chatListFriend.id);
+  }
+
+
+  createChatGroup(): void {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+
 }

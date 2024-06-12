@@ -96,6 +96,7 @@ public class WebSocket {
 
 
         //此处可以指定发送，或者群发
+
         if (recipientId.indexOf(",") > 0|| recipientId.split(",").length>1) {
 
             String[] recipientIds = recipientId.split(",");

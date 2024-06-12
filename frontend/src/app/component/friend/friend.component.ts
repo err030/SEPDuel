@@ -8,6 +8,7 @@ import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {ScrollerModule} from "primeng/scroller";
 import {NgIf} from "@angular/common";
+import { Router } from '@angular/router'; // 导入Router服务
 
 @Component({
   selector: 'app-friend',
@@ -33,6 +34,7 @@ export class FriendComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private friendService: FriendService,
+              private router: Router,
               ) {
   }
 
@@ -106,6 +108,10 @@ export class FriendComponent implements OnInit {
     }
   }
 
+
+  chatWithFriend(selectedFriend: User) {
+    this.router.navigate(['/chat/user_message/' + selectedFriend.id]);
+  }
 }
 
 
