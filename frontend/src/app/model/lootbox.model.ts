@@ -5,4 +5,5 @@ export interface Lootbox{
   lootboxType: string
   price: number
   cards: Card[]
+  purchased: boolean
 }

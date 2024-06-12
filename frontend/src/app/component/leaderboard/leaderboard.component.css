@@ -10,6 +10,7 @@ body.leaderboard {
   margin: 0;
   min-height: 100vh;
   overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
 .leaderboard-container {
@@ -253,6 +254,7 @@ body.leaderboard {
   border: none;
   background-color: rgb(244, 233, 185);
   color: rgba(23, 23, 23, 0.9);
+  font-family: Arial, sans-serif;
 }
 .current-user-button{
   background-color: rgba(184, 184, 184, 0.78);
@@ -285,6 +287,7 @@ body.leaderboard {
   background-color: rgb(244, 233, 185);
   color: rgba(23, 23, 23, 0.9);
   flex: 0;
+  font-family: Arial, sans-serif;
 }
 
 .lb-search button:hover {
@@ -410,4 +413,5 @@ body.leaderboard {
   bottom: 20px;
   right: 20px;
 }
+
 

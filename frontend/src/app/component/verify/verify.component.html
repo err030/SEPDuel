@@ -12,7 +12,7 @@
   <h2>Verification Code</h2>
   <form (ngSubmit)="onSecurityCodeFormSubmit()" #SecurityCodeForm="ngForm">
     <div class="input-box">
-      <p>We have sent a code to your email.<br>Please enter it below.</p>
+      <p class="v-text">We have sent a code to your email.<br>Please enter it below.</p>
       <input type="text" required [(ngModel)]="securityCode" placeholder="Enter code" name="SecurityCode" #SecurityCode="ngModel"/>
     </div>
 

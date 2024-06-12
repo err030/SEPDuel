@@ -1,63 +1,150 @@
-.lootbox-wrapper {
+.lootbox-container-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 居中 */
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  width: 80%;
+  max-width: 1000px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: left;
+  color: white;
+  margin: auto;
+  overflow: auto;
+}
+.lootbox-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 10px 0;
-  width: 100%;
+}
+
+.lootbox-title{
+  position: relative;
+  top: 5px;
+  text-align: center;
+  font-family: Herloit, sans-serif;
+}
+
+
+.lootbox-type-container {
+  display: inline-block;
+  vertical-align: top;
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 0 30px 30px;
+  height: 300px;
+}
+
+.lootbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .lootbox {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 150px;
-  height: 200px;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
-  text-align: center;
 }
 
-
-.bronze-lootbox {
-  background-color: #cd7f32; /* Bronze color */
-  color: #fff;
-}
-
-.silver-lootbox {
-  background-color: #c0c0c0; /* Silver color */
-  color: #000;
-}
-
-.gold-lootbox {
-  background-color: #ffd700; /* Gold color */
-  color: #000;
+.lootbox-content h3 {
+  margin: 0;
+  color: rgba(23, 23, 23, 0.9);
+  font-family: Herloit, sans-serif;
 }
 
 .lootbox-content {
   flex-grow: 1;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .lootbox-actions {
   display: flex;
-  flex-direction: column;
-  gap: 5px; /* Smaller gap */
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 10px;
 }
 
-.lootbox-actions button {
-  padding: 5px 10px;
+.box-buy, .box-open {
+  position: static;
+  padding: 10px 20px;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
-  width: 80px; /* Adjusted width */
-  background-color: #2F4F4F;
-  color: #fff;
+  font-size: 16px;
+  margin: 5px;
 }
 
-.lootbox-actions button:hover {
-  opacity: 0.8;
+
+.bronze-lootbox {
+  background-color: #cd7f32;
+}
+
+.silver-lootbox {
+  background-color: #c0c0c0;
+}
+
+.gold-lootbox {
+  background-color: #ffd700;
+}
+
+
+.box-open[disabled] {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.lootbox-container-wrapper .back-button{
+  position: absolute;
+  top: 10px;
+  left: 30px;
+}
+
+.dialog-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.dialog-box {
+  width: 250px;
+  position: relative;
+  top: 50%;
+  left: 5%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+}
+
+.close-all-button {
+  position: absolute;
+  top: 600px;
+  right: 50%;
+  z-index: 1000;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }

@@ -27,7 +27,9 @@
   padding: 0 10px;
   letter-spacing: 1px;
 }
-
+.btn-box{
+  margin-bottom: 30px;
+}
 .btn-box .cancel-button{
   background-color: rgba(135, 134, 134, 0.76);
 }

@@ -1,9 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Lootbox} from "../../model/lootbox.model";
 import {LootboxService} from "../../service/lootbox.service";
 import {KeyValuePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {CardDisplayComponent} from "../card-display/card-display.component";
 import {UserService} from "../../service/user.service";
+import {DialogModule} from "primeng/dialog";
+import {SharedModule} from "primeng/api";
+import {Card} from "../../model/card.model";
+import {Global} from "../../global";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-lootbox',
@@ -13,63 +17,111 @@ import {UserService} from "../../service/user.service";
     NgIf,
     NgClass,
     KeyValuePipe,
-    CardDisplayComponent,
+    DialogModule,
+    SharedModule,
   ],
   templateUrl: './lootbox.component.html',
   styleUrl: './lootbox.component.css'
 })
-export class LootboxComponent implements OnInit{
-
+export class LootboxComponent implements OnInit {
+  @Input() card?: Card;
   lootboxes: Lootbox[] = []
-  userId : number | undefined ;
+  userId: number | undefined;
   cards: any[] = []
+  protected readonly Global = Global;
+  openedCards: Card[] = [];
+  openDialogs: Card[] = [];
 
-  constructor(private lootboxService: LootboxService, private userService: UserService) {}
+  constructor(private lootboxService: LootboxService, private userService: UserService, private router: Router) {
+  }
+
 
   buyLootbox(lootboxId: number) {
     if (this.userId !== undefined) {
-      this.lootboxService.buyLootbox(lootboxId,this.userId).subscribe(
-        (response) => {alert('Lootbox purchased:' + response)},
-        (error) => {console.log('Error purchasing Lootbox', error);
-          alert('Failed to purchase Lootbox: ' + error.error)}
-      )
+      this.lootboxService.buyLootbox(lootboxId, this.userId).subscribe(
+        (response) => {
+          alert('Lootbox purchased: ' + response);
+          const lootbox = this.lootboxes.find(l => l.id === lootboxId);
+          if (lootbox) {
+            lootbox.purchased = true;
+          }
+        },
+        (error) => {
+          console.log('Error purchasing Lootbox', error);
+          alert('Failed to purchase Lootbox: ' + error.error)
+        }
+      );
     }
   }
 
   openLootbox(lootboxId: number) {
     if (this.userId !== undefined) {
-      this.lootboxService.openLootbox(lootboxId,this.userId).subscribe(
-        (cards) => {this.cards = cards;},
-        (error) => {console.log('Error opening Lootbox', error);
-          alert('Failed to open Lootbox: ' + error.error)}
+      this.lootboxService.openLootbox(lootboxId, this.userId).subscribe(
+        (cards: Card[]) => {
+          this.openedCards.push(...cards);
+          this.openDialogs.push(...cards);
+        },
+        (error) => {
+          console.log('Error opening Lootbox', error);
+          alert('Failed to open Lootbox: ' + error.error)
+        }
       )
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit()
+    :
+    void {
     this.userId = this.userService.loggedUser?.id; //user info may change during this life circle,dynamic
     this.getAllBronzeLootboxes();
     this.getAllSilverLootboxes();
     this.getAllGoldLootboxes();
   }
 
-  getAllBronzeLootboxes():void{
+  getAllBronzeLootboxes()
+    :
+    void {
     this.lootboxService.generateLootbox('BRONZE').subscribe(
-      (lootbox ) => {this.lootboxes.push(lootbox);},
-      error => {console.log('Error creating Lootbox:',error)}
-    )
-  }
-  getAllSilverLootboxes():void{
-    this.lootboxService.generateLootbox('SILVER').subscribe(
-      (lootbox ) => {this.lootboxes.push(lootbox);},
-      error => {console.log('Error creating Lootbox:',error)}
-    )
-  }
-  getAllGoldLootboxes():void{
-    this.lootboxService.generateLootbox('GOLD').subscribe(
-      (lootbox ) => {this.lootboxes.push(lootbox);},
-      error => {console.log('Error creating Lootbox:',error)}
+      (lootbox) => {
+        this.lootboxes.push({...lootbox, purchased: false});
+      },
+      error => {
+        console.log('Error creating Lootbox:', error)
+      }
     )
   }
 
+  getAllSilverLootboxes()
+    :
+    void {
+    this.lootboxService.generateLootbox('SILVER').subscribe(
+      (lootbox) => {
+        this.lootboxes.push({...lootbox, purchased: false});
+      },
+      error => {
+        console.log('Error creating Lootbox:', error)
+      }
+    )
+  }
+
+  getAllGoldLootboxes()
+    :
+    void {
+    this.lootboxService.generateLootbox('GOLD').subscribe(
+      (lootbox) => {
+        this.lootboxes.push({...lootbox, purchased: false});
+      },
+      error => {
+        console.log('Error creating Lootbox:', error)
+      }
+    )
+  }
+
+  closeAllDialogs() {
+    this.openDialogs = [];
+  }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
+  }
 }
