@@ -25,9 +25,9 @@ import {Router} from "@angular/router";
 })
 export class LootboxComponent implements OnInit {
   @Input() card?: Card;
-  lootboxes: Lootbox[] = []
+  lootboxes: Lootbox[] = [];
   userId: number | undefined;
-  cards: any[] = []
+  cards: any[] = [];
   protected readonly Global = Global;
   openedCards: Card[] = [];
   openDialogs: Card[] = [];
@@ -60,6 +60,10 @@ export class LootboxComponent implements OnInit {
         (cards: Card[]) => {
           this.openedCards.push(...cards);
           this.openDialogs.push(...cards);
+          const lootbox = this.lootboxes.find(l => l.id === lootboxId);
+          if (lootbox) {
+            lootbox.purchased = false;
+          }
         },
         (error) => {
           console.log('Error opening Lootbox', error);
