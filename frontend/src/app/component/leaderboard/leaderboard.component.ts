@@ -228,11 +228,15 @@ export class LeaderboardComponent implements OnInit {
           if (status == 3) {
             // 接受对决请求
             alert('对决请求已接受');
+            this.loggedUser!.status = 3;
+            this.selectedUser!.status = 3;
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
             this.showCountdown = false;
           } else if (status == 0) {
             // 拒绝对决请求
+            this.loggedUser!.status = 0;
+            this.selectedUser!.status = 0;
             alert('对决请求已拒绝');
             this.showCountdown = false;
           }
@@ -336,6 +340,8 @@ export class LeaderboardComponent implements OnInit {
     const pendingRequest = this.duelRequests.find(r => r.duellanfragStatus === 1);
     if (pendingRequest) {
       this.acceptOrRejectDuelRequest(pendingRequest, 0);
+      this.loggedUser!.status = 0;
+      this.selectedUser!.status = 0;
     }
   }
   enterDuel() {
