@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
-import { NgForOf, NgIf } from "@angular/common";
+import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {Global} from "../../global";
 import {LeaderboardService} from "../../service/leaderboard.service";
@@ -22,7 +22,8 @@ import {CountdownComponent} from "ngx-countdown";
     NgIf,
     DialogModule,
     SharedModule,
-    CountdownComponent
+    CountdownComponent,
+    NgStyle
   ],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
@@ -49,6 +50,10 @@ export class LeaderboardComponent implements OnInit {
   countdownConfig = { leftTime: 30 };  // Countdown configuration
   showCountdown: boolean = false;
   countdownTimer: any;
+
+  countdownRemaining: number = 0;
+  countdownInterval: any;
+  countdownColor: string = 'inherit';
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router, private duelService: DuelService) { }
 
@@ -194,21 +199,6 @@ export class LeaderboardComponent implements OnInit {
     }
   }
 
-  openDuelRequestDialog(): void {
-    this.showDuelRequests = true;
-    if (this.loggedUser && this.loggedUser.id) {
-      this.leaderboardService.getDuelRequests(this.loggedUser.id).subscribe({
-        next: (response) => {
-          if (response.status == 200 && response.body) {
-            this.duelRequests = response.body;
-          }
-        },
-        error: (error) => {
-          alert(error.statusText)
-        }
-      })
-    }
-  }
 
   acceptOrRejectDuelRequest(request: DuelRequest, status: number): void {
     //@ts-ignore
@@ -335,9 +325,22 @@ export class LeaderboardComponent implements OnInit {
 
   startCountdownTimer(): void {
     clearTimeout(this.countdownTimer);
-    this.countdownTimer = setTimeout(() => {
-      this.rejectDuelRequestAutomatically();
-    }, 30000); // 30 seconds
+    this.countdownRemaining = 30;
+    this.countdownInterval = setInterval(() => {
+      this.countdownRemaining--;
+      if (this.countdownRemaining <= 10) {
+        // 如果剩余时间小于等于10秒,设置文字颜色为红色
+        this.countdownColor = 'red';
+      } else {
+        // 否则,设置文字颜色为默认颜色
+        this.countdownColor = 'inherit';
+      }
+      if (this.countdownRemaining === 0) {
+        // 当倒计时结束时,自动拒绝对战请求
+        this.rejectDuelRequestAutomatically();
+        clearInterval(this.countdownInterval);
+      }
+    }, 1000); // 每隔1秒更新一次
   }
 
   rejectDuelRequestAutomatically(): void {
