@@ -209,6 +209,7 @@ export class LeaderboardComponent implements OnInit {
       })
     }
   }
+
   acceptOrRejectDuelRequest(request: DuelRequest, status: number): void {
     //@ts-ignore
     Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
@@ -233,12 +234,14 @@ export class LeaderboardComponent implements OnInit {
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
             this.showCountdown = false;
+            this.showDuelRequests = false;
           } else if (status == 0) {
             // 拒绝对决请求
             this.loggedUser!.status = 0;
             this.selectedUser!.status = 0;
             alert('对决请求已拒绝');
             this.showCountdown = false;
+            this.showDuelRequests = false;
           }
           // 将 newDuelRequests 设置为 0
           this.newDuelRequests = 0;
@@ -299,6 +302,7 @@ export class LeaderboardComponent implements OnInit {
                 // Show countdown when a new duel request is received
                 this.showCountdown = true;
                 this.startCountdownTimer();
+                this.showDuelRequests = true;
               }
             }
             //update sent request status

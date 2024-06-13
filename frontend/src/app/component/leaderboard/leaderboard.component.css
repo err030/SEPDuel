@@ -409,11 +409,14 @@ body.leaderboard {
   font-size: 24px;
   cursor: pointer;
 }
-
-.rival {
+.rival-container{
   position: absolute;
-  left: 180px;
-  top: 100px;
+  left: 160px;
+  top: 60px;
+  margin-bottom: 20px;
+}
+.rival {
+  color: rgba(255, 255, 255, 0.91);
 }
 
 .l-accept-btn {
@@ -426,7 +429,7 @@ body.leaderboard {
   color: white;
   box-shadow: 0px 6px 18px -5px rgba(48, 149, 113, 0.76);
   position: absolute;
-  bottom: 50px;
+  bottom: 30px;
   left: 150px;
   font-family: Herloit, sans-serif;
 }
@@ -448,4 +451,16 @@ body.leaderboard {
   position: absolute;
   bottom: 20px;
   right: 20px;
+}
+
+.countdown-timer{
+  color: rgba(255, 255, 255, 0.88);
+  position: absolute;
+  bottom: 20px;
+  left: 30px;
+}
+
+countdown-timer1{
+  color: rgba(255, 255, 255, 0.88);
+  position: relative;
 }

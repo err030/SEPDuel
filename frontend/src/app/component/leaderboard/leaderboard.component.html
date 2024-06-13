@@ -17,13 +17,11 @@
   <div class="leaderboard-box">
 
     <h2>Leaderboard</h2>
-    <div class="friend-request-box" *ngIf="newDuelRequests!==0">
-      <button class="friend-request-btn" (click)="openDuelRequestDialog()">View Duel Requests ({{ newDuelRequests }})
-      </button>
-    </div>
-    <div *ngIf="showCountdown" class="countdown-timer">
+
+    <div *ngIf="showCountdown" class="countdown-timer1">
       <countdown [config]="countdownConfig"></countdown>
     </div>
+
     <div class="lb-search">
       <input type="l-text" placeholder="Search by username" [(ngModel)]="searchText">
       <button (click)="search()">Search</button>
@@ -71,9 +69,14 @@
       <!-- 有拒绝后这个叉叉按钮可以删掉 -->
       <button class="close-btn" (click)="showDuelRequests = false">&times;</button>
     </div>
+    <div *ngIf="showCountdown" class="countdown-timer">
+      <countdown [config]="countdownConfig"></countdown>
+    </div>
     <ul>
       <li *ngFor="let request of duelRequests">
-        <h3 class="rival">Rival： {{ request.sendUser.firstname }} {{ request.sendUser.lastname }}</h3>
+        <div class="rival-container">
+          <h3 class="rival">Rival： {{ request.sendUser.firstname }} {{ request.sendUser.lastname }}</h3>
+        </div>
         <button class="l-accept-btn" (click)="acceptOrRejectDuelRequest(request, 3)">Accept</button>
         <div class="l-reject-btn-container">
           <button class="l-decline-btn" (click)="acceptOrRejectDuelRequest(request, 0)">Decline Match</button>
@@ -82,7 +85,6 @@
     </ul>
   </div>
 </div>
-
 
 
 </body>
