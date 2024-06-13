@@ -3,6 +3,7 @@ import {Global} from "../global";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Deck} from "../model/deck.model";
+import {Card} from "../model/card.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ export class DuelService {
   public sendUserDeck: Deck | undefined;
   public receivedUserDeck: Deck | undefined;
   initializer = true;
+  public sacrificing: boolean = false;
+  public sacrificingCards: Card[] = [];
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +33,10 @@ export class DuelService {
 
   endTurn(duelId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${duelId}/next`);
+  }
+
+  sacrificeCard(duelId: number, cardId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${duelId}/sacrifice/${cardId}`);
   }
 
 

@@ -4,6 +4,8 @@ import {DuelService} from "../../service/duel.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
 import {ActivatedRoute} from "@angular/router";
+import {FormsModule} from "@angular/forms";
+import {Card} from "../../model/card.model";
 
 @Component({
   selector: 'app-duel-board',
@@ -11,7 +13,8 @@ import {ActivatedRoute} from "@angular/router";
   imports: [
     NgForOf,
     CardComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './duel-board.component.html',
   styleUrl: './duel-board.component.css'
@@ -19,7 +22,9 @@ import {ActivatedRoute} from "@angular/router";
 export class DuelBoardComponent implements OnInit {
   protected duel!: Duel;
   private duelId: number = 1;
-  constructor(private duelService: DuelService, private route: ActivatedRoute) { }
+
+  constructor(protected duelService: DuelService, private route: ActivatedRoute) {
+  }
 
 
   ngOnInit(): void {
@@ -101,4 +106,17 @@ export class DuelBoardComponent implements OnInit {
   }
 
 
+  sacrificeCard() {
+    console.log("Sacrifice card")
+    this.duelService.sacrificing = true;
+    this.duelService.sacrificeCard(this.duel.id, this.duel.id).subscribe({
+      next: (data) => {
+        console.log('Card sacrificed successfully:', data);
+        this.loadDuel(this.duel.id); // 重新加载决斗状态
+      },
+      error: (error) => {
+        console.error('Error sacrificing card:', error);
+      }
+    });
+  }
 }
