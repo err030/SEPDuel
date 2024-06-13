@@ -17,7 +17,7 @@ public class WebSocketMessageHandler implements WebSocketConfigurer {
     public WebSocketMessageHandler(MessageService messageService) {
         this.messageService = messageService;
     }
-    @Override  //Problem  : Extract method ‘registerWebSocketHandlers’ to new interface
+    @Override  //Problem : Extract method ‘registerWebSocketHandlers’ to new interface /solve with (implements WebSocketConfig)
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new SocketHandler(), "/webSocketServer");
     }

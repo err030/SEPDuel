@@ -42,6 +42,8 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
 }
 
 .remove-btn {
@@ -53,6 +55,8 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
 }
 
 .select-btn:hover {
@@ -65,19 +69,28 @@
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.clear-selection-btn, .save-selection-btn {
+.clear-selection-btn, .save-selection-btn{
   padding: 10px 20px;
-  background: linear-gradient(145deg, rgb(158, 101, 220), #35a1ed);
+  background: linear-gradient(145deg, rgb(111, 207, 151), #66bb6a);
   color: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+.clear-selection-btn{
+  background: linear-gradient(145deg, #33d4e1, rgba(110, 110, 110, 0.7));
+}
+.clear-selection-btn:hover{
+  background: linear-gradient(145deg, rgba(110, 110, 110, 0.7), #33d4e1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-.clear-selection-btn:hover, .save-selection-btn:hover {
-  background: linear-gradient(145deg, #35a1ed, #9e65dc);
+.save-selection-btn:hover {
+  background: linear-gradient(145deg, #62ae25, #439553);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
@@ -97,6 +110,7 @@
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
 }
 
 .cardBack-button:hover:hover{
