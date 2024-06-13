@@ -11,6 +11,7 @@ import {DuelRequest} from "../../model/DuelRequest";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
 import { DuelService } from "../../service/duel.service";
+import {CountdownComponent} from "ngx-countdown";
 
 @Component({
   selector: 'app-leaderboard',
@@ -20,7 +21,8 @@ import { DuelService } from "../../service/duel.service";
     FormsModule,
     NgIf,
     DialogModule,
-    SharedModule
+    SharedModule,
+    CountdownComponent
   ],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
@@ -44,6 +46,9 @@ export class LeaderboardComponent implements OnInit {
   currentRequestId: number | null = null;
   duelRequest?: DuelRequest;
   sentRequest: DuelRequest | null = null;
+  countdownConfig = { leftTime: 30 };  // Countdown configuration
+  showCountdown: boolean = false;
+  countdownTimer: any;
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router, private duelService: DuelService) { }
 
@@ -177,6 +182,7 @@ export class LeaderboardComponent implements OnInit {
             localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
             this.loggedUser!.status = 1;
             this.selectedUser!.status = 1;
+            this.showCountdown = true;
           }, error => {
             alert("Error sending duel request");
           });
@@ -224,26 +230,28 @@ export class LeaderboardComponent implements OnInit {
             alert('对决请求已接受');
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
+            this.showCountdown = false;
           } else if (status == 0) {
             // 拒绝对决请求
             alert('对决请求已拒绝');
+            this.showCountdown = false;
           }
           // 将 newDuelRequests 设置为 0
           this.newDuelRequests = 0;
         }
       },
+
       error: (error) => {
         status = currentRequestStatus;
         alert(error.statusText)
       }
     })
-
     // 从 duelRequests 数组中移除该请求对象
-    this.duelRequests = this.duelRequests.filter(r => r.id !== request.id);
     const index = this.duelRequests.indexOf(request);
     if (index !== -1) {
       this.duelRequests.splice(index, 1);
     }
+
 
     // 如果没有未处理的对决请求，关闭对话框
     if (this.duelRequests.length === 0) {
@@ -280,8 +288,14 @@ export class LeaderboardComponent implements OnInit {
         this.leaderboardService.getDuelRequests(this.loggedUser.id).subscribe({
           next: (response) => {
             if (response.status == 200 && response.body) {
+              const previousDuelRequests = this.duelRequests;
               this.duelRequests = response.body;
               this.newDuelRequests=this.duelRequests.length;
+              if (this.duelRequests.length > previousDuelRequests.length) {
+                // Show countdown when a new duel request is received
+                this.showCountdown = true;
+                this.startCountdownTimer();
+              }
             }
             //update sent request status
             if (this.sentRequest){
@@ -309,6 +323,21 @@ export class LeaderboardComponent implements OnInit {
       }
     }, 1000);
   }// 每1秒钟检查一次
+
+
+  startCountdownTimer(): void {
+    clearTimeout(this.countdownTimer);
+    this.countdownTimer = setTimeout(() => {
+      this.rejectDuelRequestAutomatically();
+    }, 30000); // 30 seconds
+  }
+
+  rejectDuelRequestAutomatically(): void {
+    const pendingRequest = this.duelRequests.find(r => r.duellanfragStatus === 1);
+    if (pendingRequest) {
+      this.acceptOrRejectDuelRequest(pendingRequest, 0);
+    }
+  }
   enterDuel() {
     this.duelService.initializer = false;
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);

@@ -21,6 +21,9 @@
       <button class="friend-request-btn" (click)="openDuelRequestDialog()">View Duel Requests ({{ newDuelRequests }})
       </button>
     </div>
+    <div *ngIf="showCountdown" class="countdown-timer">
+      <countdown [config]="countdownConfig"></countdown>
+    </div>
     <div class="lb-search">
       <input type="l-text" placeholder="Search by username" [(ngModel)]="searchText">
       <button (click)="search()">Search</button>
