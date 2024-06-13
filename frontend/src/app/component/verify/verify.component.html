@@ -1,4 +1,3 @@
-<!--verify.component.html-->
 <!DOCTYPE html>
 <html lang="en-EN">
 
@@ -11,22 +10,20 @@
 <body class="background-image-login">
 <div class="box">
   <h2>Verification Code</h2>
-<form (ngSubmit)="onSecurityCodeFormSubmit()" #SecurityCodeForm="ngForm">
-  <div class="input-box">
-    <p>We have sent a code to your email.<br>Please enter it below.</p>
-    <input type="text" required [(ngModel)]="securityCode" placeholder="Enter code" name="SecurityCode" #SecurityCode="ngModel"/>
-
-  </div>
-
-  <div class="btn-box">
-    <div>
-      <button type="submit" [disabled]="SecurityCodeForm.invalid">Next</button>
-      <button (click)="goBack()">Back</button>
+  <form (ngSubmit)="onSecurityCodeFormSubmit()" #SecurityCodeForm="ngForm">
+    <div class="input-box">
+      <p class="v-text">We have sent a code to your email.<br>Please enter it below.</p>
+      <input type="text" required [(ngModel)]="securityCode" placeholder="Enter code" name="SecurityCode" #SecurityCode="ngModel"/>
     </div>
-  </div>
+
+    <div class="btn-box">
+      <div>
+        <button class="v-back-btn" (click)="goBack()">Back</button>
+        <button type="submit" [disabled]="SecurityCodeForm.invalid">Next</button>
+      </div>
+    </div>
   </form>
-
-
 </div>
 </body>
+
 </html>

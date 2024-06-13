@@ -15,10 +15,11 @@
 .passwordForget{
   color: rgba(255, 255, 255, 0.9);
   font-size: 14px;
-  margin-top: 1px;
-  margin-left: 25px;
+  margin-top: 10px;
+  margin-left: 10px;
   text-align: center;
   cursor: pointer;
+  font-family: Arial, sans-serif;
 }
 
 /* 忘记密码那边先把html样式去掉，重新定义 */
