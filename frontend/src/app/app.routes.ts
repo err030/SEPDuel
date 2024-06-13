@@ -25,6 +25,9 @@ import {DuelBoardComponent} from "./component/duel-board/duel-board.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 import {LootboxComponent} from "./component/lootbox/lootbox.component";
 
+import {ChatComponent} from "./component/chat/chat.component";
+import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
+import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 
 
 export const routes: Routes = [
@@ -41,8 +44,9 @@ export const routes: Routes = [
   {path: 'deck-list', component: DeckListComponent},
   {path: 'all-cards', component: AllCardsComponent},
   {path: "card-upload", component: CardUploadComponent},
-  {path: 'duel/:duelId', component: DuelBoardComponent},
   {path: "lootbox", component: LootboxComponent},
+  {path: 'duel', component: DuelBoardComponent},
+  {path: 'duel/:duelId', component: DuelBoardComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},
@@ -62,12 +66,24 @@ export const routes: Routes = [
     canActivateChild: [userAuthGuard],
     children: [
       {path: 'friend/:friendId', component: FriendComponent},
+
     ]
+  },
+
+  { path: 'chat',
+    component: ChatComponent,
+    canActivateChild: [userAuthGuard],
+    children: [
+      { path: 'user_message/:friendId', component: ChatUserMessageComponent },
+      { path: 'group_message/:groupId', component: ChatGroupMessageComponent }
+    ]
+
   },
 
   {path: 'leaderboard', component: LeaderboardComponent},
 
   {path: '**', redirectTo: 'login'}
+
 ];
 
 @NgModule({

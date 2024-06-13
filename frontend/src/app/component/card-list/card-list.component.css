@@ -30,10 +30,11 @@ body.card-list {
   text-align: center;
 }
 
-.card-list-container h1 {
+.card-list-title {
   margin-bottom: 20px;
   color: #FFF3C1;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  font-family: Hippo, sans-serif;
 }
 
 .card-search {
@@ -62,6 +63,8 @@ body.card-list {
   cursor: pointer;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
 .searchCard-btn:hover {
@@ -110,6 +113,7 @@ body.card-list {
   width:100px;
   height: 30px;
   font-size: 14px;
+  font-family: Arial, sans-serif;
 }
 
 .editCard-btn:hover {
@@ -124,6 +128,7 @@ body.card-list {
   height: 30px;
   font-size: 16px;
   margin-top: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .cardBack-btn:hover {
@@ -137,6 +142,7 @@ body.card-list {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
 }
 
 .editCard-box{
@@ -154,6 +160,7 @@ body.card-list {
   border: none;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  font-family: Arial, sans-serif;
 }
 .previous-btn{
   margin-right: 10px;

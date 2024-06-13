@@ -90,19 +90,19 @@ public class LeaderboardController {
             duelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
             // 更新 sendUser 和 receivedUser 的状态
             if (duelRequest.getSendUser() != null && duelRequest.getReceivedUser() != null) {
+                User sender = userRepository.findById(duelRequest.getSendUser().getId()).orElse(null);
+                User receiver = userRepository.findById(duelRequest.getReceivedUser().getId()).orElse(null);
                 if (duelRequest.getDuellanfragStatus() == 3) {
-                    duelRequest.getSendUser().setStatus(3);
-                    duelRequest.getReceivedUser().setStatus(3);
-                    
+                    sender.setStatus(3);
+                    receiver.setStatus(3);
                 } else {
-                    duelRequest.getSendUser().setStatus(0);
-                    duelRequest.getReceivedUser().setStatus(0);
+                    sender.setStatus(0);
+                    receiver.setStatus(0);
                     duelRequestRepository.delete(duelRequest);
-
                     return ResponseEntity.status(HttpStatus.OK).body(null);
                 }
-                userRepository.save(duelRequest.getSendUser());
-                userRepository.save(duelRequest.getReceivedUser());
+                userRepository.save(sender);
+                userRepository.save(receiver);
             } else {
                 // 如果 sendUser 或 receivedUser 为空,返回 400 Bad Request
                 System.out.println("sendUser or receivedUser cannot be null");

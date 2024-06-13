@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { UserService } from "../../service/user.service";
 import { User } from "../../model/user";
-import { NgForOf, NgIf } from "@angular/common";
+import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {Global} from "../../global";
 import {LeaderboardService} from "../../service/leaderboard.service";
-import {friend} from "../../model/friend";
 import {HttpResponse} from "@angular/common/http";
-import {FriendRequest} from "../../model/FriendRequest";
 import {DuelRequest} from "../../model/DuelRequest";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
-import { WebSocketSubject } from 'rxjs/webSocket';
 import { DuelService } from "../../service/duel.service";
-import {Deck} from "../../model/deck.model";
-import {Duel} from "../../model/duel.model";
+import {CountdownComponent} from "ngx-countdown";
 
 @Component({
   selector: 'app-leaderboard',
@@ -25,7 +21,9 @@ import {Duel} from "../../model/duel.model";
     FormsModule,
     NgIf,
     DialogModule,
-    SharedModule
+    SharedModule,
+    CountdownComponent,
+    NgStyle
   ],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
@@ -49,20 +47,22 @@ export class LeaderboardComponent implements OnInit {
   currentRequestId: number | null = null;
   duelRequest?: DuelRequest;
   sentRequest: DuelRequest | null = null;
-  senderDeck?: Deck;
+  countdownConfig = { leftTime: 30 };  // Countdown configuration
+  showCountdown: boolean = false;
+  countdownTimer: any;
+
+  countdownRemaining: number = 0;
+  countdownInterval: any;
+  countdownColor: string = 'inherit';
 
   constructor(private activatedRoute: ActivatedRoute,private userService: UserService, private leaderboardService: LeaderboardService, private router: Router, private duelService: DuelService) { }
 
   ngOnInit(): void {
     console.log('Global.loggedUser:', Global.loggedUser);
     this.loggedUser = Global.loggedUser;
-    //for testing only
-    // this.loggedUser.status = 0;
-    // @ts-ignore
     this.userService.getLeaderboard().subscribe(response => {
       if (response.status === 200) {
         this.leaderboard = response.body || [];
-        // Initialize the status to an empty string if not provided by the backend
         this.leaderboard.forEach(user => user.status = user.status !== undefined ? user.status : 0);
         this.totalPages = Math.ceil(this.leaderboard.length / this.usersPerPage);
         this.updateDisplayedPlayers();
@@ -123,10 +123,28 @@ export class LeaderboardComponent implements OnInit {
     });
   }
 
+  getStatusText(status: number | undefined): string {
+    switch (status) {
+      case 0:
+        return 'online';
+      case 1:
+        return 'busy';
+      case 2:
+        return 'offline';
+      case 3:
+        return 'dueling';
+      default:
+        return 'unknown';
+    }
+  }
+
   updateDisplayedPlayers() {
     const startIndex = (this.currentPage - 1) * this.usersPerPage;
-    this.displayedUsers = this.leaderboard.slice(startIndex, startIndex + this.usersPerPage);
+    this.displayedUsers = this.leaderboard
+      .filter(user => user.groupId !== 2) // 过滤掉管理员用户
+      .slice(startIndex, startIndex + this.usersPerPage);
   }
+
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
@@ -165,13 +183,11 @@ export class LeaderboardComponent implements OnInit {
       if (this.loggedUser.status === 0 && this.selectedUser.status === 0) {
         this.leaderboardService.sendDuelRequest(this.loggedUser.id, this.selectedUser.id, Global.currentDeck.id)
           .subscribe((response: HttpResponse<any>) => {
-            console.log('response body:', response.body);
             this.sentRequest = response.body;
-            localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest))
-            alert("Duel request sent");
-            // 假设请求发送成功后，更新用户状态
+            localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
             this.loggedUser!.status = 1;
             this.selectedUser!.status = 1;
+            this.showCountdown = true;
           }, error => {
             alert("Error sending duel request");
           });
@@ -183,21 +199,7 @@ export class LeaderboardComponent implements OnInit {
     }
   }
 
-  openDuelRequestDialog(): void {
-    this.showDuelRequests = true;
-    if (this.loggedUser && this.loggedUser.id) {
-      this.leaderboardService.getDuelRequests(this.loggedUser.id).subscribe({
-        next: (response) => {
-          if (response.status == 200 && response.body) {
-            this.duelRequests = response.body;
-          }
-        },
-        error: (error) => {
-          alert(error.statusText)
-        }
-      })
-    }
-  }
+
   acceptOrRejectDuelRequest(request: DuelRequest, status: number): void {
     //@ts-ignore
     Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
@@ -217,28 +219,36 @@ export class LeaderboardComponent implements OnInit {
           if (status == 3) {
             // 接受对决请求
             alert('对决请求已接受');
+            this.loggedUser!.status = 3;
+            this.selectedUser!.status = 3;
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
+            this.showCountdown = false;
+            this.showDuelRequests = false;
           } else if (status == 0) {
             // 拒绝对决请求
+            this.loggedUser!.status = 0;
+            this.selectedUser!.status = 0;
             alert('对决请求已拒绝');
+            this.showCountdown = false;
+            this.showDuelRequests = false;
           }
           // 将 newDuelRequests 设置为 0
           this.newDuelRequests = 0;
         }
       },
+
       error: (error) => {
         status = currentRequestStatus;
         alert(error.statusText)
       }
     })
-
     // 从 duelRequests 数组中移除该请求对象
-    this.duelRequests = this.duelRequests.filter(r => r.id !== request.id);
     const index = this.duelRequests.indexOf(request);
     if (index !== -1) {
       this.duelRequests.splice(index, 1);
     }
+
 
     // 如果没有未处理的对决请求，关闭对话框
     if (this.duelRequests.length === 0) {
@@ -275,8 +285,15 @@ export class LeaderboardComponent implements OnInit {
         this.leaderboardService.getDuelRequests(this.loggedUser.id).subscribe({
           next: (response) => {
             if (response.status == 200 && response.body) {
+              const previousDuelRequests = this.duelRequests;
               this.duelRequests = response.body;
               this.newDuelRequests=this.duelRequests.length;
+              if (this.duelRequests.length > previousDuelRequests.length) {
+                // Show countdown when a new duel request is received
+                this.showCountdown = true;
+                this.startCountdownTimer();
+                this.showDuelRequests = true;
+              }
             }
             //update sent request status
             if (this.sentRequest){
@@ -304,6 +321,36 @@ export class LeaderboardComponent implements OnInit {
       }
     }, 1000);
   }// 每1秒钟检查一次
+
+
+  startCountdownTimer(): void {
+    clearTimeout(this.countdownTimer);
+    this.countdownRemaining = 30;
+    this.countdownInterval = setInterval(() => {
+      this.countdownRemaining--;
+      if (this.countdownRemaining <= 10) {
+        // 如果剩余时间小于等于10秒,设置文字颜色为红色
+        this.countdownColor = 'red';
+      } else {
+        // 否则,设置文字颜色为默认颜色
+        this.countdownColor = 'inherit';
+      }
+      if (this.countdownRemaining === 0) {
+        // 当倒计时结束时,自动拒绝对战请求
+        this.rejectDuelRequestAutomatically();
+        clearInterval(this.countdownInterval);
+      }
+    }, 1000); // 每隔1秒更新一次
+  }
+
+  rejectDuelRequestAutomatically(): void {
+    const pendingRequest = this.duelRequests.find(r => r.duellanfragStatus === 1);
+    if (pendingRequest) {
+      this.acceptOrRejectDuelRequest(pendingRequest, 0);
+      this.loggedUser!.status = 0;
+      this.selectedUser!.status = 0;
+    }
+  }
   enterDuel() {
     this.duelService.initializer = false;
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);

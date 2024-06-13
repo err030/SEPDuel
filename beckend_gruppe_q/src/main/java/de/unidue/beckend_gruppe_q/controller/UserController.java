@@ -407,5 +407,22 @@ public class UserController {
     }*/
 
 
+    /**
+     * Abrufen von Benutzerinformationen anhand der User ID
+     * @param userId
+     * @return
+     */
+    @GetMapping("/user/{userid}")
+    public ResponseEntity<?> getUserByUserId(@PathVariable(name = "userid") Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.OK).body(userOptional);
+        } else {
+            // Die UserId existiert nicht und gibt 404 zurück
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 
 }

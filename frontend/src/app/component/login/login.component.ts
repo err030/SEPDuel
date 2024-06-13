@@ -95,13 +95,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
           });
         } else {
           // 用户登录失败，显示错误消息
-          alert("Failed to login");
+          alert("Error");
         }
       },
       error: (error) => {
         // 处理用户登录失败的错误情况
         console.error(error);
-        alert("Failed to login");
+        alert("E-mail or password is incorrect!");
       }
     });
   }
