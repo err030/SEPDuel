@@ -86,7 +86,7 @@ export class VerifyComponent implements OnInit {
 
             this.loggedUser = response.body;
             console.log(this.loggedUser);
-            // this.loggedUser.status = 0;
+            this.loggedUser.status = 0;
             this.userService.loggedUser = this.loggedUser;
             Global.loggedUser = this.loggedUser; // 确保在此设置 Global.loggedUser
             localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser)); // 同步到本地存储

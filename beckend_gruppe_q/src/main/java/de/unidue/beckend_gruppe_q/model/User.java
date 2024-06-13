@@ -39,7 +39,7 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Deck> decks = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     public List<Card> cards = new ArrayList<>();
 
 //    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
