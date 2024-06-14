@@ -2,7 +2,7 @@
   <h1 class="lootbox-title">Loot Box</h1>
   <button class="back-button" (click)="goToHome()">Back</button>
   <div *ngIf="lootboxes.length > 0" class="lootbox-container">
-
+    <p class="loot-sepcoins">SEP Coins: {{ userService.loggedUser?.sepCoins }}</p>
 
     <div class="lootbox-type-container bronze-lootbox">
       <ng-container *ngFor="let lootbox of lootboxes">
