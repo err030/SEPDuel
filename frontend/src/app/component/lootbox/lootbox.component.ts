@@ -32,7 +32,7 @@ export class LootboxComponent implements OnInit {
   openedCards: Card[] = [];
   openDialogs: Card[] = [];
 
-  constructor(private lootboxService: LootboxService, private userService: UserService, private router: Router) {
+  constructor(private lootboxService: LootboxService, protected userService: UserService, private router: Router) {
   }
 
 
@@ -44,6 +44,7 @@ export class LootboxComponent implements OnInit {
           const lootbox = this.lootboxes.find(l => l.id === lootboxId);
           if (lootbox) {
             lootbox.purchased = true;
+            this.getUser();
           }
         },
         (error) => {
@@ -63,6 +64,7 @@ export class LootboxComponent implements OnInit {
           const lootbox = this.lootboxes.find(l => l.id === lootboxId);
           if (lootbox) {
             lootbox.purchased = false;
+            this.getUser();
           }
         },
         (error) => {
@@ -80,6 +82,16 @@ export class LootboxComponent implements OnInit {
     this.getAllBronzeLootboxes();
     this.getAllSilverLootboxes();
     this.getAllGoldLootboxes();
+  }
+
+  getUser() {
+    // @ts-ignore
+    this.userService.getUserByUserId(this.userService.loggedUser.id).subscribe(
+      (response) => {
+        this.userService.loggedUser = response.body;
+        Global.loggedUser = response.body;
+        localStorage.setItem('loggedUser', JSON.stringify(Global.loggedUser));
+      })
   }
 
   getAllBronzeLootboxes()
