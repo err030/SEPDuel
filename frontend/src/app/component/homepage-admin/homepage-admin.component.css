@@ -8,9 +8,9 @@
   font-family: Herloit;
   src: url('/assets/fonts/HerloitRegular-EaVwn.otf');
 }
-*{
-  font-family: Arial, sans-serif;
-}
+/**{*/
+/*  font-family: Arial, sans-serif;*/
+/*}*/
 
 /* Styling for the body that wraps the homepage */
 body.admin-page-body {
