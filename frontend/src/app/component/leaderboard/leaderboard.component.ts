@@ -336,10 +336,12 @@ export class LeaderboardComponent implements OnInit {
             if (this.duelRequests.some(r => r.duellanfragStatus === 3)) {
               this.showInitiateDuelButton = true;
               this.duelRequest = this.duelRequests.find(r => r.duellanfragStatus === 3);
+              this.showCountdown=false;
             }
             if (this.sentRequest && this.sentRequest.duellanfragStatus === 3) {
               this.showInitiateDuelButton = true;
               this.duelRequest = this.sentRequest;
+              this.showCountdown=false;
             }
             this.updateLeaderboard();
           },
