@@ -312,36 +312,41 @@ export class LeaderboardComponent implements OnInit {
       if (this.loggedUser && this.loggedUser.id) {
         this.leaderboardService.getDuelRequests(this.loggedUser.id).subscribe({
           next: (response) => {
-            if (response.status == 200 && response.body) {
+            if (response.status === 200 && response.body) {
               const previousDuelRequests = this.duelRequests;
-              this.duelRequests = response.body;
+              this.duelRequests = response.body.filter(r => r.duellanfragStatus === 1); // 过滤状态为 1 的请求
               this.newDuelRequests = this.duelRequests.length;
               if (this.duelRequests.length > previousDuelRequests.length && !this.matchAccepted) {
-                // Show countdown when a new duel request is received
+                // 新的决斗请求时显示倒计时
                 this.showCountdown = true;
                 this.startCountdownTimer();
                 this.showDuelRequests = true;
+                // 初始化 duelRequest
+                this.duelRequest = this.duelRequests[this.duelRequests.length - 1];
+                console.log("New duelRequest set:", this.duelRequest);
               }
             }
-            //update sent request status
+
+            // 更新发送的请求状态
             if (this.sentRequest) {
               this.leaderboardService.getDuelRequestById(this.sentRequest.id).subscribe(response => {
-                if (response.status == 200 && response.body) {
+                if (response.status === 200 && response.body) {
                   // @ts-ignore
                   this.sentRequest.duellanfragStatus = response.body.duellanfragStatus;
                 }
               })
             }
-            // check if request already accepted
+
+            // 检查是否已接受请求
             if (this.duelRequests.some(r => r.duellanfragStatus === 3)) {
               this.showInitiateDuelButton = true;
               this.duelRequest = this.duelRequests.find(r => r.duellanfragStatus === 3);
-              this.showCountdown=false;
+              this.showCountdown = false;
             }
             if (this.sentRequest && this.sentRequest.duellanfragStatus === 3) {
               this.showInitiateDuelButton = true;
               this.duelRequest = this.sentRequest;
-              this.showCountdown=false;
+              this.showCountdown = false;
             }
             this.updateLeaderboard();
           },
@@ -382,6 +387,7 @@ export class LeaderboardComponent implements OnInit {
       this.loggedUser!.status = 0;
       this.selectedUser!.status = 0;
       this.showDuelRequests = false;
+      this.newDuelRequests = 0;
       clearTimeout(this.countdownTimer)
     }
   }
