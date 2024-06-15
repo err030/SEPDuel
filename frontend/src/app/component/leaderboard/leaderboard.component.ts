@@ -298,6 +298,7 @@ export class LeaderboardComponent implements OnInit {
     this.duelService.createDuel(this.duelRequest.id, this.duelRequest.sendDeckId, Global.currentDeck.id).subscribe(
       (response) => {
         this.duelService.initializer = true;
+        localStorage.setItem('initializer', '1');
         this.router.navigate([`/duel/${this.duelRequest?.id}`]);
       }
     )
@@ -386,6 +387,7 @@ export class LeaderboardComponent implements OnInit {
 
   enterDuel() {
     this.duelService.initializer = false;
+    localStorage.setItem('initializer', '0');
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
   }
 }

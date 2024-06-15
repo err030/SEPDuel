@@ -82,6 +82,7 @@ export class DuelBoardComponent implements OnInit {
 
   endTurn() {
     const duelId = this.duel.id;
+    this.duelService.attackedCardsId = [];
     this.duelService.endTurn(duelId).subscribe({
       next: (data) => {
         console.log('Turn ended successfully:', data);
@@ -111,13 +112,8 @@ export class DuelBoardComponent implements OnInit {
 
   sacrificeCard() {
     console.log("Sacrifice card")
-    if (this.duel.playerB.table.length === 0) {
-      console.log("No cards to sacrifice")
-      alert("There are no such cards to sacrifice")
-      return;
-    }
-    this.duelService.sacrificing = true;
-    this.duelService.sacrificeCard(this.duel.id, this.duelService.sacrificingCards.map(card => card.id)).subscribe({
+    this.duelService.sacrificing = false;
+    this.duelService.sacrificeCard(this.duel.id, this.duelService.sacrificingCardsId).subscribe({
       next: (data) => {
         console.log('Card sacrificed successfully:', data);
         this.duel.playerB.hasSummoned = true;
@@ -129,16 +125,12 @@ export class DuelBoardComponent implements OnInit {
     });
   }
 
-  isSacrificing() {
-    return this.duelService.sacrificing;
-  }
-
   isAttacking() {
     return this.duelService.attacking;
   }
 
-  hasAttacked(card: Card): boolean {
-    return this.duelService.attackedCards.includes(card);
+  canAttack(card: Card): boolean {
+    return this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id);
   }
 
   setAttacker(card: Card) {
@@ -146,10 +138,6 @@ export class DuelBoardComponent implements OnInit {
     this.duelService.attackingCard = card;
     console.log("Attacking card:", card);
 
-  }
-
-  hasSummoned() {
-    return this.duel.playerB.hasSummoned;
   }
 
   isCurrentPlayer() {
@@ -163,19 +151,41 @@ export class DuelBoardComponent implements OnInit {
 
   attack() {
     this.duelService.attacking = false;
-    this.duelService.attackedCards.push(<Card>this.duelService.attackingCard);
+    // @ts-ignore
+    this.duelService.attackedCardsId.push(this.duelService.attackingCard.id);
     if (!this.duelService.targetCard) {
       console.log("No target card");
       // @ts-ignore
-      this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, null);
+      this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, null).subscribe(
+        next => {
+          this.loadDuel(this.duel.id)
+          console.log('Duel after attack:', next);
+        }
+      );
       return;
     }
     //@ts-ignore
     console.log("Attacking card:", this.duelService.attackingCard.id, "Target card:", this.duelService.targetCard.id);
     //@ts-ignore
-    this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, this.duelService.targetCard.id);
+    this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, this.duelService.targetCard.id).subscribe(
+      next => {
+        this.loadDuel(this.duel.id)
+        console.log('Duel after attack:', next);
+      }
+    );
+  }
+
+  canSacrifice() {
+    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duelService.sacrificing;
+  }
+
+  canSummon() {
+    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5;
   }
 
 
-  protected readonly Global = Global;
+  toggleSacrifice() {
+    this.duelService.sacrificing = !this.duelService.sacrificing;
+    console.log("Sacrificing:", this.duelService.sacrificing);
+  }
 }

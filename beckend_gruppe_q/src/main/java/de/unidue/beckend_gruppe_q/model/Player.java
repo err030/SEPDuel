@@ -11,7 +11,7 @@ import java.util.List;
 public class Player {
     private long id;
     private String name;
-    private int hp = 30;
+    private int hp = 50;
     private boolean hasSummoned = false;
     Deck deck;
     List<Card> hand = new ArrayList<>();

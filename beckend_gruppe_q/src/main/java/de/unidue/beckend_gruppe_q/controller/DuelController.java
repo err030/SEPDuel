@@ -101,15 +101,19 @@ public class DuelController {
         this.duelRequestRepository = duelRequestRepository;
     }
 
-    @GetMapping("/api/duel/{id}/attack/{attackerId}/{defenderId}")
-    public Duel attack(@PathVariable long id, @PathVariable long attackerId, @PathVariable(required = false) long defenderId) {
+    @GetMapping("/api/duel/{id}/attack")
+    public Duel attack(@PathVariable long id,
+                       @RequestParam long attackerId,
+                       @RequestParam(required = false) Long defenderId) {
+        System.out.println("attackerId: " + attackerId);
+        System.out.println("defenderId: " + defenderId);
         Duel duel = duels.get(id);
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
         Card atk = cardRepository.findById(attackerId).get();
         Card def = null;
-        if (defenderId > 0) {
+        if (defenderId != null) {
             def = cardRepository.findById(defenderId).get();
         }
         duel.attack(atk, def);

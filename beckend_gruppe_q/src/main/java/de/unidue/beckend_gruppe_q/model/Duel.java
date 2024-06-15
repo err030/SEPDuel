@@ -139,24 +139,29 @@ public class Duel {
             Card bonusCard = null;
             switch (cardIds.length) {
                 case 2: // 如果传入两个 ID，则寻找稀有卡
-                    bonusCard = this.currentPlayer.deck.cards.stream()
+                    bonusCard = this.currentPlayer.hand.stream()
                             .filter(card -> card.getRarity().equals(Rarity.RARE))
                             .findFirst()
                             .orElse(null);
                     break;
                 case 3: // 如果传入三个 ID，则寻找传奇卡
-                    bonusCard = this.currentPlayer.deck.cards.stream()
+                    bonusCard = this.currentPlayer.hand.stream()
                             .filter(card -> card.getRarity().equals(Rarity.LEGENDARY))
                             .findFirst()
                             .orElse(null);
                     break;
             }
 
-            // 如果找到对应的奖励卡，则从牌组移除并加入到桌面
+            // 如果找到对应的奖励卡，则从手牌移除并加入到桌面
             if (bonusCard != null) {
-                this.currentPlayer.deck.cards.remove(bonusCard);
+                this.currentPlayer.table.removeAll(selectedCards);
+                this.currentPlayer.hand.remove(bonusCard);
                 this.currentPlayer.table.add(bonusCard);
+                return;
             }
+            // 如果没有找到奖励卡，取消操作
+
+            System.out.println("No bonus card found, canceling sacrifice");
         }
     }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Global} from "../global";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Deck} from "../model/deck.model";
 import {Card} from "../model/card.model";
@@ -13,15 +13,16 @@ export class DuelService {
   private apiUrl = Global.duelRestServiceUrl;
   public sendUserDeck: Deck | undefined;
   public receivedUserDeck: Deck | undefined;
-  initializer = true;
+  initializer: boolean = localStorage.getItem('initializer') === '1';
   public sacrificing: boolean = false;
-  public sacrificingCards: Card[] = [];
+  public sacrificingCardsId: number[] = [];
   public attacking: boolean = false;
   public attackingCard?: Card;
-  public attackedCards: Card[] = [];
+  public attackedCardsId: number[] = [];
   public targetCard?: Card;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
 
   getDuel(duelId: number): Observable<any> {
@@ -33,16 +34,17 @@ export class DuelService {
   }
 
   summonCard(duelId: number, cardId: number): Observable<any> {
+    this.attackedCardsId.push(cardId);
     return this.http.get(`${this.apiUrl}/${duelId}/summon/${cardId}`);
   }
 
   endTurn(duelId: number): Observable<any> {
     this.attacking = false;
     this.attackingCard = undefined;
-    this.attackedCards = [];
+    this.attackedCardsId = [];
     this.targetCard = undefined;
     this.sacrificing = false;
-    this.sacrificingCards = [];
+    this.sacrificingCardsId = [];
     return this.http.get(`${this.apiUrl}/${duelId}/next`);
   }
 
@@ -60,11 +62,17 @@ export class DuelService {
   }
 
   attack(duelId: number, attackerId: number, defenderId?: number): Observable<any> {
-    let url = `${this.apiUrl}/${duelId}/attack/${attackerId}`;
+    const url = `${this.apiUrl}/${duelId}/attack?attackerId=${attackerId}`;
+    const params = new HttpParams();
+
     if (defenderId) {
-      url += `/${defenderId}`;
+      params.set('defenderId', defenderId.toString());
     }
-    return this.http.get(url);
+
+    console.log("Attacker: ", attackerId);
+    console.log("Defender: ", defenderId);
+
+    return this.http.get(url, {params});
   }
 
   setTargetCard(card?: Card): void {
@@ -72,4 +80,20 @@ export class DuelService {
   }
 
 
+  toggleSacrificeCard(cardId: number, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      if (this.sacrificingCardsId.length < 3) {
+        this.sacrificingCardsId.push(cardId);
+      } else {
+        // Handle the case where the maximum number of cards (3) has already been selected
+        // For example, you could display an error message or prevent the checkbox from being checked
+        console.log('Maximum number of cards (3) already selected.');
+        alert('Maximum number of cards (3) already selected.');
+      }
+    } else {
+      this.sacrificingCardsId = this.sacrificingCardsId.filter(id => id !== cardId);
+    }
+  }
 }
