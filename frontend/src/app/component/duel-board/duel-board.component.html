@@ -1,5 +1,5 @@
 <p>duel-board works!</p>
-<div class="game-board" *ngIf="duel">
+<div class="game-board" *ngIf="duel && !duel.gameFinished">
   <h2>Duel: {{ duel.id }}</h2>
   <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
   <h4>Round: {{ duel.playerTurn }}</h4>
@@ -22,7 +22,7 @@
       <button *ngIf="canAttack(card)" (click)="setAttacker(card)">Prepare For Attack</button>
     </div>
     <button *ngIf="canSacrifice()" (click)="sacrificeCard()">Sacrifice!!</button>
-    <button *ngIf="canToggleSacrifice()" (click)="toggleSacrifice()">Prepare For Sacrifice</button>
+    <button *ngIf="canToggleSacrifice()" (click)="toggleSacrifice()">Toggle Sacrifice</button>
 
     <h4>{{ duel.playerB.name }}'s Hand</h4>
     <div class="player-hand" *ngFor="let card of duel.playerB.hand">
@@ -32,4 +32,11 @@
     <button *ngIf="duel.playerTurn == 0 && isCurrentPlayer()" (click)="endTurn()">Start Game</button>
     <button *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()" (click)="endTurn()">End Turn</button>
   </div>
+</div>
+<div *ngIf="duel && duel.gameFinished">
+  <h2>Duel: {{ duel.id }}</h2>
+  <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
+  <h1 *ngIf="duel.winnerId == duel.playerA.id"> You LOSE! </h1>
+  <h1 *ngIf="duel.winnerId == duel.playerB.id"> You WIN! </h1>
+  <button (click)="exitGame()">Exit Game</button>
 </div>

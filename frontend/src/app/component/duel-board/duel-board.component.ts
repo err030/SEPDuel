@@ -3,7 +3,7 @@ import { Duel } from '../../model/duel.model';
 import {DuelService} from "../../service/duel.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Card} from "../../model/card.model";
 import {Global} from "../../global";
@@ -25,7 +25,7 @@ export class DuelBoardComponent implements OnInit {
   protected duel!: Duel;
   private duelId: number = 1;
 
-  constructor(protected duelService: DuelService, private route: ActivatedRoute) {
+  constructor(protected duelService: DuelService, private route: ActivatedRoute, private router: Router) {
   }
 
 
@@ -116,7 +116,6 @@ export class DuelBoardComponent implements OnInit {
     this.duelService.sacrificeCard(this.duel.id, this.duelService.sacrificingCardsId).subscribe({
       next: (data) => {
         console.log('Card sacrificed successfully:', data);
-        this.duel.playerB.hasSummoned = true;
         this.loadDuel(this.duel.id); // 重新加载决斗状态
       },
       error: (error) => {
@@ -192,5 +191,9 @@ export class DuelBoardComponent implements OnInit {
   toggleSacrifice() {
     this.duelService.sacrificing = !this.duelService.sacrificing;
     console.log("Sacrificing:", this.duelService.sacrificing);
+  }
+
+  exitGame() {
+    this.router.navigate(['/game-over']);
   }
 }

@@ -24,7 +24,7 @@ public class Player {
     public Player(User u, Deck d){
         this.id = u.getId();
         this.name = u.getUsername();
-        this.deck = d;
+        this.deck = d.clone();
     }
 
     public boolean hasSummoned() {

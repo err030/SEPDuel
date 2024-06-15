@@ -95,7 +95,7 @@ public class Duel {
         // 减少防守方的防御值
         defender.setDefense(defender.getDefense() - attacker.getAttack());
         if (defender.getDefense() <= 0) {
-            this.currentPlayer.table.remove(defender);
+            this.getOpponent().table.remove(defender);
         } else {
             // 反击：如果防守方存活，减少攻击方的防御值
             attacker.setDefense(attacker.getDefense() - defender.getAttack());
@@ -157,6 +157,7 @@ public class Duel {
                 this.currentPlayer.table.removeAll(selectedCards);
                 this.currentPlayer.hand.remove(bonusCard);
                 this.currentPlayer.table.add(bonusCard);
+                this.currentPlayer.setHasSummoned(true);
                 return;
             }
             // 如果没有找到奖励卡，取消操作

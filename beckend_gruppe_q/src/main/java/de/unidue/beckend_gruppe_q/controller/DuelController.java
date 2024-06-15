@@ -11,6 +11,7 @@ import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -102,19 +103,23 @@ public class DuelController {
     }
 
     @GetMapping("/api/duel/{id}/attack")
-    public Duel attack(@PathVariable long id,
-                       @RequestParam long attackerId,
+    public Duel attack(@PathVariable Long id,
+                       @RequestParam Long attackerId,
                        @RequestParam(required = false) Long defenderId) {
         System.out.println("attackerId: " + attackerId);
         System.out.println("defenderId: " + defenderId);
+
         Duel duel = duels.get(id);
+        System.out.println("Currentplayer Table:" + duel.getCurrentPlayer().getTable().toString());
+
+        System.out.println("Opponent Table:" + duel.getOpponent().getTable().toString());
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
-        Card atk = cardRepository.findById(attackerId).get();
+        Card atk = duel.getCurrentPlayer().getTable().stream().filter(c -> Objects.equals(c.getId(), attackerId)).findFirst().get();
         Card def = null;
         if (defenderId != null) {
-            def = cardRepository.findById(defenderId).get();
+            def = duel.getOpponent().getTable().stream().filter(c -> Objects.equals(c.getId(), defenderId)).findFirst().get();
         }
         duel.attack(atk, def);
         return duel;

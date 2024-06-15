@@ -14,7 +14,6 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "card")
     private Long id;
     private String name;
 

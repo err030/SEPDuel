@@ -62,17 +62,16 @@ export class DuelService {
   }
 
   attack(duelId: number, attackerId: number, defenderId?: number): Observable<any> {
-    const url = `${this.apiUrl}/${duelId}/attack?attackerId=${attackerId}`;
-    const params = new HttpParams();
+    let url = `${this.apiUrl}/${duelId}/attack?attackerId=${attackerId}`;
 
     if (defenderId) {
-      params.set('defenderId', defenderId.toString());
+      url += '&defenderId=' + defenderId;
     }
 
     console.log("Attacker: ", attackerId);
     console.log("Defender: ", defenderId);
 
-    return this.http.get(url, {params});
+    return this.http.get(url);
   }
 
   setTargetCard(card?: Card): void {
