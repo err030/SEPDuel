@@ -75,7 +75,7 @@ public class Duel {
     }
 
     public void drawCard(Player player) {
-        if (checkIfGameFinished()) {
+        if (checkIfGameFinished() || player.getDeck().getCards().isEmpty()) {
             return;
         }
             this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
@@ -120,13 +120,13 @@ public class Duel {
         return Objects.equals(this.currentPlayer, playerA) ? playerB : playerA;
     }
 
-    public void sacrificeCard(long... cardIds) {
+    public Card sacrificeCard(long... cardIds) {
         if (checkIfGameFinished()) {
-            return;
+            return null;
         }
         // 验证桌面上至少有两张卡
         if (this.currentPlayer.table.size() < 2) {
-            return;
+            return null;
         }
 
         // 获取所有传入 ID 对应的卡，如果 ID 为 -1 则视为 null
@@ -158,12 +158,13 @@ public class Duel {
                 this.currentPlayer.hand.remove(bonusCard);
                 this.currentPlayer.table.add(bonusCard);
                 this.currentPlayer.setHasSummoned(true);
-                return;
+                return bonusCard;
             }
             // 如果没有找到奖励卡，取消操作
 
             System.out.println("No bonus card found, canceling sacrifice");
         }
+        return null;
     }
 
 

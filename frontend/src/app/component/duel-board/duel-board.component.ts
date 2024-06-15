@@ -115,7 +115,7 @@ export class DuelBoardComponent implements OnInit {
     this.duelService.sacrificing = false;
     this.duelService.sacrificeCard(this.duel.id, this.duelService.sacrificingCardsId).subscribe({
       next: (data) => {
-        console.log('Card sacrificed successfully:', data);
+        console.log('Bonus card:', data);
         this.loadDuel(this.duel.id); // 重新加载决斗状态
       },
       error: (error) => {
@@ -149,9 +149,6 @@ export class DuelBoardComponent implements OnInit {
   }
 
   attack() {
-    this.duelService.attacking = false;
-    // @ts-ignore
-    this.duelService.attackedCardsId.push(this.duelService.attackingCard.id);
     if (!this.duelService.targetCard) {
       console.log("No target card");
       // @ts-ignore
@@ -194,6 +191,18 @@ export class DuelBoardComponent implements OnInit {
   }
 
   exitGame() {
-    this.router.navigate(['/game-over']);
+    this.duelService.exitGame(this.duel.id).subscribe({
+      next: (data) => {
+        console.log('Game exited successfully:', data);
+        this.router.navigate(['/game-over']);
+      },
+      error: (error) => {
+        console.error('Error exiting game:', error);
+      }
+    });
+  }
+
+  goToHomepage() {
+    this.router.navigate(['/']);
   }
 }

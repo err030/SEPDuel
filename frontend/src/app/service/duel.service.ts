@@ -58,7 +58,13 @@ export class DuelService {
     const cardIdsParam = cardIds.join(',');
     const url = `${this.apiUrl}/${duelId}/sacrifice?cardIds=${cardIdsParam}`;
     this.sacrificing = false;
-    return this.http.get(url);
+    let response = this.http.get(url);
+    response.subscribe((card: any) => {
+      this.attackedCardsId.push(card.id)
+    }, error => {
+      console.error(error);
+    });
+    return response;
   }
 
   attack(duelId: number, attackerId: number, defenderId?: number): Observable<any> {
@@ -67,6 +73,11 @@ export class DuelService {
     if (defenderId) {
       url += '&defenderId=' + defenderId;
     }
+
+    this.attacking = false;
+    // @ts-ignore
+    this.attackedCardsId.push(this.attackingCard.id);
+
 
     console.log("Attacker: ", attackerId);
     console.log("Defender: ", defenderId);
@@ -94,5 +105,9 @@ export class DuelService {
     } else {
       this.sacrificingCardsId = this.sacrificingCardsId.filter(id => id !== cardId);
     }
+  }
+
+  exitGame(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}/exit`);
   }
 }

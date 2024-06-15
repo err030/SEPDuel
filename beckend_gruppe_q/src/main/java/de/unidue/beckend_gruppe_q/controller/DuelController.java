@@ -1,9 +1,6 @@
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.Card;
-import de.unidue.beckend_gruppe_q.model.Duel;
-import de.unidue.beckend_gruppe_q.model.Player;
-import de.unidue.beckend_gruppe_q.model.User;
+import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
@@ -86,13 +83,13 @@ public class DuelController {
     }
 
     @GetMapping("/api/duel/{id}/sacrifice")
-    public Duel sacrificeCard(@PathVariable long id, @RequestParam long... cardIds) {
+    public Card sacrificeCard(@PathVariable long id, @RequestParam long... cardIds) {
         Duel duel = duels.get(id);
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
-        duel.sacrificeCard(cardIds);
-        return duel;
+        Card bonusCard = duel.sacrificeCard(cardIds);
+        return bonusCard;
     }
 
     public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository) {
@@ -143,14 +140,19 @@ public class DuelController {
 
 
     //reserved
-    @GetMapping("/api/duel/{id}/end")
+    @GetMapping("/api/duel/{id}/exit")
     public Duel endRound(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
-        duel.nextRound();
-        return duel;
+
+        DuelRequest request = duelRequestRepository.findById(id).get();
+        userRepository.findById(request.getSendUserId()).get().setStatus(0);
+        userRepository.findById(request.getReceivedUserId()).get().setStatus(0);
+        duelRequestRepository.deleteById(id);
+        duels.remove(id);
+        return null;
     }
 
 
