@@ -22,7 +22,7 @@
       <button *ngIf="canAttack(card)" (click)="setAttacker(card)">Prepare For Attack</button>
     </div>
     <button *ngIf="canSacrifice()" (click)="sacrificeCard()">Sacrifice!!</button>
-    <button *ngIf="canSummon() && duel.playerB.table.length > 2" (click)="toggleSacrifice()">Prepare For Sacrifice</button>
+    <button *ngIf="canToggleSacrifice()" (click)="toggleSacrifice()">Prepare For Sacrifice</button>
 
     <h4>{{ duel.playerB.name }}'s Hand</h4>
     <div class="player-hand" *ngFor="let card of duel.playerB.hand">

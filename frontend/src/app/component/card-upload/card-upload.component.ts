@@ -35,13 +35,14 @@ export class CardUploadComponent implements OnInit{
 
   upload(): void {
     this.uploadService.uploadFile(this.selectedFile).subscribe(
-      (cards) => this.cards = cards,
+      (cards) => {
+        this.getAllCards()
+        console.log('Upload success')
+      },
       (error) => console.error('Upload failed: ' + error))
       // next: (response) => console.log('Upload success', response),
 
       // error: (error) => console.error('Upload failed', error)
-
-    this.getAllCards()
 
   }
 

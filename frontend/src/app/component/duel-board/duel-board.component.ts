@@ -130,7 +130,7 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canAttack(card: Card): boolean {
-    return this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id);
+    return this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id) && !this.duelService.sacrificing;
   }
 
   setAttacker(card: Card) {
@@ -176,11 +176,16 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canSacrifice() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duelService.sacrificing;
+    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duelService.sacrificing && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
+  }
+
+  canToggleSacrifice() {
+    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
+
   }
 
   canSummon() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5;
+    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5 && !this.duelService.sacrificing
   }
 
 
