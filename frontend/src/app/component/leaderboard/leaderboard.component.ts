@@ -351,17 +351,18 @@ export class LeaderboardComponent implements OnInit {
     }, 1000);
   }// 每1秒钟检查一次
 
-
   startCountdownTimer(): void {
     clearTimeout(this.countdownTimer);
     this.countdownRemaining = 30;
+    this.countdownTimerColor();
+  }
+
+  countdownTimerColor(): void {
     this.countdownInterval = setInterval(() => {
       this.countdownRemaining--;
       if (this.countdownRemaining <= 10) {
-        // 如果剩余时间小于等于10秒,设置文字颜色为红色
         this.countdownColor = 'red';
       } else {
-        // 否则,设置文字颜色为默认颜色
         this.countdownColor = 'inherit';
       }
       if (this.countdownRemaining <= 0) {
