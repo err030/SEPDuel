@@ -5,23 +5,27 @@
   <h4>Round: {{ duel.playerTurn }}</h4>
   <div class="opponent-table">
     <h4>{{ duel.playerA.name }}'s Table</h4>
+    <input *ngIf="isAttacking()" type="checkbox" [checked]="duelService.targetCard === undefined" (change)="duelService.setTargetCard(undefined)">
     <div *ngFor="let card of duel.playerA.table">
       <app-card [card]=card></app-card>
+      <input *ngIf="isAttacking()" type="checkbox" [checked]="duelService.targetCard?.id === card.id" (change)="duelService.setTargetCard(card)">
     </div>
+    <button *ngIf="isAttacking()" (click)="attack()">Attack</button>
   </div>
   <div class="player-table">
     <h4>{{ duel.playerB.name }}'s Table</h4>
     <div *ngFor="let card of duel.playerB.table">
       <app-card [card]=card></app-card>
-      <input *ngIf="this.duelService.sacrificing" type="checkbox" [(ngModel)]="this.duelService.sacrificingCards">
+      <input *ngIf="isSacrificing" type="checkbox" [(ngModel)]="duelService.sacrificingCards">
+      <button *ngIf="!hasAttacked(card)" (click)="setAttacker(card)">Attack</button>
     </div>
-    <button *ngIf="!this.duel.playerB.hasSummoned" (click)="sacrificeCard()">Sacrifice</button>
+    <button *ngIf="!hasSummoned()" (click)="sacrificeCard()">Sacrifice</button>
 
     <h4>{{ duel.playerB.name }}'s Hand</h4>
     <div class="player-hand" *ngFor="let card of duel.playerB.hand">
         <app-card [card]=card></app-card>
-        <button *ngIf="!this.duel.playerB.hasSummoned" (click)="summonCard(card.id)">Summon</button>
+        <button *ngIf="!hasSummoned()" (click)="summonCard(card.id)">Summon</button>
     </div>
-    <button *ngIf="!this.duel.gameFinished && this.duel.playerB.id === this.duel.currentPlayer.id" (click)="endTurn()">End Turn</button>
+    <button *ngIf="!duel.gameFinished && isCurrentPlayer()" (click)="endTurn()">End Turn</button>
   </div>
 </div>

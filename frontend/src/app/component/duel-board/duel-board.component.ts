@@ -6,6 +6,8 @@ import {CardComponent} from "../card/card.component";
 import {ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Card} from "../../model/card.model";
+import {Global} from "../../global";
+import {Player} from "../../model/player.model";
 
 @Component({
   selector: 'app-duel-board',
@@ -68,6 +70,7 @@ export class DuelBoardComponent implements OnInit {
     const duelId = this.duel.id;
     this.duelService.summonCard(duelId, cardId).subscribe({
       next: (data) => {
+        this.duel.playerB.hasSummoned = true;
         console.log('Card summoned successfully:', data);
         this.loadDuel(duelId); // 重新加载决斗状态
       },
@@ -108,10 +111,16 @@ export class DuelBoardComponent implements OnInit {
 
   sacrificeCard() {
     console.log("Sacrifice card")
+    if (this.duel.playerB.table.length === 0) {
+      console.log("No cards to sacrifice")
+      alert("There are no such cards to sacrifice")
+      return;
+    }
     this.duelService.sacrificing = true;
-    this.duelService.sacrificeCard(this.duel.id, this.duel.id).subscribe({
+    this.duelService.sacrificeCard(this.duel.id, this.duelService.sacrificingCards.map(card => card.id)).subscribe({
       next: (data) => {
         console.log('Card sacrificed successfully:', data);
+        this.duel.playerB.hasSummoned = true;
         this.loadDuel(this.duel.id); // 重新加载决斗状态
       },
       error: (error) => {
@@ -119,4 +128,54 @@ export class DuelBoardComponent implements OnInit {
       }
     });
   }
+
+  isSacrificing() {
+    return this.duelService.sacrificing;
+  }
+
+  isAttacking() {
+    return this.duelService.attacking;
+  }
+
+  hasAttacked(card: Card): boolean {
+    return this.duelService.attackedCards.includes(card);
+  }
+
+  setAttacker(card: Card) {
+    this.duelService.attacking = true;
+    this.duelService.attackingCard = card;
+    console.log("Attacking card:", card);
+
+  }
+
+  hasSummoned() {
+    return this.duel.playerB.hasSummoned;
+  }
+
+  isCurrentPlayer() {
+    return this.duel.currentPlayer.id === this.duel.playerB.id;
+  }
+
+  setEnemy(card: Card) {
+    this.duelService.targetCard = card;
+    console.log("Target card:", card);
+  }
+
+  attack() {
+    this.duelService.attacking = false;
+    this.duelService.attackedCards.push(<Card>this.duelService.attackingCard);
+    if (!this.duelService.targetCard) {
+      console.log("No target card");
+      // @ts-ignore
+      this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, null);
+      return;
+    }
+    //@ts-ignore
+    console.log("Attacking card:", this.duelService.attackingCard.id, "Target card:", this.duelService.targetCard.id);
+    //@ts-ignore
+    this.duelService.attack(this.duel.id, this.duelService.attackingCard.id, this.duelService.targetCard.id);
+  }
+
+
+  protected readonly Global = Global;
 }
