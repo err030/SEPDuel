@@ -6,8 +6,8 @@ import {UserService} from "../../service/user.service";
 import {DialogModule} from "primeng/dialog";
 import {SharedModule} from "primeng/api";
 import {Card} from "../../model/card.model";
-import {Global} from "../../global";
 import {Router} from "@angular/router";
+import { Global } from '../../../global';
 
 @Component({
   selector: 'app-lootbox',
@@ -31,6 +31,7 @@ export class LootboxComponent implements OnInit {
   protected readonly Global = Global;
   openedCards: Card[] = [];
   openDialogs: Card[] = [];
+  // displayDialog: boolean = false;
 
   constructor(private lootboxService: LootboxService, private userService: UserService, private router: Router) {
   }
@@ -60,14 +61,10 @@ export class LootboxComponent implements OnInit {
         (cards: Card[]) => {
           this.openedCards.push(...cards);
           this.openDialogs.push(...cards);
-          const lootbox = this.lootboxes.find(l => l.id === lootboxId);
-          if (lootbox) {
-            lootbox.purchased = false;
-          }
         },
         (error) => {
           console.log('Error opening Lootbox', error);
-          alert('Failed to open Lootbox: ' + error.error)
+          alert('Please buy a Lootbox!' )
         }
       )
     }
