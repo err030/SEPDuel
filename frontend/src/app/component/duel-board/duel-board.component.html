@@ -8,17 +8,24 @@
     <p>Round: {{ duel.playerTurn }}</p>
   </div>
 
+  <img class="sakura" src="assets/images/sakura.png" alt="Sakura">
 
-<!--  <div *ngIf="!duelService.sacrificing" class="opponent">-->
+  <img class="sakura-leaf" src="assets/images/sakura-leaf.gif" alt="Sakura Leaf">
+
+  <!--  <div *ngIf="!duelService.sacrificing" class="opponent">-->
   <div class="opponent">
 
     <div class="opponent-info">
       <h4>Opponent: {{ duel.playerA.name }}</h4>
       <h4>HP: {{ duel.playerA.hp }}</h4>
-
-      <input class="attack-hero-checkbox" *ngIf="isAttacking()" type="checkbox"
+      <input class="checkbox" *ngIf="isAttacking()" type="checkbox"
              [checked]="duelService.targetCard === undefined"
              (change)="duelService.setTargetCard(undefined)">
+    </div>
+
+    <div>
+      <img class="avatar-border-op" src="assets/images/avatar-border-op.PNG" alt="Avatar Border Opponent">
+      <img class="opponent-avatar" [src]="'http://localhost:8080' + duel.playerA.avatarUrl || 'assets/images/user.png'" alt="Avatar Opponent">
     </div>
 
     <div class="opponent-game-table">
@@ -41,13 +48,20 @@
 
   <div *ngIf="!isAttacking()" class="player">
     <div class="player-info">
-      <h4>{{ duel.playerB.name }}'s Table HP: {{ duel.playerB.hp }}</h4>
+      <h4>Me: {{ duel.playerB.name }}</h4>
+      <h4>HP: {{ duel.playerB.hp }}</h4>
+    </div>
+    <div>
+      <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
+           width="1023">
+      <img class="player-avatar" [src]="Global.loggedUser.avatarUrl || 'assets/images/user.png'" alt="Avatar">
     </div>
 
     <div class="player-game-table">
       <div class="player-table-cards" *ngFor="let card of duel.playerB.table">
         <app-duel-card [card]=card></app-duel-card>
-        <input *ngIf="canSacrifice()" type="checkbox" [checked]="duelService.sacrificingCardsId.includes(card.id)"
+        <input class="checkbox" *ngIf="canSacrifice()" type="checkbox"
+               [checked]="duelService.sacrificingCardsId.includes(card.id)"
                (change)="duelService.toggleSacrificeCard(card.id, $event)">
         <button class="attack-btn" *ngIf="canAttack(card)" (click)="setAttacker(card)">Prepare For Attack</button>
       </div>
@@ -72,6 +86,8 @@
     <button class="end-turn-btn" *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
             (click)="endTurn()">End Turn
     </button>
+
+    <img class="tree" src="assets/images/frozen-pond-pond-trees.png" alt="Frozen Pond Trees">
 
   </div>
 

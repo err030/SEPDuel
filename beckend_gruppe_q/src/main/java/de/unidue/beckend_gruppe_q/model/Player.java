@@ -16,6 +16,7 @@ public class Player {
     Deck deck;
     List<Card> hand = new ArrayList<>();
     List<Card> table = new ArrayList<>();
+    String avatarUrl;
 
     public boolean isDead() {
         return this.hp <= 0;
@@ -25,6 +26,7 @@ public class Player {
         this.id = u.getId();
         this.name = u.getUsername();
         this.deck = d.clone();
+        this.avatarUrl = u.getAvatarUrl();
     }
 
     public boolean hasSummoned() {

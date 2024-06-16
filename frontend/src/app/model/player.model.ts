@@ -9,4 +9,5 @@ export interface Player {
   deck: Deck;
   hand: Card[];
   table: Card[];
+  avatarUrl: string;
 }

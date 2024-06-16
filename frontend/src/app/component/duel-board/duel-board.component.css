@@ -15,20 +15,20 @@ body.duel {
 
 .duel-info {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 35%;
+  left: 10px;
 }
 
 .opponent-info {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 150px;
+  right: 20px;
 }
 
 .player-info {
   position: absolute;
   bottom: 10px;
-  left: 10px;
+  left: 40px;
 }
 
 .opponent-game-table, .player-game-table {
@@ -44,12 +44,16 @@ body.duel {
 
 .opponent-game-table {
   top: 30px;
-  background-color: #ed4d4d;
+  background-image: url('/assets/images/duel-bg-op.jpg');
+  background-size: cover;
+  box-shadow: 0 0 20px 10px rgb(217, 102, 87);
 }
 
 .player-game-table {
-  top: 10px;
-  background-color: #aeeff1;
+  top: 35px;
+  background-image: url('/assets/images/duel-bg-pl.jpg');
+  background-size: cover;
+  box-shadow: 0 0 20px 10px rgb(142, 206, 241);
 }
 
 .opponent-table-cards, .player-table-cards {
@@ -58,7 +62,14 @@ body.duel {
   align-items: center;
   position: relative;
   z-index: 1;
+}
 
+.opponent-table-cards {
+  top: 40px;
+}
+
+.player-table-cards {
+  bottom: 40px;
 }
 
 .player-action {
@@ -67,6 +78,11 @@ body.duel {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+.duel button {
+  border: none;
+  border-radius: 5px;
 }
 
 .end-turn-btn, .start-game-btn {
@@ -101,20 +117,100 @@ input[type="checkbox"] {
 
 .attack-btn {
   position: absolute;
-  bottom: -20px;
-  left: 8px;
+  bottom: -30px;
+  left: 0px;
   border-radius: 10px;
   border: none;
   font-size: 12px;
   background-color: rgba(255, 211, 142, 0.9);
 }
+
 .summon-btn {
   position: absolute;
   margin-top: 5px;
 }
-.sacrifice-btn{
+
+.sacrifice-btn {
   position: absolute;
   top: 5px;
-  left: 40px;
+  left: 76px;
 }
+
+.confirm-sacrifice-btn {
+  position: absolute;
+  left: 76px;
+  top: 40px;
+  background-color: rgba(237, 77, 77, 0.8);
+}
+
+.checkbox {
+  position: absolute;
+  bottom: -20px;
+  left: 50px;
+}
+
+.tree {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 300px;
+  height: auto;
+  transform: scaleX(-1);
+  filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));
+}
+
+.sakura{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: auto;
+  transform: scaleX(-1);
+}
+
+.sakura-leaf{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: auto;
+}
+
+.avatar-border-op{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.opponent-avatar{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.avatar-border-pl{
+  position: absolute;
+  bottom: 100px;
+  left: 10px;
+  width: 150px;
+  height: 150px;
+  z-index: 2;
+}
+
+.player-avatar{
+  position: absolute;
+  bottom: 100px;
+  left: 25px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
 
