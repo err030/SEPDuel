@@ -6,8 +6,7 @@ import {CardComponent} from "../card/card.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Card} from "../../model/card.model";
-import {Global} from "../../global";
-import {Player} from "../../model/player.model";
+import {DuelCardComponent} from "../duel-card/duel-card.component";
 
 @Component({
   selector: 'app-duel-board',
@@ -16,7 +15,8 @@ import {Player} from "../../model/player.model";
     NgForOf,
     CardComponent,
     NgIf,
-    FormsModule
+    FormsModule,
+    DuelCardComponent
   ],
   templateUrl: './duel-board.component.html',
   styleUrl: './duel-board.component.css'

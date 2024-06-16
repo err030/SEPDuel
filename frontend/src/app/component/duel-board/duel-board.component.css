@@ -1,0 +1,120 @@
+body.duel {
+  position: relative;
+  background-color: #2c2c2c;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.duel-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.duel-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.opponent-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.player-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.opponent-game-table, .player-game-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  height: 280px;
+  background-color: #444; /* 中间对战框的底色 */
+  border-radius: 10px;
+  position: relative;
+}
+
+.opponent-game-table {
+  top: 30px;
+  background-color: #ed4d4d;
+}
+
+.player-game-table {
+  top: 10px;
+  background-color: #aeeff1;
+}
+
+.opponent-table-cards, .player-table-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+
+}
+
+.player-action {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.end-turn-btn, .start-game-btn {
+  position: absolute;
+  right: 135px;
+  top: 35%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.94);
+}
+
+.player-hand {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+input[type="checkbox"] {
+  margin: 5px;
+}
+
+.app-duel-card {
+  margin: 5px;
+  position: relative;
+}
+
+.attack-btn {
+  position: absolute;
+  bottom: -20px;
+  left: 8px;
+  border-radius: 10px;
+  border: none;
+  font-size: 12px;
+  background-color: rgba(255, 211, 142, 0.9);
+}
+.summon-btn {
+  position: absolute;
+  margin-top: 5px;
+}
+.sacrifice-btn{
+  position: absolute;
+  top: 5px;
+  left: 40px;
+}
+
