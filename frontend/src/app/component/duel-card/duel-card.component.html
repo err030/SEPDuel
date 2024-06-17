@@ -1,0 +1,9 @@
+<div class="duel-card">
+  <div class="duel-card-body">
+    <h3>{{card?.name}}</h3>
+    <p>attack: {{card?.attack}}</p>
+    <p>defense: {{card?.defense}}</p>
+    <p>rarity: {{card?.rarity}}</p>
+    <img class="duel-card-bg" [src]="Global.backendUrl + card?.image" alt="{{ card?.image }}"/>
+  </div>
+</div>

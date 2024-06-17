@@ -28,6 +28,7 @@ import {LootboxComponent} from "./component/lootbox/lootbox.component";
 import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
+import {ScoreComponent} from "./component/score/score.component";
 
 
 export const routes: Routes = [
@@ -81,6 +82,7 @@ export const routes: Routes = [
   },
 
   {path: 'leaderboard', component: LeaderboardComponent},
+  {path: 'score', component: ScoreComponent},
 
   {path: '**', redirectTo: 'login'}
 

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Duel } from '../../model/duel.model';
 import {DuelService} from "../../service/duel.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {CardComponent} from "../card/card.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Card} from "../../model/card.model";
+import {DuelCardComponent} from "../duel-card/duel-card.component";
 import {Global} from "../../global";
-import {Player} from "../../model/player.model";
 
 @Component({
   selector: 'app-duel-board',
@@ -16,7 +16,9 @@ import {Player} from "../../model/player.model";
     NgForOf,
     CardComponent,
     NgIf,
-    FormsModule
+    FormsModule,
+    DuelCardComponent,
+    NgOptimizedImage
   ],
   templateUrl: './duel-board.component.html',
   styleUrl: './duel-board.component.css'
@@ -205,4 +207,6 @@ export class DuelBoardComponent implements OnInit {
   goToHomepage() {
     this.router.navigate(['/']);
   }
+
+  protected readonly Global = Global;
 }
