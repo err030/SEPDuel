@@ -9,6 +9,7 @@ import {Router, RouterOutlet} from "@angular/router";
 import {CardComponent} from "../card/card.component";
 import {Global} from "../../global";
 import {CardService} from "../../service/card.service";
+import {DuelCardComponent} from "../duel-card/duel-card.component";
 
 @Component({
   selector: 'app-card-list',
@@ -18,7 +19,8 @@ import {CardService} from "../../service/card.service";
     FormsModule,
     RouterOutlet,
     CardComponent,
-    NgIf
+    NgIf,
+    DuelCardComponent
   ],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.css'

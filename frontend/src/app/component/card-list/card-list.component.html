@@ -13,8 +13,9 @@
 
   <div class="card-list">
     <div class="cards-row">
-      <div class="card-item" *ngFor="let card of filteredCards">
-        <app-card [card]=card></app-card>
+<!--      <div class="card-item" *ngFor="let card of filteredCards">-->
+      <div *ngFor="let card of filteredCards">
+        <app-duel-card [card]=card></app-duel-card>
       </div>
     </div>
 

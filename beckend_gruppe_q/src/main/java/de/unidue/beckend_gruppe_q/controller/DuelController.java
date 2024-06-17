@@ -5,6 +5,7 @@ import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,11 +25,36 @@ public class DuelController {
     private Player player1;
     private Player player2;
     private Map<Long, Duel> duels = new ConcurrentHashMap<>();
+    private final Map<Long, Long> duelTimers = new ConcurrentHashMap<>();
+
+    public void startTimer(long duelId) {
+        duelTimers.put(duelId, System.currentTimeMillis());
+    }
 
 
     @GetMapping("/api/duel/{id}")
     public Duel getDuel(@PathVariable long id) {
         return duels.get(id);
+    }
+
+    @Scheduled(fixedRate = 1000) // Run every second
+    public void checkDuelTimers() throws InterruptedException {
+        long currentTime = System.currentTimeMillis();
+        for (Map.Entry<Long, Long> entry : duelTimers.entrySet()) {
+            long duelId = entry.getKey();
+            long startTime = entry.getValue();
+            long elapsedTime = currentTime - startTime;
+            this.duels.get(duelId).setRemainingTime(12000 - elapsedTime);
+            if (elapsedTime >= 12000) { // 12 seconds
+                Duel d = this.duels.get(duelId);
+                d.getCurrentPlayer().setHp(-1);
+                d.setGameFinished(true);
+                d.setWinnerId(d.getOpponent().getId());
+                duelTimers.clear();
+                Thread.sleep(2000);
+                endGame(duelId);
+            }
+        }
     }
 
     @GetMapping("/api/duel/create/{duelId}/{Deck1Id}/{Deck2Id}")
@@ -57,7 +83,7 @@ public class DuelController {
         duels.put(duel.getId(), duel);
         System.out.println("Duel created: " + duel);
         duel.start();
-
+        this.startTimer(duelId);
         return duel;
     }
 
@@ -79,6 +105,7 @@ public class DuelController {
             throw new IllegalStateException("Duel not found");
         }
         duel.nextRound();
+        this.startTimer(id);
         return duel;
     }
 
@@ -141,15 +168,28 @@ public class DuelController {
 
     //reserved
     @GetMapping("/api/duel/{id}/exit")
-    public Duel endRound(@PathVariable long id) {
+    public Duel endGame(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
             throw new IllegalStateException("Duel not found");
         }
 
         DuelRequest request = duelRequestRepository.findById(id).get();
-        userRepository.findById(request.getSendUserId()).get().setStatus(0);
-        userRepository.findById(request.getReceivedUserId()).get().setStatus(0);
+        User a = userRepository.findById(request.getSendUserId()).get();
+        User b = userRepository.findById(request.getReceivedUserId()).get();
+        a.setStatus(0);
+        b.setStatus(0);
+        if (duel.getWinnerId() == a.getId()) {
+            a.setSepCoins(a.getSepCoins() + 100);
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())));
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())));
+        } else {
+            b.setSepCoins(b.getSepCoins() + 100);
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())));
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())));
+        }
+        userRepository.save(a);
+        userRepository.save(b);
         duelRequestRepository.deleteById(id);
         duels.remove(id);
         return null;
