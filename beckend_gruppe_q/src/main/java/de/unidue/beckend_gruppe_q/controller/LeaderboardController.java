@@ -26,7 +26,7 @@ public class LeaderboardController {
 
 
 
-    @GetMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
+    @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
     public ResponseEntity<?> sendDuelRequest(@PathVariable(value = "currentUserid") Long currentUserId,
                                              @PathVariable(value = "targetUserid") Long targetUserId,
                                              @PathVariable(value = "sendDeckId") Long sendDeckId) {
@@ -39,8 +39,6 @@ public class LeaderboardController {
         if (currentUser.isPresent() && targetUser.isPresent()) {
             if (currentUser.get().getStatus() == 0 && targetUser.get().getStatus() == 0) {
                 DuelRequest newDuelRequest = new DuelRequest(currentUserId, targetUserId, 1);
-                newDuelRequest.setSendUser(currentUser.get());
-                newDuelRequest.setReceivedUser(targetUser.get());
                 newDuelRequest.setSendDeckId(sendDeckId);
                 currentUser.get().setStatus(1);
                 targetUser.get().setStatus(1);
