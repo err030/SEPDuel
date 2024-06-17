@@ -69,7 +69,7 @@ export class LootboxComponent implements OnInit {
         },
         (error) => {
           console.log('Error opening Lootbox', error);
-          alert('Failed to open Lootbox: ' + error.error)
+          alert('Please buy a Lootbox!' )
         }
       )
     }
