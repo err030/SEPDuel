@@ -31,7 +31,7 @@
             </div>
             <div class="lootbox-actions">
               <button class="box-buy" (click)="buyLootbox(lootbox.id)">Buy</button>
-              <button class="box-open" (click)="openLootbox(lootbox.id)">Open</button>
+              <button class="box-open" (click)="openLootbox(lootbox.id)" [disabled]="!lootbox.purchased">Open</button>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="lootbox-actions">
               <button class="box-buy" (click)="buyLootbox(lootbox.id)">Buy</button>
-              <button class="box-open" (click)="openLootbox(lootbox.id)">Open</button>
+              <button class="box-open" (click)="openLootbox(lootbox.id)" [disabled]="!lootbox.purchased">Open</button>
             </div>
           </div>
         </div>
