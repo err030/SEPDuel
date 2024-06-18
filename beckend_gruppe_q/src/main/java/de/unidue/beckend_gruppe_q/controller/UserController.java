@@ -65,20 +65,20 @@ public class UserController {
             user.setSepCoins(500L);
             user.setLeaderBoardPunkt(0L);
             // test cards
-            if (user.getCards().stream().anyMatch(card -> "Test Card".equals(card.getName()) || "Dog".equals(card.getName()) || "Cat".equals(card.getName()) || "Rabbit".equals(card.getName()) || "Elephant".equals(card.getName()))) {}
-            else {
-                user.decks.clear();
-                user.cards.clear();
-                userRepository.save(user);
-                user.cards.add(new Card("Test Card", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                user.cards.add(new Card("Dog", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                user.cards.add(new Card("Cat", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                user.cards.add(new Card("Rabbit", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                user.cards.add(new Card("Elephant", Rarity.COMMON, 1, 1, "A card for testing", ""));
-                cardRepository.saveAll(user.cards);
-                userRepository.save(user);
-
-            }
+//            if (user.getCards().stream().anyMatch(card -> "Test Card".equals(card.getName()) || "Dog".equals(card.getName()) || "Cat".equals(card.getName()) || "Rabbit".equals(card.getName()) || "Elephant".equals(card.getName()))) {}
+//            else {
+//                user.decks.clear();
+//                user.cards.clear();
+//                userRepository.save(user);
+//                user.cards.add(new Card("Test Card", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                user.cards.add(new Card("Dog", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                user.cards.add(new Card("Cat", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                user.cards.add(new Card("Rabbit", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                user.cards.add(new Card("Elephant", Rarity.COMMON, 1, 1, "A card for testing", ""));
+//                cardRepository.saveAll(user.cards);
+//                userRepository.save(user);
+//
+//            }
 
             // 然后保存到数据库里
             userRepository.save(user);
