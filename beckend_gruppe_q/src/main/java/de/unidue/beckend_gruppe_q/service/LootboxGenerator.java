@@ -38,7 +38,6 @@ public class LootboxGenerator {
 
         Lootbox lootbox = new Lootbox();
         lootbox.setLootboxType(type);
-        System.out.println(lootbox.getLootboxType());
         if (lootbox.getLootboxType() == BRONZE) {
             lootbox.setPrice(50);
         }
@@ -136,6 +135,7 @@ public class LootboxGenerator {
                 randomCard.getDefense(),
                 randomCard.getDescription(),
                 randomCard.getImage());
+        cardRepository.save(newIdCard);
         return newIdCard;
     }
 

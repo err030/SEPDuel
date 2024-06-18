@@ -1,4 +1,6 @@
 <body class="duel">
+<p>Remaining Time: {{ Math.round(duel.remainingTime / 1000) }} Seconds</p>
+<h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
 
 <div class="duel-container" *ngIf="duel && !duel.gameFinished">
 
@@ -54,7 +56,7 @@
     <div>
       <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
            width="1023">
-      <img class="player-avatar" [src]="Global.loggedUser.avatarUrl || 'assets/images/user.png'" alt="Avatar">
+      <img class="player-avatar" [src]="'http://localhost:8080' + duel.playerB.avatarUrl || 'assets/images/user.png'" alt="Avatar Player">
     </div>
 
     <div class="player-game-table">
@@ -81,6 +83,8 @@
     </div>
 
 
+
+
     <button class="start-game-btn" *ngIf="duel.playerTurn == 0 && isCurrentPlayer()" (click)="endTurn()">Start Game
     </button>
     <button class="end-turn-btn" *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
@@ -100,6 +104,7 @@
   <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
   <h1 *ngIf="duel.winnerId == duel.playerA.id"> You LOSE! </h1>
   <h1 *ngIf="duel.winnerId == duel.playerB.id"> You WIN! </h1>
+  <app-score [duel]=duel></app-score>
   <button (click)="exitGame()">Exit Game</button>
 </div>
 

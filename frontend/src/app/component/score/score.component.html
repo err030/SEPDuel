@@ -1,25 +1,27 @@
 <div class="score">
   <div class="score-container">
     <div class="result-score">
-      <h1>Won!</h1>
-      <p>SEP Coins: +100 </p>
-      <p>Leaderboard Points: +200</p>
-      <p>Total Damage: 50</p>
+      <h1 *ngIf="isWinner()">You WIN!</h1>
+      <h1 *ngIf="!isWinner()">You LOSE!</h1>
+      <p *ngIf="isWinner()">SEP Coins: +100 </p>
+      <p *ngIf="!isWinner()">SEP Coins: +0 </p>
+      <p>Leaderboard Points: {{ getBonusPoints() }}</p>
+      <p>Total Damage: {{ duel?.playerB?.damageDealt }}</p>
     </div>
 
     <div class="card-details">
       <h3>Cards Details: </h3>
-      <h4>Summoned: 7</h4>
+      <h4>Summoned: {{ summonedTotal }}</h4>
       <div class="summoned-list">
-        <p>Common: 5</p>
-        <p>Rare: 2</p>
-        <p>Legend: 0</p>
+        <p>Common: {{ summonedCommon }}<</p>
+        <p>Rare: {{ summonedRare }}</p>
+        <p>Legendary: {{ summonedLegendary }}</p>
       </div>
-      <h4>Sacrificed: 1</h4>
+      <h4>Sacrificed: {{ sacrificedTotal }}</h4>
       <div class="sacrificed-list">
-        <p>Common: 3</p>
-        <p>Rare: 0</p>
-        <p>Legend: 0</p>
+        <p>Common: {{ sacrificedCommon }}</p>
+        <p>Rare: {{ sacrificedRare }}</p>
+        <p>Legendary: {{ sacrificedLegendary }}</p>
       </div>
     </div>
   </div>

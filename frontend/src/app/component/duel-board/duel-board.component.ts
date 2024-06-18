@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { Duel } from '../../model/duel.model';
 import {DuelService} from "../../service/duel.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Card} from "../../model/card.model";
 import {DuelCardComponent} from "../duel-card/duel-card.component";
-import {Global} from "../../global";
+import {ScoreComponent} from "../score/score.component";
 
 @Component({
   selector: 'app-duel-board',
@@ -18,10 +18,11 @@ import {Global} from "../../global";
     NgIf,
     FormsModule,
     DuelCardComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    ScoreComponent
   ],
   templateUrl: './duel-board.component.html',
-  styleUrl: './duel-board.component.css'
+  styleUrl: './duel-board.component.css',
 })
 export class DuelBoardComponent implements OnInit {
   protected duel!: Duel;
@@ -58,9 +59,13 @@ export class DuelBoardComponent implements OnInit {
   loadDuel(duelId: number) {
     this.duelService.getDuel(duelId).subscribe({
       next: (data) => {
-        this.duel = data;
-        this.normalize();
-        console.log('Duel loaded successfully:', data);
+        if (data.id){
+          this.duel = data;
+          this.duel = data;
+          this.normalize();
+          console.log('Duel loaded successfully:', data);
+        }
+
       },
       error: (error) => {
         console.error('Error fetching duel:', error);
@@ -200,6 +205,7 @@ export class DuelBoardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error exiting game:', error);
+        this.router.navigate(['/game-over']);
       }
     });
   }
@@ -208,5 +214,5 @@ export class DuelBoardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  protected readonly Global = Global;
+  protected readonly Math = Math;
 }

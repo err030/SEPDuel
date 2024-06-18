@@ -11,4 +11,5 @@ export interface Duel {
   winnerId: number;
   playerTurn: number;
   lastPlayerCard: Card;
+  remainingTime: number;
 }

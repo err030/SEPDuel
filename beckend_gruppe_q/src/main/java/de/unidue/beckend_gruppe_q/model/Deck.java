@@ -16,7 +16,7 @@ public class Deck implements Cloneable{
     private Long id;
     private String name;
     private String description;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     public List<Card> cards;
 
     public Deck(String name, String description, List<Card> cards) {

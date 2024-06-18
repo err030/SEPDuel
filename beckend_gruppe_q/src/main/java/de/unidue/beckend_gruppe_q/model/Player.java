@@ -17,6 +17,9 @@ public class Player {
     List<Card> hand = new ArrayList<>();
     List<Card> table = new ArrayList<>();
     String avatarUrl;
+    List<Card> summonedCards = new ArrayList<>();
+    List<Card> sacrificedCards = new ArrayList<>();
+    long damageDealt = 0;
 
     public boolean isDead() {
         return this.hp <= 0;

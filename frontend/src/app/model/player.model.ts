@@ -10,4 +10,7 @@ export interface Player {
   hand: Card[];
   table: Card[];
   avatarUrl: string;
+  summonedCards: Card[];
+  sacrificedCards: Card[];
+  damageDealt: number;
 }

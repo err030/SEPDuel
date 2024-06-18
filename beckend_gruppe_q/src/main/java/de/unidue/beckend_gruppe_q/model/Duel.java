@@ -26,6 +26,7 @@ public class Duel {
     private long winnerId;
     private int playerTurn;
     private Card lastPlayerCard;
+    private long remainingTime;
 
 
     @Override
@@ -103,6 +104,7 @@ public class Duel {
                 this.currentPlayer.table.remove(attacker);
             }
         }
+        this.currentPlayer.damageDealt += attacker.getAttack();
     }
 
 
@@ -156,6 +158,8 @@ public class Duel {
             if (bonusCard != null) {
                 this.currentPlayer.table.removeAll(selectedCards);
                 this.currentPlayer.hand.remove(bonusCard);
+                this.currentPlayer.sacrificedCards.addAll(selectedCards);
+                this.currentPlayer.summonedCards.add(bonusCard);
                 this.currentPlayer.table.add(bonusCard);
                 this.currentPlayer.setHasSummoned(true);
                 return bonusCard;
@@ -216,6 +220,7 @@ public class Duel {
         }
         this.currentPlayer.hand.remove(card);
         this.currentPlayer.table.add(card);
+        this.currentPlayer.summonedCards.add(card);
         this.currentPlayer.setHasSummoned(true);
     }
 

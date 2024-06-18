@@ -80,6 +80,7 @@
   cursor: pointer;
   font-size: 16px;
   margin: 5px;
+  font-family: Herloit, sans-serif;
   background-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -155,4 +156,27 @@
   top: 30px;
   right: 50px;
   color: white;
+}
+
+.cards-container {
+  display: flex;
+  padding: 20px;
+  overflow-y: auto; /* Add scroll if needed */
+  max-height: 80vh; /* Adjust based on your needs */
+}
+
+.card {
+  width: 200px;
+  margin: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+}
+
+.card-details {
+  padding: 5px;
 }
