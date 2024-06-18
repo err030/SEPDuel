@@ -86,6 +86,7 @@ export class HomepageUserComponent implements OnInit {
 
   private completeLogout() {
     this.userService.userLogout();
+    localStorage.clear();
     this.router.navigateByUrl("/login");
   }
 

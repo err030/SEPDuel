@@ -26,7 +26,7 @@ public class LeaderboardController {
 
 
 
-    @GetMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
+    @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
     public ResponseEntity<?> sendDuelRequest(@PathVariable(value = "currentUserid") Long currentUserId,
                                              @PathVariable(value = "targetUserid") Long targetUserId,
                                              @PathVariable(value = "sendDeckId") Long sendDeckId) {
@@ -39,8 +39,6 @@ public class LeaderboardController {
         if (currentUser.isPresent() && targetUser.isPresent()) {
             if (currentUser.get().getStatus() == 0 && targetUser.get().getStatus() == 0) {
                 DuelRequest newDuelRequest = new DuelRequest(currentUserId, targetUserId, 1);
-                newDuelRequest.setSendUser(currentUser.get());
-                newDuelRequest.setReceivedUser(targetUser.get());
                 newDuelRequest.setSendDeckId(sendDeckId);
                 currentUser.get().setStatus(1);
                 targetUser.get().setStatus(1);
@@ -85,7 +83,7 @@ public class LeaderboardController {
     public ResponseEntity<?> acceptOrDenyDuelRequest(@RequestBody DuelRequest duelRequest) {
         System.out.println("Request received: " + duelRequest.toString());
         duelRequestRepository.save(duelRequest);
-        // 更新状态为接受(3)或拒绝(4)
+        // 更新状态为接受(3)或拒绝(0)
         if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 0) {
             duelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
             // 更新 sendUser 和 receivedUser 的状态
