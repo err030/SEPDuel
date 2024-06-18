@@ -83,7 +83,7 @@ public class LeaderboardController {
     public ResponseEntity<?> acceptOrDenyDuelRequest(@RequestBody DuelRequest duelRequest) {
         System.out.println("Request received: " + duelRequest.toString());
         duelRequestRepository.save(duelRequest);
-        // 更新状态为接受(3)或拒绝(4)
+        // 更新状态为接受(3)或拒绝(0)
         if (duelRequest.getDuellanfragStatus() == 3 || duelRequest.getDuellanfragStatus() == 0) {
             duelRequest.setDuellanfragStatus(duelRequest.getDuellanfragStatus());
             // 更新 sendUser 和 receivedUser 的状态
