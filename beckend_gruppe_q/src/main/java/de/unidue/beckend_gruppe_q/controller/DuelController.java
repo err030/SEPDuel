@@ -51,7 +51,7 @@ public class DuelController {
                 d.setGameFinished(true);
                 d.setWinnerId(d.getOpponent().getId());
                 duelTimers.clear();
-                Thread.sleep(2000);
+                Thread.sleep(5000);
                 endGame(duelId);
             }
         }

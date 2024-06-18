@@ -1,22 +1,13 @@
-.score{
-  background-color: rgb(27, 27, 28);
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  min-height: 100vh;
-}
-
 .score-container{
-  position: relative;
+  position: absolute;
+  top: 200px;
+  left: 500px;
   background-color: rgb(55, 55, 55);
   border-radius: 10px;
   padding: 20px;
   width: 480px;
   box-shadow: 0 0 20px 10px rgb(255, 254, 166);
-  text-align: left;
+  text-align: center;
   color: white;
   display: flex;
   flex-direction: column;
@@ -24,9 +15,16 @@
   overflow: hidden;
 }
 
+.card-details h3{
+  color: white;
+  text-align: center;
+}
+
+.card-details h4{
+  text-align: left;
+}
 .summoned-list, .sacrificed-list{
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
 }

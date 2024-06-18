@@ -1,10 +1,13 @@
 import {Component, Input} from '@angular/core';
 import {Duel} from "../../model/duel.model";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-score',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './score.component.html',
   styleUrl: './score.component.css'
 })
