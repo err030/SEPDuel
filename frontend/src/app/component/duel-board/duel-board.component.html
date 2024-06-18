@@ -1,10 +1,8 @@
 <body class="duel">
-
-<div class="remaining-time">
-<p>Remaining Time: {{ Math.round(duel.remainingTime / 1000) }} Seconds</p>
-<h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
+<div *ngIf="duel && !duel.gameFinished && isCurrentPlayer()" class="game-timer">
+  <p>Remaining Time: {{ Math.round(duel.remainingTime / 1000) }} Seconds</p>
+  <h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
 </div>
-
 <div class="duel-container" *ngIf="duel && !duel.gameFinished">
 
   <div class="duel-info">

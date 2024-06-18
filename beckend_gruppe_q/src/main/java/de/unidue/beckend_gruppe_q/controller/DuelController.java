@@ -44,8 +44,8 @@ public class DuelController {
             long duelId = entry.getKey();
             long startTime = entry.getValue();
             long elapsedTime = currentTime - startTime;
-            this.duels.get(duelId).setRemainingTime(12000 - elapsedTime);
-            if (elapsedTime >= 12000) { // 12 seconds
+            this.duels.get(duelId).setRemainingTime(120000 - elapsedTime);
+            if (elapsedTime >= 120000) { // 120 seconds
                 Duel d = this.duels.get(duelId);
                 d.getCurrentPlayer().setHp(-1);
                 d.setGameFinished(true);
