@@ -206,11 +206,20 @@ input[type="checkbox"] {
 
 .player-avatar{
   position: absolute;
-  bottom: 100px;
+  bottom: 110px;
   left: 25px;
   width: 120px;
   height: 120px;
   border-radius: 50%;
+}
+
+.remaining-time{
+  position: absolute;
+  bottom: 100px;
+  left: 60px;
+  font-size: 20px;
+  color: white;
+
 }
 
 
