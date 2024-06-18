@@ -282,14 +282,14 @@ export class ChatUserMessageComponent implements OnInit {
   //sendet alle ungelesenen nachrichten nochmal außer die
   send_All_Unread_Messages_Again(current_message : Message | null): void
   {
-    // this.allMSGs.forEach(c_message => {
-    //   if(c_message.isRead == false && c_message !== current_message)
-    //   {
-    //     // @ts-ignore
-    //     this.socket$.next(c_message);
-    //   }
-    // });
-    // console.log("send_All_Unread_Messages_Again");
+     this.allMSGs.forEach(c_message => {
+       if(c_message.isRead == false && c_message !== current_message)
+       {
+         // @ts-ignore
+         this.socket$.next(c_message);
+       }
+     });
+     console.log("send_All_Unread_Messages_Again");
   }
 
   sendMessage(): void {

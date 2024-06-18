@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,12 +26,20 @@ public class User {
     private String avatarUrl;
     private Integer groupId;
     private Long sepCoins;
+    private Integer status; //0:online, 1:
+
+    @Setter
+    @Getter
+    @Column(name = "leader_board_punkt")
     private Long leaderBoardPunkt;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Lootbox> lootboxes = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public List<Deck> decks = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     public List<Card> cards = new ArrayList<>();
 
 //    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

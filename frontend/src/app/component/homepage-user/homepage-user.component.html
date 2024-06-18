@@ -12,13 +12,14 @@
   <h1>Welcome to the SEP Duel</h1>
   <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
   <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
+  <div class="btn-box" id="lootbox" (click)="goToLootbox()">Loot Box</div>
+
   <div class="game-field-box">
-    <div class="game-field dynamic-btn" id="duel">1v1 Duel</div>
+    <button class="game-field dynamic-btn" id="duel" routerLink="/leaderboard"> Leaderboard </button>
     <button (click)="goToDecks()" class="btn-box game-field" id="deck">Deck</button>
   </div>
 
   <button class="btn-box" id="friends" (click)="navigateToFriends()">Friends</button>
-<!--  <button class="btn-box" id="chat" (click)="navigateToChat()">Chats</button>-->
 </div>
 </body>
 </html>

@@ -3,6 +3,9 @@ import { Duel } from '../../model/duel.model';
 import {DuelService} from "../../service/duel.service";
 import {NgForOf, NgIf} from "@angular/common";
 import {CardComponent} from "../card/card.component";
+import {ActivatedRoute} from "@angular/router";
+import {FormsModule} from "@angular/forms";
+import {Card} from "../../model/card.model";
 
 @Component({
   selector: 'app-duel-board',
@@ -10,7 +13,8 @@ import {CardComponent} from "../card/card.component";
   imports: [
     NgForOf,
     CardComponent,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './duel-board.component.html',
   styleUrl: './duel-board.component.css'
@@ -18,16 +22,41 @@ import {CardComponent} from "../card/card.component";
 export class DuelBoardComponent implements OnInit {
   protected duel!: Duel;
   private duelId: number = 1;
-  constructor(private duelService: DuelService) { }
+
+  constructor(protected duelService: DuelService, private route: ActivatedRoute) {
+  }
+
 
   ngOnInit(): void {
-    this.loadDuel(this.duelId)
+    this.route.params.subscribe(params => {
+      this.duelId = params['duelId'];
+      try {
+        this.refreshDuel()
+      } catch (e) {
+        // this.duelService.createDuel(this.duelId, this.duelService.sendUserDeckId, this.duelService.receivedUserDeck ).subscribe({
+        //   next: (data) => {
+        //     this.duelId = data.id;
+        //     this.loadDuel(this.duelId);
+        //   }
+        // });
+        console.error('Error loading duel:', e);
+      }
+    })
+    console.log('DuelBoardComponent initialized');
+    console.log(this.duel);
+    console.log("Player A:", this.duel.playerA);
+
+    console.log("Player B:", this.duel.playerB);
+
+    console.log("Current player:", this.duel.currentPlayer)
   }
 
   loadDuel(duelId: number) {
     this.duelService.getDuel(duelId).subscribe({
       next: (data) => {
         this.duel = data;
+        this.normalize();
+        console.log('Duel loaded successfully:', data);
       },
       error: (error) => {
         console.error('Error fetching duel:', error);
@@ -61,5 +90,33 @@ export class DuelBoardComponent implements OnInit {
     });
   }
 
+  normalize() {
+    let playerC;
+    if (!this.duelService.initializer) {
+      playerC = this.duel.playerA;
+      this.duel.playerA = this.duel.playerB;
+      this.duel.playerB = playerC;
+    }
+  }
 
+  refreshDuel() {
+    setInterval(() => {
+      this.loadDuel(this.duelId);
+    }, 1000)
+  }
+
+
+  sacrificeCard() {
+    console.log("Sacrifice card")
+    this.duelService.sacrificing = true;
+    this.duelService.sacrificeCard(this.duel.id, this.duel.id).subscribe({
+      next: (data) => {
+        console.log('Card sacrificed successfully:', data);
+        this.loadDuel(this.duel.id); // 重新加载决斗状态
+      },
+      error: (error) => {
+        console.error('Error sacrificing card:', error);
+      }
+    });
+  }
 }

@@ -19,6 +19,7 @@ export class UserService {
   });
 
   loggedUser: User | null = null;
+  selectedUser: User | null = null;
 
   constructor(private http: HttpClient,  private router: Router) {
     this.restoreUser();
@@ -26,7 +27,7 @@ export class UserService {
   //在服务初始化时恢复用户数据
   private restoreUser(): void {
     const userData = localStorage.getItem('loggedUser');
-    if (userData) {
+    if (userData && (!this.loggedUser || !Global.loggedUser)) {
       this.loggedUser = JSON.parse(userData);
       //omg how could someone forget this line
       //@ts-ignore
@@ -190,8 +191,22 @@ export class UserService {
   userLogout() {
     localStorage.clear();
     this.loggedUser = null;
-    void this.router.navigateByUrl("/login");
+    this.router.navigateByUrl("/login");
   }
 
 
+// 获取排行榜
+  getLeaderboard(): Observable<HttpResponse<User[]>> {
+    return this.http.get<User[]>(`${Global.userRestServiceUrl}/leaderboard`, { headers: this.headers, observe: 'response' });
+  }
+
+  //更新用户状态
+  /*updateUserStatus(userId: number, status: string): Observable<any> {
+    return this.http.post(`${Global.userRestServiceUrl}/${userId}/status`, {status});
+  }*/
+
+  updateUserStatus(currentUserId: number, status: number): Observable<HttpResponse<any>> {
+    const url = Global.userRestServiceUrl + "/updateUserStatus/" + currentUserId + "/" + status;
+    return this.http.put<any>(url, status, {observe: 'response'});
+  }
 }

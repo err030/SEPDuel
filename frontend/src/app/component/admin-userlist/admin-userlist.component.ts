@@ -47,7 +47,6 @@ export class AdminUserlistComponent implements OnInit{
         this.friendId = parseInt(friendIdParam);
         this.loggedUser = Global.loggedUser;
         this.selectedUser = this.friendService.selectedFriend;
-
       }
     })
   }

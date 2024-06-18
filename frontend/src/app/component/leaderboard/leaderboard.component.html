@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-EN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard Window</title>
+  <link rel="stylesheet" href="leaderboard.component.css"/>
+</head>
+<body class="leaderboard">
+<div class="leaderboard-container">
+
+  <span class="top"></span>
+  <span class="right"></span>
+  <span class="bottom"></span>
+  <span class="left"></span>
+  <div class="leaderboard-box">
+
+    <h2>Leaderboard</h2>
+
+    <div *ngIf="showCountdown" class="countdown-timer1" [ngStyle]="{'color': countdownColor}">
+      <countdown [config]="countdownConfig"></countdown>
+    </div>
+
+    <div class="lb-search">
+      <input type="l-text" placeholder="Search by username" [(ngModel)]="searchText">
+      <button (click)="search()">Search</button>
+    </div>
+    <ul>
+      <li *ngFor="let user of displayedUsers; let i = index">
+        <span class="rank">{{ (currentPage - 1) * usersPerPage + i + 1 }}.</span>
+        <span class="username">{{ user.username }}</span>
+        <span class="status {{ getStatusText(user.status) }}"></span>
+        <span class="points">{{ user.leaderBoardPunkt }} points</span>
+        <button class="send-duel-button" *ngIf="loggedUser?.id !== user.id" (click)="sendDuelRequest(user)">Send Duel
+        </button>
+        <p class="current-user-button" *ngIf="loggedUser?.id == user.id">You</p>
+      </li>
+    </ul>
+    <div class="pagination">
+      <button *ngIf="currentPage > 1" (click)="previousPage()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button *ngIf="currentPage < totalPages" (click)="nextPage()">Next</button>
+    </div>
+
+    <div class="initiate-duel-container">
+      <button class="enter-duel-btn" *ngIf="showInitiateDuelButton && sentRequest === duelRequest"
+              (click)="enterDuel()">
+        Enter Duel
+      </button>
+      <button class="initiate-duel-btn" *ngIf="showInitiateDuelButton && sentRequest !== duelRequest"
+              (click)="initiateDuel()">Initiate Duel
+      </button>
+
+    </div>
+
+    <div class="lg-back-button-container">
+      <button class="lg-back-button" (click)="goToHome()">Back</button>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="showDuelRequests" class="dialog-overlay">
+  <div class="dialog-box bgColor">
+    <div class="dialog-header">
+      <h1 class="l-request-title">YOUR GAME IS READY</h1>
+      <!-- 有拒绝后这个叉叉按钮可以删掉 -->
+      <button class="close-btn" (click)="showDuelRequests = false">&times;</button>
+    </div>
+    <div *ngIf="showCountdown" class="countdown-timer" [ngStyle]="{'color': countdownColor}">
+      <countdown [config]="countdownConfig"></countdown>
+    </div>
+    <ul>
+      <li *ngFor="let request of duelRequests">
+        <div class="rival-container">
+          <h3 class="rival">Rival： {{ request.sendUser.firstname }} {{ request.sendUser.lastname }}</h3>
+        </div>
+        <button class="l-accept-btn" (click)="acceptOrRejectDuelRequest(request, 3)">Accept</button>
+        <div class="l-reject-btn-container">
+          <button class="l-decline-btn" (click)="acceptOrRejectDuelRequest(request, 0)">Decline Match</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+</body>
+
+</html>

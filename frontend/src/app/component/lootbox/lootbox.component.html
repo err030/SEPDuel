@@ -1,0 +1,79 @@
+<div class="lootbox-container-wrapper">
+  <h1 class="lootbox-title">Loot Box</h1>
+  <button class="back-button" (click)="goToHome()">Back</button>
+  <div *ngIf="lootboxes.length > 0" class="lootbox-container">
+    <p class="loot-sepcoins">SEP Coins: {{ userService.loggedUser?.sepCoins }}</p>
+
+    <div class="lootbox-type-container bronze-lootbox">
+      <ng-container *ngFor="let lootbox of lootboxes">
+        <div *ngIf="lootbox.lootboxType === 'BRONZE'" class="lootbox-wrapper">
+          <div class="lootbox">
+            <div class="lootbox-content">
+              <h3>{{ lootbox.lootboxType }}</h3>
+            </div>
+            <div class="lootbox-actions">
+              <button class="box-buy" (click)="buyLootbox(lootbox.id)">Buy</button>
+              <button class="box-open" (click)="openLootbox(lootbox.id)" [disabled]="!lootbox.purchased">Open</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="lootbox-type-container silver-lootbox">
+      <ng-container *ngFor="let lootbox of lootboxes">
+        <div *ngIf="lootbox.lootboxType === 'SILVER'" class="lootbox-wrapper">
+          <div class="lootbox">
+            <div class="lootbox-content">
+              <h3>{{ lootbox.lootboxType }}</h3>
+            </div>
+            <div class="lootbox-actions">
+              <button class="box-buy" (click)="buyLootbox(lootbox.id)">Buy</button>
+              <button class="box-open" (click)="openLootbox(lootbox.id)" [disabled]="!lootbox.purchased">Open</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="lootbox-type-container gold-lootbox">
+      <ng-container *ngFor="let lootbox of lootboxes">
+        <div *ngIf="lootbox.lootboxType === 'GOLD'" class="lootbox-wrapper">
+          <div class="lootbox">
+            <div class="lootbox-content">
+              <h3>{{ lootbox.lootboxType }}</h3>
+            </div>
+            <div class="lootbox-actions">
+              <button class="box-buy" (click)="buyLootbox(lootbox.id)">Buy</button>
+              <button class="box-open" (click)="openLootbox(lootbox.id)" [disabled]="!lootbox.purchased">Open</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="lootboxes.length === 0">
+    <p>No lootboxes available.</p>
+  </div>
+
+</div>
+<div *ngIf="openDialogs.length > 0" class="overlay">
+  <div class="dialog-container-wrapper">
+    <div class="dialog-container">
+      <ng-container *ngFor="let card of openDialogs; let i=index">
+        <div class="dialog-box">
+          <h3>{{ card.name }} {{ card.rarity }}</h3>
+          <p>Attack: {{ card.attack }}</p>
+          <p>Defense: {{ card.defense }}</p>
+          <p>{{ card.description }}</p>
+          <img [src]="Global.backendUrl + card.image" alt="{{ card.image }} Image" width="100" height="150"/>
+        </div>
+      </ng-container>
+    </div>
+    <button class="close-all-button" (click)="closeAllDialogs()">OK</button>
+
+  </div>
+
+
+</div>

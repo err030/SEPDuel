@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Global} from "../global";
@@ -7,10 +7,10 @@ import {Deck} from "../model/deck.model";
 @Injectable({
   providedIn: 'root'
 })
-export class DeckService {
+export class DeckService{
   deckId: number = 0;
   private apiURL: string;
-  private userId: number | undefined;
+  userId: number | undefined;
 
 
 
