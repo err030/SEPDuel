@@ -374,13 +374,10 @@ export class ChatUserMessageComponent implements OnInit {
    * wenn kein Avatar hochgeladen wurde
    */
   getUserAvatarUrl(senderType:string): string {
-    if (senderType==='me'&&this.loggedUser && this.loggedUser.avatarUrl) {
-      return Global.backendUrl + this.loggedUser.avatarUrl;
-    } else if (senderType==='me'&& this.loggedUser && !this.loggedUser.avatarUrl) {
+    if (senderType==='me'&& this.loggedUser) {
       return this.loggedUser.lastname.charAt(0)+this.loggedUser.firstname.charAt(0) ;
-    }else if (senderType==='friend'&& this.selectedFriend && this.selectedFriend.avatarUrl) {
-      return Global.backendUrl + this.selectedFriend.avatarUrl;
-    }else if (senderType==='friend'&& this.selectedFriend && !this.selectedFriend.avatarUrl) {
+    }
+    else if (senderType==='friend'&& this.selectedFriend) {
       return this.selectedFriend.lastname.charAt(0)+this.selectedFriend.firstname.charAt(0) ;
     } else {
       return "";
