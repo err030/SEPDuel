@@ -1,13 +1,16 @@
 .message_dialog_header {
   height: 38px !important;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
 
 .message_dialog_history {
   height: calc(100vh - 330px) !important;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
 
 .message_dialog_inputField {
   height: 130px !important;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
 
 .message-row {
@@ -16,12 +19,15 @@
   align-items: center;
   gap: 2px;
   height: 60px;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
 
 .message-sent-by-me {
   justify-content: flex-end;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
 
 .message-sent-by-friend {
   justify-content: flex-start;
+  font-family: 'DIN Alternate', sans-serif !important;
 }
