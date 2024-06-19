@@ -26,6 +26,7 @@ public class Duel {
     private long winnerId;
     private int playerTurn;
     private Card lastPlayerCard;
+    private long remainingTime;
 
 
     @Override
@@ -75,7 +76,7 @@ public class Duel {
     }
 
     public void drawCard(Player player) {
-        if (checkIfGameFinished()) {
+        if (checkIfGameFinished() || player.getDeck().getCards().isEmpty()) {
             return;
         }
             this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
@@ -95,7 +96,7 @@ public class Duel {
         // 减少防守方的防御值
         defender.setDefense(defender.getDefense() - attacker.getAttack());
         if (defender.getDefense() <= 0) {
-            this.currentPlayer.table.remove(defender);
+            this.getOpponent().table.remove(defender);
         } else {
             // 反击：如果防守方存活，减少攻击方的防御值
             attacker.setDefense(attacker.getDefense() - defender.getAttack());
@@ -103,6 +104,7 @@ public class Duel {
                 this.currentPlayer.table.remove(attacker);
             }
         }
+        this.currentPlayer.damageDealt += attacker.getAttack();
     }
 
 
@@ -120,13 +122,13 @@ public class Duel {
         return Objects.equals(this.currentPlayer, playerA) ? playerB : playerA;
     }
 
-    public void sacrificeCard(long... cardIds) {
+    public Card sacrificeCard(long... cardIds) {
         if (checkIfGameFinished()) {
-            return;
+            return null;
         }
         // 验证桌面上至少有两张卡
         if (this.currentPlayer.table.size() < 2) {
-            return;
+            return null;
         }
 
         // 获取所有传入 ID 对应的卡，如果 ID 为 -1 则视为 null
@@ -139,25 +141,34 @@ public class Duel {
             Card bonusCard = null;
             switch (cardIds.length) {
                 case 2: // 如果传入两个 ID，则寻找稀有卡
-                    bonusCard = this.currentPlayer.deck.cards.stream()
+                    bonusCard = this.currentPlayer.hand.stream()
                             .filter(card -> card.getRarity().equals(Rarity.RARE))
                             .findFirst()
                             .orElse(null);
                     break;
                 case 3: // 如果传入三个 ID，则寻找传奇卡
-                    bonusCard = this.currentPlayer.deck.cards.stream()
+                    bonusCard = this.currentPlayer.hand.stream()
                             .filter(card -> card.getRarity().equals(Rarity.LEGENDARY))
                             .findFirst()
                             .orElse(null);
                     break;
             }
 
-            // 如果找到对应的奖励卡，则从牌组移除并加入到桌面
+            // 如果找到对应的奖励卡，则从手牌移除并加入到桌面
             if (bonusCard != null) {
-                this.currentPlayer.deck.cards.remove(bonusCard);
+                this.currentPlayer.table.removeAll(selectedCards);
+                this.currentPlayer.hand.remove(bonusCard);
+                this.currentPlayer.sacrificedCards.addAll(selectedCards);
+                this.currentPlayer.summonedCards.add(bonusCard);
                 this.currentPlayer.table.add(bonusCard);
+                this.currentPlayer.setHasSummoned(true);
+                return bonusCard;
             }
+            // 如果没有找到奖励卡，取消操作
+
+            System.out.println("No bonus card found, canceling sacrifice");
         }
+        return null;
     }
 
 
@@ -209,6 +220,7 @@ public class Duel {
         }
         this.currentPlayer.hand.remove(card);
         this.currentPlayer.table.add(card);
+        this.currentPlayer.summonedCards.add(card);
         this.currentPlayer.setHasSummoned(true);
     }
 

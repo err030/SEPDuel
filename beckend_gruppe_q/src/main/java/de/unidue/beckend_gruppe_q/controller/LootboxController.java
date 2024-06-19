@@ -67,10 +67,12 @@ public class LootboxController {
                 .filter(l -> l.getId().equals(lootboxId))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("No such Lootbox found" + lootboxId));
-        user.getCards().addAll(lootbox.getCards());
-        user.getLootboxes().remove(lootbox);
+        Lootbox dynamicLootbox = lootboxGenerator.generateLootbox(lootbox.getLootboxType());
+        System.out.println(dynamicLootbox);
+        user.getCards().addAll(dynamicLootbox.getCards());
         userRepository.save(user);
-        return ResponseEntity.ok(lootbox.getCards());
+        System.out.println(user.getCards());
+        return ResponseEntity.ok(dynamicLootbox.getCards());
     }
 
 }

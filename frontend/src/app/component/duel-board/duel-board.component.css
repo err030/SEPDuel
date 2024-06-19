@@ -1,0 +1,265 @@
+body.duel {
+  position: relative;
+  background-color: #2c2c2c;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.duel-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.duel-info {
+  position: absolute;
+  top: 35%;
+  left: 10px;
+}
+
+.opponent-info {
+  position: absolute;
+  top: 150px;
+  right: 20px;
+}
+
+.player-info {
+  position: absolute;
+  bottom: 10px;
+  left: 40px;
+}
+
+.opponent-game-table, .player-game-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  height: 280px;
+  background-color: #444; /* 中间对战框的底色 */
+  border-radius: 10px;
+  position: relative;
+}
+
+.opponent-game-table {
+  top: 30px;
+  background-image: url('/assets/images/duel-bg-op.jpg');
+  background-size: cover;
+  box-shadow: 0 0 20px 10px rgb(217, 102, 87);
+}
+
+.player-game-table {
+  top: 35px;
+  background-image: url('/assets/images/duel-bg-pl.jpg');
+  background-size: cover;
+  box-shadow: 0 0 20px 10px rgb(142, 206, 241);
+}
+
+.opponent-table-cards, .player-table-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.opponent-table-cards {
+  top: 40px;
+}
+
+.player-table-cards {
+  bottom: 40px;
+}
+
+.player-action {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+}
+
+.duel button {
+  border-radius: 10px;
+  border: none;
+}
+
+.end-turn-btn, .start-game-btn {
+  position: absolute;
+  right: 110px;
+  top: 37%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  height: 20px;
+  width: 100px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.start-game-btn{
+  background-color: rgba(96, 144, 184, 0.92);
+  border: rgb(96, 144, 184);
+}
+
+.end-turn-btn{
+  background-color: rgba(183, 85, 60, 0.92);
+  border: rgb(183, 85, 60);
+}
+
+.player-hand {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+input[type="checkbox"] {
+  margin: 5px;
+}
+
+.app-duel-card {
+  margin: 5px;
+  position: relative;
+}
+
+.attack-btn {
+  position: absolute;
+  bottom: -30px;
+  left: 0px;
+  border-radius: 10px;
+  border: none;
+  font-size: 12px;
+  background-color: rgba(255, 211, 142, 0.9);
+  width: 120px;
+  height: 20px;
+}
+
+.summon-btn {
+  position: absolute;
+  margin-top: 5px;
+  width: 120px;
+  height: 20px;
+  background-color: rgb(252, 249, 232);
+  color: #77431e;
+}
+
+
+.sacrifice-btn {
+  position: absolute;
+  top: 40px;
+  left: 76px;
+  width: 120px;
+  height: 20px;
+  background-color: rgb(239, 158, 179);
+  color: white;
+}
+
+.confirm-sacrifice-btn {
+  position: absolute;
+  left: 76px;
+  top: 70px;
+  width: 120px;
+  height: 20px;
+  background-color: rgba(246, 121, 121, 0.8);
+  color: white;
+}
+
+.checkbox {
+  position: absolute;
+  bottom: -20px;
+  left: 50px;
+}
+
+.tree {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 300px;
+  height: auto;
+  transform: scaleX(-1);
+  filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));
+}
+
+.sakura{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: auto;
+  transform: scaleX(-1);
+}
+
+.sakura-leaf{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: auto;
+}
+
+.avatar-border-op{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.opponent-avatar{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.avatar-border-pl{
+  position: absolute;
+  bottom: 100px;
+  left: 10px;
+  width: 150px;
+  height: 150px;
+  z-index: 2;
+}
+
+.player-avatar{
+  position: absolute;
+  bottom: 110px;
+  left: 25px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.game-timer{
+  position: absolute;
+  bottom: 160px;
+  left: 220px;
+  font-size: 16px;
+  color: white;
+
+}
+
+.exit-game-btn{
+  position: absolute;
+  bottom: 50px;
+  right: 30px;
+  width: 200px;
+  height: 40px;
+  background-color: rgb(195, 48, 32);
+  color: white;
+  font-size: 20px;
+  font-family: Herloit, sans-serif;
+}
+
+

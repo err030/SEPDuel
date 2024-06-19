@@ -1,27 +1,114 @@
-<p>duel-board works!</p>
-<div class="game-board" *ngIf="duel">
-  <h2>Duel: {{ duel.id }}</h2>
-  <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
-  <h4>Round: {{ duel.playerTurn }}</h4>
-  <div class="opponent-table">
-    <h4>{{ duel.playerA.name }}'s Table</h4>
-    <div *ngFor="let card of duel.playerA.table">
-      <app-card [card]=card></app-card>
-    </div>
-  </div>
-  <div class="player-table">
-    <h4>{{ duel.playerB.name }}'s Table</h4>
-    <div *ngFor="let card of duel.playerB.table">
-      <app-card [card]=card></app-card>
-      <input *ngIf="this.duelService.sacrificing" type="checkbox" [(ngModel)]="this.duelService.sacrificingCards">
-    </div>
-    <button *ngIf="!this.duel.playerB.hasSummoned" (click)="sacrificeCard()">Sacrifice</button>
+<body class="duel">
 
-    <h4>{{ duel.playerB.name }}'s Hand</h4>
-    <div class="player-hand" *ngFor="let card of duel.playerB.hand">
-        <app-card [card]=card></app-card>
-        <button *ngIf="!this.duel.playerB.hasSummoned" (click)="summonCard(card.id)">Summon</button>
-    </div>
-    <button *ngIf="!this.duel.gameFinished && this.duel.playerB.id === this.duel.currentPlayer.id" (click)="endTurn()">End Turn</button>
-  </div>
+<div *ngIf="duel && !duel.gameFinished && isCurrentPlayer()" class="game-timer">
+  <p>Remaining Time: {{ Math.round(duel.remainingTime / 1000) }} Seconds</p>
+  <h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
 </div>
+
+<div class="duel-container" *ngIf="duel && !duel.gameFinished">
+
+  <div class="duel-info">
+    <p>Duel: {{ duel.id }}</p>
+    <p>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</p>
+    <p>Round: {{ duel.playerTurn }}</p>
+  </div>
+
+  <img class="sakura" src="assets/images/sakura.png" alt="Sakura">
+
+  <img class="sakura-leaf" src="assets/images/sakura-leaf.gif" alt="Sakura Leaf">
+
+  <!--  <div *ngIf="!duelService.sacrificing" class="opponent">-->
+  <div class="opponent">
+
+    <div class="opponent-info">
+      <h4>Opponent: {{ duel.playerA.name }}</h4>
+      <h4>HP: {{ duel.playerA.hp }}</h4>
+      <input class="checkbox" *ngIf="isAttacking()" type="checkbox"
+             [checked]="duelService.targetCard === undefined"
+             (change)="duelService.setTargetCard(undefined)">
+    </div>
+
+    <div>
+      <img class="avatar-border-op" src="assets/images/avatar-border-op.PNG" alt="Avatar Border Opponent">
+      <img class="opponent-avatar" [src]="'http://localhost:8080' + duel.playerA.avatarUrl || 'assets/images/user.png'"
+           alt="Avatar Opponent">
+    </div>
+
+    <div class="opponent-game-table">
+      <div class="opponent-table-cards">
+        <div *ngFor="let card of duel.playerA.table">
+          <app-duel-card [card]=card></app-duel-card>
+          <input *ngIf="isCurrentPlayer() && isAttacking()" type="checkbox"
+                 [checked]="duelService.targetCard?.id === card.id" (change)="duelService.setTargetCard(card)">
+        </div>
+      </div>
+    </div>
+
+    <div class="player-action">
+      <h2 class="select-alert" *ngIf="isAttacking()">Select your enemy!</h2>
+      <button class="card-attack-btn" *ngIf="isCurrentPlayer() && isAttacking()" (click)="attack()">Attack Now!!
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngIf="!isAttacking()" class="player">
+    <div class="player-info">
+      <h4>Me: {{ duel.playerB.name }}</h4>
+      <h4>HP: {{ duel.playerB.hp }}</h4>
+    </div>
+    <div>
+      <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
+           width="1023">
+      <img class="player-avatar" [src]="'http://localhost:8080' + duel.playerB.avatarUrl || 'assets/images/user.png'"
+           alt="Avatar Player">
+    </div>
+
+    <div class="player-game-table">
+      <div class="player-table-cards" *ngFor="let card of duel.playerB.table">
+        <app-duel-card [card]=card></app-duel-card>
+        <input class="checkbox" *ngIf="canSacrifice()" type="checkbox"
+               [checked]="duelService.sacrificingCardsId.includes(card.id)"
+               (change)="duelService.toggleSacrificeCard(card.id, $event)">
+        <button class="attack-btn" *ngIf="canAttack(card)" (click)="setAttacker(card)">Prepare For Attack</button>
+      </div>
+    </div>
+
+
+    <div class="player-hand">
+      <div *ngFor="let card of duel.playerB.hand">
+        <app-duel-card [card]=card></app-duel-card>
+        <button class="summon-btn" *ngIf="canSummon() && card.rarity === 'COMMON'" (click)="summonCard(card.id)">
+          Summon
+        </button>
+      </div>
+      <button class="sacrifice-btn" *ngIf="canToggleSacrifice()" (click)="toggleSacrifice()">Toggle Sacrifice</button>
+      <button class="confirm-sacrifice-btn" *ngIf="canSacrifice()" (click)="sacrificeCard()">Sacrifice!!</button>
+
+    </div>
+
+
+    <button class="start-game-btn" *ngIf="duel.playerTurn == 0 && isCurrentPlayer()" (click)="endTurn()">Start Game
+    </button>
+    <button class="end-turn-btn" *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
+            (click)="endTurn()">End Turn
+    </button>
+
+    <img class="tree" src="assets/images/frozen-pond-pond-trees.png" alt="Frozen Pond Trees">
+
+  </div>
+
+
+</div>
+
+
+<div class="game-finish-board" *ngIf="duel && duel.gameFinished">
+  <app-score [duel]=duel></app-score>
+  <button class="exit-game-btn" (click)="exitGame()">Exit Game</button>
+</div>
+
+<div *ngIf="!duel">
+  <p>No duel found</p>
+  <button (click)="goToHomepage()">Back to Homepage</button>
+</div>
+</body>

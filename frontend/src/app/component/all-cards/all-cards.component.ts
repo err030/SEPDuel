@@ -9,6 +9,7 @@ import {CardService} from "../../service/card.service";
 import {Router} from "@angular/router";
 import {delay} from "rxjs";
 import {Deck} from "../../model/deck.model";
+import {DuelCardComponent} from "../duel-card/duel-card.component";
 
 @Component({
   selector: 'app-all-cards',
@@ -18,6 +19,7 @@ import {Deck} from "../../model/deck.model";
     CardComponent,
     NgIf,
     NgClass,
+    DuelCardComponent,
   ],
   templateUrl: './all-cards.component.html',
   styleUrl: './all-cards.component.css'

@@ -1,5 +1,6 @@
 package de.unidue.beckend_gruppe_q;
 
+import de.unidue.beckend_gruppe_q.controller.AdminController;
 import de.unidue.beckend_gruppe_q.model.Card;
 import de.unidue.beckend_gruppe_q.model.Deck;
 import de.unidue.beckend_gruppe_q.model.Rarity;
@@ -13,10 +14,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+@EnableScheduling
 @SpringBootApplication
 //@Transactional
 public class BackendGruppeQApplication {
@@ -25,9 +32,18 @@ public class BackendGruppeQApplication {
         SpringApplication.run(BackendGruppeQApplication.class, args);
     }
 
-//    @Bean
-//    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository) {
-//        return args -> {
+    @Bean
+    public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, AdminController adminController) {
+        return args -> {
+            // 创建 File 对象指向要上传的文件
+            File file = new File("src/main/resources/CSV/test_cards_upload.csv");
+            FileInputStream input = new FileInputStream(file);
+
+            // 创建 MockMultipartFile 对象
+            MultipartFile multipartFile = new MockMultipartFile("file",
+                    file.getName(), "text/csv", input);
+            adminController.uploadCard(multipartFile);
+        };
 ////            create a deck
 ////            Deck deck = new Deck();
 ////            deck.setName("Deck");
@@ -75,6 +91,5 @@ public class BackendGruppeQApplication {
 ////                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
 ////            }
 ////            userRepository.save(u);
-        }
-//    }
-//}
+    }
+}

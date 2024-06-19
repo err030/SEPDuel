@@ -74,11 +74,13 @@ body.card-list {
 
 .cards-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 两列布局 */
+  grid-template-columns: repeat(3, 1fr); /* 两列布局 */
   gap: 20px; /* 设置列间距 */
   margin-bottom: 20px;
+  margin-left: 100px;
   max-height: 500px;
   overflow-y: scroll;
+  padding: 20px;
 }
 
 .card-item {

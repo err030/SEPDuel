@@ -241,6 +241,8 @@ export class LeaderboardComponent implements OnInit {
             this.matchAccepted = true;
             this.loggedUser!.status = 3;
             this.selectedUser!.status = 3;
+            localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
+            localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
             this.showCountdown = false;
@@ -298,6 +300,7 @@ export class LeaderboardComponent implements OnInit {
     this.duelService.createDuel(this.duelRequest.id, this.duelRequest.sendDeckId, Global.currentDeck.id).subscribe(
       (response) => {
         this.duelService.initializer = true;
+        localStorage.setItem('initializer', '1');
         this.router.navigate([`/duel/${this.duelRequest?.id}`]);
       }
     )
@@ -314,7 +317,8 @@ export class LeaderboardComponent implements OnInit {
           next: (response) => {
             if (response.status === 200 && response.body) {
               const previousDuelRequests = this.duelRequests;
-              this.duelRequests = response.body.filter(r => r.duellanfragStatus === 1); // 过滤状态为 1 的请求
+              // this.duelRequests = response.body.filter(r => r.duellanfragStatus === 1); // 过滤状态为 1 的请求
+              this.duelRequests = response.body;
               this.newDuelRequests = this.duelRequests.length;
               if (this.duelRequests.length > previousDuelRequests.length && !this.matchAccepted) {
                 // 新的决斗请求时显示倒计时
@@ -394,6 +398,7 @@ export class LeaderboardComponent implements OnInit {
 
   enterDuel() {
     this.duelService.initializer = false;
+    localStorage.setItem('initializer', '0');
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
   }
 }
