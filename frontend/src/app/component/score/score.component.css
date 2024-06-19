@@ -16,11 +16,11 @@
 }
 
 .win{
-  text-shadow: 0 0 20px 10px rgb(255, 254, 166);
+  text-shadow: 0 0 10px #ffff00;
 }
 
 .lose{
-  text-shadow: 0 0 20px 10px rgb(182, 182, 182);
+  text-shadow: 0 0 10px #ff0000;
 }
 
 .card-details h3{
