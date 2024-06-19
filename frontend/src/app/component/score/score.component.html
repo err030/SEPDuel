@@ -1,8 +1,8 @@
 <div class="score">
   <div class="score-container">
     <div class="result-score">
-      <h1 *ngIf="isWinner()">You WIN!</h1>
-      <h1 *ngIf="!isWinner()">You LOSE!</h1>
+      <h1 *ngIf="isWinner()" class="win" >You WIN!</h1>
+      <h1 *ngIf="!isWinner()" class="lose">You LOSE!</h1>
       <p *ngIf="isWinner()">SEP Coins: +100 </p>
       <p *ngIf="!isWinner()">SEP Coins: +0 </p>
       <p>Leaderboard Points: {{ getBonusPoints() }}</p>
