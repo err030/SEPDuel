@@ -12,6 +12,10 @@ html, body {
   color: var(--text-color);
 }
 
+input{
+  font-family: monospace;
+}
+
 .alert_form_input_invalid {
   background: var(--red-200);
   color: var(--red-800);
