@@ -3,7 +3,7 @@
 
   <div class="card-row">
     <div class="card" *ngFor="let card of cards">
-      <app-card [card]="card"></app-card>
+      <app-duel-card [card]="card"></app-duel-card>
       <button [ngClass]="{'select-btn': !isSelected(card), 'remove-btn': isSelected(card)}"  (click)="toggleSelection(card)">{{ isSelected(card) ? 'Remove' : 'Select' }}
       </button>
     </div>
@@ -13,7 +13,7 @@
 
   <div class="selected-card-row">
     <div class="selected-card" *ngFor="let selectedCard of selectedCards">
-      <app-card [card]="selectedCard"></app-card>
+      <app-duel-card [card]="selectedCard"></app-duel-card>
     </div>
   </div>
   <div class="selected-btn">

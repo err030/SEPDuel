@@ -403,12 +403,6 @@ body.leaderboard {
   color: white;
 }
 
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
 .rival-container{
   position: absolute;
   left: 160px;

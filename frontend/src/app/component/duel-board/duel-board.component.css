@@ -78,21 +78,35 @@ body.duel {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  color: white;
 }
 
 .duel button {
+  border-radius: 10px;
   border: none;
-  border-radius: 5px;
 }
 
 .end-turn-btn, .start-game-btn {
   position: absolute;
-  right: 135px;
-  top: 35%;
+  right: 110px;
+  top: 37%;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  background-color: rgba(255, 255, 255, 0.94);
+  height: 20px;
+  width: 100px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.start-game-btn{
+  background-color: rgba(96, 144, 184, 0.92);
+  border: rgb(96, 144, 184);
+}
+
+.end-turn-btn{
+  background-color: rgba(183, 85, 60, 0.92);
+  border: rgb(183, 85, 60);
 }
 
 .player-hand {
@@ -123,24 +137,38 @@ input[type="checkbox"] {
   border: none;
   font-size: 12px;
   background-color: rgba(255, 211, 142, 0.9);
+  width: 120px;
+  height: 20px;
 }
 
 .summon-btn {
   position: absolute;
   margin-top: 5px;
+  width: 120px;
+  height: 20px;
+  background-color: rgb(252, 249, 232);
+  color: #77431e;
 }
+
 
 .sacrifice-btn {
   position: absolute;
-  top: 5px;
+  top: 40px;
   left: 76px;
+  width: 120px;
+  height: 20px;
+  background-color: rgb(239, 158, 179);
+  color: white;
 }
 
 .confirm-sacrifice-btn {
   position: absolute;
   left: 76px;
-  top: 40px;
-  background-color: rgba(237, 77, 77, 0.8);
+  top: 70px;
+  width: 120px;
+  height: 20px;
+  background-color: rgba(246, 121, 121, 0.8);
+  color: white;
 }
 
 .checkbox {
@@ -206,11 +234,32 @@ input[type="checkbox"] {
 
 .player-avatar{
   position: absolute;
-  bottom: 100px;
+  bottom: 110px;
   left: 25px;
   width: 120px;
   height: 120px;
   border-radius: 50%;
+}
+
+.game-timer{
+  position: absolute;
+  bottom: 160px;
+  left: 220px;
+  font-size: 16px;
+  color: white;
+
+}
+
+.exit-game-btn{
+  position: absolute;
+  bottom: 50px;
+  right: 30px;
+  width: 200px;
+  height: 40px;
+  background-color: rgb(195, 48, 32);
+  color: white;
+  font-size: 20px;
+  font-family: Herloit, sans-serif;
 }
 
 

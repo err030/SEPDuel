@@ -61,11 +61,9 @@ export class DuelBoardComponent implements OnInit {
       next: (data) => {
         if (data.id){
           this.duel = data;
-          this.duel = data;
-          this.normalize();
           console.log('Duel loaded successfully:', data);
         }
-
+        this.normalize();
       },
       error: (error) => {
         console.error('Error fetching duel:', error);

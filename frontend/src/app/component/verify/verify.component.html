@@ -18,8 +18,8 @@
 
     <div class="btn-box">
       <div>
+        <button class="v-next-btn" type="submit" [disabled]="SecurityCodeForm.invalid">Next</button>
         <button class="v-back-btn" (click)="goBack()">Back</button>
-        <button type="submit" [disabled]="SecurityCodeForm.invalid">Next</button>
       </div>
     </div>
   </form>

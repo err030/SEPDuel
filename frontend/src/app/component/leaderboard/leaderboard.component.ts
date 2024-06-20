@@ -237,7 +237,7 @@ export class LeaderboardComponent implements OnInit {
         if (response.status == 200) {
           if (status == 3) {
             // 接受对决请求
-            alert('对决请求已接受');
+            alert('Duel request accepted');
             this.matchAccepted = true;
             this.loggedUser!.status = 3;
             this.selectedUser!.status = 3;
@@ -256,7 +256,7 @@ export class LeaderboardComponent implements OnInit {
             // 拒绝对决请求
             this.loggedUser!.status = 0;
             this.selectedUser!.status = 0;
-            alert('对决请求已拒绝');
+            alert('Duel request rejected');
             this.showCountdown = false;
             this.showDuelRequests = false;
             clearTimeout(this.countdownTimer);

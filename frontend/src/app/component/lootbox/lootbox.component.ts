@@ -8,6 +8,7 @@ import {SharedModule} from "primeng/api";
 import {Card} from "../../model/card.model";
 import {Global} from "../../global";
 import {Router} from "@angular/router";
+import {DuelCardComponent} from "../duel-card/duel-card.component";
 
 @Component({
   selector: 'app-lootbox',
@@ -19,6 +20,7 @@ import {Router} from "@angular/router";
     KeyValuePipe,
     DialogModule,
     SharedModule,
+    DuelCardComponent,
   ],
   templateUrl: './lootbox.component.html',
   styleUrl: './lootbox.component.css'
