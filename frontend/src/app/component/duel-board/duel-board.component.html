@@ -30,7 +30,7 @@
 
     <div>
       <img class="avatar-border-op" src="assets/images/avatar-border-op.PNG" alt="Avatar Border Opponent">
-      <img class="opponent-avatar" [src]="'http://localhost:8080' + duel.playerA.avatarUrl || 'assets/images/user.png'"
+      <img class="opponent-avatar" [src]=getOpponentAvatar()
            alt="Avatar Opponent">
     </div>
 
@@ -60,7 +60,7 @@
     <div>
       <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
            width="1023">
-      <img class="player-avatar" [src]="'http://localhost:8080' + duel.playerB.avatarUrl || 'assets/images/user.png'"
+      <img class="player-avatar" [src]=getPlayerAvatar()
            alt="Avatar Player">
     </div>
 
