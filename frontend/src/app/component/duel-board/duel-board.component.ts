@@ -213,14 +213,14 @@ export class DuelBoardComponent implements OnInit {
   }
 
   getOpponentAvatar() {
-    if (this.duel.playerA.avatarUrl) {
+    if (this.duel && this.duel.playerA && this.duel.playerA.avatarUrl) {
       return "http://localhost:8080" + this.duel.playerA.avatarUrl;
     }
     return "http://localhost:8080/avatars/user.png";
   }
 
   getPlayerAvatar() {
-    if (this.duel.playerB.avatarUrl) {
+    if (this.duel && this.duel.playerB && this.duel.playerB.avatarUrl) {
       return "http://localhost:8080" + this.duel.playerB.avatarUrl;
     }
     return "http://localhost:8080/avatars/user.png";
