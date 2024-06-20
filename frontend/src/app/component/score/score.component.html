@@ -6,7 +6,7 @@
       <p *ngIf="isWinner()">SEP Coins: +100 </p>
       <p *ngIf="!isWinner()">SEP Coins: +0 </p>
       <p>Leaderboard Points: {{ getBonusPoints() }}</p>
-      <p>Total Damage: {{ duel?.playerB?.damageDealt }}</p>
+      <p>Total Damage Dealt: {{ getDamageDealt() }}</p>
     </div>
 
     <div class="card-details">

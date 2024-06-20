@@ -17,8 +17,8 @@
             <p-avatar *ngIf="message.senderType === 'me'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
                       [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
             <div *ngIf="message.senderType === 'me'&&!message.isRead" class="mt-2">
-              <button (click)="deleteMessage(message.uuid)">Delete</button>
-              <button (click)="editMessage(message.uuid)" class="ml-1">Edit</button>
+<!--              <button (click)="deleteMessage(message.uuid)">Delete</button>-->
+<!--              <button (click)="editMessage(message.uuid)" class="ml-1">Edit</button>-->
               <!-- <button (click)="resetSendMsg(message.uuid)" class="ml-1">send</button> -->
             </div>
           </div>

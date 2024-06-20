@@ -29,6 +29,10 @@ export class ScoreComponent {
     }
   }
 
+  getDamageDealt(){
+    return this.duel?.playerB?.damageDealt;
+  }
+
   getSummonedTotal(): number {
     return this.duel?.playerB.summonedCards.length ?? 0;
   }
