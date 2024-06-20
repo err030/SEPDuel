@@ -1,11 +1,9 @@
 import {Component, ViewChild } from '@angular/core';
 import {OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {FriendService} from "../../service/friend.service";
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {WebSocketSubject} from "rxjs/webSocket";
-import {Global} from "../../global";
 import {Chatgroup} from "../../model/chatgroup";
 import {ChatgroupService} from "../../service/chatgroup.service";
 import {ButtonModule} from "primeng/button";
@@ -31,7 +29,7 @@ interface Message {
   isRead: boolean;
 }
 @Component({
-  selector: 'app-chat-user-message',
+  selector: 'app-chat-group-message',
   standalone: true,
   imports: [
     ButtonModule,
@@ -66,16 +64,13 @@ export class ChatGroupMessageComponent implements OnInit{
   @ViewChild('scroller') scroller!: Scroller;
 
   socket$: WebSocketSubject<{ fromUuid: string; chatGroupId: number; sender: string; senderType: string; msgType: string; msgContent: string }> | undefined;
-  public messages: { id: string, message: string }[] = [];
   public message: string | undefined;
   public isOffline: boolean = false;
   public showUnReadMsgDialog: boolean = false;
-  public msgIsRead: boolean = false;
   editUnReadMsg: string = '';
   public editMsgUuid: string = '';
 
   constructor(private activatedRoute: ActivatedRoute,
-              private friendService: FriendService,
               private chatGroupService: ChatgroupService,
               private userService: UserService) {
   }
@@ -103,7 +98,6 @@ export class ChatGroupMessageComponent implements OnInit{
           this.scroller.scrollToIndex(999999, 'smooth');
         }, 100);
 
-        console.log('chat allMSGs :', this.allMSGs);
       }
     })
 
@@ -136,9 +130,6 @@ export class ChatGroupMessageComponent implements OnInit{
         // 检查消息是否已被阅读 没有任何改动
         if(message!=null&&message.msgType!=undefined&&message.msgType=='backToMsgRead'){
 
-          console.log("Nachrichtenverarbeitung gelesen oder ungelesen：",message.fromUuid);
-          //    this.editMsgReadState(message.fromUuid);
-          //Das hier macht das gleiche wie editMsgReadState nur ohne Fehler.
           this.allMSGs.forEach(msg => {
             if(message.fromUuid == msg.uuid)
             {
@@ -151,7 +142,6 @@ export class ChatGroupMessageComponent implements OnInit{
 
 
         const temp = JSON.stringify(this.allMSGs);
-        //console.log(temp);
         that.allMSGs = [];
         that.allMSGs = JSON.parse(temp);
 
@@ -301,56 +291,6 @@ export class ChatGroupMessageComponent implements OnInit{
     }
   }
 
-  public resetSendMsg(id: string): void {
-    const msgIndex = this.allMSGs.findIndex(message => message.uuid === id);
-    if (msgIndex !== -1) {
-
-      let temp = JSON.stringify(this.allMSGs);
-      this.allMSGs = [];
-      this.allMSGs = JSON.parse(temp);
-
-      const message: Message = {
-        // @ts-ignore
-        uuid: id,
-        msgContent: this.allMSGs[msgIndex].msgContent,
-        // @ts-ignore
-        sender: this.loggedUser.id,
-        senderType: 'me',
-        // @ts-ignore
-        recipient: this.selectedChatGroup?.chatUserIds,
-        isRead: false
-      };
-
-      // @ts-ignore
-      this.socket$.next(message);
-
-      setTimeout(() => {
-        this.scroller.scrollToIndex(999999, 'smooth');
-      }, 100);
-    }
-  }
-
-  public editMsgReadState(id: string): void {
-
-
-    const messageIndex = this.allMSGs.findIndex(message => message.uuid == id);
-    console.log(this.allMSGs);
-    console.log("messageIndex ceshi:", messageIndex);
-    if (messageIndex !== -1) {
-      console.log("this.allMSGs[messageIndex].isRead:", this.allMSGs[messageIndex].isRead);
-      this.allMSGs[messageIndex].isRead = true;
-
-
-      const localMsgList = localStorage.getItem('groupMsgList');
-      if (localMsgList != undefined && localMsgList != null && localMsgList != '') {
-        let msgListObj: Message[] = [];
-        msgListObj = JSON.parse(localMsgList);
-        const msgIndex = msgListObj.findIndex(message => message.uuid == id);
-        msgListObj[msgIndex].isRead = true;
-        localStorage.setItem("groupMsgList", JSON.stringify(msgListObj));
-      }
-    }
-  }
 
   getUserAvatarWord(user: User): string {
     return user.lastname.charAt(0) + user.firstname.charAt(0);
@@ -358,7 +298,7 @@ export class ChatGroupMessageComponent implements OnInit{
 
 
   /**
-   * Ermittelt die Adresse des Avatars des Nutzers oder gibt die Initialen zurück,
+   * Gibt die Initialen zurück,
    * wenn kein Avatar hochgeladen wurde
    */
   getUserAvatarUrl(senderType: string, senderId: number): string {
@@ -378,10 +318,6 @@ export class ChatGroupMessageComponent implements OnInit{
     }
 
   }
-
-  // public getGroupUserAvatarUrl(groupUser:User): string {
-  //   return Global.backendUrl + groupUser.avatarUrl;
-  // }
 
   openFriendList(): void {
     this.showGroupUserList=true;
