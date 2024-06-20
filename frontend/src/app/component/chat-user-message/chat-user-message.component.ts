@@ -183,12 +183,6 @@ export class ChatUserMessageComponent implements OnInit {
               this.isOffline=false;
               message.msgContent='';
 
-              /*     Warum makieren wir alle nachrichten als gelesen?
-                          this.allMSGs.forEach(msg => {
-                            msg.isRead=true;
-                          });
-              */
-
               return;
             }
             return;
@@ -213,7 +207,6 @@ export class ChatUserMessageComponent implements OnInit {
           console.log('Ist der Benutzer offline：',this.isOffline)
 
           const temp=JSON.stringify(this.allMSGs);
-          //console.log(temp);
           that.allMSGs=[];
           that.allMSGs=JSON.parse(temp);
 
@@ -275,21 +268,18 @@ export class ChatUserMessageComponent implements OnInit {
 
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
 
   //sendet alle ungelesenen nachrichten nochmal außer die
   send_All_Unread_Messages_Again(current_message : Message | null): void
   {
-    // this.allMSGs.forEach(c_message => {
-    //   if(c_message.isRead == false && c_message !== current_message)
-    //   {
-    //     // @ts-ignore
-    //     this.socket$.next(c_message);
-    //   }
-    // });
-    // console.log("send_All_Unread_Messages_Again");
+     this.allMSGs.forEach(c_message => {
+       if(c_message.isRead == false && c_message !== current_message)
+       {
+         // @ts-ignore
+         this.socket$.next(c_message);
+       }
+     });
+     console.log("send_All_Unread_Messages_Again");
   }
 
   sendMessage(): void {

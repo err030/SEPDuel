@@ -1,8 +1,10 @@
 <body class="duel">
+
 <div *ngIf="duel && !duel.gameFinished && isCurrentPlayer()" class="game-timer">
   <p>Remaining Time: {{ Math.round(duel.remainingTime / 1000) }} Seconds</p>
   <h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
 </div>
+
 <div class="duel-container" *ngIf="duel && !duel.gameFinished">
 
   <div class="duel-info">
@@ -28,7 +30,8 @@
 
     <div>
       <img class="avatar-border-op" src="assets/images/avatar-border-op.PNG" alt="Avatar Border Opponent">
-      <img class="opponent-avatar" [src]="'http://localhost:8080' + duel.playerA.avatarUrl || 'assets/images/user.png'" alt="Avatar Opponent">
+      <img class="opponent-avatar" [src]="'http://localhost:8080' + duel.playerA.avatarUrl || 'assets/images/user.png'"
+           alt="Avatar Opponent">
     </div>
 
     <div class="opponent-game-table">
@@ -57,7 +60,8 @@
     <div>
       <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
            width="1023">
-      <img class="player-avatar" [src]="'http://localhost:8080' + duel.playerB.avatarUrl || 'assets/images/user.png'" alt="Avatar Player">
+      <img class="player-avatar" [src]="'http://localhost:8080' + duel.playerB.avatarUrl || 'assets/images/user.png'"
+           alt="Avatar Player">
     </div>
 
     <div class="player-game-table">
@@ -84,8 +88,6 @@
     </div>
 
 
-
-
     <button class="start-game-btn" *ngIf="duel.playerTurn == 0 && isCurrentPlayer()" (click)="endTurn()">Start Game
     </button>
     <button class="end-turn-btn" *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
@@ -101,12 +103,8 @@
 
 
 <div class="game-finish-board" *ngIf="duel && duel.gameFinished">
-  <h2>Duel: {{ duel.id }}</h2>
-  <h3>Players: {{ duel.playerA.name }} vs {{ duel.playerB.name }}</h3>
-  <h1 *ngIf="duel.winnerId == duel.playerA.id"> You LOSE! </h1>
-  <h1 *ngIf="duel.winnerId == duel.playerB.id"> You WIN! </h1>
   <app-score [duel]=duel></app-score>
-  <button (click)="exitGame()">Exit Game</button>
+  <button class="exit-game-btn" (click)="exitGame()">Exit Game</button>
 </div>
 
 <div *ngIf="!duel">

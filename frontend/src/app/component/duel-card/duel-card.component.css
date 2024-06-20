@@ -49,3 +49,15 @@
   z-index: -1; /* 将背景图片置于最底层 */
   border-radius: 5px; /* 设置边角弧度 */
 }
+
+.duel-card.COMMON{
+  box-shadow: 0 0 20px 10px rgba(140, 140, 140, 0.76);
+}
+
+.duel-card.RARE{
+  box-shadow: 0 0 20px 10px rgb(65, 187, 200);
+}
+
+.duel-card.LEGENDARY{
+  box-shadow: 0 0 20px 10px rgb(253, 251, 170);
+}

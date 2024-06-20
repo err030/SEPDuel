@@ -66,8 +66,6 @@
   <div class="dialog-box bgColor">
     <div class="dialog-header">
       <h1 class="l-request-title">YOUR GAME IS READY</h1>
-      <!-- 有拒绝后这个叉叉按钮可以删掉 -->
-      <button class="close-btn" (click)="showDuelRequests = false">&times;</button>
     </div>
     <div *ngIf="showCountdown" class="countdown-timer" [ngStyle]="{'color': countdownColor}">
       <countdown [config]="countdownConfig"></countdown>
