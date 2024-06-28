@@ -99,6 +99,14 @@ export class HomepageUserComponent implements OnInit {
     this.router.navigate(['/lootbox']);
   }
 
+  goToClanList(){
+    this.router.navigate(['/clan-list']);
+  }
+
+  goToClan(){
+    this.router.navigate(['/clan']);
+  }
+
 
 // 导航到聊天页面
 //   navigateToChat() {
