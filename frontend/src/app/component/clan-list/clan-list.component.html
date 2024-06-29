@@ -1,23 +1,27 @@
+<body class="clan-list">
 <div class="clan-list-container">
   <h1>Clan List</h1>
 
-  <button class="back-button">Back</button>
+  <button (click)="goToHome()" class="back-button">Back</button>
 
   <div class="create-clan-button">
-    <button>Create Clan</button>
+    <button (click)="showCreateDialog = true" [disabled]="loggedUser?.clanId !== null">Create Clan</button>
   </div>
 
   <ul>
-    <li>
-      <span> clan name </span>
-      <button> Join</button>
+    <li *ngFor="let clan of clans">
+      <span>{{ clan.name }}</span>
+      <button (click)="joinClan(clan.id)" [disabled]="loggedUser?.clanId !== null">Join</button>
     </li>
   </ul>
 </div>
 
-<div class="create-dialog">
-  <h2>Please Name Your Clan</h2>
-  <input type="text" placeholder="Clan Name">
-  <button class="clan-create-btn">Create</button>
-  <button class="clan-cancel-btn">Cancel</button>
-</div>
+<form *ngIf="showCreateDialog" #createClanForm="ngForm" (ngSubmit)="onCreateClanFormSubmit()" class="dialog-overlay">
+  <div class="dialog-box bgColor">
+    <h2 class="l-request-title">Please Name Your Clan</h2>
+    <input type="text" placeholder="Clan Name" [(ngModel)]="clan.name" name="clanName" required>
+    <button type="submit" class="clan-create-btn">Create</button>
+    <button type="button" class="clan-cancel-btn" (click)="showCreateDialog = false">Cancel</button>
+  </div>
+</form>
+</body>

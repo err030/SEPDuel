@@ -33,8 +33,11 @@ public class ClanController {
             clan.setName(clanName);
             if (userRepository.existsById(id)) {
                 User user = userRepository.findById(id).get();
+                if(user.getClanId()!= null) return null;
                 clan.users.add(user);
+                clanRepository.save(clan);
                 user.setClanId(clan.getId());
+                userRepository.save(user);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
@@ -51,6 +54,8 @@ public class ClanController {
         User user = userRepository.findById(id).get();
         clan.users.add(user);
         user.setClanId(clan.getId());
+        userRepository.save(user);
+        clanRepository.save(clan);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
@@ -59,5 +64,14 @@ public class ClanController {
     public ResponseEntity<List<Clan>> getAllClans() {
         List<Clan> list = clanRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    //返回战队成员
+    @GetMapping("/api/clan/{id}/members")
+    public ResponseEntity<Clan> getClanMembers(@PathVariable Long id) {
+        Clan clan = clanRepository.findById(id).get();
+        List<User> list = clan.users;
+        System.out.println("here" + list);
+        return ResponseEntity.status(HttpStatus.OK).body(clan);
     }
 }
