@@ -1,10 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.*;
-import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import de.unidue.beckend_gruppe_q.repository.DeckRepository;
-import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
-import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import de.unidue.beckend_gruppe_q.repository.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +18,8 @@ public class DuelController {
     private DeckRepository deckRepository;
     private CardRepository cardRepository;
     private DuelRequestRepository duelRequestRepository;
+
+    private DuelHistoryRepository duelHistoryRepository;
 
     private Player player1;
     private Player player2;
@@ -184,19 +183,27 @@ public class DuelController {
         User b = userRepository.findById(request.getReceivedUserId()).get();
         a.setStatus(0);
         b.setStatus(0);
+        DuelHistory duelHistory = new DuelHistory(duel);
         if (duel.getWinnerId() == a.getId()) {
             a.setSepCoins(a.getSepCoins() + 100);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())));
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())));
+            long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+            duelHistory.setPlayerABonusPoints(bonusPoints);
+            duelHistory.setPlayerBBonusPoints(-bonusPoints);
         } else {
             b.setSepCoins(b.getSepCoins() + 100);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())));
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())));
+            long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+            duelHistory.setPlayerBBonusPoints(bonusPoints);
+            duelHistory.setPlayerABonusPoints(-bonusPoints);
         }
         userRepository.save(a);
         userRepository.save(b);
         duelRequestRepository.deleteById(id);
         duels.remove(id);
+        duelHistoryRepository.save(duelHistory);
         return null;
     }
 
