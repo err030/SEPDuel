@@ -29,6 +29,8 @@ import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 import {ScoreComponent} from "./component/score/score.component";
+import {ClanComponent} from "./component/clan/clan.component";
+import {ClanListComponent} from "./component/clan-list/clan-list.component";
 
 
 export const routes: Routes = [
@@ -83,6 +85,8 @@ export const routes: Routes = [
 
   {path: 'leaderboard', component: LeaderboardComponent},
   {path: 'score', component: ScoreComponent},
+  {path: 'clan', component: ClanComponent},
+  {path: 'clan-list', component: ClanListComponent},
 
   {path: '**', redirectTo: 'login'}
 
