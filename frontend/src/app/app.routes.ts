@@ -29,6 +29,7 @@ import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 import {ScoreComponent} from "./component/score/score.component";
+import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 
 
 export const routes: Routes = [
@@ -48,6 +49,7 @@ export const routes: Routes = [
   {path: "lootbox", component: LootboxComponent},
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
+  {path: 'sep-tv', component: SepTvComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},
