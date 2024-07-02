@@ -29,8 +29,9 @@ body.clan {
   overflow: hidden;
 }
 
+
 .clan-container h1 {
-  font-family: DIN Alternate, sans-serif;
+  font-family: Hippo, sans-serif;
   font-size: 40px;
   color: #FFF3C1;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -65,8 +66,17 @@ body.clan {
   width: 400px;
 }
 
+.back-button{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
 
-
+.clan-chat-button{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 
 
 

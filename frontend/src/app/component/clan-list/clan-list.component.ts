@@ -56,6 +56,7 @@ export class ClanListComponent implements OnInit {
             alert("Clan created successfully!");
             this.showCreateDialog = false;
             this.updateClanList();
+            this.goToClan();
           }
         },
         error => {
@@ -77,6 +78,7 @@ export class ClanListComponent implements OnInit {
           if (response.status === 200) {
             alert("You have joined this clan!");
             this.updateClanList();
+            this.goToClan();
           }
         }
       );
