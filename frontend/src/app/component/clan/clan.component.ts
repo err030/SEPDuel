@@ -19,7 +19,7 @@ import {Router} from "@angular/router";
 export class ClanComponent implements OnInit{
   clan?: Clan;
   members: User[] = [];
-  loggedUser: User | null = null;
+  loggedUser?: User;
 
   constructor(private clanService: ClanService, private userService: UserService, private router: Router) {
   }
@@ -46,5 +46,20 @@ export class ClanComponent implements OnInit{
 
   goToHome() {
     this.router.navigate(['/homepage-user']);
+  }
+
+  exitClan() {
+    // @ts-ignore
+    this.clanService.exitClan(this.loggedUser?.id).subscribe(
+      () => {
+        // @ts-ignore
+        this.loggedUser.clanId = null;
+        localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+        if (this.loggedUser) {
+          Global.loggedUser = this.loggedUser;
+        }
+        this.goToHome();
+      }
+    );
   }
 }
