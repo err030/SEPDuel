@@ -73,6 +73,66 @@ body.clan-list {
   right: 20px;
 }
 
+.create-dialog{
+  background-color: rgb(55, 55, 55);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001;
+}
+
+.create-title{
+  color: rgb(255, 243, 193);
+}
+
+.create-dialog input{
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 70%;
+}
+
+.clan-dialog-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* 浅灰色背景 */
+  z-index: 1000;
+}
+
+.create-btn{
+  flex-direction: column;
+  margin-top:20px;
+}
+
+.clan-create-btn{
+  margin-right: 80px;
+  background-color: rgba(78, 218, 168, 0.76);
+  width: 80px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.clan-cancel-btn{
+  margin-left: 80px;
+  background-color: rgb(237, 77, 77);
+  width: 80px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
 
 
 
