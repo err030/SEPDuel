@@ -5,6 +5,11 @@
   <h1 *ngIf="duel.remainingTime < 10000">{{ Math.round(duel.remainingTime / 1000) }} Seconds to LOSE!!!</h1>
 </div>
 
+<div *ngIf="duel && !this.isSpectating()" class="switch-visibility">
+  <p>Spectating Visibility: {{ this.duel.visibility ? 'Visible' : 'Hidden' }}</p>
+  <button class="btn-switch-visibility" (click)="toggleVisibility()">Toggle Visibility</button>
+</div>
+
 <div class="duel-container" *ngIf="duel && !duel.gameFinished">
 
   <div class="duel-info">
@@ -34,6 +39,12 @@
            alt="Avatar Opponent">
     </div>
 
+    <div *ngIf="this.isSpectating()" class="opponent-hand-spectating-only">
+      <div *ngFor="let card of duel.playerA.hand">
+        <app-duel-card [card]=card></app-duel-card>
+      </div>
+    </div>
+
     <div class="opponent-game-table">
       <div class="opponent-table-cards">
         <div *ngFor="let card of duel.playerA.table">
@@ -58,7 +69,8 @@
       <h4>HP: {{ duel.playerB.hp }}</h4>
     </div>
     <div>
-      <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player" height="1018"
+      <img class="avatar-border-pl" ngSrc="assets/images/avatar-border-pl.PNG" alt="Avatar Border Player"
+           height="1018"
            width="1023">
       <img class="player-avatar" [src]="getPlayerAvatar()"
            alt="Avatar Player">
@@ -88,9 +100,11 @@
     </div>
 
 
-    <button class="start-game-btn" *ngIf="duel.playerTurn == 0 && isCurrentPlayer()" (click)="endTurn()">Start Game
+    <button class="start-game-btn" *ngIf="!this.isSpectating() && duel.playerTurn == 0 && isCurrentPlayer()"
+            (click)="endTurn()">Start Game
     </button>
-    <button class="end-turn-btn" *ngIf="duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
+    <button class="end-turn-btn"
+            *ngIf="!this.isSpectating() && duel.playerTurn != 0 && !duel.gameFinished && isCurrentPlayer()"
             (click)="endTurn()">End Turn
     </button>
 

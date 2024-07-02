@@ -120,6 +120,18 @@ body.duel {
   width: 80%;
 }
 
+.opponent-hand-spectating-only {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  z-index: 10000;
+}
+
 input[type="checkbox"] {
   margin: 5px;
 }

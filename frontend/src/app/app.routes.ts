@@ -31,6 +31,7 @@ import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-gro
 import {ScoreComponent} from "./component/score/score.component";
 import {ClanComponent} from "./component/clan/clan.component";
 import {ClanListComponent} from "./component/clan-list/clan-list.component";
+import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 
 
 export const routes: Routes = [
@@ -50,6 +51,7 @@ export const routes: Routes = [
   {path: "lootbox", component: LootboxComponent},
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
+  {path: 'sep-tv', component: SepTvComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},
