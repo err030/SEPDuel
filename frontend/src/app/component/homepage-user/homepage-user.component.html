@@ -13,11 +13,12 @@
   <div class="btn-box" id="logout" (click)="userLogout()">Log out</div>
   <div class="btn-box" id="profile" (click)="goToEditProfile()">Profile</div>
   <div class="btn-box" id="lootbox" (click)="goToLootbox()">Loot Box</div>
-  <div class="btn-box" id="sep-tv" (click)="goToSepTv()">SEP TV</div>
+
 
   <div class="game-field-box">
     <button class="game-field dynamic-btn" id="duel" routerLink="/leaderboard"> Leaderboard </button>
     <button (click)="goToDecks()" class="btn-box game-field" id="deck">Deck</button>
+    <div class="btn-box" id="sep-tv" (click)="goToSepTv()">SEP TV</div>
     <button (click)="goToClanList()" class="btn-box game-field" id="clan-list">Clan List</button>
     <button (click)="goToClan()" class="btn-box game-field" id="clan">Clan</button>
   </div>

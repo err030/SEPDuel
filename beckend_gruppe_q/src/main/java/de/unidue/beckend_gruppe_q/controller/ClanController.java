@@ -87,12 +87,12 @@ public class ClanController {
         if (clan == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        user.setClanId(null);
         clan.users.remove(user);
         if (clan.getUsers().isEmpty()) {
             clanRepository.delete(clan);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
-        user.setClanId(null);
         userRepository.save(user);
         clanRepository.save(clan);
         return ResponseEntity.status(HttpStatus.OK).body(user);

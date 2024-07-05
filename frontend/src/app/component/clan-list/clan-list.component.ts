@@ -93,7 +93,7 @@ export class ClanListComponent implements OnInit {
 
   goToClan() {
     // @ts-ignore
-    this.router.navigate(['/clan/' + this.clan.id]);
+    this.router.navigate(['/clan']);
   }
 
   goToHome() {
