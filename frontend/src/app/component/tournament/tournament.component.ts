@@ -34,19 +34,19 @@ export class TournamentComponent implements OnInit {
       }
     );
   }
-
-  placeBet(playerId: number) {
-    this.tournamentService.placeBet(this.userId, this.tournamentId, playerId).subscribe(
-      response => {
-        console.log('Bet placed successfully', response);
-        alert('Bet placed successfully');
-      },
-      error => {
-        console.error('Error placing bet', error);
-        alert('Error placing bet: ' + error.error);
-      }
-    );
-  }
+  //
+  // placeBet(playerId: number) {
+  //   this.tournamentService.placeBet(this.userId, this.tournamentId, playerId).subscribe(
+  //     response => {
+  //       console.log('Bet placed successfully', response);
+  //       alert('Bet placed successfully');
+  //     },
+  //     error => {
+  //       console.error('Error placing bet', error);
+  //       alert('Error placing bet: ' + error.error);
+  //     }
+  //   );
+  // }
 
   goToBetResults(){
     this.router.navigate(['/bet']);
