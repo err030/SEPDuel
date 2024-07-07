@@ -5,12 +5,21 @@
   <button class="back-button" (click)="goToHome()">Back</button>
 
   <div class="clan-chat-button">
-    <button>Chat</button>
+    <button (click)="goToChat()">Chat</button>
   </div>
 
 
-  <div class="competition-button">
-    <button>Start Competition</button>
+  <div class="tournament-button">
+    <button (click)="startTournamentRequest()">Start Tournament Request</button>
+  </div>
+
+
+  <div *ngIf="this.invitations.length > 0" class="clan-invitations">
+    YOU HAVE {{ this.invitations.length }} INVITATIONS:
+    <div *ngFor="let invitation of invitations">
+      <button (click)="acceptInvitation(invitation)">Accept</button>
+      <button (click)="declineInvitation(invitation)">Decline</button>
+    </div>
   </div>
 
   <div class="clan-members">
