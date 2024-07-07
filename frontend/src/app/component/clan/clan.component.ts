@@ -62,4 +62,8 @@ export class ClanComponent implements OnInit{
       }
     );
   }
+
+  goToTournaments() {
+    this.router.navigate(['/tournament']);
+  }
 }
