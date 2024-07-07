@@ -1,0 +1,32 @@
+version : '3'
+services:
+  mysql:
+    image: mysql:8.0.36
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: sep_ss24
+      MYSQL_DATABASE: sep_ss24
+      MYSQL_USER: sep_ss24
+      MYSQL_PASSWORD: SepSS24*
+    restart: unless-stopped
+  backend:
+    build: ./beckend_gruppe_q
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/sep_ss24
+      - SPRING_DATASOURCE_USERNAME=sep_ss24
+      - SPRING_DATASOURCE_PASSWORD=SepSS24*
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  frontend:
+    build: ./frontend
+
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+

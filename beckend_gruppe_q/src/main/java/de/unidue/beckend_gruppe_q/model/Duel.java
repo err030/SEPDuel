@@ -91,6 +91,7 @@ public class Duel {
         }
         if (defender == null) {
             this.getOpponent().setHp(this.getOpponent().getHp() - attacker.getAttack());
+            this.currentPlayer.damageDealt += attacker.getAttack();
             checkIfGameFinished();
             return;
         }

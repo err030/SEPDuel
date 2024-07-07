@@ -21,6 +21,7 @@
       <p><strong class="info-title">Lastname:</strong> {{ loggedUser.lastname }}</p>
       <p *ngIf="loggedUser.groupId == 1"><strong>SEP Coins:</strong> {{ loggedUser.sepCoins }}</p>
       <p *ngIf="loggedUser.groupId == 1"><strong>Leaderboard Points:</strong> {{ loggedUser.leaderBoardPunkt }}</p>
+      <p *ngIf="loggedUser.groupId == 1"><strong>Clan:</strong> {{ loggedUser.clanId }}</p>
     </div>
 
     <div class="password-btn-box">

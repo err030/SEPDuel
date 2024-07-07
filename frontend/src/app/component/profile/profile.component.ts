@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { UserService } from "../../service/user.service";
-import { Global } from "../../global";
-import { CommonModule } from '@angular/common';
-import { FormsModule } from "@angular/forms";
-import { PaginatorModule } from "primeng/paginator";
-import { HttpEventType, HttpResponse } from "@angular/common/http";
-import { ChangeDetectorRef } from '@angular/core';
-import { User } from '../../model/user';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouterLink} from '@angular/router';
+import {UserService} from "../../service/user.service";
+import {Global} from "../../global";
+import {CommonModule} from '@angular/common';
+import {FormsModule} from "@angular/forms";
+import {PaginatorModule} from "primeng/paginator";
+import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {ChangeDetectorRef} from '@angular/core';
+import {User} from '../../model/user';
+import {Clan} from "../../model/clan";
 
 @Component({
   selector: 'app-profile',
@@ -26,11 +27,12 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private changeDetector: ChangeDetectorRef
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     const storedUser = localStorage.getItem('loggedUser');
-    if(storedUser) {
+    if (storedUser) {
       this.loggedUser = JSON.parse(storedUser);
     }
     if (!this.loggedUser || !this.loggedUser.id) {
@@ -119,16 +121,15 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUserInfo(updatedData: any): void {
-    this.loggedUser = { ...this.loggedUser, ...updatedData };
+    this.loggedUser = {...this.loggedUser, ...updatedData};
     localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
     this.changeDetector.detectChanges();
   }
 
-  goToHome(){
-    if(this.loggedUser.groupId == 1){
+  goToHome() {
+    if (this.loggedUser.groupId == 1) {
       this.router.navigate(['/homepage-user']);
-    }
-    else if(this.loggedUser.groupId == 2){
+    } else if (this.loggedUser.groupId == 2) {
       this.router.navigate(['/homepage-admin']);
     }
   }

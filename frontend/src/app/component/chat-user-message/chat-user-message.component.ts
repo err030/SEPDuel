@@ -183,6 +183,12 @@ export class ChatUserMessageComponent implements OnInit {
               this.isOffline=false;
               message.msgContent='';
 
+              /*     Warum makieren wir alle nachrichten als gelesen?
+                          this.allMSGs.forEach(msg => {
+                            msg.isRead=true;
+                          });
+              */
+
               return;
             }
             return;
@@ -207,6 +213,7 @@ export class ChatUserMessageComponent implements OnInit {
           console.log('Ist der Benutzer offline：',this.isOffline)
 
           const temp=JSON.stringify(this.allMSGs);
+          //console.log(temp);
           that.allMSGs=[];
           that.allMSGs=JSON.parse(temp);
 
@@ -268,6 +275,9 @@ export class ChatUserMessageComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   //sendet alle ungelesenen nachrichten nochmal außer die
   send_All_Unread_Messages_Again(current_message : Message | null): void
@@ -364,10 +374,13 @@ export class ChatUserMessageComponent implements OnInit {
    * wenn kein Avatar hochgeladen wurde
    */
   getUserAvatarUrl(senderType:string): string {
-    if (senderType==='me'&& this.loggedUser) {
+    if (senderType==='me'&&this.loggedUser && this.loggedUser.avatarUrl) {
+      return Global.backendUrl + this.loggedUser.avatarUrl;
+    } else if (senderType==='me'&& this.loggedUser && !this.loggedUser.avatarUrl) {
       return this.loggedUser.lastname.charAt(0)+this.loggedUser.firstname.charAt(0) ;
-    }
-    else if (senderType==='friend'&& this.selectedFriend) {
+    }else if (senderType==='friend'&& this.selectedFriend && this.selectedFriend.avatarUrl) {
+      return Global.backendUrl + this.selectedFriend.avatarUrl;
+    }else if (senderType==='friend'&& this.selectedFriend && !this.selectedFriend.avatarUrl) {
       return this.selectedFriend.lastname.charAt(0)+this.selectedFriend.firstname.charAt(0) ;
     } else {
       return "";

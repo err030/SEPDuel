@@ -14,21 +14,6 @@ import {NgIf} from "@angular/common";
 export class ScoreComponent {
   @Input() duel?: Duel;
 
-  summonedTotal = this.duel?.playerB.summonedCards.length;
-
-  summonedCommon = this.duel?.playerB.summonedCards.filter(card => card.rarity === 'COMMON').length;
-
-  summonedRare = this.duel?.playerB.summonedCards.filter(card => card.rarity === 'RARE').length;
-
-  summonedLegendary = this.duel?.playerB.summonedCards.filter(card => card.rarity === 'LEGENDARY').length;
-
-  sacrificedTotal = this.duel?.playerA.sacrificedCards.length;
-
-  sacrificedCommon = this.duel?.playerA.sacrificedCards.filter(card => card.rarity === 'COMMON').length;
-
-  sacrificedRare = this.duel?.playerA.sacrificedCards.filter(card => card.rarity === 'RARE').length;
-
-  sacrificedLegendary = this.duel?.playerA.sacrificedCards.filter(card => card.rarity === 'LEGENDARY').length;
 
   isWinner(){
     return this.duel?.winnerId === this.duel?.playerB.id;
@@ -42,6 +27,42 @@ export class ScoreComponent {
     } else {
       return -Math.max((opponentPoints - userPoints) / 2, 50);
     }
+  }
+
+  getDamageDealt(){
+    return this.duel?.playerB?.damageDealt;
+  }
+
+  getSummonedTotal(): number {
+    return this.duel?.playerB.summonedCards.length ?? 0;
+  }
+
+  getSummonedCommon(): number {
+    return this.duel?.playerB.summonedCards.filter(card => card.rarity === 'COMMON').length ?? 0;
+  }
+
+  getSummonedRare(): number {
+    return this.duel?.playerB.summonedCards.filter(card => card.rarity === 'RARE').length ?? 0;
+  }
+
+  getSummonedLegendary(): number {
+    return this.duel?.playerB.summonedCards.filter(card => card.rarity === 'LEGENDARY').length ?? 0;
+  }
+
+  getSacrificedTotal(): number {
+    return this.duel?.playerB.sacrificedCards.length ?? 0;
+  }
+
+  getSacrificedCommon(): number {
+    return this.duel?.playerB.sacrificedCards.filter(card => card.rarity === 'COMMON').length ?? 0;
+  }
+
+  getSacrificedRare(): number {
+    return this.duel?.playerB.sacrificedCards.filter(card => card.rarity === 'RARE').length ?? 0;
+  }
+
+  getSacrificedLegendary(): number {
+    return this.duel?.playerB.sacrificedCards.filter(card => card.rarity === 'LEGENDARY').length ?? 0;
   }
 
 

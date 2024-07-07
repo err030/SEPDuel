@@ -1,0 +1,84 @@
+body.clan {
+  background-color: rgb(27, 27, 28);
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.clan-container {
+  position: relative;
+  background-color: rgb(55, 55, 55);
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  text-align: left;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+.clan-container h1 {
+  font-size: 40px;
+  color: #FFF3C1;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.clan-members h2{
+  color: #FFF3C1;
+}
+
+.clan-members span {
+  color: rgba(23, 23, 23, 0.9);
+}
+.clan-members ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.clan-members li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: rgb(55, 37, 19);
+  background-color: rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  width: 400px;
+}
+
+.back-button{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.clan-chat-button{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+
+
+
+
+

@@ -81,6 +81,7 @@ export class LootboxComponent implements OnInit {
     :
     void {
     this.userId = this.userService.loggedUser?.id; //user info may change during this life circle,dynamic
+    this.getUser();
     this.getAllBronzeLootboxes();
     this.getAllSilverLootboxes();
     this.getAllGoldLootboxes();

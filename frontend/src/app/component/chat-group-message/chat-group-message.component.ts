@@ -16,7 +16,6 @@ import {AvatarModule} from "primeng/avatar";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
 import { Scroller } from 'primeng/scroller'
-import {interval} from "rxjs";
 
 
 
@@ -74,8 +73,6 @@ export class ChatGroupMessageComponent implements OnInit{
   public msgIsRead: boolean = false;
   editUnReadMsg: string = '';
   public editMsgUuid: string = '';
-  // @ts-ignore
-  public subscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
               private friendService: FriendService,
@@ -224,22 +221,8 @@ export class ChatGroupMessageComponent implements OnInit{
         }
       });
     });
-    const source = interval(2000);
-    this.subscription = source.subscribe(val => this.send_All_Unread_Messages_Again(null));
-  }
 
-  //sendet alle ungelesenen nachrichten nochmal außer die
-  send_All_Unread_Messages_Again(current_message : Message | null): void
-  {
-    this.allMSGs.forEach(c_message => {
-      if(c_message.isRead == false && c_message !== current_message)
-      {
-        // @ts-ignore
-        this.socket$.next(c_message);
-      }
-    });
-    console.log("send_All_Unread_Messages_Again");
-  }
+ }
 
   sendMessage(){
     const temp = JSON.stringify(this.allMSGs);
@@ -266,7 +249,7 @@ export class ChatGroupMessageComponent implements OnInit{
     localStorage.setItem("groupMsgList", JSON.stringify(this.msgList));
 
     this.textareaInput = ''; // Clear the input field
-    this.send_All_Unread_Messages_Again(message);
+
     // @ts-ignore
     this.socket$.next(message);
 
@@ -384,11 +367,16 @@ export class ChatGroupMessageComponent implements OnInit{
       if(userItem.id==senderId){
         this.selectedFriend=userItem;
       }
+
     })
 
-    if (senderType === 'me' && this.loggedUser) {
+    if (senderType === 'me' && this.loggedUser && this.loggedUser.avatarUrl) {
+      return Global.backendUrl + this.loggedUser.avatarUrl;
+    } else if (senderType === 'me' && this.loggedUser && !this.loggedUser.avatarUrl) {
       return this.loggedUser.lastname.charAt(0) + this.loggedUser.firstname.charAt(0);
-    } else if (senderType === 'friend' && this.selectedFriend) {
+    } else if (senderType === 'friend' && this.selectedFriend && this.selectedFriend.avatarUrl) {
+      return Global.backendUrl + this.selectedFriend.avatarUrl;
+    } else if (senderType === 'friend' && this.selectedFriend && !this.selectedFriend.avatarUrl) {
       return this.selectedFriend.lastname.charAt(0) + this.selectedFriend.firstname.charAt(0);
     } else {
       return "";
@@ -396,9 +384,9 @@ export class ChatGroupMessageComponent implements OnInit{
 
   }
 
-  // public getGroupUserAvatarUrl(groupUser:User): string {
-  //   return Global.backendUrl + groupUser.avatarUrl;
-  // }
+  public getGroupUserAvatarUrl(groupUser:User): string {
+    return Global.backendUrl + groupUser.avatarUrl;
+  }
 
   openFriendList(): void {
     this.showGroupUserList=true;
