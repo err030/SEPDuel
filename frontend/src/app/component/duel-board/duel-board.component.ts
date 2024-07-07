@@ -239,5 +239,6 @@ export class DuelBoardComponent implements OnInit {
     return "http://localhost:8080/avatars/user.png";
   }
 
+
   protected readonly Math = Math;
 }

@@ -29,9 +29,9 @@ import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 import {ScoreComponent} from "./component/score/score.component";
+import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 import {ClanComponent} from "./component/clan/clan.component";
 import {ClanListComponent} from "./component/clan-list/clan-list.component";
-import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 import {TournamentComponent} from "./component/tournament/tournament.component";
 import {BetComponent} from "./component/bet/bet.component";
 

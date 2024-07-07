@@ -13,6 +13,14 @@
     <button (click)=" goToTournaments()">Start Competition</button>
   </div>
 
+  <div *ngIf="this.invitations.length > 0" class="clan-invitations">
+    YOU HAVE {{ this.invitations.length }} INVITATIONS:
+    <div *ngFor="let invitation of invitations">
+      <button (click)="acceptInvitation(invitation)">Accept</button>
+      <button (click)="declineInvitation(invitation)">Decline</button>
+    </div>
+  </div>
+
   <div class="clan-members">
     <h2>Members</h2>
     <ul>

@@ -3,15 +3,18 @@ import {Clan} from "../../model/clan";
 import {User} from "../../model/user";
 import {ClanService} from "../../service/clan.service";
 import {UserService} from "../../service/user.service";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Global} from "../../global";
 import {Router} from "@angular/router";
+import {TournamentService} from "../../service/tournament.service";
+import {TournamentInvitation} from "../../model/tournament-invitation.model";
 
 @Component({
   selector: 'app-clan',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './clan.component.html',
   styleUrl: './clan.component.css'
@@ -19,9 +22,10 @@ import {Router} from "@angular/router";
 export class ClanComponent implements OnInit{
   clan?: Clan;
   members: User[] = [];
+  invitations: TournamentInvitation[] = [];
   loggedUser?: User;
 
-  constructor(private clanService: ClanService, private userService: UserService, private router: Router) {
+  constructor(private clanService: ClanService, private userService: UserService, private router: Router, private tournamentService: TournamentService) {
   }
 
   ngOnInit() {
@@ -33,6 +37,7 @@ export class ClanComponent implements OnInit{
       alert("You haven't joined any clan yet.");
       this.goToHome();
     }
+    this.refreshInvitations();
   }
 
   updateClanMembers(id: number): void {
@@ -65,5 +70,52 @@ export class ClanComponent implements OnInit{
 
   goToTournaments() {
     this.router.navigate(['/tournament']);
+  }
+
+  goToChat() {
+
+  }
+
+  startTournamentRequest() {
+    //@ts-ignore
+    this.tournamentService.startTournamentRequest(Global.loggedUser.id, this.clan.id).subscribe(
+      response => {
+        console.log(response);
+      })
+  }
+
+  getInvitations() {
+    this.tournamentService.getInvitations().subscribe(
+      (response:any) => {
+        console.log(response);
+        this.invitations = response.body;
+      })
+  }
+
+  refreshInvitations() {
+    setInterval(() => {
+      this.getInvitations();
+    }, 1000)
+  }
+
+
+  acceptInvitation(invitation: TournamentInvitation) {
+    invitation.accepted = true;
+    this.tournamentService.acceptOrDenyTournamentRequest(Global.loggedUser.id ?? 0, invitation).subscribe(
+      response => {
+        console.log(response);
+        this.getInvitations();
+      }
+    )
+  }
+
+  declineInvitation(invitation: TournamentInvitation) {
+    invitation.accepted = false;
+    this.tournamentService.acceptOrDenyTournamentRequest(Global.loggedUser.id ?? 0, invitation).subscribe(
+      response => {
+        console.log(response);
+        this.getInvitations();
+      }
+    )
   }
 }
