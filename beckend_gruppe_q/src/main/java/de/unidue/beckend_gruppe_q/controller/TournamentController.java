@@ -202,19 +202,19 @@ public class TournamentController {
      *
      * @param userId
      * @param tournamentId
-     * @param bet
+     * @param betOnUserId
      * @return
      */
-    @PostMapping("/api/user/{userId}/tournament/{tournamentId}/placeBet")
+    @PostMapping("/api/user/{userId}/tournament/{tournamentId}/betOnUser/{betOnUserId}/placeBet")
     ResponseEntity<?> placeBet(@PathVariable Long userId,
                                @PathVariable Long tournamentId,
-                               @RequestBody TournamentBet bet) {
+                               @PathVariable Long betOnUserId) {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found"));
 
         Tournament tournament = tournamentRepository.findById(tournamentId).orElseThrow(() -> new NoSuchElementException("tournament not found"));
 
-        if (bet.getBetOnUserId().equals(currentUser.getId())) {
+        if (betOnUserId.equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You cannot bet on yourself!");
         }
 
@@ -228,7 +228,7 @@ public class TournamentController {
         TournamentBet tournamentBet = new TournamentBet();
         tournamentBet.setTournament(tournament);
         tournamentBet.setUser(currentUser);
-        tournamentBet.setBetOnUserId(bet.getBetOnUserId());
+        tournamentBet.setBetOnUserId(betOnUserId);
         tournamentBetRepository.save(tournamentBet);
 
         return ResponseEntity.ok().body("Tournament has been placed");
