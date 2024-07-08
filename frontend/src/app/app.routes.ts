@@ -22,6 +22,7 @@ import {FriendComponent} from "./component/friend/friend.component";
 import {AdminUserlistComponent} from "./component/admin-userlist/admin-userlist.component";
 import {AllfriendlistComponent} from "./component/allfriendlist/allfriendlist.component";
 import {DuelBoardComponent} from "./component/duel-board/duel-board.component";
+import {DuelHistoryComponent} from "./component/duel-history/duel-history.component";
 import {LeaderboardComponent} from "./component/leaderboard/leaderboard.component";
 import {LootboxComponent} from "./component/lootbox/lootbox.component";
 
@@ -31,6 +32,7 @@ import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-gro
 import {ScoreComponent} from "./component/score/score.component";
 import {ClanComponent} from "./component/clan/clan.component";
 import {ClanListComponent} from "./component/clan-list/clan-list.component";
+import {ClanGroupMessageComponent} from './component/clan-group-message/clan-group-message.component'
 
 
 export const routes: Routes = [
@@ -50,6 +52,7 @@ export const routes: Routes = [
   {path: "lootbox", component: LootboxComponent},
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
+  {path: 'duel-history', component: DuelHistoryComponent},
 
 
   {path: 'addfriend', component:AddfriendComponent},
@@ -87,6 +90,7 @@ export const routes: Routes = [
   {path: 'score', component: ScoreComponent},
   {path: 'clan', component: ClanComponent},
   {path: 'clan-list', component: ClanListComponent},
+  {path: 'clan-group-message/:clanId', component: ClanGroupMessageComponent},
 
   {path: '**', redirectTo: 'login'}
 

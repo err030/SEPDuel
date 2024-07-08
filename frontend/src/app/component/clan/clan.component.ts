@@ -47,4 +47,10 @@ export class ClanComponent implements OnInit{
   goToHome() {
     this.router.navigate(['/homepage-user']);
   }
+
+  goChat() {
+    if (this.clan) {
+      void this.router.navigateByUrl('/clan-group-message/' + this.clan.id)
+    }
+  }
 }

@@ -123,11 +123,12 @@ public class DuelController {
         return bonusCard;
     }
 
-    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository) {
+    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository) {
         this.userRepository = userRepository;
         this.deckRepository = deckRepository;
         this.cardRepository = cardRepository;
         this.duelRequestRepository = duelRequestRepository;
+        this.duelHistoryRepository = duelHistoryRepository;
     }
 
     @GetMapping("/api/duel/{id}/attack")
@@ -175,7 +176,7 @@ public class DuelController {
     public Duel endGame(@PathVariable long id) {
         Duel duel = duels.get(id);
         if (duel == null) {
-            throw new IllegalStateException("Duel not found");
+            return null;
         }
 
         DuelRequest request = duelRequestRepository.findById(id).get();
@@ -201,9 +202,9 @@ public class DuelController {
         }
         userRepository.save(a);
         userRepository.save(b);
+        duelHistoryRepository.save(duelHistory);
         duelRequestRepository.deleteById(id);
         duels.remove(id);
-        duelHistoryRepository.save(duelHistory);
         return null;
     }
 
