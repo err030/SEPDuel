@@ -50,6 +50,7 @@ export class FriendService {
 
   getAllFriends(currentUserId: number): Observable<HttpResponse<User[]>> {
     const url = Global.friendRestServiceUrl + "/getAllFriends/" + currentUserId;
+    //完整的url例子: http://localhost:8080/friend/getAllFriends/123
     return this.http.get<User[]>(url, {observe: 'response'});
   }
 

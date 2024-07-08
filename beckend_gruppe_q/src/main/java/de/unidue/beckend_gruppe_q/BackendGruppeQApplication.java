@@ -25,7 +25,7 @@ import java.util.List;
 
 @EnableScheduling
 @SpringBootApplication
-//@Transactional
+@Transactional
 public class BackendGruppeQApplication {
 
     public static void main(String[] args) {
@@ -36,7 +36,7 @@ public class BackendGruppeQApplication {
     public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, AdminController adminController) {
         return args -> {
             // 创建 File 对象指向要上传的文件
-            File file = new File("beckend_gruppe_q/src/main/resources/CSV/test_cards_upload.csv");
+            File file = new File("src/main/resources/CSV/test_cards_upload.csv");
             FileInputStream input = new FileInputStream(file);
 
             // 创建 MockMultipartFile 对象
@@ -93,3 +93,4 @@ public class BackendGruppeQApplication {
 ////            userRepository.save(u);
     /*}*/
 }
+//}
