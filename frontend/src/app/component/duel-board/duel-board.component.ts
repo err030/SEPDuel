@@ -34,7 +34,8 @@ export class DuelBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.duelId = params['duelId'];
+      this.duelId =  params['duelId'];
+      console.log(this.duelId);
       try {
         this.refreshDuel()
       } catch (e) {
@@ -50,15 +51,15 @@ export class DuelBoardComponent implements OnInit {
     console.log('DuelBoardComponent initialized');
     console.log(this.duel);
     console.log("Player A:", this.duel.playerA);
-
     console.log("Player B:", this.duel.playerB);
-
-    console.log("Current player:", this.duel.currentPlayer)
+    console.log("Current player:", this.duel.currentPlayer);
   }
 
   loadDuel(duelId: number) {
+    console.log(duelId);
     this.duelService.getDuel(duelId).subscribe({
       next: (data) => {
+        console.log('Received data:', data);
         if (data.id){
           this.duel = data;
           console.log('Duel loaded successfully:', data);
@@ -111,6 +112,8 @@ export class DuelBoardComponent implements OnInit {
   refreshDuel() {
     setInterval(() => {
       this.loadDuel(this.duelId);
+      console.log(this.duelId);
+
     }, 1000)
   }
 

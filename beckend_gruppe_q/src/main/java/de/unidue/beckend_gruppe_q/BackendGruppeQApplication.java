@@ -32,7 +32,7 @@ public class BackendGruppeQApplication {
         SpringApplication.run(BackendGruppeQApplication.class, args);
     }
 
-    @Bean
+    /*@Bean
     public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, AdminController adminController) {
         return args -> {
             // 创建 File 对象指向要上传的文件
@@ -43,7 +43,7 @@ public class BackendGruppeQApplication {
             MultipartFile multipartFile = new MockMultipartFile("file",
                     file.getName(), "text/csv", input);
             adminController.uploadCard(multipartFile);
-        };
+        };*/
 ////            create a deck
 ////            Deck deck = new Deck();
 ////            deck.setName("Deck");
@@ -91,5 +91,5 @@ public class BackendGruppeQApplication {
 ////                c.add(new Card("test", Rarity.COMMON, 1, 1, "A card for testing", ""));
 ////            }
 ////            userRepository.save(u);
-    }
+    /*}*/
 }

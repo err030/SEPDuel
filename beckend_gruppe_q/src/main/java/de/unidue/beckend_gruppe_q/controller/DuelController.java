@@ -92,6 +92,8 @@ public class DuelController {
         return duel;
     }
 
+
+
     @GetMapping("/api/duel/{id}/start")
     public Duel startDuel(@PathVariable long id) {
         Duel duel = duels.get(id);
@@ -111,6 +113,9 @@ public class DuelController {
         }
         duel.nextRound();
         this.startTimer(id);
+        if (duel.getCurrentPlayer().isRobot()) {
+            robotPlay(duel);
+        }
         return duel;
     }
 
@@ -168,6 +173,28 @@ public class DuelController {
         }
 
         return duel;
+    }
+
+    private void robotPlay(Duel duel) {
+        while (duel.getCurrentPlayer().isRobot() && !duel.isGameFinished()) {
+            Player robot = duel.getCurrentPlayer();
+            // Example logic for summoning a card
+            Optional<Card> cardToSummon = robot.getHand().stream().findFirst();
+            cardToSummon.ifPresent(card -> {
+                duel.summon(card);
+                System.out.println("Robot summoned card: " + card.getName());
+            });
+
+            // Example logic for attacking
+            Optional<Card> attacker = robot.getTable().stream().findFirst();
+            Optional<Card> defender = duel.getOpponent().getTable().stream().findFirst();
+            attacker.ifPresent(atk -> {
+                duel.attack(atk, defender.orElse(null));
+                System.out.println("Robot attacked with card: " + atk.getName());
+            });
+            // Move to next round
+            duel.nextRound();
+        }
     }
 
 
