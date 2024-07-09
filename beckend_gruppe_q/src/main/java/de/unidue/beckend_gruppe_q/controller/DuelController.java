@@ -208,7 +208,6 @@ public class DuelController {
 
     private void robotPlay(Duel duel) {
         boolean attackPlayer = true;
-
         while (duel.getCurrentPlayer().isRobot() && !duel.isGameFinished()) {
             Player robot = duel.getCurrentPlayer();
 
@@ -279,27 +278,43 @@ public class DuelController {
             return null;
         }
 
-        DuelRequest request = duelRequestRepository.findById(id).get();
-        User a = userRepository.findById(request.getSendUserId()).get();
-        User b = userRepository.findById(request.getReceivedUserId()).get();
-        a.setStatus(0);
-        b.setStatus(0);
-        DuelHistory duelHistory = new DuelHistory(duel);
-        if (duel.getWinnerId() == a.getId()) {
-            a.setSepCoins(a.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
-            duelHistory.setPlayerABonusPoints(bonusPoints);
-            duelHistory.setPlayerBBonusPoints(-bonusPoints);
-        } else {
-            b.setSepCoins(b.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
-            duelHistory.setPlayerBBonusPoints(bonusPoints);
-            duelHistory.setPlayerABonusPoints(-bonusPoints);
+        DuelRequest request = duelRequestRepository.findById(id).orElse(null);
+        if (request == null) {
+            return null;
         }
+
+        User a = userRepository.findById(request.getSendUserId()).orElse(null);
+        User b = userRepository.findById(request.getReceivedUserId()).orElse(null);
+        if (a == null || b == null) {
+            return null;
+        }else{
+            a.setStatus(0);
+            b.setStatus(0);
+        }
+
+        DuelHistory duelHistory = new DuelHistory(duel);
+        if(!a.isRobot()&&!b.isRobot()){
+            if (duel.getWinnerId() == a.getId()) {
+                a.setSepCoins(a.getSepCoins() + 100);
+                long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
+                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+                duelHistory.setPlayerABonusPoints(bonusPoints);
+                duelHistory.setPlayerBBonusPoints(-bonusPoints);
+            } else {
+                b.setSepCoins(b.getSepCoins() + 100);
+                long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
+                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+                duelHistory.setPlayerBBonusPoints(bonusPoints);
+                duelHistory.setPlayerABonusPoints(-bonusPoints);
+            }
+        }else{
+            if(duel.getWinnerId() == a.getId()){
+                a.setSepCoins(a.getSepCoins() + 50);
+            }
+        }
+
         userRepository.save(a);
         userRepository.save(b);
         duelHistoryRepository.save(duelHistory);
