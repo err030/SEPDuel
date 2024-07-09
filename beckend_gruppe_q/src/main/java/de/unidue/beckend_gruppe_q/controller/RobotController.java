@@ -67,31 +67,7 @@ public class RobotController {
     }
 
 
-    @PostMapping("/api/duel/createRobotDuel/{duelId}/{userId}/{deck1Id}")
-    public ResponseEntity<?> createRobotDuel(@PathVariable long duelId, @PathVariable Long userId, @PathVariable long deck1Id) {
-        // 获取当前用户
-        System.out.println("Received request to create robot duel: duelId=" + duelId + ", userId=" + userId + ", deck1Id=" + deck1Id);
-        User user = userRepository.findById(userId).orElse(null);
-        User robot = userRepository.findByEmail("robot@robot.com").orElse(null);
-        if (user != null && robot!=null) {
-            List<Card> robotCards = robotService.generateRandomDeck();
-            Deck robotDeck = new Deck("Robot Deck", "A deck for the robot opponent", robotCards);
 
-            Player player1 = new Player(user, deckRepository.findById(deck1Id).get());
-            Player player2 = new Player(robot, robotDeck);
-
-            Duel duel = new Duel(player1, player2);
-            duel.setId(duelId);
-            duels.put(duel.getId(), duel);
-            System.out.println("Duel created: " + duel);
-            duel.start();
-            this.startTimer(duelId);
-            return ResponseEntity.status(HttpStatus.OK).body(duel);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
-        }
-    }
 
 
 
