@@ -4,6 +4,8 @@ package de.unidue.beckend_gruppe_q.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,5 +22,7 @@ public class Tournament {
     private int currentRound;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> participants;
+    @OneToMany
+    public List<DuelRequest> duelRequests = new ArrayList<>();
     private Long winnerId;
 }

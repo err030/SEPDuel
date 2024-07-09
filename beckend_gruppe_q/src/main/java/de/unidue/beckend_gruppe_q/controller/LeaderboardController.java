@@ -68,6 +68,12 @@ public class LeaderboardController {
         return ResponseEntity.ok().body(duelRequests);
     }
 
+    @GetMapping("/duelRequest/getAllDuelRequests")
+    public ResponseEntity<List<DuelRequest>> getAllDuelRequests() {
+        List<DuelRequest> duelRequests = duelRequestRepository.findAll();
+        return ResponseEntity.ok().body(duelRequests);
+    }
+
     @GetMapping("/duelRequest/getDuelRequest/{duelRequestId}")
     public ResponseEntity<DuelRequest> getDuelRequest(@PathVariable(value = "duelRequestId") Long duelRequestId) {
         Optional<DuelRequest> duelRequestOptional = duelRequestRepository.findById(duelRequestId);

@@ -25,7 +25,7 @@ public class DuelController {
 
     private Player player1;
     private Player player2;
-    private Map<Long, Duel> duels = new ConcurrentHashMap<>();
+    public Map<Long, Duel> duels = new ConcurrentHashMap<>();
     private final Map<Long, Long> duelTimers = new ConcurrentHashMap<>();
 
     public void startTimer(long duelId) {
