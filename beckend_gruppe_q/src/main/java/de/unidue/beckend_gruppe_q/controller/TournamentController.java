@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,11 +25,11 @@ public class TournamentController {
     private final DuelController duelController;
     private final TournamentBetRepository tournamentBetRepository;
     private final LootboxRepository lootboxRepository;
-    List<Duel> duels = new ArrayList<>();
+    private final DuelRequestRepository duelRequestRepository;
 
 
     public TournamentController(TournamentRepository tournamentRepository, UserRepository userRepository,
-                                ClanRepository clanRepository, TournamentInvitationRepository tournamentInvitationRepository, DuelController duelController, TournamentBetRepository tournamentBetRepository, LootboxRepository lootboxRepository) {
+                                ClanRepository clanRepository, TournamentInvitationRepository tournamentInvitationRepository, DuelController duelController, TournamentBetRepository tournamentBetRepository, LootboxRepository lootboxRepository, DuelRequestRepository duelRequestRepository) {
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
         this.clanRepository = clanRepository;
@@ -38,11 +37,13 @@ public class TournamentController {
         this.duelController = duelController;
         this.tournamentBetRepository = tournamentBetRepository;
         this.lootboxRepository = lootboxRepository;
+        this.duelRequestRepository = duelRequestRepository;
     }
 
 
     /**
      * send invitations to all the users in the clan except himself
+     *
      * @param currentUserId
      * @param clanId
      * @return null
@@ -58,6 +59,7 @@ public class TournamentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
+
         Tournament tournament = new Tournament();
         tournament.setClan(clan);
         tournament.setStatus("Waiting");
@@ -66,7 +68,7 @@ public class TournamentController {
         Tournament finalTournament = tournament;
         List<TournamentInvitation> invitations = clan.getUsers().stream()
                 .filter(user -> !user.getId().equals(currentUserId))
-                .map(user -> new TournamentInvitation(finalTournament, user,false))
+                .map(user -> new TournamentInvitation(finalTournament, user, false))
                 .toList();
         tournamentInvitationRepository.saveAll(invitations);
 
@@ -76,6 +78,7 @@ public class TournamentController {
 
     /**
      * whether the invitations are accepted by the user will be stored in the database
+     *
      * @param updateRequest
      * @param userId
      * @return TournamentInvitation
@@ -99,18 +102,21 @@ public class TournamentController {
 
     /**
      * get all invitations,if all invitations are accepted, the tournament will start
+     *
      * @return List<TournamentInvitation>
      */
     @GetMapping("/api/tournament/getInvitations/")
     ResponseEntity<List<TournamentInvitation>> getInvitations() {
 
         List<TournamentInvitation> invitations = tournamentInvitationRepository.findAll();
+        invitations = invitations.stream().filter(invitation -> !invitation.isAccepted()).toList();
         return ResponseEntity.status(HttpStatus.OK).body(invitations);
     }
 
 
     /**
      * the tournament will start according to the tournamentId
+     *
      * @param tournamentId
      * @return message
      */
@@ -126,76 +132,103 @@ public class TournamentController {
             tournamentRepository.save(tournament);
 
             List<User> participants = invitations.stream().map(TournamentInvitation::getUser).toList();
-            matchPLayersAndDuel(participants);
-
-            tournament.setStatus("Completed");
-            tournamentRepository.save(tournament);
-
-            if (participants.size() == 1) {
-                tournament.setWinnerId(participants.get(0).getId()); //the tournament is over, set the winnerId in oder to see if the user wins the bet
-                tournamentRepository.save(tournament);
+            Collections.shuffle(invitations);
+            while (invitations.size() > 1) {
+                TournamentInvitation a = invitations.remove(0);
+                TournamentInvitation b = invitations.remove(0);
+                tournament.duelRequests.add(matchPlayersAndDuel(a, b));
             }
+            tournamentRepository.save(tournament);
+            System.out.println("tournament duel list:" + tournament.duelRequests);
+
+//            tournament.setStatus("Completed");
+//            tournamentRepository.save(tournament);
+//
+//            if (participants.size() == 1) {
+//                tournament.setWinnerId(participants.get(0).getId()); //the tournament is over, set the winnerId in oder to see if the user wins the bet
+//                tournamentRepository.save(tournament);
+//            }
             return ResponseEntity.ok().body("Tournament has started and users are matched");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not all invitations are accepted");
         }
     }
 
+    private DuelRequest matchPlayersAndDuel(TournamentInvitation invitationA, TournamentInvitation invitationB) {
+        User A = invitationA.getUser();
+        User B = invitationB.getUser();
 
-    /**
-     * this is a helping function where the logic in each round is dealt
-     * @param participants
-     */
-    private void matchPLayersAndDuel(List<User> participants) {
+        A.setStatus(3);
+        B.setStatus(3);
 
-        while (participants.size() > 1) {
-            Collections.shuffle(participants);
-
-            List<User> winners = new ArrayList<>();
-            for (int i=0; i<participants.size(); i+=2) {
-                if (i + 1 < participants.size()) {
-                    User user1 = participants.get(i);
-                    User user2 = participants.get(i + 1);
-
-                    Player player1 = new Player(user1,user1.getDecks().get(0));
-                    Player player2 = new Player(user2,user2.getDecks().get(0));
-
-                    Duel duel = new Duel(player1,player2);
-                    duels.add(duel);
-                    duel.start();
-                    duelController.startTimer(duel.getId());
-                    user1.setStatus(1);
-                    user2.setStatus(1);
-                    if (player1.isDead()) {
-                        winners.add(user2);
-                        user2.setStatus(0);
-                    }
-                    if (player2.isDead()) {
-                        winners.add(user1);
-                        user1.setStatus(0);
-                    }
-                }
-                winners.add(participants.get(participants.size()-1)); // if participants are odd, the last participant will go to the next round automatically
-            }
-            participants = winners;
-        }
-        if (participants.size() == 1) {
-            User finalWinner = participants.get(0);
-            finalWinner.setSepCoins(finalWinner.getSepCoins() + 700);
-            userRepository.save(finalWinner);
-        }
+        DuelRequest duelRequest = new DuelRequest(A.getId(), B.getId(), 3);
+        duelRequest.setSendDeckId(A.getDecks().get(0).getId());
+        return duelRequestRepository.save(duelRequest);
     }
 
 
+/**
+ * this is a helping function where the logic in each round is dealt
+ */
+//    private void matchPLayersAndDuel(List<User> participants) {
+//
+//        while (participants.size() > 1) {
+//            Collections.shuffle(participants);
+//
+//            List<User> winners = new ArrayList<>();
+//            for (int i=0; i<participants.size(); i+=2) {
+//                if (i + 1 < participants.size()) {
+//                    User user1 = participants.get(i);
+//                    User user2 = participants.get(i + 1);
+//
+//                    Player player1 = new Player(user1,user1.getDecks().get(0));
+//                    Player player2 = new Player(user2,user2.getDecks().get(0));
+//
+//                    Duel duel = new Duel(player1,player2);
+////                    duels.add(duel);
+//                    duel.start();
+//                    duelController.startTimer(duel.getId());
+//                    user1.setStatus(1);
+//                    user2.setStatus(1);
+//                    if (player1.isDead()) {
+//                        winners.add(user2);
+//                        user2.setStatus(0);
+//                    }
+//                    if (player2.isDead()) {
+//                        winners.add(user1);
+//                        user1.setStatus(0);
+//                    }
+//                }
+//                winners.add(participants.get(participants.size()-1)); // if participants are odd, the last participant will go to the next round automatically
+//            }
+//            participants = winners;
+//        }
+//        if (participants.size() == 1) {
+//            User finalWinner = participants.get(0);
+//            finalWinner.setSepCoins(finalWinner.getSepCoins() + 700);
+//            userRepository.save(finalWinner);
+//        }
+//    }
+
     /**
      * it returns a list of duels which gives user the possibility to make bets on all duels
+     *
      * @return a list of duels
      */
-    @GetMapping("/api/tournament/duels")
-    ResponseEntity<List<Duel>> getAllDuels(){
+    @GetMapping("/api/tournament/{id}/duelRequests")
+    ResponseEntity<List<DuelRequest>> getAllDuelRequests(@PathVariable Long id) {
+        Tournament tournament = tournamentRepository.findById(id).orElse(null);
 
-        return ResponseEntity.status(HttpStatus.OK).body(duels);
+
+        if (tournament == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+
+        List<DuelRequest> duelRequests = tournament.getDuelRequests();
+        System.out.println("get duelRequests:"+duelRequests);
+
+        return ResponseEntity.status(HttpStatus.OK).body(duelRequests);
     }
 
     /**
