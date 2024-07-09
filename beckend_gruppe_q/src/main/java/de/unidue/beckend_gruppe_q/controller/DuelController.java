@@ -293,27 +293,23 @@ public class DuelController {
         }
 
         DuelHistory duelHistory = new DuelHistory(duel);
-        if(!a.isRobot()&&!b.isRobot()){
-            if (duel.getWinnerId() == a.getId()) {
-                a.setSepCoins(a.getSepCoins() + 100);
-                long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
-                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
-                duelHistory.setPlayerABonusPoints(bonusPoints);
-                duelHistory.setPlayerBBonusPoints(-bonusPoints);
-            } else {
-                b.setSepCoins(b.getSepCoins() + 100);
-                long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
-                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
-                duelHistory.setPlayerBBonusPoints(bonusPoints);
-                duelHistory.setPlayerABonusPoints(-bonusPoints);
-            }
-        }else{
-            if(duel.getWinnerId() == a.getId()){
-                a.setSepCoins(a.getSepCoins() + 50);
-            }
+        if (duel.getWinnerId() == a.getId()) {
+            a.setSepCoins(a.getSepCoins() + 100);
+            long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+            duelHistory.setPlayerABonusPoints(bonusPoints);
+            duelHistory.setPlayerBBonusPoints(-bonusPoints);
+        } else {
+            b.setSepCoins(b.getSepCoins() + 100);
+            long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+            duelHistory.setPlayerBBonusPoints(bonusPoints);
+            duelHistory.setPlayerABonusPoints(-bonusPoints);
         }
+
+
 
         userRepository.save(a);
         userRepository.save(b);
