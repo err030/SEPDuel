@@ -27,6 +27,7 @@ public class Duel {
     private int playerTurn;
     private Card lastPlayerCard;
     private long remainingTime;
+    private boolean visibility = false;
 
 
     @Override

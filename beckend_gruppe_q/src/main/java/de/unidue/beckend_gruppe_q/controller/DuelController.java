@@ -8,6 +8,7 @@ import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -198,6 +199,21 @@ public class DuelController {
         duelRequestRepository.deleteById(id);
         duels.remove(id);
         return null;
+    }
+
+    @GetMapping("/api/duel/{id}/visibility/{visible}")
+    public Duel setVisibility(@PathVariable long id, @PathVariable boolean visible) {
+        Duel duel = duels.get(id);
+        if (duel == null) {
+            throw new IllegalStateException("Duel not found");
+        }
+        duel.setVisibility(visible);
+        return duel;
+    }
+
+    @GetMapping("/api/duel/visible_list")
+    public List<Duel> getVisibleDuelList() {
+        return this.duels.values().stream().filter(d -> d.isVisibility()).toList();
     }
 
 

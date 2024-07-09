@@ -113,4 +113,7 @@ export class HomepageUserComponent implements OnInit {
 //   this.router.navigateByUrl(':friendId').catch(err => console.error('Navigation Error:', err));
 // }
 
+  goToSepTv() {
+    this.router.navigate(['/sep-tv']);
+  }
 }

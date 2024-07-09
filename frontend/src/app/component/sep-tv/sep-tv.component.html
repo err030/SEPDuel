@@ -1,0 +1,15 @@
+<p>sep-tv works!</p>
+<div class="sep-tv-container">
+  <div class="sep-tv-list">
+    <div class="sep-tv-item" *ngFor="let duel of duels">
+
+      <div class="sep-tv-item-title">{{ duel.playerA.name }} vs {{ duel.playerB.name }}</div>
+      <button (click)="spectate(duel.id)">Spectate</button>
+    </div>
+
+
+  </div>
+
+
+</div>
+

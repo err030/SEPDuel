@@ -3,14 +3,29 @@
   <h1>{{ clan?.name }}</h1>
 
   <button class="back-button" (click)="goToHome()">Back</button>
-
+  <button class="exit-button" (click)="exitClan()">Exit</button>
   <div class="clan-chat-button">
     <button>Chat</button>
   </div>
 
 
   <div class="competition-button">
-    <button>Start Competition</button>
+    <button (click)=" startTournamentRequest()">Start Tournament</button>
+  </div>
+
+  <div *ngIf="this.invitations.length > 0" class="clan-invitations">
+    <div *ngFor="let invitation of invitations">
+      <div *ngIf="invitation.user.username === Global.loggedUser.username">
+        <span>{{ invitation.user.username }} invited you.</span>
+        <button (click)="acceptInvitation(invitation)">Accept</button>
+        <button (click)="declineInvitation(invitation)">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tournament-btn">
+
+    <button (click)="goToTournament()">Go to Tournament</button>
   </div>
 
   <div class="clan-members">

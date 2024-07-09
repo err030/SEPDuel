@@ -18,4 +18,5 @@ export class Global {
   public static loggedUser: User;
   public static currentDeck: Deck;
   public static savedCards: Card[];
+  static tournamentRestServiceUrl: string = this.backendUrl + "/api/tournament";
 }

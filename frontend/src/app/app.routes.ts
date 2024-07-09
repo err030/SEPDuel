@@ -29,8 +29,11 @@ import {ChatComponent} from "./component/chat/chat.component";
 import {ChatUserMessageComponent} from "./component/chat-user-message/chat-user-message.component";
 import {ChatGroupMessageComponent} from "./component/chat-group-message/chat-group-message.component";
 import {ScoreComponent} from "./component/score/score.component";
+import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 import {ClanComponent} from "./component/clan/clan.component";
 import {ClanListComponent} from "./component/clan-list/clan-list.component";
+import {TournamentComponent} from "./component/tournament/tournament.component";
+import {BetComponent} from "./component/bet/bet.component";
 
 
 export const routes: Routes = [
@@ -50,7 +53,9 @@ export const routes: Routes = [
   {path: "lootbox", component: LootboxComponent},
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
-
+  {path: 'sep-tv', component: SepTvComponent},
+  {path: 'tournament/:id', component: TournamentComponent},
+  {path: 'bet', component: BetComponent},
 
   {path: 'addfriend', component:AddfriendComponent},
 

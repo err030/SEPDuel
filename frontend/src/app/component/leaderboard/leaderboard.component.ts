@@ -80,11 +80,9 @@ export class LeaderboardComponent implements OnInit {
     })
     if (this.sentRequest) {
       localStorage.setItem("sentRequest", JSON.stringify(this.sentRequest))
-    } else {
-      // @ts-ignore
-      this.sentRequest = JSON.parse(localStorage.getItem("sentRequest"));
+    } else if (localStorage.getItem("sentRequest")) {
+      console.log("sentRequest from localStorage:", localStorage.getItem("sentRequest"));
     }
-    console.log("sentRequest:", this.sentRequest);
     this.checkNewDuelRequests();
     //for testing only
     // this.duelRequests.forEach(request => {
@@ -353,6 +351,8 @@ export class LeaderboardComponent implements OnInit {
               this.showCountdown = false;
             }
             this.updateLeaderboard();
+            this.reloadSentRequest();
+            console.log('list duel request:', this.duelRequests)
           },
           error: (error) => {
             console.error("Error fetching duel requests:", error);
@@ -400,5 +400,27 @@ export class LeaderboardComponent implements OnInit {
     this.duelService.initializer = false;
     localStorage.setItem('initializer', '0');
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
+  }
+
+  reloadSentRequest(){
+    if(this.sentRequest){
+      return;
+    }
+    // @ts-ignore
+    this.leaderboardService.getAllDuelRequests().subscribe({
+      next: (response) => {
+        if (response.status === 200 && response.body) {
+          let allRequests = response.body;
+          console.log('all requests:', allRequests);
+          // @ts-ignore
+          this.sentRequest = allRequests.find(r => r.sendUserId === this.loggedUser.id);
+          localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
+          console.log('sentRequest from backend',this.sentRequest);
+        }
+      },
+      error: (error) => {
+        console.error("Error fetching duel requests:", error);
+      }
+    })
   }
 }
