@@ -26,7 +26,7 @@ export class ClanListComponent implements OnInit {
   showCreateDialog: boolean = false;
   loggedUser: User | null = null;
 
-  constructor(private router: Router, private clanService: ClanService, private userService: UserService) {
+  constructor(private router: Router, private clanService: ClanService) {
   }
 
   ngOnInit(): void {
