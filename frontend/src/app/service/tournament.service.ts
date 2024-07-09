@@ -6,6 +6,7 @@ import { Tournament } from "../model/tournament.model";
 import { TournamentInvitation } from "../model/tournament-invitation.model";
 import { TournamentBet } from "../model/tournament-bet.model";
 import { Duel } from "../model/duel.model";
+import {DuelRequest} from "../model/DuelRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +32,8 @@ export class TournamentService {
     return this.http.post(`${this.apiUrl}/${tournamentId}/start`, {});
   }
 
-  getAllDuels(): Observable<Duel[]> {
-    return this.http.get<Duel[]>(`${this.apiUrl}/duels`);
+  getAllDuelRequests(id: number): Observable<DuelRequest[]> {
+    return this.http.get<DuelRequest[]>(`${this.apiUrl}/${id}/duelRequests`);
   }
 
   placeBet(userId: number, tournamentId: number, bet: TournamentBet): Observable<any> {

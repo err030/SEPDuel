@@ -10,15 +10,22 @@
 
 
   <div class="competition-button">
-    <button (click)=" goToTournaments()">Start Competition</button>
+    <button (click)=" startTournamentRequest()">Start Tournament</button>
   </div>
 
   <div *ngIf="this.invitations.length > 0" class="clan-invitations">
-    YOU HAVE {{ this.invitations.length }} INVITATIONS:
     <div *ngFor="let invitation of invitations">
-      <button (click)="acceptInvitation(invitation)">Accept</button>
-      <button (click)="declineInvitation(invitation)">Decline</button>
+      <div *ngIf="invitation.user.username === Global.loggedUser.username">
+        <span>{{ invitation.user.username }} invited you.</span>
+        <button (click)="acceptInvitation(invitation)">Accept</button>
+        <button (click)="declineInvitation(invitation)">Decline</button>
+      </div>
     </div>
+  </div>
+
+  <div class="tournament-btn">
+
+    <button (click)="goToTournament()">Go to Tournament</button>
   </div>
 
   <div class="clan-members">

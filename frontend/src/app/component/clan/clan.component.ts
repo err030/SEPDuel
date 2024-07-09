@@ -24,17 +24,20 @@ export class ClanComponent implements OnInit{
   members: User[] = [];
   invitations: TournamentInvitation[] = [];
   loggedUser?: User;
+  interval: any;
+  tournamentId= 1;
 
   constructor(private clanService: ClanService, private userService: UserService, private router: Router, private tournamentService: TournamentService) {
   }
 
   ngOnInit() {
+    clearInterval(this.interval);
     this.loggedUser = Global.loggedUser;
     if (this.loggedUser && this.loggedUser.clanId) {
       this.updateClanMembers(this.loggedUser.clanId);
       console.log("Clan info:" + this.clan);
     } else {
-      alert("You haven't joined any clan yet.");
+      alert("You haven't joined any clans yet.");
       this.goToHome();
     }
     this.refreshInvitations();
@@ -50,6 +53,7 @@ export class ClanComponent implements OnInit{
   }
 
   goToHome() {
+    clearInterval(this.interval);
     this.router.navigate(['/homepage-user']);
   }
 
@@ -79,21 +83,22 @@ export class ClanComponent implements OnInit{
   startTournamentRequest() {
     //@ts-ignore
     this.tournamentService.startTournamentRequest(Global.loggedUser.id, this.clan.id).subscribe(
-      response => {
+      (response:any) => {
         console.log(response);
+        this.tournamentId = response.id;
       })
   }
 
   getInvitations() {
     this.tournamentService.getInvitations().subscribe(
       (response:any) => {
-        console.log(response);
-        this.invitations = response.body;
+        this.invitations = response;
+        console.log(this.invitations);
       })
   }
 
   refreshInvitations() {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.getInvitations();
     }, 1000)
   }
@@ -102,11 +107,18 @@ export class ClanComponent implements OnInit{
   acceptInvitation(invitation: TournamentInvitation) {
     invitation.accepted = true;
     this.tournamentService.acceptOrDenyTournamentRequest(Global.loggedUser.id ?? 0, invitation).subscribe(
-      response => {
+      (response:any) => {
         console.log(response);
+        this.tournamentId = response.id;
+        this.tournamentService.startTournament(invitation.tournament.id).subscribe(
+          response => {
+            console.log(response);
+          }
+        )
         this.getInvitations();
       }
     )
+
   }
 
   declineInvitation(invitation: TournamentInvitation) {
@@ -117,5 +129,12 @@ export class ClanComponent implements OnInit{
         this.getInvitations();
       }
     )
+  }
+
+  protected readonly Global = Global;
+
+  goToTournament() {
+    clearInterval(this.interval)
+    this.router.navigate(['/tournament/' + this.tournamentId]);
   }
 }

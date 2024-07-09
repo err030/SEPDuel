@@ -54,7 +54,7 @@ export const routes: Routes = [
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
   {path: 'sep-tv', component: SepTvComponent},
-  {path: 'tournament', component: TournamentComponent},
+  {path: 'tournament/:id', component: TournamentComponent},
   {path: 'bet', component: BetComponent},
 
   {path: 'addfriend', component:AddfriendComponent},
