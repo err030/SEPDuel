@@ -199,7 +199,6 @@ public class TournamentController {
     }
 
     /**
-     *
      * @param userId
      * @param tournamentId
      * @param betOnUserId
@@ -236,7 +235,6 @@ public class TournamentController {
 
 
     /**
-     * 
      * @param tournamentId
      * @param userId
      * @return
