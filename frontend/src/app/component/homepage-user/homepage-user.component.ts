@@ -152,11 +152,11 @@ export class HomepageUserComponent implements OnInit {
               this.duelRequest = response.body;
               console.log('duelRequest:', this.duelRequest);
               if (this.duelRequest && this.loggedUser && Global.currentDeck) {
-                this.robotService.createRobotDuel(this.duelRequest.id, this.getUserId(), Global.currentDeck.id)
+                this.duelService.createRobotDuel(this.duelRequest.id, this.getUserId(), Global.currentDeck.id)
                   .subscribe(
                     (response) => {
                       this.duelService.initializer = true;
-                      localStorage.setItem('initializer', '1');
+                      localStorage.setItem('initializer', '0');
                       this.router.navigate([`/duel/${this.duelRequest?.id}`]);
                     }
                   );

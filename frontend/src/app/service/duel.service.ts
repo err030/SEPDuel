@@ -32,6 +32,10 @@ export class DuelService {
   getDuelHistory(name: string): Observable<any> {
     return this.http.get(`${this.apiUrl}-history/${name}`);
   }
+  createRobotDuel(duelId: number, userId: number | undefined, deck1Id: number): Observable<any>{
+    const url = Global.duelRestServiceUrl + "/createRobotDuel/" + duelId +"/" +userId +"/" +deck1Id;
+    return this.http.post(url, {},{observe: 'response'});
+  }
 
   createDuel(duelId: number, senderDeckId: number, receiverDeckId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/create/${duelId}/${senderDeckId}/${receiverDeckId}`, {observe: 'response'});

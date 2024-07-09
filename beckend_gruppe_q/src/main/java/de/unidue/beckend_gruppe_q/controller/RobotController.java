@@ -10,13 +10,10 @@ import de.unidue.beckend_gruppe_q.service.DuelService;
 import de.unidue.beckend_gruppe_q.service.RobotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @CrossOrigin
 @RestController
@@ -28,14 +25,6 @@ public class RobotController {
     final CardRepository cardRepository;
     final DuelRequestRepository duelRequestRepository ;
 
-    private Player player1;
-    private Player player2;
-    private Map<Long, Duel> duels = new ConcurrentHashMap<>();
-    private final Map<Long, Long> duelTimers = new ConcurrentHashMap<>();
-
-    public void startTimer(long duelId) {
-        duelTimers.put(duelId, System.currentTimeMillis());
-    }
 
     public RobotController(RobotService robotService, UserRepository userRepository, DeckRepository deckRepository, DuelService duelService, CardRepository cardRepository, DuelRequestRepository duelRequestRepository) {
         this.robotService = robotService;

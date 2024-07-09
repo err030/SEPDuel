@@ -245,7 +245,7 @@ public class DuelController {
                 }
             }
 
-            Optional<Card> attacker = robot.getTable().stream().findFirst();
+            Optional<Card> attacker = robot.getTable().stream().filter(Card::isCanAttack).findFirst();
             if (attackPlayer) {
                 // 攻击玩家
                 attacker.ifPresent(atk -> {
