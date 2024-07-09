@@ -13,6 +13,7 @@ public class Player {
     private String name;
     private int hp = 50;
     private boolean hasSummoned = false;
+    private boolean isRobot = false;
     Deck deck;
     List<Card> hand = new ArrayList<>();
     List<Card> table = new ArrayList<>();
@@ -20,6 +21,7 @@ public class Player {
     List<Card> summonedCards = new ArrayList<>();
     List<Card> sacrificedCards = new ArrayList<>();
     long damageDealt = 0;
+
 
     public boolean isDead() {
         return this.hp <= 0;
@@ -30,10 +32,13 @@ public class Player {
         this.name = u.getUsername();
         this.deck = d.clone();
         this.avatarUrl = u.getAvatarUrl();
+        this.isRobot=u.isRobot();
     }
 
     public boolean hasSummoned() {
         return this.hasSummoned;
     }
+
+
 }
 

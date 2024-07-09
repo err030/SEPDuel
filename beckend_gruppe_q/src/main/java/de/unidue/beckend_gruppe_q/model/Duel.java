@@ -74,6 +74,7 @@ public class Duel {
         this.currentPlayer = this.getOpponent();
         this.drawCard(this.currentPlayer);
         this.currentPlayer.setHasSummoned(false);
+        currentPlayer.getTable().forEach(card -> card.setCanAttack(true));
     }
 
     public void drawCard(Player player) {
@@ -87,6 +88,10 @@ public class Duel {
 
     public void attack(Card attacker, Card defender) {
         if (checkIfGameFinished()) {
+            return;
+        }
+        if (!attacker.isCanAttack()) {
+            System.out.println("Card " + attacker.getName() + " cannot attack this turn.");
             return;
         }
         if (defender == null) {
@@ -224,6 +229,7 @@ public class Duel {
         this.currentPlayer.table.add(card);
         this.currentPlayer.summonedCards.add(card);
         this.currentPlayer.setHasSummoned(true);
+        card.setCanAttack(false);
     }
 
     public void endGame() {
