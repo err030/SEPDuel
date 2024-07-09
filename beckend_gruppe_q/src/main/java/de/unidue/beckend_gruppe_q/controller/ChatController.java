@@ -2,7 +2,7 @@ package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.Chat;
 import de.unidue.beckend_gruppe_q.repository.ChatRepository;
-import de.unidue.beckend_gruppe_q.repository.UserRepository;
+import de.unidue.beckend_gruppe_q.repository.   UserRepository;
 import de.unidue.beckend_gruppe_q.service.ChatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
