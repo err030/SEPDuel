@@ -137,4 +137,10 @@ export class ClanComponent implements OnInit{
     clearInterval(this.interval)
     this.router.navigate(['/tournament/' + this.tournamentId]);
   }
+
+  goChat() {
+    if (this.clan) {
+      void this.router.navigateByUrl('/clan-group-message/' + this.clan.id)
+    }
+  }
 }
