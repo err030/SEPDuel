@@ -155,7 +155,7 @@ export class HomepageUserComponent implements OnInit {
                 this.duelService.createRobotDuel(this.duelRequest.id, this.getUserId(), Global.currentDeck.id)
                   .subscribe(
                     (response) => {
-                      this.duelService.initializer = true;
+                      this.duelService.initializer = false;
                       localStorage.setItem('initializer', '0');
                       this.router.navigate([`/duel/${this.duelRequest?.id}`]);
                     }
