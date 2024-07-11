@@ -22,7 +22,5 @@ public class Tournament {
     private int currentRound;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> participants;
-    @OneToMany
-    public List<DuelRequest> duelRequests = new ArrayList<>();
     private Long winnerId;
 }

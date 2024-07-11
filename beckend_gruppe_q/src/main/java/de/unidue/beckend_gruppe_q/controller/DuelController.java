@@ -2,6 +2,7 @@ package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.repository.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,8 @@ public class DuelController {
     private DuelRequestRepository duelRequestRepository;
 
     private DuelHistoryRepository duelHistoryRepository;
+
+    private final TournamentController tournamentController;
 
     private Player player1;
     private Player player2;
@@ -124,12 +127,13 @@ public class DuelController {
         return bonusCard;
     }
 
-    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository) {
+    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository, @Lazy TournamentController tournamentController) {
         this.userRepository = userRepository;
         this.deckRepository = deckRepository;
         this.cardRepository = cardRepository;
         this.duelRequestRepository = duelRequestRepository;
         this.duelHistoryRepository = duelHistoryRepository;
+        this.tournamentController = tournamentController;
     }
 
     @GetMapping("/api/duel/{id}/attack")
@@ -152,6 +156,8 @@ public class DuelController {
             def = duel.getOpponent().getTable().stream().filter(c -> Objects.equals(c.getId(), defenderId)).findFirst().get();
         }
         duel.attack(atk, def);
+        if (duel.isGameFinished()) duelTimers.remove(duel.getId());
+
         return duel;
     }
 
@@ -186,6 +192,7 @@ public class DuelController {
         a.setStatus(0);
         b.setStatus(0);
         DuelHistory duelHistory = new DuelHistory(duel);
+        String winnerUsername;
         if (duel.getWinnerId() == a.getId()) {
             a.setSepCoins(a.getSepCoins() + 100);
             long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
@@ -193,6 +200,7 @@ public class DuelController {
             b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
             duelHistory.setPlayerABonusPoints(bonusPoints);
             duelHistory.setPlayerBBonusPoints(-bonusPoints);
+            winnerUsername = a.getUsername();
         } else {
             b.setSepCoins(b.getSepCoins() + 100);
             long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
@@ -200,12 +208,14 @@ public class DuelController {
             a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
             duelHistory.setPlayerBBonusPoints(bonusPoints);
             duelHistory.setPlayerABonusPoints(-bonusPoints);
+            winnerUsername = b.getUsername();
         }
         userRepository.save(a);
         userRepository.save(b);
         duelHistoryRepository.save(duelHistory);
         duelRequestRepository.deleteById(id);
         duels.remove(id);
+        tournamentController.checkIfTournamentEnded(winnerUsername);
         return null;
     }
 

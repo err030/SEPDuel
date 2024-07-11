@@ -29,7 +29,6 @@ public class Duel {
     private long remainingTime;
     private boolean visibility = false;
 
-
     @Override
     public String toString() {
         return "Duel{" +

@@ -24,5 +24,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAllByOrderByLeaderBoardPunktDesc();
 
     List<User> findTop20ByOrderByLeaderBoardPunktDesc();
+
+    User findUserByUsername(String username);
 }
 

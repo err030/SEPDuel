@@ -25,7 +25,7 @@ export class ClanComponent implements OnInit{
   invitations: TournamentInvitation[] = [];
   loggedUser?: User;
   interval: any;
-  tournamentId= 1;
+  tournamentId: number | undefined;
 
   constructor(private clanService: ClanService, private userService: UserService, private router: Router, private tournamentService: TournamentService) {
   }
@@ -142,5 +142,29 @@ export class ClanComponent implements OnInit{
     if (this.clan) {
       void this.router.navigateByUrl('/clan-group-message/' + this.clan.id)
     }
+  }
+
+  placeBet(betOnUserId: number | undefined) {
+    //@ts-ignore
+    this.tournamentService.placeBet(Global.loggedUser.id,this.clan?.id,betOnUserId).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        alert("Bet placed!")
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    })
+  }
+
+  getTournament(userId: number) {
+    this.tournamentService.getTournament(userId).subscribe(
+      (response:any) => {
+        this.tournamentId = response.id;
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
   }
 }

@@ -3,13 +3,17 @@ package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.repository.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static de.unidue.beckend_gruppe_q.model.LootboxType.GOLD;
 
 @CrossOrigin
 @RestController
@@ -22,22 +26,30 @@ public class TournamentController {
     private final ClanRepository clanRepository;
 
     private final TournamentInvitationRepository tournamentInvitationRepository;
-    private final DuelController duelController;
+
     private final TournamentBetRepository tournamentBetRepository;
+
     private final LootboxRepository lootboxRepository;
+
+    private final DuelHistoryRepository duelHistoryRepository;
+
     private final DuelRequestRepository duelRequestRepository;
+    private final DuelController duelController;
+    List<TournamentInvitation> winners = new ArrayList<>();
+    List<TournamentInvitation> playersList = new ArrayList<>();
 
 
     public TournamentController(TournamentRepository tournamentRepository, UserRepository userRepository,
-                                ClanRepository clanRepository, TournamentInvitationRepository tournamentInvitationRepository, DuelController duelController, TournamentBetRepository tournamentBetRepository, LootboxRepository lootboxRepository, DuelRequestRepository duelRequestRepository) {
+                                ClanRepository clanRepository, TournamentInvitationRepository tournamentInvitationRepository, TournamentBetRepository tournamentBetRepository, LootboxRepository lootboxRepository, DuelHistoryRepository duelHistoryRepository, DuelRequestRepository duelRequestRepository, @Lazy DuelController duelController) {
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
         this.clanRepository = clanRepository;
         this.tournamentInvitationRepository = tournamentInvitationRepository;
-        this.duelController = duelController;
         this.tournamentBetRepository = tournamentBetRepository;
         this.lootboxRepository = lootboxRepository;
+        this.duelHistoryRepository = duelHistoryRepository;
         this.duelRequestRepository = duelRequestRepository;
+        this.duelController = duelController;
     }
 
 
@@ -59,20 +71,40 @@ public class TournamentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-
         Tournament tournament = new Tournament();
         tournament.setClan(clan);
         tournament.setStatus("Waiting");
         tournament = tournamentRepository.save(tournament);
 
         Tournament finalTournament = tournament;
+
+        /* suppose the user who starts the invitation already accepted the invitation
+           in the startTournament method, all the invitations are manipulated,
+           so the sender of this invitation should also be included
+        */
+        TournamentInvitation currentUserInvitation = new TournamentInvitation(finalTournament, currentUser,true);
+        tournamentInvitationRepository.save(currentUserInvitation);
+
         List<TournamentInvitation> invitations = clan.getUsers().stream()
                 .filter(user -> !user.getId().equals(currentUserId))
                 .map(user -> new TournamentInvitation(finalTournament, user, false))
                 .toList();
         tournamentInvitationRepository.saveAll(invitations);
+        playersList.add(currentUserInvitation);
+        playersList.addAll(invitations);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(invitations);
+    }
+
+    @GetMapping("api/tournament/user/{userId}/getTournament")
+    ResponseEntity<Tournament> getTournament(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found"));
+
+        List<Tournament> tournaments = tournamentRepository.findByClanId(user.getClanId());
+
+        Tournament tournament = tournaments.get(tournaments.size() - 1);
+
+        return ResponseEntity.ok().body(tournament);
     }
 
 
@@ -130,31 +162,53 @@ public class TournamentController {
         if (invitations.stream().allMatch(TournamentInvitation::isAccepted)) {
             tournament.setStatus("In_Progress");
             tournamentRepository.save(tournament);
-
-            List<User> participants = invitations.stream().map(TournamentInvitation::getUser).toList();
             Collections.shuffle(invitations);
+
+
+
             while (invitations.size() > 1) {
+
+
                 TournamentInvitation a = invitations.remove(0);
                 TournamentInvitation b = invitations.remove(0);
-                tournament.duelRequests.add(matchPlayersAndDuel(a, b));
+                matchPlayersAndDuel(a,b);
+
+//                for(TournamentInvitation restInvitations: invitations) {
+//                    restInvitations.getUser().setStatus(1);
+//                }
+//                DuelHistory record = duelHistoryRepository.findByPlayerAUsernameAndPlayerBUsername(a.getUser().getUsername(),b.getUser().getUsername());
+//
+//                if (a.getUser().getUsername().equals(record.getWinnerUsername())) {
+//                    winners.add(a);
+//                }
+//                if (b.getUser().getUsername().equals(record.getWinnerUsername())) {
+//                    winners.add(b);
+//                }
+//
+//                winners.addAll(invitations);
+//            }
+//            invitations = winners;
+//            System.out.println("invitations are :" +invitations);
+//            if (invitations.size() == 1) {
+//                User finalWinner = invitations.get(0).getUser();
+//                tournament.setWinnerId(finalWinner.getId());
+//                tournament.setStatus("Completed");
+//                tournamentRepository.save(tournament);
+//                finalWinner.setSepCoins(finalWinner.getSepCoins() + 700);
+//                userRepository.save(finalWinner);
+            }
+            if (invitations.size() == 1) {
+                winners.add(invitations.get(0));
             }
             tournamentRepository.save(tournament);
-            System.out.println("tournament duel list:" + tournament.duelRequests);
 
-//            tournament.setStatus("Completed");
-//            tournamentRepository.save(tournament);
-//
-//            if (participants.size() == 1) {
-//                tournament.setWinnerId(participants.get(0).getId()); //the tournament is over, set the winnerId in oder to see if the user wins the bet
-//                tournamentRepository.save(tournament);
-//            }
             return ResponseEntity.ok().body("Tournament has started and users are matched");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not all invitations are accepted");
         }
     }
 
-    private DuelRequest matchPlayersAndDuel(TournamentInvitation invitationA, TournamentInvitation invitationB) {
+    private void matchPlayersAndDuel(TournamentInvitation invitationA, TournamentInvitation invitationB) {
         User A = invitationA.getUser();
         User B = invitationB.getUser();
 
@@ -163,13 +217,31 @@ public class TournamentController {
 
         DuelRequest duelRequest = new DuelRequest(A.getId(), B.getId(), 3);
         duelRequest.setSendDeckId(A.getDecks().get(0).getId());
-        return duelRequestRepository.save(duelRequest);
+        duelRequestRepository.save(duelRequest);
+    }
+
+    void checkIfTournamentEnded(String winnerUsername) {
+        winners.add(playersList.stream().filter(p -> p.getUser().getUsername().equals(winnerUsername)).findFirst().get());
+        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().allMatch(u -> u.getStatus() != 3))) {
+            if (winners.size() < 2) {
+                playersList.clear();
+                winners.clear();
+                User winner = userRepository.findUserByUsername(winnerUsername);
+                winner.setSepCoins(winner.getSepCoins() + 700);
+                userRepository.save(winner);
+                return;
+            }
+            while (winners.size() > 1) {
+                matchPlayersAndDuel(winners.remove(0), winners.remove(0));
+            }
+        }
     }
 
 
-/**
- * this is a helping function where the logic in each round is dealt
- */
+//    /**
+//     * this is a helping function where the logic in each round is dealt
+//     * @param participants
+//     */
 //    private void matchPLayersAndDuel(List<User> participants) {
 //
 //        while (participants.size() > 1) {
@@ -185,7 +257,7 @@ public class TournamentController {
 //                    Player player2 = new Player(user2,user2.getDecks().get(0));
 //
 //                    Duel duel = new Duel(player1,player2);
-////                    duels.add(duel);
+//                    duels.add(duel);
 //                    duel.start();
 //                    duelController.startTimer(duel.getId());
 //                    user1.setStatus(1);
@@ -210,48 +282,57 @@ public class TournamentController {
 //        }
 //    }
 
+
+
     /**
      * it returns a list of duels which gives user the possibility to make bets on all duels
      *
      * @return a list of duels
      */
-    @GetMapping("/api/tournament/{id}/duelRequests")
-    ResponseEntity<List<DuelRequest>> getAllDuelRequests(@PathVariable Long id) {
-        Tournament tournament = tournamentRepository.findById(id).orElse(null);
-
-
-        if (tournament == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-
-        List<DuelRequest> duelRequests = tournament.getDuelRequests();
-        System.out.println("get duelRequests:"+duelRequests);
-
-        return ResponseEntity.status(HttpStatus.OK).body(duelRequests);
-    }
+//    @GetMapping("/api/tournament/{id}/duelRequests")
+//    ResponseEntity<List<DuelRequest>> getAllDuelRequests(@PathVariable Long id) {
+//        Tournament tournament = tournamentRepository.findById(id).orElse(null);
+//
+//
+//        if (tournament == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//
+//
+//        List<DuelRequest> duelRequests = tournament.getDuelRequests();
+//        System.out.println("get duelRequests:"+duelRequests);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(duelRequests);
+//    }
 
     /**
      * @param userId
-     * @param tournamentId
+     * @param clanId
      * @param betOnUserId
      * @return
      */
-    @PostMapping("/api/user/{userId}/tournament/{tournamentId}/betOnUser/{betOnUserId}/placeBet")
+    @PostMapping("/api/clan/{clanId}/user/{userId}/betOnUser/{betOnUserId}/placeBet")
     ResponseEntity<?> placeBet(@PathVariable Long userId,
-                               @PathVariable Long tournamentId,
+                               @PathVariable Long clanId,
                                @PathVariable Long betOnUserId) {
 
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found"));
 
-        Tournament tournament = tournamentRepository.findById(tournamentId).orElseThrow(() -> new NoSuchElementException("tournament not found"));
+        List<Tournament> tournaments = tournamentRepository.findByClanId(clanId);
+
+        Tournament tournament = tournaments.get(tournaments.size() - 1);
 
         if (betOnUserId.equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You cannot bet on yourself!");
         }
 
-        if (tournament.getStatus().equals("In_Progress")) {
+        if (tournament.getStatus().equals("In_Progress") || tournament.getStatus().equals("Completed")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Betting is closed for this Tournament!");
+        }
+
+        List<TournamentBet> existingBet = tournamentBetRepository.findByUserId(userId);
+        if (existingBet.size() > 1) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only bet on one person!");
         }
 
         currentUser.setSepCoins(currentUser.getSepCoins() - 50);
@@ -263,7 +344,7 @@ public class TournamentController {
         tournamentBet.setBetOnUserId(betOnUserId);
         tournamentBetRepository.save(tournamentBet);
 
-        return ResponseEntity.ok().body("Tournament has been placed");
+        return ResponseEntity.ok().body("Bet has been placed");
     }
 
 
@@ -286,7 +367,7 @@ public class TournamentController {
             if (bet.getBetOnUserId().equals(tournament.getWinnerId())) {
                 user.setSepCoins(user.getSepCoins() + 50);
                 Lootbox lootbox = new Lootbox();
-                lootbox.setLootboxType(LootboxType.GOLD);
+                lootbox.setLootboxType(GOLD);
                 lootboxRepository.save(lootbox);
                 user.getLootboxes().add(lootbox);
                 userRepository.save(user);

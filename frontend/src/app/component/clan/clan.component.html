@@ -16,7 +16,7 @@
   <div *ngIf="this.invitations.length > 0" class="clan-invitations">
     <div *ngFor="let invitation of invitations">
       <div *ngIf="invitation.user.username === Global.loggedUser.username">
-        <span>{{ invitation.user.username }} invited you.</span>
+        <span>You are invited to a Tournament</span>
         <button (click)="acceptInvitation(invitation)">Accept</button>
         <button (click)="declineInvitation(invitation)">Decline</button>
       </div>
@@ -33,6 +33,7 @@
     <ul>
       <li *ngFor="let user of members">
         <span>{{ user.username }}</span>
+        <button *ngIf="user.id != loggedUser?.id" (click)="placeBet(user.id)">Bet</button>
       </li>
     </ul>
   </div>
