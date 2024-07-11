@@ -221,6 +221,9 @@ public class TournamentController {
     }
 
     void checkIfTournamentEnded(String winnerUsername) {
+        if (playersList == null || playersList.isEmpty()) {
+            return;
+        }
         winners.add(playersList.stream().filter(p -> p.getUser().getUsername().equals(winnerUsername)).findFirst().get());
         if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().allMatch(u -> u.getStatus() != 3))) {
             if (winners.size() < 2) {

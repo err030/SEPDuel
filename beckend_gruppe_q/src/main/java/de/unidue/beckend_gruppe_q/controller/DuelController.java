@@ -196,18 +196,20 @@ public class DuelController {
         if (duel.getWinnerId() == a.getId()) {
             a.setSepCoins(a.getSepCoins() + 100);
             long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+            long penaltyPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())/2);
             a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - penaltyPoints);
             duelHistory.setPlayerABonusPoints(bonusPoints);
-            duelHistory.setPlayerBBonusPoints(-bonusPoints);
+            duelHistory.setPlayerBBonusPoints(-penaltyPoints);
             winnerUsername = a.getUsername();
         } else {
             b.setSepCoins(b.getSepCoins() + 100);
             long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+            long penaltyPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())/2);
             b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - penaltyPoints);
             duelHistory.setPlayerBBonusPoints(bonusPoints);
-            duelHistory.setPlayerABonusPoints(-bonusPoints);
+            duelHistory.setPlayerABonusPoints(-penaltyPoints);
             winnerUsername = b.getUsername();
         }
         userRepository.save(a);

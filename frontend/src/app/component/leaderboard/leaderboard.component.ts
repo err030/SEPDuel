@@ -239,8 +239,6 @@ export class LeaderboardComponent implements OnInit {
             this.matchAccepted = true;
             this.loggedUser!.status = 3;
             this.selectedUser!.status = 3;
-            localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
-            localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
             this.showCountdown = false;
@@ -299,6 +297,10 @@ export class LeaderboardComponent implements OnInit {
       (response) => {
         this.duelService.initializer = true;
         localStorage.setItem('initializer', '1');
+        if (this.selectedUser) {
+          localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
+        }
+        localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
         this.router.navigate([`/duel/${this.duelRequest?.id}`]);
       }
     )
@@ -399,6 +401,10 @@ export class LeaderboardComponent implements OnInit {
   enterDuel() {
     this.duelService.initializer = false;
     localStorage.setItem('initializer', '0');
+    if (this.selectedUser) {
+      localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
+    }
+    localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
   }
 
@@ -414,6 +420,9 @@ export class LeaderboardComponent implements OnInit {
           console.log('all requests:', allRequests);
           // @ts-ignore
           this.sentRequest = allRequests.find(r => r.sendUserId === this.loggedUser.id);
+          if (this.sentRequest?.sendUser) {
+            localStorage.setItem('opponentPoints', JSON.stringify(this.sentRequest?.sendUser.leaderBoardPunkt))
+          }
           localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
           console.log('sentRequest from backend',this.sentRequest);
         }
