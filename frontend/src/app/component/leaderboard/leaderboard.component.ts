@@ -94,7 +94,21 @@ export class LeaderboardComponent implements OnInit {
     // this.selectedUser.status = 0;
   }
 
-
+  updateLeaderboard(): void {
+    this.userService.getLeaderboard().subscribe(response => {
+      if (response.status === 200) {
+        this.leaderboard = response.body || [];
+        this.leaderboard.forEach(user => user.status = user.status !== undefined ? user.status : 0);
+        this.totalPages = Math.ceil(this.leaderboard.length / this.usersPerPage);
+        this.updateDisplayedPlayers();
+        // @ts-ignore
+        this.loggedUser.status = this.leaderboard.find(user => user.id === this.loggedUser.id).status ?? 0;
+        //@ts-ignore
+        Global.loggedUser = this.loggedUser;
+        localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
+      }
+    })
+  }
 
   search() {
     if (this.searchText.trim().length > 0) {
