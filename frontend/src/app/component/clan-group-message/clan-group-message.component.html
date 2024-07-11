@@ -2,6 +2,7 @@
 <div class="flex flex-column card-container p-4" *ngIf="myClan">
 
   <div class="flex align-items-center justify-content-center font-bold ml-2 mr-2 message_dialog_header" *ngIf="myClan">
+    <button (click)="goMyClan()" class="back-btn">BACK</button>
     {{myClan.name}}
   </div>
   <p-divider type="solid"></p-divider>
