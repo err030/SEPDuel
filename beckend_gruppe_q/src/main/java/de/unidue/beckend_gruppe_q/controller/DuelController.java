@@ -163,8 +163,8 @@ public class DuelController {
         return bonusCard;
     }
 
-    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository, @Lazy TournamentController tournamentController) {
-    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository,RobotService robotService) {
+
+    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository,RobotService robotService,@Lazy TournamentController tournamentController) {
         this.userRepository = userRepository;
         this.deckRepository = deckRepository;
         this.cardRepository = cardRepository;
@@ -257,46 +257,33 @@ public class DuelController {
         }
 
         DuelHistory duelHistory = new DuelHistory(duel);
-        String winnerUsername;
-        if (duel.getWinnerId() == a.getId()) {
-            a.setSepCoins(a.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
-            long penaltyPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())/2);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - penaltyPoints);
-            duelHistory.setPlayerABonusPoints(bonusPoints);
-            duelHistory.setPlayerBBonusPoints(-penaltyPoints);
-            winnerUsername = a.getUsername();
-        } else {
-            b.setSepCoins(b.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
-            long penaltyPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt())/2);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - penaltyPoints);
-            duelHistory.setPlayerBBonusPoints(bonusPoints);
-            duelHistory.setPlayerABonusPoints(-penaltyPoints);
-            winnerUsername = b.getUsername();
-        if(!duel.isRobotDuel()){
+        String winnerUsername="";
+        if (!duel.isRobotDuel()) {
             if (duel.getWinnerId() == a.getId()) {
                 a.setSepCoins(a.getSepCoins() + 100);
                 long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+                long penaltyPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())/2);
                 a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - penaltyPoints);
                 duelHistory.setPlayerABonusPoints(bonusPoints);
-                duelHistory.setPlayerBBonusPoints(-bonusPoints);
+                duelHistory.setPlayerBBonusPoints(-penaltyPoints);
+                winnerUsername = a.getUsername();
             } else {
                 b.setSepCoins(b.getSepCoins() + 100);
                 long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+                long penaltyPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()) / 2);
                 b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - penaltyPoints);
                 duelHistory.setPlayerBBonusPoints(bonusPoints);
-                duelHistory.setPlayerABonusPoints(-bonusPoints);
+                duelHistory.setPlayerABonusPoints(-penaltyPoints);
+                winnerUsername = b.getUsername();
             }
         }else{
-            if (duel.getWinnerId() == a.getId()) {
+            if(duel.getWinnerId() == a.getId()){
                 a.setSepCoins(a.getSepCoins() + 50);
             }
         }
+
 
 
 
