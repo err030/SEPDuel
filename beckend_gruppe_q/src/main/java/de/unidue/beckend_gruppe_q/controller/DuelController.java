@@ -256,7 +256,7 @@ public class DuelController {
         }
 
         DuelHistory duelHistory = new DuelHistory(duel);
-        String winnerUsername;
+        String winnerUsername = "";
         if(!duel.isRobotDuel()){
         if (duel.getWinnerId() == a.getId()) {
             a.setSepCoins(a.getSepCoins() + 100);
