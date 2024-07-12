@@ -40,6 +40,7 @@ public class ClanController {
                 clan.users.add(user);
                 clanRepository.save(clan);
                 user.setClanId(clan.getId());
+                user.setClanName(clanName);
                 userRepository.save(user);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -59,6 +60,7 @@ public class ClanController {
         user.setClanId(clan.getId());
         userRepository.save(user);
         clanRepository.save(clan);
+        user.setClanName(clan.getName());
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
@@ -91,6 +93,7 @@ public class ClanController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         user.setClanId(null);
+        user.setClanName(null);
         clan.users.remove(user);
         if (clan.getUsers().isEmpty()) {
             clanRepository.delete(clan);
