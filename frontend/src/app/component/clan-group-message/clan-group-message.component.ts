@@ -4,7 +4,6 @@ import {ActivatedRoute} from "@angular/router";
 import {User} from "../../model/user";
 import {UserService} from "../../service/user.service";
 import {WebSocketSubject} from "rxjs/webSocket";
-import {Global} from "../../global";
 import {Clan} from "../../model/clan";
 import {ClanService} from "../../service/clan.service";
 import {ButtonModule} from "primeng/button";
@@ -14,6 +13,7 @@ import {NgClass, NgIf, CommonModule} from "@angular/common";
 import {AvatarModule} from "primeng/avatar";
 import {FormsModule} from "@angular/forms";
 import { Scroller } from 'primeng/scroller'
+import {Router} from "@angular/router";
 
 
 interface Message {
@@ -54,16 +54,17 @@ export class ClanGroupMessageComponent implements OnInit{
   textareaInput: string = '';
 
   clanId: number | null = null;
-  groupUserList: User[] = [];
 
   @ViewChild('scroller') scroller!: Scroller;
 
   socket$: WebSocketSubject<{ fromUuid: string; chatGroupId: number; sender: string; senderType: string; msgType: string; msgContent: string }> | undefined;
+  public messages: { id: string, message: string }[] = [];
   public message: string | undefined;
 
   constructor(private activatedRoute: ActivatedRoute,
               private clanService: ClanService,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router) {
   }
 
   public getClanInfo(id: number | undefined) : Promise<void>  {
@@ -149,6 +150,10 @@ export class ClanGroupMessageComponent implements OnInit{
     );
 
  }
+
+  goMyClan() {
+    this.router.navigate(['/clan']);
+  }
 
   sendMessage(){
     const temp = JSON.stringify(this.allMSGs);
