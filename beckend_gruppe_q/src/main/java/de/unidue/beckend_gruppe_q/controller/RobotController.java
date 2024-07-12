@@ -1,7 +1,8 @@
 package de.unidue.beckend_gruppe_q.controller;
 
 
-import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.model.DuelRequest;
+import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.CardRepository;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
@@ -10,8 +11,10 @@ import de.unidue.beckend_gruppe_q.service.DuelService;
 import de.unidue.beckend_gruppe_q.service.RobotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -23,7 +26,7 @@ public class RobotController {
     final DeckRepository deckRepository;
     final DuelService duelService;
     final CardRepository cardRepository;
-    final DuelRequestRepository duelRequestRepository ;
+    final DuelRequestRepository duelRequestRepository;
 
 
     public RobotController(RobotService robotService, UserRepository userRepository, DeckRepository deckRepository, DuelService duelService, CardRepository cardRepository, DuelRequestRepository duelRequestRepository) {
@@ -38,7 +41,7 @@ public class RobotController {
 
     @PostMapping("/duelRequest/createRobotRequest/{currentUserid}/{sendDeckId}")
     public ResponseEntity<?> createRobotRequest(@PathVariable(value = "currentUserid") Long currentUserId,
-                                             @PathVariable(value = "sendDeckId") Long sendDeckId) {
+                                                @PathVariable(value = "sendDeckId") Long sendDeckId) {
         Optional<User> currentUser = userRepository.findById(currentUserId);
         Optional<User> targetUser = userRepository.findByEmail("robot@robot.com");
         if (currentUser.isPresent() && targetUser.isPresent()) {
@@ -54,15 +57,6 @@ public class RobotController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -1,32 +1,27 @@
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.Friend;
-import de.unidue.beckend_gruppe_q.model.User;
-import de.unidue.beckend_gruppe_q.model.FriendListDetail;
-import de.unidue.beckend_gruppe_q.model.FriendRequest;
-import de.unidue.beckend_gruppe_q.model.FriendList;
+import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.repository.FriendListDetailRepository;
+import de.unidue.beckend_gruppe_q.repository.FriendListRepository;
 import de.unidue.beckend_gruppe_q.repository.FriendRequestRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
-import de.unidue.beckend_gruppe_q.repository.FriendListRepository;
-import de.unidue.beckend_gruppe_q.repository.FriendListDetailRepository;
 import de.unidue.beckend_gruppe_q.service.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 
 @CrossOrigin
 @RestController
-public class FriendController{
+public class FriendController {
     final UserRepository userRepository;
     final FriendListRepository friendListRepository;
     final FriendListDetailRepository friendListDetailRepository;
     final FriendRequestRepository friendRequestRepository;
-    final EmailService emailService ;
+    final EmailService emailService;
 
 
     public FriendController(UserRepository userRepository, FriendListRepository friendListRepository,
@@ -42,7 +37,7 @@ public class FriendController{
     @GetMapping("/friend/searchFriendByUsername/{userid}/{username}")
     public ResponseEntity<Friend> searchUserByUsername(@PathVariable(value = "userid") Long currentUserId,
                                                        @PathVariable(value = "username") String targetUsername) {
-        List<User> userList = userRepository.findUserByUsernameAndGroupId(targetUsername,1);
+        List<User> userList = userRepository.findUserByUsernameAndGroupId(targetUsername, 1);
         if (!userList.isEmpty()) {
             Friend friend = new Friend();
             // 用户信息
@@ -66,7 +61,6 @@ public class FriendController{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
 
 
     @GetMapping("/friend/getListStatus/{currentUserId}")
@@ -144,18 +138,18 @@ public class FriendController{
                 // 如果已经发过申请并且被拒绝，修改请求状态并保存，使得目标用户可以再次审核
                 friendRequest.setFreundschaftanfragStatus(0);
                 friendRequestRepository.save(friendRequest);
-                friendRequestEmail(currentUserId,targetUserId);
+                friendRequestEmail(currentUserId, targetUserId);
                 return ResponseEntity.status(HttpStatus.OK).body("Friend request sent again");
-            } else if(friendRequest.getFreundschaftanfragStatus() == 0){
+            } else if (friendRequest.getFreundschaftanfragStatus() == 0) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already pending");
-            }else{
+            } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Friend request already approved");
             }
         } else {
             // 如果没有发过好友申请，发送新的
             FriendRequest newFriendRequest = new FriendRequest(currentUserId, targetUserId, 0);
             friendRequestRepository.save(newFriendRequest);
-            friendRequestEmail(currentUserId,targetUserId);
+            friendRequestEmail(currentUserId, targetUserId);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }
     }
@@ -182,7 +176,7 @@ public class FriendController{
     @GetMapping("/friend/getFriendRequests/{currentUserid}")
     public ResponseEntity<List<FriendRequest>> getFriendRequests(@PathVariable(value = "currentUserid") Long currentUserId) {
         List<FriendRequest> friendRequests = friendRequestRepository.findByZielUserIdOrderByFreundschaftanfragStatus(currentUserId);
-        friendRequests.forEach(request ->{
+        friendRequests.forEach(request -> {
                     Optional<User> senderOptional = userRepository.findById(request.getSchickenUserId());
                     senderOptional.ifPresent(request::setSchickenUser);
                 }
@@ -210,8 +204,6 @@ public class FriendController{
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-
-
 
 
     @GetMapping("/friend/getAllFriends/{currentUserId}")
@@ -266,8 +258,8 @@ public class FriendController{
 
         int newFriendRequestNumber = 0;
         List<FriendRequest> friendRequests = friendRequestRepository.findByZielUserId(currentUserId);
-        for (FriendRequest request : friendRequests){
-            if(request.getFreundschaftanfragStatus() == 0){
+        for (FriendRequest request : friendRequests) {
+            if (request.getFreundschaftanfragStatus() == 0) {
                 newFriendRequestNumber++;
             }
         }

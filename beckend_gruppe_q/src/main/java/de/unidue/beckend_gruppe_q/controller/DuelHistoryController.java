@@ -18,8 +18,8 @@ public class DuelHistoryController {
 
     @GetMapping("/api/duel-history/{name}")
     public List<DuelHistory> getDuelHistory(@PathVariable String name) {
-   //     List result = repository.findByPlayerAUsernameOrPlayerBUsername(name, name);
-   //     return result;
+        //     List result = repository.findByPlayerAUsernameOrPlayerBUsername(name, name);
+        //     return result;
         return repository.findByPlayerAUsernameOrPlayerBUsername(name, name);
     }
 }

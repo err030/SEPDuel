@@ -1,7 +1,6 @@
 package de.unidue.beckend_gruppe_q.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,6 @@ public class Card {
     private String description;
     private String image;
     private boolean canAttack;
-
 
 
     public Card(String name, Rarity rarity, int attack, int defense, String description, String image) {

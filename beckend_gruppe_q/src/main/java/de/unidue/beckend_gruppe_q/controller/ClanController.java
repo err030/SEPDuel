@@ -6,7 +6,10 @@ import de.unidue.beckend_gruppe_q.repository.ClanRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class ClanController {
             clan.setName(clanName);
             User user = userRepository.findById(id).orElse(null);
             if (user != null) {
-                if(user.getClanId()!= null) return null;
+                if (user.getClanId() != null) return null;
                 clan.users.add(user);
                 clanRepository.save(clan);
                 user.setClanId(clan.getId());

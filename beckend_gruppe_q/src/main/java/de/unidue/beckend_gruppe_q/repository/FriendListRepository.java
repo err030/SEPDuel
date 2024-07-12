@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface FriendListRepository extends CrudRepository<FriendList, Long> {
     FriendList findByUserId(Long userId);
+
     List<FriendList> findAllByUserId(Long userId);
 }

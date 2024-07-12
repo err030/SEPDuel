@@ -1,17 +1,12 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -31,6 +26,16 @@ public class Duel {
     private boolean isRobotDuel;
 
 
+    public Duel(Player playerA, Player playerB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.gameFinished = false;
+        this.winnerId = -1;
+        this.playerTurn = 0;
+        this.currentPlayer = playerA;
+        this.lastPlayerCard = null;
+    }
+
     @Override
     public String toString() {
         return "Duel{" +
@@ -45,17 +50,6 @@ public class Duel {
                 ",isRobotDuel=" + isRobotDuel +
                 '}';
     }
-
-    public Duel(Player playerA, Player playerB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
-        this.gameFinished = false;
-        this.winnerId = -1;
-        this.playerTurn = 0;
-        this.currentPlayer = playerA;
-        this.lastPlayerCard = null;
-    }
-
 
     public void start() {
         this.playerTurn = 0;
@@ -83,10 +77,10 @@ public class Duel {
         if (checkIfGameFinished() || player.getDeck().getCards().isEmpty()) {
             return;
         }
-            this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
-            this.currentPlayer.hand.add(this.lastPlayerCard);
+        this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
+        this.currentPlayer.hand.add(this.lastPlayerCard);
 
-        }
+    }
 
     public void attack(Card attacker, Card defender) {
         if (checkIfGameFinished()) {

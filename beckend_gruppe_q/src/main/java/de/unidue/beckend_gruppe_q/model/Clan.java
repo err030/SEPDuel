@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 @Data
 public class Clan {
+    @OneToMany(fetch = FetchType.EAGER)
+    public List<User> users = new ArrayList<>();
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany(fetch = FetchType.EAGER)
-    public List<User> users = new ArrayList<>();
 }

@@ -19,6 +19,7 @@ import java.util.Arrays;
 public class WebSecurityConfig {
     /**
      * 配置安全过滤器链
+     *
      * @param http
      * @return
      * @throws Exception
@@ -28,7 +29,7 @@ public class WebSecurityConfig {
         http.authorizeRequests().requestMatchers(HttpMethod.OPTIONS).permitAll();
         http.authorizeRequests().anyRequest().permitAll();
         // 允许所有请求
-        http.csrf(csrf-> csrf.disable()); // 允许跨域访问
+        http.csrf(csrf -> csrf.disable()); // 允许跨域访问
         http.cors(cors -> cors.configurationSource(corsConfigurationSource())); // 使用自定义的 CORS 配置
         return http.build();
     }
@@ -36,6 +37,7 @@ public class WebSecurityConfig {
 
     /**
      * 定义加密器
+     *
      * @return
      */
     @Bean
