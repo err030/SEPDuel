@@ -131,6 +131,8 @@ public class TournamentController {
         }
         tournamentInvitation.setAccepted(updateRequest.isAccepted());
 
+        this.tournament = tournamentInvitation.getTournament();
+
         tournamentInvitationRepository.save(tournamentInvitation);
 
         return ResponseEntity.status(HttpStatus.OK).body(tournamentInvitationRepository.save(tournamentInvitation));
@@ -273,10 +275,6 @@ public class TournamentController {
             Lootbox lootbox = lootboxGenerator.generateLootbox(GOLD);
             bet.getUser().getLootboxes().add(lootbox);
             userRepository.save(bet.getUser());
-            tournamentBetRepository.deleteAll();
-            ;
-            tournamentInvitationRepository.deleteAll();
-            tournamentRepository.delete(tournament);
 
             return ResponseEntity.status(HttpStatus.OK).body("Congrats! You won The Bet!");
         }
