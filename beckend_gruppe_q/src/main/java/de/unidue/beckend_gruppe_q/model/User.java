@@ -32,6 +32,7 @@ public class User {
     private Long sepCoins;
     private Integer status; //0:online, 1:
     private Long clanId;
+    private String clanName;
     private boolean isRobot = false;
     @Setter
     @Getter
