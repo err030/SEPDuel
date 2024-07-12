@@ -110,6 +110,15 @@ body.homepage-user {
   top: 20px;
 }
 
+.homepage-user .box .btn-box#clan{
+  position: absolute;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(235, 225, 168, 0.73);
+  border: 1px solid rgb(243, 234, 183);
+  width: 120px;
+  right: 20px;
+  top: 80px;
+}
 .homepage-user .box .btn-box#lootbox {
   position: absolute;
   color: rgba(255, 255, 255, 0.7);
