@@ -24,6 +24,8 @@ public class Card {
     private int defense;
     private String description;
     private String image;
+    private boolean canAttack;
+
 
 
     public Card(String name, Rarity rarity, int attack, int defense, String description, String image) {
@@ -33,6 +35,7 @@ public class Card {
         this.defense = defense;
         this.description = description;
         this.image = image;
+        this.canAttack = false;
     }
 }
 

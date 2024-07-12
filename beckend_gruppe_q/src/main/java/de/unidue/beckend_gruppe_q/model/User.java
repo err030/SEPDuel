@@ -28,6 +28,7 @@ public class User {
     private Long sepCoins;
     private Integer status; //0:online, 1:
     private Long clanId;
+    private boolean isRobot = false;
 
     @Setter
     @Getter
@@ -64,5 +65,13 @@ public class User {
                 ", decks=" + decks.toString() +
                 ", cards=" + cards.toString() +
                 '}';
+    }
+
+    public boolean isRobot() {
+        return isRobot;
+    }
+
+    public void setRobot(boolean robot) {
+        isRobot = robot;
     }
 }
