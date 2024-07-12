@@ -58,9 +58,9 @@ public class ClanController {
         User user = userRepository.findById(id).get();
         clan.users.add(user);
         user.setClanId(clan.getId());
+        user.setClanName(clan.getName());
         userRepository.save(user);
         clanRepository.save(clan);
-        user.setClanName(clan.getName());
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
