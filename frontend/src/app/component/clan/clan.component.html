@@ -25,7 +25,12 @@
 
   <div class="tournament-btn">
 
-    <button (click)="goToTournament()">Go to Tournament</button>
+    <button (click)="goToTournament()">Go To Tournament</button>
+  </div>
+
+  <div class="tournament-btn">
+
+    <button (click)="endTournament()">Get Bet Result</button>
   </div>
 
   <div class="clan-members">
@@ -33,7 +38,7 @@
     <ul>
       <li *ngFor="let user of members">
         <span>{{ user.username }}</span>
-        <button *ngIf="user.id != loggedUser?.id" (click)="placeBet(user.id)">Bet</button>
+        <button *ngIf="user.id != loggedUser?.id" [disabled]="hasBet" (click)="placeBet(user.id)">Bet</button>
       </li>
     </ul>
   </div>

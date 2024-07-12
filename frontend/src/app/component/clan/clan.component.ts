@@ -26,6 +26,9 @@ export class ClanComponent implements OnInit{
   loggedUser?: User;
   interval: any;
   tournamentId: number | undefined;
+  hasBet: Boolean = false;
+  betResult: string = '';
+  tournamentHasEnded: boolean = false;
 
   constructor(private clanService: ClanService, private userService: UserService, private router: Router, private tournamentService: TournamentService) {
   }
@@ -146,25 +149,23 @@ export class ClanComponent implements OnInit{
 
   placeBet(betOnUserId: number | undefined) {
     //@ts-ignore
-    this.tournamentService.placeBet(Global.loggedUser.id,this.clan?.id,betOnUserId).subscribe({
+    this.tournamentService.placeBet(Global.loggedUser.id,betOnUserId).subscribe({
       next: (response: any) => {
         console.log(response);
         alert("Bet placed!")
+        this.hasBet = true;
       },
       error: (error: any) => {
-        console.log(error);
+        alert(error.error)
+        console.error(error);
       }
     })
   }
-
-  getTournament(userId: number) {
-    this.tournamentService.getTournament(userId).subscribe(
-      (response:any) => {
-        this.tournamentId = response.id;
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    )
+  endTournament() {
+    //@ts-ignore
+    this.tournamentService.getBetResult(Global.loggedUser.id).subscribe(result => {
+      this.betResult = result;
+      alert(this.betResult);
+    });
   }
 }

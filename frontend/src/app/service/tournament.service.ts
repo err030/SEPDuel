@@ -13,7 +13,6 @@ import {DuelRequest} from "../model/DuelRequest";
 })
 export class TournamentService {
   private apiUrl = Global.tournamentRestServiceUrl;
-  private betUrl = Global.backendUrl
 
   constructor(private http: HttpClient) { }
 
@@ -37,12 +36,12 @@ export class TournamentService {
     return this.http.get<DuelRequest[]>(`${this.apiUrl}/${id}/duelRequests`);
   }
 
-  placeBet(userId: number, clanId: number, betOnUserId: number): Observable<any> {
-    return this.http.post(`${this.betUrl}/api/clan/${clanId}/user/${userId}/betOnUser/${betOnUserId}/placeBet`,{});
+  placeBet(userId: number, betOnUserId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/${userId}/betOnUser/${betOnUserId}/placeBet`,{});
   }
 
-  getBetResult(userId: number, tournamentId: number): Observable<string> {
-    return this.http.get(`${this.apiUrl}/user/${userId}/tournament/${tournamentId}/betResult`, { responseType: 'text' });
+  getBetResult(userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user/${userId}/betResult`, { responseType: 'text' });
   }
 
   getTournament(userId: number): Observable<Tournament> {
