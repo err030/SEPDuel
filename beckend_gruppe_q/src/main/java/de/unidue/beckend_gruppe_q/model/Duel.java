@@ -27,6 +27,7 @@ public class Duel {
     private int playerTurn;
     private Card lastPlayerCard;
     private long remainingTime;
+    private boolean isRobotDuel;
 
 
     @Override
@@ -40,6 +41,7 @@ public class Duel {
                 ", winnerId=" + winnerId +
                 ", playerTurn=" + playerTurn +
                 ", lastPlayerCard=" + lastPlayerCard +
+                ",isRobotDuel=" + isRobotDuel +
                 '}';
     }
 

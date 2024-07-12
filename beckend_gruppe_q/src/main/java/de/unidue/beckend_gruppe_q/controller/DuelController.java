@@ -89,6 +89,7 @@ public class DuelController {
 
         Duel duel = new Duel(player1, player2);
         duel.setId(duelId);
+        duel.setRobotDuel(false);
         duels.put(duel.getId(), duel);
         System.out.println("Duel created: " + duel);
         duel.start();
@@ -110,6 +111,7 @@ public class DuelController {
 
             Duel duel = new Duel(player1, player2);
             duel.setId(duelId);
+            duel.setRobotDuel(true);
             duels.put(duel.getId(), duel);
             System.out.println("Duel created: " + duel);
             duel.start();
@@ -207,62 +209,17 @@ public class DuelController {
     }
 
     private void robotPlay(Duel duel) {
-        boolean attackPlayer = true;
         while (duel.getCurrentPlayer().isRobot() && !duel.isGameFinished()) {
             Player robot = duel.getCurrentPlayer();
 
-            // Logic for summoning a card
-            Optional<Card> cardToSummon = robot.getHand().stream()
-                    .filter(card -> card.getRarity().equals(Rarity.COMMON) )
-                    .findFirst();
+            // Call summon method from RobotService
+            robotService.summonCard(duel);
 
-            if (cardToSummon.isPresent()) {
-                Card card = cardToSummon.get();
-                duel.summon(card);
-                System.out.println("Robot summoned card: " + card.getName());
-            } else {
-                // Check if there are RARE or LEGENDARY cards that can be summoned
-                cardToSummon = robot.getHand().stream()
-                        .filter(card -> (card.getRarity().equals(Rarity.RARE) && robot.getTable().size() >= 2) ||
-                                (card.getRarity().equals(Rarity.LEGENDARY) && robot.getTable().size() >= 3))
-                        .findFirst();
+            // Call attack method from RobotService
+            robotService.robotAttack(duel);
 
-                if (cardToSummon.isPresent()) {
-                    Card card = cardToSummon.get();
-                    if (card.getRarity().equals(Rarity.RARE) && robot.getTable().size() >= 2) {
-                        // Sacrifice 2 cards to summon a RARE card
-                        List<Card> cardsToSacrifice = robot.getTable().stream().limit(2).toList();
-                        if (duel.sacrificeCard(cardsToSacrifice.get(0).getId(), cardsToSacrifice.get(1).getId()) != null) {
-                            System.out.println("Robot sacrificed 2 cards to summon RARE card: " + card.getName());
-                        }
-                    } else if (card.getRarity().equals(Rarity.LEGENDARY) && robot.getTable().size() >= 3) {
-                        // Sacrifice 3 cards to summon a LEGENDARY card
-                        List<Card> cardsToSacrifice = robot.getTable().stream().limit(3).toList();
-                        if (duel.sacrificeCard(cardsToSacrifice.get(0).getId(), cardsToSacrifice.get(1).getId(), cardsToSacrifice.get(2).getId()) != null) {
-                            System.out.println("Robot sacrificed 3 cards to summon LEGENDARY card: " + card.getName());
-                        }
-                    }
-                }
-            }
+            // Alternate attack between player and defender
 
-            Optional<Card> attacker = robot.getTable().stream().filter(Card::isCanAttack).findFirst();
-            if (attackPlayer) {
-                // 攻击玩家
-                attacker.ifPresent(atk -> {
-                    duel.attack(atk, null);
-                    System.out.println("Robot attacked player with card: " + atk.getName());
-                });
-            } else {
-                // 攻击防御方
-                Optional<Card> defender = duel.getOpponent().getTable().stream().findFirst();
-                attacker.ifPresent(atk -> {
-                    duel.attack(atk, defender.orElse(null));
-                    System.out.println("Robot attacked opponent's card with card: " + atk.getName());
-                });
-            }
-
-            // 交替攻击玩家和防御方
-            attackPlayer = !attackPlayer;
 
             // Move to next round
             duel.nextRound();
@@ -293,20 +250,26 @@ public class DuelController {
         }
 
         DuelHistory duelHistory = new DuelHistory(duel);
-        if (duel.getWinnerId() == a.getId()) {
-            a.setSepCoins(a.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
-            duelHistory.setPlayerABonusPoints(bonusPoints);
-            duelHistory.setPlayerBBonusPoints(-bonusPoints);
-        } else {
-            b.setSepCoins(b.getSepCoins() + 100);
-            long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
-            b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
-            a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
-            duelHistory.setPlayerBBonusPoints(bonusPoints);
-            duelHistory.setPlayerABonusPoints(-bonusPoints);
+        if(!duel.isRobotDuel()){
+            if (duel.getWinnerId() == a.getId()) {
+                a.setSepCoins(a.getSepCoins() + 100);
+                long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
+                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
+                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - bonusPoints);
+                duelHistory.setPlayerABonusPoints(bonusPoints);
+                duelHistory.setPlayerBBonusPoints(-bonusPoints);
+            } else {
+                b.setSepCoins(b.getSepCoins() + 100);
+                long bonusPoints = Math.max(50, (a.getLeaderBoardPunkt() - b.getLeaderBoardPunkt()));
+                b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() + bonusPoints);
+                a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() - bonusPoints);
+                duelHistory.setPlayerBBonusPoints(bonusPoints);
+                duelHistory.setPlayerABonusPoints(-bonusPoints);
+            }
+        }else{
+            if (duel.getWinnerId() == a.getId()) {
+                a.setSepCoins(a.getSepCoins() + 50);
+            }
         }
 
 
