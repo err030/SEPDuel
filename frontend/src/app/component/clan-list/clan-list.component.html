@@ -16,12 +16,14 @@
   </ul>
 </div>
 
-<form *ngIf="showCreateDialog" #createClanForm="ngForm" (ngSubmit)="onCreateClanFormSubmit()" class="dialog-overlay">
-  <div class="dialog-box bgColor">
-    <h2 class="l-request-title">Please Name Your Clan</h2>
+<form *ngIf="showCreateDialog" #createClanForm="ngForm" (ngSubmit)="onCreateClanFormSubmit()" class="clan-dialog-overlay">
+  <div class="create-dialog">
+    <h2 class="create-title">Please Name Your Clan</h2>
     <input type="text" placeholder="Clan Name" [(ngModel)]="clan.name" name="clanName" required>
-    <button type="submit" class="clan-create-btn">Create</button>
-    <button type="button" class="clan-cancel-btn" (click)="showCreateDialog = false">Cancel</button>
+    <div class="create-btn">
+      <button type="submit" class="clan-create-btn">Create</button>
+      <button type="button" class="clan-cancel-btn" (click)="showCreateDialog = false">Cancel</button>
+    </div>
   </div>
 </form>
 </body>

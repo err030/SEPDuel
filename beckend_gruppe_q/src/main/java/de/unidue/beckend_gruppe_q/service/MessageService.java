@@ -14,12 +14,14 @@ import java.util.Optional;
 @Component
 public class MessageService {
     private final MessageRepository messageRepository;
+
     //private final SimpMessagingTemplate messagingTemplate;
     public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
         //SimpMessagingTemplate messagingTemplate
         //this.messagingTemplate = messagingTemplate;
     }
+
     public Message create(Message message) {
         message.setTimestamp(LocalDateTime.now());
         //message.setIsRead(false);
@@ -32,14 +34,16 @@ public class MessageService {
     public List<Message> getMessagesForChat(Chat chat) {
         return messageRepository.findByChatOrderByTimestampAsc(chat);
     }
-    public Message getMessageById(Long id){
+
+    public Message getMessageById(Long id) {
         return messageRepository.findMessageByMsgId(id);
     }
-    public boolean deleteMessage(Long id){
+
+    public boolean deleteMessage(Long id) {
         return messageRepository.deleteByMsgId(id);
     }
 
-    public boolean deleteAllMessages(Chat chat){
+    public boolean deleteAllMessages(Chat chat) {
         return messageRepository.deleteByChat(chat);
     }
 

@@ -10,14 +10,14 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Deck implements Cloneable{
+public class Deck implements Cloneable {
+    @OneToMany(fetch = FetchType.EAGER)
+    public List<Card> cards;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    @OneToMany(fetch = FetchType.EAGER)
-    public List<Card> cards;
 
     public Deck(String name, String description, List<Card> cards) {
         this.name = name;

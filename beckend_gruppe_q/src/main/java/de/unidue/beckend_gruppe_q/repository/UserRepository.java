@@ -17,6 +17,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findUserByUsernameAndGroupId(String username, Integer groupId);
 
     List<User> findAllByGroupId(Integer groupId);
+
     List<User> findAll();
 
 
@@ -26,6 +27,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findTop20ByOrderByLeaderBoardPunktDesc();
 
+    User findUserByUsername(String username);
+
     Optional<User> findByEmail(String email);
+
 }
 

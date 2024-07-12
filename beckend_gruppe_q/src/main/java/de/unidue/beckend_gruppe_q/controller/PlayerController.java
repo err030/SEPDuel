@@ -1,9 +1,11 @@
 //PlayerController.java
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.*;
-import de.unidue.beckend_gruppe_q.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.unidue.beckend_gruppe_q.model.Card;
+import de.unidue.beckend_gruppe_q.model.Deck;
+import de.unidue.beckend_gruppe_q.model.User;
+import de.unidue.beckend_gruppe_q.repository.DeckRepository;
+import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,6 @@ import java.util.Optional;
 public class PlayerController {
 
 
-
     private final DeckRepository deckRepository;
 
     private final UserRepository userRepository;
@@ -29,9 +30,9 @@ public class PlayerController {
 
     // to add a new deck
     @PostMapping("/api/user/{id}/createDeck")
-    public ResponseEntity<Deck> createDeck(@PathVariable Long id,@RequestBody Deck deck) {
+    public ResponseEntity<Deck> createDeck(@PathVariable Long id, @RequestBody Deck deck) {
         Optional<User> user = userRepository.findById(id);
-        if (user.get().getDecks().size() > 3 || deck.getCards().size() > 30){
+        if (user.get().getDecks().size() > 3 || deck.getCards().size() > 30) {
             System.out.println("Deck limit reached");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -43,12 +44,12 @@ public class PlayerController {
     }
 
     @GetMapping("/api/user/{id}/createDeck")
-    public ResponseEntity<Deck> createDeck( @PathVariable Long id) {
+    public ResponseEntity<Deck> createDeck(@PathVariable Long id) {
         Deck deck = new Deck();
         deck.setName("Something");
         deck.setCards(new ArrayList<Card>());
         User user = userRepository.findById(id).get();
-        if (user.getDecks().size() > 3){
+        if (user.getDecks().size() > 3) {
             System.out.println("Deck limit reached");
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -96,7 +97,7 @@ public class PlayerController {
     }
 
     //get all cards from player
-    @GetMapping(path="/api/user/{id}/card",produces = "application/json")
+    @GetMapping(path = "/api/user/{id}/card", produces = "application/json")
     public ResponseEntity<List<Card>> getAllCards(@PathVariable Long id) {
         if (!userRepository.existsById(id)) {
             System.out.println("User not found");
@@ -137,10 +138,10 @@ public class PlayerController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userRepository.findById(id).get()
-                                   .getDecks()
-                                   .stream()
-                                   .filter(deck -> deck.getId().equals(deckId))
-                                   .findFirst().get().getCards(), HttpStatus.OK);
+                .getDecks()
+                .stream()
+                .filter(deck -> deck.getId().equals(deckId))
+                .findFirst().get().getCards(), HttpStatus.OK);
     }
 
     //get a card using cardId from a deck using deckId from a player using playerId

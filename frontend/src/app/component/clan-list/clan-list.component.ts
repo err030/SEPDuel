@@ -26,7 +26,7 @@ export class ClanListComponent implements OnInit {
   showCreateDialog: boolean = false;
   loggedUser: User | null = null;
 
-  constructor(private router: Router, private clanService: ClanService, private userService: UserService) {
+  constructor(private router: Router, private clanService: ClanService) {
   }
 
   ngOnInit(): void {
@@ -54,8 +54,12 @@ export class ClanListComponent implements OnInit {
         response => {
           if (response.status === 201) {
             alert("Clan created successfully!");
+            Global.loggedUser = response.body;
+            this.loggedUser = Global.loggedUser;
+            localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
             this.showCreateDialog = false;
             this.updateClanList();
+            this.goToClan();
           }
         },
         error => {
@@ -76,7 +80,11 @@ export class ClanListComponent implements OnInit {
         response => {
           if (response.status === 200) {
             alert("You have joined this clan!");
+            Global.loggedUser = response.body;
+            this.loggedUser = Global.loggedUser;
+            localStorage.setItem('loggedUser', JSON.stringify(this.loggedUser));
             this.updateClanList();
+            this.goToClan();
           }
         }
       );
@@ -85,7 +93,7 @@ export class ClanListComponent implements OnInit {
 
   goToClan() {
     // @ts-ignore
-    this.router.navigate(['/clan/' + this.clan.id]);
+    this.router.navigate(['/clan']);
   }
 
   goToHome() {

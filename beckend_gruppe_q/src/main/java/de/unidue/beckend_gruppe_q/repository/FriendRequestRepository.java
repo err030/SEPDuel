@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface FriendRequestRepository extends CrudRepository<FriendRequest, Long> {
     FriendRequest findBySchickenUserIdAndZielUserId(Long schickenUserId, Long zielUserId);
+
     List<FriendRequest> findByZielUserId(Long zielUserId);
+
     List<FriendRequest> findByZielUserIdOrderByFreundschaftanfragStatus(Long zielUserId);
 
 

@@ -101,6 +101,7 @@ export class DuelBoardComponent implements OnInit {
   }
 
   normalize() {
+    if (this.isSpectating()) return;
     let playerC;
     if (!this.duelService.initializer) {
       playerC = this.duel.playerA;
@@ -137,7 +138,7 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canAttack(card: Card): boolean {
-    return this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id) && !this.duelService.sacrificing;
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id) && !this.duelService.sacrificing;
   }
 
   setAttacker(card: Card) {
@@ -184,12 +185,12 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canToggleSacrifice() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
 
   }
 
   canSummon() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5 && !this.duelService.sacrificing
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5 && !this.duelService.sacrificing
   }
 
 
@@ -215,6 +216,18 @@ export class DuelBoardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  isSpectating() {
+    return localStorage.getItem('initializer') === '2';
+  }
+
+  toggleVisibility() {
+      this.duelService.setVisibility(this.duel.id, !this.duel.visibility).subscribe({
+        next: (data) => {
+          this.loadDuel(this.duel.id);
+        }
+      });
+  }
+
   getOpponentAvatar() {
     if (this.duel && this.duel.playerA && this.duel.playerA.avatarUrl) {
       return "http://localhost:8080" + this.duel.playerA.avatarUrl;
@@ -228,6 +241,7 @@ export class DuelBoardComponent implements OnInit {
     }
     return "http://localhost:8080/avatars/user.png";
   }
+
 
   protected readonly Math = Math;
 }

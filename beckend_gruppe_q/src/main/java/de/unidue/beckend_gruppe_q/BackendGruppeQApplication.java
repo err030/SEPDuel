@@ -1,27 +1,9 @@
 package de.unidue.beckend_gruppe_q;
 
-import de.unidue.beckend_gruppe_q.controller.AdminController;
-import de.unidue.beckend_gruppe_q.model.Card;
-import de.unidue.beckend_gruppe_q.model.Deck;
-import de.unidue.beckend_gruppe_q.model.Rarity;
-import de.unidue.beckend_gruppe_q.model.User;
-import de.unidue.beckend_gruppe_q.repository.CardRepository;
-import de.unidue.beckend_gruppe_q.repository.DeckRepository;
-import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 @EnableScheduling
 @SpringBootApplication
@@ -36,7 +18,7 @@ public class BackendGruppeQApplication {
     public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, AdminController adminController) {
         return args -> {
             // 创建 File 对象指向要上传的文件
-            File file = new File("src/main/resources/CSV/test_cards_upload.csv");
+            File file = new File("beckend_gruppe_q/src/main/resources/CSV/test_cards_upload.csv");
             FileInputStream input = new FileInputStream(file);
 
             // 创建 MockMultipartFile 对象

@@ -14,6 +14,7 @@ export class DuelService {
   public sendUserDeck: Deck | undefined;
   public receivedUserDeck: Deck | undefined;
   initializer: boolean = localStorage.getItem('initializer') === '1';
+  // spectating: boolean = localStorage.getItem('initializer') === '2';
   public sacrificing: boolean = false;
   public sacrificingCardsId: number[] = [];
   public attacking: boolean = false;
@@ -117,5 +118,13 @@ export class DuelService {
 
   exitGame(id: number) {
     return this.http.get(`${this.apiUrl}/${id}/exit`);
+  }
+
+  getVisibleDuelList(){
+    return this.http.get(`${this.apiUrl}/visible_list`);
+  }
+
+  setVisibility(id: number, visible: boolean) {
+    return this.http.get(`${this.apiUrl}/${id}/visibility/${visible}`);
   }
 }

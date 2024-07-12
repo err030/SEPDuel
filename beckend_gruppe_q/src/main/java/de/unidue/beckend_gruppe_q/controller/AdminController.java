@@ -17,13 +17,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
 @Transactional
 public class AdminController {
-
 
 
     private final CardRepository cardRepository;
@@ -46,35 +44,35 @@ public class AdminController {
 
         if (!multipartFile.isEmpty()) {
             List<Card> cards = new ArrayList<>();
-           try {
-               //character-input bytes->character input efficient
-               //FileReader extends InputStreamReader
-               BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
-               //DEFAULT = CSV value format and skip Header
-               CSVFormat csvFormat = CSVFormat.DEFAULT.builder().build();
-               Iterable<CSVRecord> csvRecords = csvFormat.parse(bufferedReader);
-              for (CSVRecord csvRecord : csvRecords) {
-                  String name = csvRecord.get(0);
-                  if(cardRepository.existsByName(name)) {
-                      continue;
-                  }
-                  Card card = new Card();
-                  card.setName(name);
-                  String rarity = csvRecord.get(1);
-                  //csvRecord return s string, check and set the Rarity
-                  card.setRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
-                                    rarity.equals("Rarity.RARE") ? Rarity.RARE :
-                                            rarity.equals("Rarity.LEGENDARY") ? Rarity.LEGENDARY :
-                                                    null);
-                  card.setAttack(Integer.parseInt(csvRecord.get(2)));
-                  card.setDefense(Integer.parseInt(csvRecord.get(3)));
-                  card.setDescription(csvRecord.get(4));
-                  card.setImage(csvRecord.get(5));
-                  cards.add(card);
-              }
-                  cardRepository.saveAll(cards);
-              // check if the legendary card is present
-               if (!cardRepository.existsByName("O DEUS KLAUS")){
+            try {
+                //character-input bytes->character input efficient
+                //FileReader extends InputStreamReader
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+                //DEFAULT = CSV value format and skip Header
+                CSVFormat csvFormat = CSVFormat.DEFAULT.builder().build();
+                Iterable<CSVRecord> csvRecords = csvFormat.parse(bufferedReader);
+                for (CSVRecord csvRecord : csvRecords) {
+                    String name = csvRecord.get(0);
+                    if (cardRepository.existsByName(name)) {
+                        continue;
+                    }
+                    Card card = new Card();
+                    card.setName(name);
+                    String rarity = csvRecord.get(1);
+                    //csvRecord return s string, check and set the Rarity
+                    card.setRarity(rarity.equals("Rarity.COMMON") ? Rarity.COMMON :
+                            rarity.equals("Rarity.RARE") ? Rarity.RARE :
+                                    rarity.equals("Rarity.LEGENDARY") ? Rarity.LEGENDARY :
+                                            null);
+                    card.setAttack(Integer.parseInt(csvRecord.get(2)));
+                    card.setDefense(Integer.parseInt(csvRecord.get(3)));
+                    card.setDescription(csvRecord.get(4));
+                    card.setImage(csvRecord.get(5));
+                    cards.add(card);
+                }
+                cardRepository.saveAll(cards);
+                // check if the legendary card is present
+                if (!cardRepository.existsByName("O DEUS KLAUS")) {
                     Card specialCard = new Card();
                     specialCard.setName("O DEUS KLAUS");
                     specialCard.setRarity(Rarity.LEGENDARY);
@@ -85,14 +83,14 @@ public class AdminController {
                     specialCard.setImage("/O_DEUS_KLAUS.PNG");
                     cards.add(specialCard);
                     cardRepository.save(specialCard);
-               }
-               List<Card> allCards = cardRepository.findAll();
-               return ResponseEntity.status(HttpStatus.CREATED).body(allCards);
-           } catch (Exception e) {
-               e.printStackTrace();
-               System.out.println(e.getMessage());
-               return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
-           }
+                }
+                List<Card> allCards = cardRepository.findAll();
+                return ResponseEntity.status(HttpStatus.CREATED).body(allCards);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+            }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -101,21 +99,21 @@ public class AdminController {
     @DeleteMapping("/admin/deleteCard/{name}")
     public ResponseEntity<Card> deleteCard(@PathVariable String name) {
         System.out.println("Frontend Called" + name);
-       try {
-           List<User> users = userRepository.findByCardsName(name);
-           List<Deck> decks = deckRepository.findByCardsName(name);
-           users.forEach(user -> user.cards.removeIf(card -> card.getName().equals(name)));
-           decks.forEach(deck -> deck.cards.removeIf(card -> card.getName().equals(name)));
-           userRepository.saveAll(users);
-           deckRepository.saveAll(decks);
-           System.out.println("User and Deck updated");
-           cardRepository.deleteByName(name);
-           System.out.println("Repo deleted");
-           return ResponseEntity.noContent().build();
-       } catch (Exception e) {
-           e.printStackTrace();
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-       }
+        try {
+            List<User> users = userRepository.findByCardsName(name);
+            List<Deck> decks = deckRepository.findByCardsName(name);
+            users.forEach(user -> user.cards.removeIf(card -> card.getName().equals(name)));
+            decks.forEach(deck -> deck.cards.removeIf(card -> card.getName().equals(name)));
+            userRepository.saveAll(users);
+            deckRepository.saveAll(decks);
+            System.out.println("User and Deck updated");
+            cardRepository.deleteByName(name);
+            System.out.println("Repo deleted");
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/admin/getAllCards")
@@ -125,9 +123,7 @@ public class AdminController {
     }
 
     /**
-     *
-     * @param type
-     * lootboxes should be generated by admin
+     * @param type lootboxes should be generated by admin
      */
     @GetMapping("/admin/generateLootbox")
     public ResponseEntity<Lootbox> generateLootbox(@RequestParam String type) {

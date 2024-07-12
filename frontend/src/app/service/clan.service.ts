@@ -35,4 +35,9 @@ export class ClanService {
     const url = `${Global.backendUrl}/api/clan/${id}/members`;
     return this.http.get<Clan>(url, { observe: 'response' });
   }
+
+  //退出战队
+  exitClan(id: number): Observable<HttpResponse<any>> {
+    return this.http.get<HttpResponse<any>>(`${this.apiUrl}/${id}/exitClan`, {observe: 'response'});
+  }
 }

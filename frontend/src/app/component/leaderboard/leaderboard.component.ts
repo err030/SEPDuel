@@ -80,11 +80,9 @@ export class LeaderboardComponent implements OnInit {
     })
     if (this.sentRequest) {
       localStorage.setItem("sentRequest", JSON.stringify(this.sentRequest))
-    } else {
-      // @ts-ignore
-      this.sentRequest = JSON.parse(localStorage.getItem("sentRequest"));
+    } else if (localStorage.getItem("sentRequest")) {
+      console.log("sentRequest from localStorage:", localStorage.getItem("sentRequest"));
     }
-    console.log("sentRequest:", this.sentRequest);
     this.checkNewDuelRequests();
     //for testing only
     // this.duelRequests.forEach(request => {
@@ -241,8 +239,6 @@ export class LeaderboardComponent implements OnInit {
             this.matchAccepted = true;
             this.loggedUser!.status = 3;
             this.selectedUser!.status = 3;
-            localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
-            localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
             // 显示"主动决斗"按钮
             this.showInitiateDuelButton = true;
             this.showCountdown = false;
@@ -301,6 +297,10 @@ export class LeaderboardComponent implements OnInit {
       (response) => {
         this.duelService.initializer = true;
         localStorage.setItem('initializer', '1');
+        if (this.selectedUser) {
+          localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
+        }
+        localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
         this.router.navigate([`/duel/${this.duelRequest?.id}`]);
       }
     )
@@ -353,6 +353,8 @@ export class LeaderboardComponent implements OnInit {
               this.showCountdown = false;
             }
             this.updateLeaderboard();
+            this.reloadSentRequest();
+            console.log('list duel request:', this.duelRequests)
           },
           error: (error) => {
             console.error("Error fetching duel requests:", error);
@@ -399,6 +401,35 @@ export class LeaderboardComponent implements OnInit {
   enterDuel() {
     this.duelService.initializer = false;
     localStorage.setItem('initializer', '0');
+    if (this.selectedUser) {
+      localStorage.setItem('opponentPoints', JSON.stringify(this.selectedUser?.leaderBoardPunkt))
+    }
+    localStorage.setItem('userPoints', JSON.stringify(this.loggedUser?.leaderBoardPunkt))
     this.router.navigate([`/duel/${this.duelRequest?.id}`]);
+  }
+
+  reloadSentRequest(){
+    if(this.sentRequest){
+      return;
+    }
+    // @ts-ignore
+    this.leaderboardService.getAllDuelRequests().subscribe({
+      next: (response) => {
+        if (response.status === 200 && response.body) {
+          let allRequests = response.body;
+          console.log('all requests:', allRequests);
+          // @ts-ignore
+          this.sentRequest = allRequests.find(r => r.sendUserId === this.loggedUser.id);
+          if (this.sentRequest?.sendUser) {
+            localStorage.setItem('opponentPoints', JSON.stringify(this.sentRequest?.sendUser.leaderBoardPunkt))
+          }
+          localStorage.setItem('sentRequest', JSON.stringify(this.sentRequest));
+          console.log('sentRequest from backend',this.sentRequest);
+        }
+      },
+      error: (error) => {
+        console.error("Error fetching duel requests:", error);
+      }
+    })
   }
 }

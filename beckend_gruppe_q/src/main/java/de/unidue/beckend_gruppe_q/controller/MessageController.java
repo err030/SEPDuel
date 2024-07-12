@@ -14,13 +14,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/message")
 public class MessageController {
+    private final MessageService messageService;
     @Autowired
     private WebSocketMessageHandler webSocketHandler;
 
-    private final MessageService messageService;
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
+
     @PutMapping("/{id}")
     public void edit(@PathVariable Long id, @RequestBody Message message) {
         message.setMsgId(id);
@@ -41,6 +42,7 @@ public class MessageController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PostMapping
     public ResponseEntity<Void> createMessage(@RequestBody Message message) {
         messageService.create(message);
@@ -56,6 +58,7 @@ public class MessageController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping
     public ResponseEntity<Void> deleteAllMessages(Chat chat) {
         messageService.deleteAllMessages(chat);
