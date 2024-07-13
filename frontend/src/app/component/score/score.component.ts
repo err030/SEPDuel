@@ -15,16 +15,30 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ScoreComponent {
   @Input() duel?: Duel;
+  isRobotDuel: boolean = false;
   constructor(protected duelService: DuelService) {
   }
+  ngOnInit() {
+    if (this.duel) {
+      this.getIsRobotDuel(this.duel.id);
+    }
+  }
+
 
 
   isWinner(){
     return this.duel?.winnerId === this.duel?.playerB.id;
   }
 
-  isRobotDuel(){
-    return this.duelService.isRobotDuel(this.duel?.id);
+  getIsRobotDuel(duelId: number) {
+    this.duelService.isRobotDuel(duelId).subscribe(
+      (response) => {
+        this.isRobotDuel = response;
+      },
+      (error) => {
+        console.error('Error fetching robot duel status', error);
+      }
+    );
   }
 
   getBonusPoints(){

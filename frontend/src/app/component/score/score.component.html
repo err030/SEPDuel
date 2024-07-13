@@ -3,10 +3,10 @@
     <div class="result-score">
       <h1 *ngIf="isWinner()" class="win" >You WIN!</h1>
       <h1 *ngIf="!isWinner()" class="lose">You LOSE!</h1>
-      <p *ngIf="isWinner() && !isRobotDuel()">SEP Coins: +100</p>
-      <p *ngIf="isWinner() && isRobotDuel()">SEP Coins: +50</p>
+      <p *ngIf="isWinner() && !isRobotDuel">SEP Coins: +100</p>
+      <p *ngIf="isWinner() && isRobotDuel">SEP Coins: +50</p>
       <p *ngIf="!isWinner()">SEP Coins: +0</p>
-      <p *ngIf="!isRobotDuel()">Leaderboard Points: {{ getBonusPoints() }}</p>
+      <p *ngIf="!isRobotDuel">Leaderboard Points: {{ getBonusPoints() }}</p>
       <p>Total Damage Dealt: {{ getDamageDealt() }}</p>
     </div>
 
