@@ -204,12 +204,13 @@ public class TournamentController {
             return;
         }
         winners.add(playersList.stream().filter(p -> p.getUser().getUsername().equals(winnerUsername)).findFirst().get());
-        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().allMatch(u -> u.getStatus() != 3))) {
+        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().filter(user -> user.getStatus() != null)).allMatch(u -> u.getStatus() != 3)) {
             if (winners.size() < 2) {
                 playersList.clear();
                 winners.clear();
                 User winner = userRepository.findUserByUsername(winnerUsername);
                 this.tournament.setWinnerId(winner.getId());
+                this.tournament.setStatus("Completed");
                 winner.setSepCoins(winner.getSepCoins() + 700);
                 userRepository.save(winner);
                 tournamentRepository.save(this.tournament);
@@ -238,6 +239,14 @@ public class TournamentController {
 
         if (this.tournament == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has not been started!");
+        }
+
+        if (this.tournament.getStatus().equals("In_Progress")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament is in progress!");
+        }
+
+        if (this.tournament.getStatus().equals("Completed")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has been completed!");
         }
 
         currentUser.setSepCoins(currentUser.getSepCoins() - 50);
@@ -273,10 +282,6 @@ public class TournamentController {
             Lootbox lootbox = lootboxGenerator.generateLootbox(GOLD);
             bet.getUser().getLootboxes().add(lootbox);
             userRepository.save(bet.getUser());
-            tournamentBetRepository.deleteAll();
-            ;
-            tournamentInvitationRepository.deleteAll();
-            tournamentRepository.delete(tournament);
 
             return ResponseEntity.status(HttpStatus.OK).body("Congrats! You won The Bet!");
         }

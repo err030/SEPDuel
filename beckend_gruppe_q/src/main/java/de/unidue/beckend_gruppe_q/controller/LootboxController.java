@@ -75,8 +75,27 @@ public class LootboxController {
         System.out.println(dynamicLootbox);
         user.getCards().addAll(dynamicLootbox.getCards());
         userRepository.save(user);
+        lootboxRepository.delete(lootbox);
         System.out.println(user.getCards());
         return ResponseEntity.ok(dynamicLootbox.getCards());
+    }
+
+    @PostMapping("user/claimLootbox/{userId}")
+    public ResponseEntity<?> claimLootbox(@PathVariable Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+
+        if (user.getLootboxes().get(0) == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No such lootbox");
+        }
+        Lootbox goldLootbox = user.getLootboxes().get(0);
+
+        lootboxRepository.delete(goldLootbox);
+
+
+        return ResponseEntity.ok(goldLootbox.getCards());
+
+
     }
 
 }

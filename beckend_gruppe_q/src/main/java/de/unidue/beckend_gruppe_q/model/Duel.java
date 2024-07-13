@@ -86,7 +86,7 @@ public class Duel {
         if (checkIfGameFinished()) {
             return;
         }
-        if (!attacker.isCanAttack()) {
+        if (this.currentPlayer.isRobot() && !attacker.isCanAttack()) {
             System.out.println("Card " + attacker.getName() + " cannot attack this turn.");
             return;
         }

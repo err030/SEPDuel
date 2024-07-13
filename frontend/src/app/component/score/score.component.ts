@@ -1,6 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {Duel} from "../../model/duel.model";
 import {NgIf} from "@angular/common";
+import {DuelHistory} from "../../model/duel-history.model";
+import {HttpClient} from "@angular/common/http";
+import {Card} from "../../model/card.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-score',
@@ -14,12 +18,14 @@ import {NgIf} from "@angular/common";
 export class ScoreComponent {
   @Input() duel?: Duel;
 
+  constructor(private http: HttpClient) {}
+
 
   isWinner(){
     return this.duel?.winnerId === this.duel?.playerB.id;
   }
 
-  getBonusPoints(){
+  getBonusPoints(): number {
     let userPoints = Number(localStorage.getItem('userPoints'));
     let opponentPoints = Number(localStorage.getItem('opponentPoints'));
     if (this.isWinner()) {
@@ -27,6 +33,13 @@ export class ScoreComponent {
     } else {
       return -Math.max((opponentPoints - userPoints) / 2, 50);
     }
+    // let url = `/api/duel-history/${this.duel?.playerB.name}`
+    // this.http.get<DuelHistory[]>(url).subscribe(
+    //   (duelHistory: DuelHistory[]) => {
+    //     return duelHistory.reverse()[0].playerBBonusPoints;
+    //   }
+    // )
+    // return 0;
   }
 
   getDamageDealt(){
