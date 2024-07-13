@@ -101,7 +101,7 @@ public class BackendGruppeQApplication {
                 deck.setCards(user.cards);
                 user.decks.add(deck);
 //                deckRepository.save(deck);
-                userRepository.save(user);
+//                userRepository.save(user);
             }
         };
     }

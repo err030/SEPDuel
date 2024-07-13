@@ -8,6 +8,7 @@ import {Global} from "../../global";
 import {Router} from "@angular/router";
 import {TournamentService} from "../../service/tournament.service";
 import {TournamentInvitation} from "../../model/tournament-invitation.model";
+import {Card} from "../../model/card.model";
 
 @Component({
   selector: 'app-clan',
@@ -167,5 +168,8 @@ export class ClanComponent implements OnInit{
       this.betResult = result;
       alert(this.betResult);
     });
+  }
+  goToLootbox() {
+    this.router.navigate(['/lootbox']);
   }
 }

@@ -33,6 +33,7 @@ export class LootboxComponent implements OnInit {
   protected readonly Global = Global;
   openedCards: Card[] = [];
   openDialogs: Card[] = [];
+  claimedLootbox: Card[] = [];
 
   constructor(private lootboxService: LootboxService, protected userService: UserService, private router: Router) {
   }
@@ -74,6 +75,29 @@ export class LootboxComponent implements OnInit {
           alert('Please buy a Lootbox!' )
         }
       )
+    }
+  }
+
+  claimLootbox(lootboxId: number) {
+      //@ts-ignore
+      this.lootboxService.claimLootbox(Global.loggedUser.id).subscribe(
+        (cards: Card[]) => {
+          this.openedCards.push(...cards);
+          this.openDialogs.push(...cards);
+          // const lootbox = this.lootboxes.find(l => l.id === lootboxId);
+          // if (lootbox) {
+          //   lootbox.purchased = false;
+          //   this.getUser();
+          // }
+          this.claimedLootbox.push(...cards);
+        },
+        (error) => {
+          console.log('Error claiming Lootbox', error);
+          alert('You did not win the Bet!' )
+        }
+      )
+    if (this.claimedLootbox.length > 0) {
+      alert("You have claimed Lootbox!");
     }
   }
 

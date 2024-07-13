@@ -131,8 +131,6 @@ public class TournamentController {
         }
         tournamentInvitation.setAccepted(updateRequest.isAccepted());
 
-        this.tournament = tournamentInvitation.getTournament();
-
         tournamentInvitationRepository.save(tournamentInvitation);
 
         return ResponseEntity.status(HttpStatus.OK).body(tournamentInvitationRepository.save(tournamentInvitation));
@@ -206,7 +204,7 @@ public class TournamentController {
             return;
         }
         winners.add(playersList.stream().filter(p -> p.getUser().getUsername().equals(winnerUsername)).findFirst().get());
-        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().allMatch(u -> u.getStatus() != 3))) {
+        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().filter(user -> !(user.getStatus() ==null)).allMatch(u -> u.getStatus() != 3))) {
             if (winners.size() < 2) {
                 playersList.clear();
                 winners.clear();
