@@ -45,4 +45,8 @@ export class SepTvComponent implements OnInit {
     this.router.navigate([`/duel/${id}`]);
 
   }
+
+  goToHome() {
+    this.router.navigate(['/homepage-user']);
+  }
 }

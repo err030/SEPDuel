@@ -15,7 +15,8 @@ export class User {
     public sepCoins?: number,
     public leaderBoardPunkt?: number,
     public status?: number,
-    public clanId?: number
+    public clanId?: number,
+    public clanName?: string
   ) {
   }
 }

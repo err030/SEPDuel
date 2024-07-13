@@ -127,4 +127,8 @@ export class DuelService {
   setVisibility(id: number, visible: boolean) {
     return this.http.get(`${this.apiUrl}/${id}/visibility/${visible}`);
   }
+
+  isRobotDuel(id: number | undefined): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${id}/isRobotDuel`);
+  }
 }

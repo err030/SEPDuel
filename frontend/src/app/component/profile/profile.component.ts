@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   public loggedUser!: User;
   public selectedFile: File | null = null;
   public isUploading: boolean = false;
+  public clan!: Clan;
 
   constructor(
     private router: Router,

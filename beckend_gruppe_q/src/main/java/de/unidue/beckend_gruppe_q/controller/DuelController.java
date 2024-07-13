@@ -2,8 +2,8 @@ package de.unidue.beckend_gruppe_q.controller;
 
 import de.unidue.beckend_gruppe_q.model.*;
 import de.unidue.beckend_gruppe_q.repository.*;
-import org.springframework.context.annotation.Lazy;
 import de.unidue.beckend_gruppe_q.service.RobotService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,25 +19,31 @@ import java.util.concurrent.ConcurrentHashMap;
 @CrossOrigin
 public class DuelController {
 
+    final RobotService robotService;
+    private final TournamentController tournamentController;
+    private final Map<Long, Long> duelTimers = new ConcurrentHashMap<>();
+    public Map<Long, Duel> duels = new ConcurrentHashMap<>();
     private UserRepository userRepository;
     private DeckRepository deckRepository;
     private CardRepository cardRepository;
     private DuelRequestRepository duelRequestRepository;
-    final RobotService robotService;
-
     private DuelHistoryRepository duelHistoryRepository;
-
-    private final TournamentController tournamentController;
-
     private Player player1;
     private Player player2;
-    public Map<Long, Duel> duels = new ConcurrentHashMap<>();
-    private final Map<Long, Long> duelTimers = new ConcurrentHashMap<>();
+
+    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository, @Lazy TournamentController tournamentController, RobotService robotService) {
+        this.userRepository = userRepository;
+        this.deckRepository = deckRepository;
+        this.cardRepository = cardRepository;
+        this.duelRequestRepository = duelRequestRepository;
+        this.duelHistoryRepository = duelHistoryRepository;
+        this.tournamentController = tournamentController;
+        this.robotService = robotService;
+    }
 
     public void startTimer(long duelId) {
         duelTimers.put(duelId, System.currentTimeMillis());
     }
-
 
     @GetMapping("/api/duel/{id}")
     public Duel getDuel(@PathVariable long id) {
@@ -99,13 +105,14 @@ public class DuelController {
         this.startTimer(duelId);
         return duel;
     }
+
     @PostMapping("/api/duel/createRobotDuel/{duelId}/{userId}/{deck1Id}")
     public ResponseEntity<?> createRobotDuel(@PathVariable long duelId, @PathVariable Long userId, @PathVariable long deck1Id) {
         // 获取当前用户
         System.out.println("Received request to create robot duel: duelId=" + duelId + ", userId=" + userId + ", deck1Id=" + deck1Id);
         User user = userRepository.findById(userId).orElse(null);
         User robot = userRepository.findByEmail("robot@robot.com").orElse(null);
-        if (user != null && robot!=null) {
+        if (user != null && robot != null) {
             List<Card> robotCards = robotService.generateRandomDeck();
             Deck robotDeck = new Deck("Robot Deck", "A deck for the robot opponent", robotCards);
 
@@ -120,13 +127,10 @@ public class DuelController {
             duel.start();
             this.startTimer(duelId);
             return ResponseEntity.status(HttpStatus.OK).body(duel);
-        }
-        else{
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
         }
     }
-
-
 
     @GetMapping("/api/duel/{id}/start")
     public Duel startDuel(@PathVariable long id) {
@@ -161,17 +165,6 @@ public class DuelController {
         }
         Card bonusCard = duel.sacrificeCard(cardIds);
         return bonusCard;
-    }
-
-
-    public DuelController(UserRepository userRepository, DeckRepository deckRepository, CardRepository cardRepository, DuelRequestRepository duelRequestRepository, DuelHistoryRepository duelHistoryRepository,RobotService robotService,@Lazy TournamentController tournamentController) {
-        this.userRepository = userRepository;
-        this.deckRepository = deckRepository;
-        this.cardRepository = cardRepository;
-        this.duelRequestRepository = duelRequestRepository;
-        this.duelHistoryRepository = duelHistoryRepository;
-        this.tournamentController = tournamentController;
-        this.robotService = robotService;
     }
 
     @GetMapping("/api/duel/{id}/attack")
@@ -251,18 +244,18 @@ public class DuelController {
         User b = userRepository.findById(request.getReceivedUserId()).orElse(null);
         if (a == null || b == null) {
             return null;
-        }else{
+        } else {
             a.setStatus(0);
             b.setStatus(0);
         }
 
         DuelHistory duelHistory = new DuelHistory(duel);
-        String winnerUsername="";
+        String winnerUsername = "";
         if (!duel.isRobotDuel()) {
             if (duel.getWinnerId() == a.getId()) {
                 a.setSepCoins(a.getSepCoins() + 100);
                 long bonusPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()));
-                long penaltyPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt())/2);
+                long penaltyPoints = Math.max(50, (b.getLeaderBoardPunkt() - a.getLeaderBoardPunkt()) / 2);
                 a.setLeaderBoardPunkt(a.getLeaderBoardPunkt() + bonusPoints);
                 b.setLeaderBoardPunkt(b.getLeaderBoardPunkt() - penaltyPoints);
                 duelHistory.setPlayerABonusPoints(bonusPoints);
@@ -278,15 +271,11 @@ public class DuelController {
                 duelHistory.setPlayerABonusPoints(-penaltyPoints);
                 winnerUsername = b.getUsername();
             }
-        }else{
-            if(duel.getWinnerId() == a.getId()){
+        } else {
+            if (duel.getWinnerId() == a.getId()) {
                 a.setSepCoins(a.getSepCoins() + 50);
             }
         }
-
-
-
-
         userRepository.save(a);
         userRepository.save(b);
         duelHistoryRepository.save(duelHistory);
@@ -309,6 +298,12 @@ public class DuelController {
     @GetMapping("/api/duel/visible_list")
     public List<Duel> getVisibleDuelList() {
         return this.duels.values().stream().filter(d -> d.isVisibility()).toList();
+    }
+
+    @GetMapping("/api/duel/{id}/isRobotDuel")
+    public ResponseEntity<Boolean> isRobotDuel(@PathVariable long id) {
+        Duel duel = duels.get(id);
+        return ResponseEntity.ok(duel.isRobotDuel());
     }
 
 

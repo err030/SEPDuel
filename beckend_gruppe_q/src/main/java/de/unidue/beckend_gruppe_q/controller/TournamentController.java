@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static de.unidue.beckend_gruppe_q.model.LootboxType.GOLD;
 
@@ -87,7 +84,7 @@ public class TournamentController {
            in the startTournament method, all the invitations are manipulated,
            so the sender of this invitation should also be included
         */
-        TournamentInvitation currentUserInvitation = new TournamentInvitation(finalTournament, currentUser,true);
+        TournamentInvitation currentUserInvitation = new TournamentInvitation(finalTournament, currentUser, true);
         tournamentInvitationRepository.save(currentUserInvitation);
 
         List<TournamentInvitation> invitations = clan.getUsers().stream()
@@ -173,7 +170,7 @@ public class TournamentController {
 
                 TournamentInvitation a = invitations.remove(0);
                 TournamentInvitation b = invitations.remove(0);
-                matchPlayersAndDuel(a,b);
+                matchPlayersAndDuel(a, b);
 
             }
             if (invitations.size() == 1) {
@@ -204,12 +201,13 @@ public class TournamentController {
             return;
         }
         winners.add(playersList.stream().filter(p -> p.getUser().getUsername().equals(winnerUsername)).findFirst().get());
-        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().allMatch(u -> u.getStatus() != 3))) {
+        if ((duelController.duels == null || duelController.duels.isEmpty()) && (userRepository.findAll().stream().filter(user -> user.getStatus() != null)).allMatch(u -> u.getStatus() != 3)) {
             if (winners.size() < 2) {
                 playersList.clear();
                 winners.clear();
                 User winner = userRepository.findUserByUsername(winnerUsername);
                 this.tournament.setWinnerId(winner.getId());
+                this.tournament.setStatus("Completed");
                 winner.setSepCoins(winner.getSepCoins() + 700);
                 userRepository.save(winner);
                 tournamentRepository.save(this.tournament);
@@ -236,8 +234,16 @@ public class TournamentController {
             return ResponseEntity.badRequest().body("Not enough sep coins!");
         }
 
-        if (this.tournament == null){
+        if (this.tournament == null ) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has not been started!");
+        }
+
+        if (this.tournament.getStatus().equals("In_Progress")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament is in progress!");
+        }
+
+        if (this.tournament.getStatus().equals("Completed")){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has been completed!");
         }
 
         currentUser.setSepCoins(currentUser.getSepCoins() - 50);
@@ -265,21 +271,18 @@ public class TournamentController {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found"));
 
-        TournamentBet bet = tournamentBetRepository.findByTournamentAndUser(tournament,user);
+        TournamentBet bet = tournamentBetRepository.findByTournamentAndUser(tournament, user);
 
-            if (bet.getBetOnUserId().equals(tournament.getWinnerId())) {
+        if (bet.getBetOnUserId().equals(tournament.getWinnerId())) {
 
-                bet.getUser().setSepCoins(bet.getUser().getSepCoins() + 50);
-                Lootbox lootbox = lootboxGenerator.generateLootbox(GOLD);
-                bet.getUser().getLootboxes().add(lootbox);
-                userRepository.save(bet.getUser());
-                tournamentBetRepository.deleteAll();;
-                tournamentInvitationRepository.deleteAll();
-                tournamentRepository.delete(tournament);
+            bet.getUser().setSepCoins(bet.getUser().getSepCoins() + 50);
+            Lootbox lootbox = lootboxGenerator.generateLootbox(GOLD);
+            bet.getUser().getLootboxes().add(lootbox);
+            userRepository.save(bet.getUser());
 
-                return ResponseEntity.status(HttpStatus.OK).body("Congrats! You won The Bet!");
-            }
-            return ResponseEntity.ok().body("You lost the Bet!");
+            return ResponseEntity.status(HttpStatus.OK).body("Congrats! You won The Bet!");
+        }
+        return ResponseEntity.ok().body("You lost the Bet!");
 
     }
 }

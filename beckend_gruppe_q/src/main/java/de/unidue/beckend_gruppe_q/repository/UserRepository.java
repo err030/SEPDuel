@@ -17,6 +17,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findUserByUsernameAndGroupId(String username, Integer groupId);
 
     List<User> findAllByGroupId(Integer groupId);
+
     List<User> findAll();
 
 
@@ -29,5 +30,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User findUserByUsername(String username);
 
     Optional<User> findByEmail(String email);
+
+    boolean existsByUsername(String aa);
 }
 

@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {Duel} from "../../model/duel.model";
 import {NgIf} from "@angular/common";
+import {DuelService} from "../../service/duel.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-score',
@@ -13,10 +15,30 @@ import {NgIf} from "@angular/common";
 })
 export class ScoreComponent {
   @Input() duel?: Duel;
+  isRobotDuel: boolean = false;
+  constructor(protected duelService: DuelService) {
+  }
+  ngOnInit() {
+    if (this.duel) {
+      this.getIsRobotDuel(this.duel.id);
+    }
+  }
+
 
 
   isWinner(){
     return this.duel?.winnerId === this.duel?.playerB.id;
+  }
+
+  getIsRobotDuel(duelId: number) {
+    this.duelService.isRobotDuel(duelId).subscribe(
+      (response) => {
+        this.isRobotDuel = response;
+      },
+      (error) => {
+        console.error('Error fetching robot duel status', error);
+      }
+    );
   }
 
   getBonusPoints(){

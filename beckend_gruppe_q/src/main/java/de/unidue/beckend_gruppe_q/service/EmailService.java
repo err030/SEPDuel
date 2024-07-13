@@ -10,25 +10,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
-        @Resource
-        private JavaMailSender mailSender;
+    @Resource
+    private JavaMailSender mailSender;
 
-        @Value("${spring.mail.username}")
-        private String emailFrom;
+    @Value("${spring.mail.username}")
+    private String emailFrom;
 
-        /**
-         * 发送普通文本格式的邮件
-         * @param emailTo
-         * @param subject
-         * @param text
-         */
-        @Async
-        public void sendEMail(String emailTo, String subject, String text) {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setFrom(emailFrom);
-            simpleMailMessage.setTo(emailTo);
-            simpleMailMessage.setSubject(subject);
-            simpleMailMessage.setText(text);
-            mailSender.send(simpleMailMessage);
-        }
+    /**
+     * 发送普通文本格式的邮件
+     *
+     * @param emailTo
+     * @param subject
+     * @param text
+     */
+    @Async
+    public void sendEMail(String emailTo, String subject, String text) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(emailFrom);
+        simpleMailMessage.setTo(emailTo);
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(text);
+        mailSender.send(simpleMailMessage);
+    }
 }

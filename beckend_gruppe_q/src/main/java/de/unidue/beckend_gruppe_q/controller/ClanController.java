@@ -6,7 +6,10 @@ import de.unidue.beckend_gruppe_q.repository.ClanRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,10 +36,11 @@ public class ClanController {
             clan.setName(clanName);
             User user = userRepository.findById(id).orElse(null);
             if (user != null) {
-                if(user.getClanId()!= null) return null;
+                if (user.getClanId() != null) return null;
                 clan.users.add(user);
                 clanRepository.save(clan);
                 user.setClanId(clan.getId());
+                user.setClanName(clanName);
                 userRepository.save(user);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -54,6 +58,7 @@ public class ClanController {
         User user = userRepository.findById(id).get();
         clan.users.add(user);
         user.setClanId(clan.getId());
+        user.setClanName(clan.getName());
         userRepository.save(user);
         clanRepository.save(clan);
         return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -88,6 +93,7 @@ public class ClanController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         user.setClanId(null);
+        user.setClanName(null);
         clan.users.remove(user);
         if (clan.getUsers().isEmpty()) {
             clanRepository.delete(clan);

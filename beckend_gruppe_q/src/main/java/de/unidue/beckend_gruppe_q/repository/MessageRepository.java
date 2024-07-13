@@ -19,6 +19,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     Message findMessageByMsgId(Long id);
 
     boolean deleteByMsgId(Long id);
+
     boolean deleteByChat(Chat chat);
 
 }

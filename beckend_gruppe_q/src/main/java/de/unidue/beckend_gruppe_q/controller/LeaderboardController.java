@@ -1,6 +1,7 @@
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.model.DuelRequest;
+import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
 import de.unidue.beckend_gruppe_q.repository.TournamentRepository;
@@ -26,7 +27,6 @@ public class LeaderboardController {
         this.deckRepository = deckRepository;
         this.tournamentRepository = tournamentRepository;
     }
-
 
 
     @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")

@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
     /**
      * 配置安全过滤器链
+     *
      * @param http
      * @return
      * @throws Exception
@@ -19,13 +20,14 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll(); // 允许所有请求
-        http.csrf(csrf-> csrf.disable()); // 允许跨域访问
+        http.csrf(csrf -> csrf.disable()); // 允许跨域访问
         return http.build();
     }
 
 
     /**
      * 定义加密器
+     *
      * @return
      */
     @Bean

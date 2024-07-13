@@ -58,7 +58,6 @@ export class HomepageUserComponent implements OnInit {
       return;
     }
 
-
     // 菜单项
     this.userMenuItems = [
       {
@@ -178,9 +177,9 @@ export class HomepageUserComponent implements OnInit {
 
 
   }
-
-
   goToSepTv() {
     this.router.navigate(['/sep-tv']);
   }
+
+
 }
