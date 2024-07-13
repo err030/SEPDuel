@@ -300,5 +300,11 @@ public class DuelController {
         return this.duels.values().stream().filter(d -> d.isVisibility()).toList();
     }
 
+    @GetMapping("/api/duel/{id}/isRobotDuel")
+    public ResponseEntity<Boolean> isRobotDuel(@PathVariable long id) {
+        Duel duel = duels.get(id);
+        return ResponseEntity.ok(duel.isRobotDuel());
+    }
+
 
 }

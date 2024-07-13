@@ -13,4 +13,5 @@ export interface Duel {
   lastPlayerCard: Card;
   remainingTime: number;
   visibility: boolean;
+  isRobotDuel:boolean;
 }
