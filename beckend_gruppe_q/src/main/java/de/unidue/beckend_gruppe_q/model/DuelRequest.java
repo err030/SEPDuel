@@ -1,9 +1,7 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.stereotype.Repository;
 
 @Data
 @Entity
@@ -19,8 +17,6 @@ public class DuelRequest {
     private User sendUser;
     @Transient
     private User receivedUser;
-
-
 
 
     public DuelRequest() {

@@ -6,6 +6,7 @@ export interface Player {
   name: string;
   hp: number;
   hasSummoned: boolean;
+  isRobot: boolean;
   deck: Deck;
   hand: Card[];
   table: Card[];

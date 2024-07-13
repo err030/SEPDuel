@@ -1,0 +1,34 @@
+<div class="duel-history">
+  <div class="history-title">Duel History</div>
+  <p-table *ngIf="loggedUser" [value]="historys" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr class="history-table-tr">
+        <th>Opponent And Points</th>
+        <th>Result</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-history>
+      <tr class="history-table-tr">
+        <td>
+          <div class="history-item-opponent">
+            <div class="opponent-item">
+              <div>{{ history.playerAUsername }}</div>
+              <div class="opponent-point" [ngClass]="{'win': history.playerABonusPoints >= 0, 'lose': history.playerABonusPoints < 0}">{{ history.playerABonusPoints >= 0 ? ('+' + history.playerABonusPoints) : history.playerABonusPoints }} Points</div>
+            </div>
+            <div class="vs-text">VS</div>
+            <div class="opponent-item">
+              <div>{{ history.playerBUsername }}</div>
+              <div class="opponent-point" [ngClass]="{'win': history.playerBBonusPoints >= 0, 'lose': history.playerBBonusPoints < 0}">{{ history.playerBBonusPoints >= 0 ? ('+' + history.playerBBonusPoints) : history.playerBBonusPoints }} Points</div>
+            </div>
+          </div>
+        </td>
+        <td [ngClass]="{'win': history.winnerUsername === loggedUser?.username, 'lose': history.winnerUsername !== loggedUser?.username}">{{ history.winnerUsername === loggedUser?.username ? 'You Win' : ' You Lose' }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="2">No Record found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

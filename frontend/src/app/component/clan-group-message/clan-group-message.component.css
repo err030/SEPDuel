@@ -1,0 +1,35 @@
+.message_dialog_header {
+  height: 38px !important;
+  position: relative;
+}
+
+.message_dialog_history {
+  height: calc(100vh - 330px) !important;
+}
+
+.message_dialog_inputField {
+  height: 130px !important;
+}
+
+.message-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  height: 60px;
+}
+
+.message-sent-by-me {
+  justify-content: flex-end;
+}
+
+.message-sent-by-friend {
+  justify-content: flex-start;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate3d(0, -50%, 0);
+}

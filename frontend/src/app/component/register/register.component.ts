@@ -23,45 +23,20 @@ import { CalendarModule } from 'primeng/calendar';
 export class RegisterComponent {
   user: User = new User("", "", "", "", "",1);
   confirmPassword: string = "";
- /* years: number[] = [];
-  months: number[] = [];
-  days: number[] = [];*/
-
-
-  // 设置最小和最大日期
-  minDate: Date = new Date(1954, 4, 10); // 月份从0开始计算，所以5月是4
-  maxDate: Date = new Date(2012, 4, 10);
 
   constructor(private userService: UserService, private router: Router) {
   }
-  // 初始化年份、月份和日期选项
-  /*this.years = this.generateOptions(1970, 2006);
-  this.months = Array.from({ length: 12 }, (_, i) => i + 1);
-  this.days = Array.from({ length: 31 }, (_, i) => i + 1);
-}*/
-
-// 辅助函数，用于生成指定范围内的数字数组
-/*
-generateOptions(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
-*/
 
 // 验证邮箱是否符合规则
 isValidEmail(email: string): boolean {
     if (!email) {
-      // 如果邮箱为空，返回 false
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // 检查邮箱是否符合正则表达式规则
     if (!emailRegex.test(email)) {
-      // 如果邮箱不符合规则，返回 false
       return false;
     }
-
-    // 其他情况下，返回 true
     return true;
   }
 
@@ -100,18 +75,11 @@ isValidEmail(email: string): boolean {
 
                 // 注册用户
                 this.userService.addUser(this.user).subscribe({
-                  // 如果http请求成功
                   next: (response) => {
-                    // 如果状态码为201
                     if (response.status == 201) {
-                      // 显示注册成功的信息
                       alert("Registration successful");
                       this.userService.userLogout();
 
-                      /* // 清空表单数据
-                       this.user = new User("", "", "", "", ,  );
-                       this.confirmPassword = "";*/
-                      // 跳转到登录页面
                       this.router.navigateByUrl("/login");
                     }
                   },
@@ -134,8 +102,6 @@ isValidEmail(email: string): boolean {
       }
     });
 
-    //默认头像
-   /* this.user.avatarUrl = 'assets/images/avatar.jpeg';*/
   }
 
   //跳转到登录页面
