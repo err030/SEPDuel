@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {Duel} from "../../model/duel.model";
 import {NgIf} from "@angular/common";
+import {DuelService} from "../../service/duel.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-score',
@@ -13,10 +15,16 @@ import {NgIf} from "@angular/common";
 })
 export class ScoreComponent {
   @Input() duel?: Duel;
+  constructor(protected duelService: DuelService) {
+  }
 
 
   isWinner(){
     return this.duel?.winnerId === this.duel?.playerB.id;
+  }
+
+  isRobotDuel(){
+    return this.duelService.isRobotDuel(this.duel?.id);
   }
 
   getBonusPoints(){
