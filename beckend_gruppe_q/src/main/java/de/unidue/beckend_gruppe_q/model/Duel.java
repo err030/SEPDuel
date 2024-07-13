@@ -23,7 +23,7 @@ public class Duel {
     private Card lastPlayerCard;
     private long remainingTime;
     private boolean visibility = false;
-    private boolean isRobotDuel;
+    private boolean isRobotDuel=false;
 
 
     public Duel(Player playerA, Player playerB) {
