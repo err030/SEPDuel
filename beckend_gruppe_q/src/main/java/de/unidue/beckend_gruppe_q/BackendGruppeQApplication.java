@@ -34,6 +34,7 @@ public class BackendGruppeQApplication {
     @Bean
     public CommandLineRunner demo(DeckRepository deckRepository, CardRepository cardRepository, UserRepository userRepository, AdminController adminController, UserController userController, PlayerController playerController) {
         return args -> {
+            if (userRepository.existsByUsername("aa")) return;
             // 创建 File 对象指向要上传的文件
             File file = new File("beckend_gruppe_q/src/main/resources/CSV/test_cards_upload.csv");
             FileInputStream input = new FileInputStream(file);
@@ -101,7 +102,7 @@ public class BackendGruppeQApplication {
                 deck.setCards(user.cards);
                 user.decks.add(deck);
 //                deckRepository.save(deck);
-//                userRepository.save(user);
+                userRepository.save(user);
             }
         };
     }

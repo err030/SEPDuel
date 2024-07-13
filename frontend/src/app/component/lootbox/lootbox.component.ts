@@ -79,6 +79,10 @@ export class LootboxComponent implements OnInit {
   }
 
   claimLootbox(lootboxId: number) {
+    if (this.claimedLootbox.length > 0) {
+      alert("You have claimed Lootbox!");
+      return;
+    }
       //@ts-ignore
       this.lootboxService.claimLootbox(Global.loggedUser.id).subscribe(
         (cards: Card[]) => {
@@ -96,9 +100,6 @@ export class LootboxComponent implements OnInit {
           alert('You did not win the Bet!' )
         }
       )
-    if (this.claimedLootbox.length > 0) {
-      alert("You have claimed Lootbox!");
-    }
   }
 
   ngOnInit()

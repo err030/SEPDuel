@@ -5,13 +5,13 @@
   <button (click)="goToHome()" class="back-button">Back</button>
 
   <div class="create-clan-button">
-    <button (click)="showCreateDialog = true" [disabled]="loggedUser?.clanId !== null">Create Clan</button>
+    <button (click)="showCreateDialog = true" [disabled]="loggedUser?.clanId">Create Clan</button>
   </div>
 
   <ul>
     <li *ngFor="let clan of clans">
       <span>{{ clan.name }}</span>
-      <button (click)="joinClan(clan.id)" [disabled]="loggedUser?.clanId !== null">Join</button>
+      <button (click)="joinClan(clan.id)" [disabled]="loggedUser?.clanId">Join</button>
     </li>
   </ul>
 </div>

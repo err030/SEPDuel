@@ -6,7 +6,7 @@ export interface Tournament {
   id: number;
   name: string;
   clan: Clan;
-  status: 'waiting' | 'in_progress' | 'completed';
+  status: 'Waiting' | 'In_Progress' | 'Completed';
   currentRound: number;
   duels: Duel[];
   participants: User[];

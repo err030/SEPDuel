@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 import {TournamentService} from "../../service/tournament.service";
 import {TournamentInvitation} from "../../model/tournament-invitation.model";
 import {Card} from "../../model/card.model";
+import {Tournament} from "../../model/tournament.model";
 
 @Component({
   selector: 'app-clan',
@@ -40,6 +41,19 @@ export class ClanComponent implements OnInit{
     if (this.loggedUser && this.loggedUser.clanId) {
       this.updateClanMembers(this.loggedUser.clanId);
       console.log("Clan info:" + this.clan);
+      //@ts-ignore
+      this.tournamentService.getTournament(this.loggedUser.id).subscribe(
+        (response:any) => {
+          console.log('Tournament response:', response);
+          let tournament = response;
+          //@ts-ignore
+          if (tournament.winnerId === this.loggedUser.id && tournament.id.toString() !== localStorage.getItem('lastWonTournament')) {
+            localStorage.setItem('lastWonTournament',tournament.id.toString());
+            alert("Congratulations! You won the tournament!");
+            alert("You are awarded with 700 SEP Coins.");
+          }
+        }
+      )
     } else {
       alert("You haven't joined any clans yet.");
       this.goToHome();
