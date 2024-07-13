@@ -10,6 +10,7 @@ import {TournamentService} from "../../service/tournament.service";
 import {TournamentInvitation} from "../../model/tournament-invitation.model";
 import {Card} from "../../model/card.model";
 import {Tournament} from "../../model/tournament.model";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-clan',
@@ -181,7 +182,12 @@ export class ClanComponent implements OnInit{
     this.tournamentService.getBetResult(Global.loggedUser.id).subscribe(result => {
       this.betResult = result;
       alert(this.betResult);
-    });
+      this.goToLootbox();
+    },
+      (error: any) => {
+      alert("You did not bet or Tournament did not beginn!");
+      }
+    );
   }
   goToLootbox() {
     this.router.navigate(['/lootbox']);
