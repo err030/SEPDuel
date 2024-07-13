@@ -33,7 +33,6 @@ import {ScoreComponent} from "./component/score/score.component";
 import {SepTvComponent} from "./component/sep-tv/sep-tv.component";
 import {ClanComponent} from "./component/clan/clan.component";
 import {ClanListComponent} from "./component/clan-list/clan-list.component";
-import {TournamentComponent} from "./component/tournament/tournament.component";
 import {ClanGroupMessageComponent} from './component/clan-group-message/clan-group-message.component'
 
 
@@ -55,7 +54,6 @@ export const routes: Routes = [
   {path: 'duel', component: DuelBoardComponent},
   {path: 'duel/:duelId', component: DuelBoardComponent},
   {path: 'sep-tv', component: SepTvComponent},
-  {path: 'tournament/:id', component: TournamentComponent},
   {path: 'duel-history', component: DuelHistoryComponent},
 
 

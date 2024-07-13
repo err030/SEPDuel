@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static de.unidue.beckend_gruppe_q.model.LootboxType.GOLD;
 
@@ -236,7 +233,7 @@ public class TournamentController {
             return ResponseEntity.badRequest().body("Not enough sep coins!");
         }
 
-        if (this.tournament == null) {
+        if (this.tournament == null ) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has not been started!");
         }
 
