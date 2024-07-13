@@ -16,9 +16,9 @@
 
   <div class="game-field-box">
     <button class="game-field dynamic-btn" id="duel" routerLink="/leaderboard"> Leaderboard </button>
+    <button class="btn-box" id="robot" *ngIf="loggedUser" (click)="playWithRobot()">Play with Robot</button>
     <button (click)="goToDecks()" class="btn-box game-field" id="deck">Deck</button>
     <div class="btn-box" id="sep-tv" (click)="goToSepTv()">SEP TV</div>
-    <button class="btn-box" id="robot" *ngIf="loggedUser" (click)="playWithRobot()">Play with Robot</button>
 
 
     <button (click)="goToClanList()" class="btn-box game-field" id="clan-list">Clan List</button>

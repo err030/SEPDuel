@@ -20,10 +20,12 @@ body.duel {
   top: 35%;
   left: 10px;
 }
+
 .switch-visibility{
   position: absolute;
   top: 50%;
   left: 10px;
+  z-index:10000000;
 }
 
 .opponent-info {
@@ -43,23 +45,27 @@ body.duel {
   justify-content: center;
   align-items: center;
   width: 1000px;
-  height: 280px;
+  height: 230px;
   background-color: #444; /* 中间对战框的底色 */
   border-radius: 10px;
   position: relative;
 }
 
 .opponent-game-table {
-  top: 30px;
+  top: 170px;
   background-image: url('/assets/images/duel-bg-op.jpg');
-  background-size: cover;
+  background-size: 100% 100%; /* 拉伸图片以适应容器 */
+  background-repeat: no-repeat; /* 确保图片不会重复 */
+  background-position: center; /* 图片居中对齐 */
   box-shadow: 0 0 20px 10px rgb(217, 102, 87);
 }
 
 .player-game-table {
-  top: 35px;
+  top: 175px;
   background-image: url('/assets/images/duel-bg-pl.jpg');
-  background-size: cover;
+  background-size: 100% 100%; /* 拉伸图片以适应容器 */
+  background-repeat: no-repeat; /* 确保图片不会重复 */
+  background-position: center; /* 图片居中对齐 */
   box-shadow: 0 0 20px 10px rgb(142, 206, 241);
 }
 
@@ -72,11 +78,11 @@ body.duel {
 }
 
 .opponent-table-cards {
-  top: 40px;
+  top: 20px;
 }
 
 .player-table-cards {
-  bottom: 40px;
+  bottom: 20px;
 }
 
 .player-action {
@@ -96,7 +102,7 @@ body.duel {
 .end-turn-btn, .start-game-btn {
   position: absolute;
   right: 110px;
-  top: 37%;
+  top: 47%;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
@@ -262,8 +268,8 @@ input[type="checkbox"] {
 
 .game-timer{
   position: absolute;
-  bottom: 160px;
-  left: 220px;
+  top:10%;
+  right:45%;
   font-size: 16px;
   color: white;
 
