@@ -34,7 +34,8 @@ export class DuelBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.duelId = params['duelId'];
+      this.duelId =  params['duelId'];
+      console.log(this.duelId);
       try {
         this.refreshDuel()
       } catch (e) {
@@ -50,15 +51,15 @@ export class DuelBoardComponent implements OnInit {
     console.log('DuelBoardComponent initialized');
     console.log(this.duel);
     console.log("Player A:", this.duel.playerA);
-
     console.log("Player B:", this.duel.playerB);
-
-    console.log("Current player:", this.duel.currentPlayer)
+    console.log("Current player:", this.duel.currentPlayer);
   }
 
   loadDuel(duelId: number) {
+    console.log(duelId);
     this.duelService.getDuel(duelId).subscribe({
       next: (data) => {
+        console.log('Received data:', data);
         if (data.id){
           this.duel = data;
           console.log('Duel loaded successfully:', data);
@@ -100,6 +101,7 @@ export class DuelBoardComponent implements OnInit {
   }
 
   normalize() {
+    if (this.isSpectating()) return;
     let playerC;
     if (!this.duelService.initializer) {
       playerC = this.duel.playerA;
@@ -111,6 +113,8 @@ export class DuelBoardComponent implements OnInit {
   refreshDuel() {
     setInterval(() => {
       this.loadDuel(this.duelId);
+      console.log(this.duelId);
+
     }, 1000)
   }
 
@@ -134,7 +138,7 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canAttack(card: Card): boolean {
-    return this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id) && !this.duelService.sacrificing;
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duelService.attackedCardsId.includes(card.id) && !this.duelService.sacrificing;
   }
 
   setAttacker(card: Card) {
@@ -181,12 +185,12 @@ export class DuelBoardComponent implements OnInit {
   }
 
   canToggleSacrifice() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length >= 2 && this.duel.playerB.hand.some(card => card.rarity !== "COMMON");
 
   }
 
   canSummon() {
-    return this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5 && !this.duelService.sacrificing
+    return !this.isSpectating() && this.isCurrentPlayer() && !this.duel.playerB.hasSummoned && this.duel.playerB.table.length < 5 && !this.duelService.sacrificing
   }
 
 
@@ -212,6 +216,18 @@ export class DuelBoardComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  isSpectating() {
+    return localStorage.getItem('initializer') === '2';
+  }
+
+  toggleVisibility() {
+      this.duelService.setVisibility(this.duel.id, !this.duel.visibility).subscribe({
+        next: (data) => {
+          this.loadDuel(this.duel.id);
+        }
+      });
+  }
+
   getOpponentAvatar() {
     if (this.duel && this.duel.playerA && this.duel.playerA.avatarUrl) {
       return "http://localhost:8080" + this.duel.playerA.avatarUrl;
@@ -225,6 +241,7 @@ export class DuelBoardComponent implements OnInit {
     }
     return "http://localhost:8080/avatars/user.png";
   }
+
 
   protected readonly Math = Math;
 }

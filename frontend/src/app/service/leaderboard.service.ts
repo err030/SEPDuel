@@ -27,6 +27,11 @@ export class LeaderboardService {
     return this.http.get<DuelRequest[]>(url, {observe: 'response'});
   }
 
+  getAllDuelRequests(): Observable<HttpResponse<DuelRequest[]>>{
+    const url = Global.duelRequestRestServiceUrl + "/getAllDuelRequests";
+    return this.http.get<DuelRequest[]>(url, {observe: 'response'});
+  }
+
   acceptOrDenyDuelRequest(duelRequest: DuelRequest): Observable<HttpResponse<any>>{
        const url = Global.duelRequestRestServiceUrl + "/updateDuelRequest";
        return this.http.put<any>(url, duelRequest, {observe: 'response'});

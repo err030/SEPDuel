@@ -14,10 +14,13 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class WebSocketMessageHandler implements WebSocketConfigurer {
 
     private final MessageService messageService;
+
     public WebSocketMessageHandler(MessageService messageService) {
         this.messageService = messageService;
     }
-    @Override  //Problem : Extract method ‘registerWebSocketHandlers’ to new interface /solve with (implements WebSocketConfig)
+
+    @Override
+    //Problem : Extract method ‘registerWebSocketHandlers’ to new interface /solve with (implements WebSocketConfig)
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new SocketHandler(), "/webSocketServer");
     }
@@ -26,7 +29,7 @@ public class WebSocketMessageHandler implements WebSocketConfigurer {
         @Override
         public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
             // Behandlung von Textnachrichten
-            System.out.printf("Received message:"+message);
+            System.out.printf("Received message:" + message);
             String payload = message.getPayload();
             session.sendMessage(new TextMessage("Received message: " + payload));
 

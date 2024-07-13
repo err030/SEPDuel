@@ -4,7 +4,12 @@ import { MenuItem } from 'primeng/api';
 import { UserService } from '../../service/user.service';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {Global} from "../../global";
-import {User} from "../../model/user"; // 导入路由器模块
+import {User} from "../../model/user";
+import {RobotService} from "../../service/robot.service";
+import {DuelRequest} from "../../model/DuelRequest";
+import {NgIf} from "@angular/common";
+import {HttpResponse} from "@angular/common/http";
+import {DuelService} from "../../service/duel.service"; // 导入路由器模块
 
 @Component({
   selector: 'homepage-user',
@@ -12,7 +17,8 @@ import {User} from "../../model/user"; // 导入路由器模块
   styleUrls: ['./homepage-user.component.css'],
   imports: [
     RouterOutlet,
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   standalone: true
 })
@@ -20,10 +26,17 @@ export class HomepageUserComponent implements OnInit {
   userMenuItems: MenuItem[] = [];
   userAvatarUrl = "";
   showAvatarWord: boolean = false;
-  public loggedUser!: User;
+  duelRequest?: DuelRequest;
+  selectedUserId: number | undefined;
+  sentRequest: DuelRequest | null = null;
+  userId: number | null = null;
+  loggedUser: User | null = null;
+
 
   constructor(
     private userService: UserService,
+    private robotService: RobotService,
+    private duelService: DuelService,
     private router: Router
   ) {}
 
@@ -39,6 +52,7 @@ export class HomepageUserComponent implements OnInit {
     // 初始化loggedUser
     if (loggedUser) {
       this.loggedUser = loggedUser;
+      console.log('Global.loggedUser:', this.loggedUser);
     } else {
       console.error('Logged user is not available');
       return;
@@ -99,10 +113,73 @@ export class HomepageUserComponent implements OnInit {
     this.router.navigate(['/lootbox']);
   }
 
+  goToClanList(){
+    this.router.navigate(['/clan-list']);
+  }
+
+  goToClan(){
+    this.router.navigate(['/clan']);
+  }
+
 
 // 导航到聊天页面
 //   navigateToChat() {
 //   this.router.navigateByUrl(':friendId').catch(err => console.error('Navigation Error:', err));
 // }
+
+  getUserId(){
+    return Global.loggedUser.id;
+  }
+
+
+  playWithRobot() {
+    // @ts-ignore
+    Global.currentDeck = JSON.parse(localStorage.getItem('currentDeck'));
+    if (!Global.currentDeck) {
+      alert("Please select a deck first");
+      this.router.navigate(['/deck-list']);
+      return;
+    }
+
+    if (this.loggedUser && this.loggedUser.id) {
+      if (this.loggedUser.status === 0) {
+        //@ts-ignore
+        this.robotService.createRobotRequest(this.getUserId(), Global.currentDeck.id)
+          .subscribe((response: HttpResponse<any>) => {
+            // 处理请求成功的逻辑
+            if (response.body) {
+              this.duelRequest = response.body;
+              console.log('duelRequest:', this.duelRequest);
+              if (this.duelRequest && this.loggedUser && Global.currentDeck) {
+                this.duelService.createRobotDuel(this.duelRequest.id, this.getUserId(), Global.currentDeck.id)
+                  .subscribe(
+                    (response) => {
+                      this.duelService.initializer = false;
+                      localStorage.setItem('initializer', '0');
+                      this.router.navigate([`/duel/${this.duelRequest?.id}`]);
+                    }
+                  );
+              } else {
+                console.error('Error: duelRequest, loggedUser or currentDeck is undefined');
+              }
+            } else {
+              alert("Failed to create duel request.");
+            }
+          }, error => {
+            alert("Error sending duel request");
+          });
+      } else {
+        alert("This user is not available for a duel.");
+      }
+    } else {
+      alert("Current user or target user is null.");
+    }
+
+
+  }
+  goToSepTv() {
+    this.router.navigate(['/sep-tv']);
+  }
+
 
 }

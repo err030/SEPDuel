@@ -1,17 +1,12 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +22,19 @@ public class Duel {
     private int playerTurn;
     private Card lastPlayerCard;
     private long remainingTime;
+    private boolean visibility = false;
+    private boolean isRobotDuel=false;
 
+
+    public Duel(Player playerA, Player playerB) {
+        this.playerA = playerA;
+        this.playerB = playerB;
+        this.gameFinished = false;
+        this.winnerId = -1;
+        this.playerTurn = 0;
+        this.currentPlayer = playerA;
+        this.lastPlayerCard = null;
+    }
 
     @Override
     public String toString() {
@@ -40,19 +47,9 @@ public class Duel {
                 ", winnerId=" + winnerId +
                 ", playerTurn=" + playerTurn +
                 ", lastPlayerCard=" + lastPlayerCard +
+                ",isRobotDuel=" + isRobotDuel +
                 '}';
     }
-
-    public Duel(Player playerA, Player playerB) {
-        this.playerA = playerA;
-        this.playerB = playerB;
-        this.gameFinished = false;
-        this.winnerId = -1;
-        this.playerTurn = 0;
-        this.currentPlayer = playerA;
-        this.lastPlayerCard = null;
-    }
-
 
     public void start() {
         this.playerTurn = 0;
@@ -73,19 +70,24 @@ public class Duel {
         this.currentPlayer = this.getOpponent();
         this.drawCard(this.currentPlayer);
         this.currentPlayer.setHasSummoned(false);
+        currentPlayer.getTable().forEach(card -> card.setCanAttack(true));
     }
 
     public void drawCard(Player player) {
         if (checkIfGameFinished() || player.getDeck().getCards().isEmpty()) {
             return;
         }
-            this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
-            this.currentPlayer.hand.add(this.lastPlayerCard);
+        this.lastPlayerCard = this.currentPlayer.deck.cards.remove(this.currentPlayer.deck.cards.size() - 1);
+        this.currentPlayer.hand.add(this.lastPlayerCard);
 
-        }
+    }
 
     public void attack(Card attacker, Card defender) {
         if (checkIfGameFinished()) {
+            return;
+        }
+        if (this.currentPlayer.isRobot() && !attacker.isCanAttack()) {
+            System.out.println("Card " + attacker.getName() + " cannot attack this turn.");
             return;
         }
         if (defender == null) {
@@ -223,6 +225,7 @@ public class Duel {
         this.currentPlayer.table.add(card);
         this.currentPlayer.summonedCards.add(card);
         this.currentPlayer.setHasSummoned(true);
+        card.setCanAttack(false);
     }
 
     public void endGame() {

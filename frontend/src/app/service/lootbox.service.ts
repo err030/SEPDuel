@@ -28,4 +28,8 @@ export class LootboxService {
     const url = Global.userRestServiceUrl + "/openLootbox/" + userId + "/" + lootboxId;
     return this.http.post(url,null);
   }
+  claimLootbox(userId : number) : Observable<any>{
+    const url = Global.userRestServiceUrl + "/claimLootbox/" + userId;
+    return this.http.post(url,null);
+  }
 }

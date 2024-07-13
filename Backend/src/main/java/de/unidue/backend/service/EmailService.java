@@ -17,6 +17,7 @@ public class EmailService {
 
     /**
      * 发送普通文本格式的邮件
+     *
      * @param emailTo
      * @param subject
      * @param text

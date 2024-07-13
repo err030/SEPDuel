@@ -1,7 +1,5 @@
 package de.unidue.beckend_gruppe_q.model;
 
-import de.unidue.beckend_gruppe_q.model.User;
-
 public class Friend {
     private User user;
     private Integer statusVonFreundschaftanfrag;
@@ -14,15 +12,19 @@ public class Friend {
     public void setUser(User user) {
         this.user = user;
     }
+
     public Integer getStatusVonFreundschaftanfrag() {
         return statusVonFreundschaftanfrag;
     }
-    public void setStatusVonFreundschaftanfrag(Integer statusVonFreundschaftanfrag){
+
+    public void setStatusVonFreundschaftanfrag(Integer statusVonFreundschaftanfrag) {
         this.statusVonFreundschaftanfrag = statusVonFreundschaftanfrag;
     }
+
     public Boolean getIstSchonFreunde() {
         return istSchonFreunde;
     }
+
     public void setIstSchonFreunde(Boolean istSchonFreunde) {
         this.istSchonFreunde = istSchonFreunde;
     }

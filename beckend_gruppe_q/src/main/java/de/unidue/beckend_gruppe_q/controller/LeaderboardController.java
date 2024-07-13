@@ -1,8 +1,10 @@
 package de.unidue.beckend_gruppe_q.controller;
 
-import de.unidue.beckend_gruppe_q.model.*;
+import de.unidue.beckend_gruppe_q.model.DuelRequest;
+import de.unidue.beckend_gruppe_q.model.User;
 import de.unidue.beckend_gruppe_q.repository.DeckRepository;
 import de.unidue.beckend_gruppe_q.repository.DuelRequestRepository;
+import de.unidue.beckend_gruppe_q.repository.TournamentRepository;
 import de.unidue.beckend_gruppe_q.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +19,14 @@ public class LeaderboardController {
     private final UserRepository userRepository;
     private final DuelRequestRepository duelRequestRepository;
     private final DeckRepository deckRepository;
+    private final TournamentRepository tournamentRepository;
 
-    public LeaderboardController(UserRepository userRepository, DuelRequestRepository duelRequestRepository, DeckRepository deckRepository) {
+    public LeaderboardController(UserRepository userRepository, DuelRequestRepository duelRequestRepository, DeckRepository deckRepository, TournamentRepository tournamentRepository) {
         this.userRepository = userRepository;
         this.duelRequestRepository = duelRequestRepository;
         this.deckRepository = deckRepository;
+        this.tournamentRepository = tournamentRepository;
     }
-
 
 
     @PostMapping("/duelRequest/sendDuelRequest/{currentUserid}/{targetUserid}/{sendDeckId}")
@@ -65,6 +68,12 @@ public class LeaderboardController {
             receiverOptional.ifPresent(request::setReceivedUser);
 
         });
+        return ResponseEntity.ok().body(duelRequests);
+    }
+
+    @GetMapping("/duelRequest/getAllDuelRequests")
+    public ResponseEntity<List<DuelRequest>> getAllDuelRequests() {
+        List<DuelRequest> duelRequests = duelRequestRepository.findAll();
         return ResponseEntity.ok().body(duelRequests);
     }
 

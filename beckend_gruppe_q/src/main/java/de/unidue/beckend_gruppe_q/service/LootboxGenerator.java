@@ -31,6 +31,7 @@ public class LootboxGenerator {
 
     /**
      * generate a lootbox and save it to the lootboxRepository
+     *
      * @param type
      * @return
      */
@@ -49,7 +50,7 @@ public class LootboxGenerator {
         }
         List<Card> cards = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            cards.add(randomCardByType(type,i));
+            cards.add(randomCardByType(type, i));
         }
         lootbox.setCards(cards);
         lootboxRepository.save(lootbox);
@@ -58,6 +59,7 @@ public class LootboxGenerator {
 
     /**
      * call each method for each case
+     *
      * @param type
      * @param cardIndex
      * @return
@@ -83,6 +85,7 @@ public class LootboxGenerator {
     /**
      * the first card 5% chance to be legendary,second card 15% chance to be rare,
      * rest are all common cards
+     *
      * @param cardIndex
      * @param legendaryCards
      * @param rareCards
@@ -121,6 +124,7 @@ public class LootboxGenerator {
 
     /**
      * get random cards from each rarity
+     *
      * @param cards
      * @return
      */
@@ -141,6 +145,7 @@ public class LootboxGenerator {
 
     /**
      * here are how the chances are dealt
+     *
      * @param legendaryCards
      * @param rareCards
      * @param normalCards
@@ -160,8 +165,6 @@ public class LootboxGenerator {
             return getRandomCardFromList(normalCards);
         }
     }
-
-
 
 
 }

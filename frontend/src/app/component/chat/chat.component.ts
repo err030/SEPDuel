@@ -39,11 +39,9 @@ export class ChatComponent implements OnInit {
   public loggedUser: any;
   selectedUser: User | null = null;
   friends: User[] = [];
-  //showFriendList: boolean = false;
- // selectedFriendListItemId: number | undefined;
   selectedChatListItemId: number | undefined; //现在 正在聊天的对象
   activeIndex: number = 0;
-  // showChatListFriends: boolean = false;
+
   chatListFriends: User[] = [];
   allFriends: User[] = [];
   isListPublic: boolean | null = false;
@@ -119,17 +117,12 @@ export class ChatComponent implements OnInit {
           alert(error.statusText)
         }
       })
-      // 获取路由参数id
-      // console.log(this.route)
       this.route.paramMap.subscribe(params => {
-        // console.log(params, '===params');
+
         const selectedFriendIdParam = params.get('friendId');
-        //判断是从哪个按钮 来自 Friend界面 还是主界面的chatten
-        // console.log(selectedFriendIdParam,'===selectedFriendIdParam' );
         if (selectedFriendIdParam != null) {
           this.selectedFriendId = parseInt(selectedFriendIdParam); //从好友列表 选中具体的好友后获取他的 Userid (= value.id) selectedFriendId是个全局变量
-          // this.loggedUser = Global.loggedUser;
-          // this.selectedUser = this.friendService.selectedFriend;
+
           this.selectedChatListItemId = undefined;
           // 检查该好友是否已经在chatListFriends中
           for (let user of this.chatListFriends) {
@@ -138,7 +131,7 @@ export class ChatComponent implements OnInit {
               break;
             }
           }
-          // 如果不存在，添加到chatListFriends的第一个
+
           /*
           对用户的所有friend进行遍历 寻找与selectedFriendId 匹配的好友Object
           循环的目的: 只知道聊天对象的id  但是不知道聊天对象是谁，为了获取到对象
@@ -151,12 +144,11 @@ export class ChatComponent implements OnInit {
                 let chatListFriends = this.chatListFriends;
                 chatListFriends.unshift(friend); //将选中的好友添加到第一个
                 this.chatListFriends = chatListFriends;
-                //this.chatListFriends.unshift(friend);//unshift 方法会将friend这个对象 添加到数组的首个位置
                 setTimeout(() => {
                   this.changeDetector.detectChanges(); //手动刷新 试图
                 })
                 console.log(this.chatListFriends);
-                // this.showChatListFriends = true
+
                 this.selectedChatListItemId = this.selectedFriendId;
                 console.log(this.selectedChatListItemId)
                 break;
@@ -164,7 +156,7 @@ export class ChatComponent implements OnInit {
             }
           }
         }
-        this.activeIndex = 0; //切换聊天对象的index ??
+        this.activeIndex = 0;
       });
     }
 
@@ -190,7 +182,6 @@ export class ChatComponent implements OnInit {
   resetList(): void {
     console.log('reset list')
     this.selectedFriendId = 0;
-    // void this.router.navigateByUrl(this.activeIndex == 0 ? '/chat/0' : '/chat/0/group_message/0');
     this.router.navigateByUrl('/chat');
   }
 
@@ -244,11 +235,6 @@ export class ChatComponent implements OnInit {
     // @ts-ignore
     this.selectedItems = Array.from(checkboxes).map((checkbox: HTMLInputElement) => checkbox.value);
 
-//输出选中的用户ID和聊天群组名称，便于调试。
-    console.log("selectedItems："+this.selectedItems)
-    console.log("chatGroupName："+this.chatGroupName)
-    //const newChatGroup = <Chatgroup>{};
-    //this.loggedUser instanceof User ? newChatGroup.creator = this.loggedUser :this.loggedUser;
 
     /*
     1.设置聊天群组的名称、类型和创建者ID。
@@ -260,7 +246,6 @@ export class ChatComponent implements OnInit {
 
 
     //群组聊天要3个人
-
     /*
     确保选中的用户数至少为3人。
     遍历选中的用户ID，调用 userService.getUserByUserId 获取用户信息，并将用户对象添加到 chatGroupUsers 列表中。
@@ -277,8 +262,6 @@ export class ChatComponent implements OnInit {
               user=response.body;
 
               this.chatGroupUsers.push(user)
-              // console.log(this.chatGroupUsers);
-              //this.newChatGroup.participants.push(user);
 
             }
           },

@@ -14,6 +14,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class User {
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public List<Deck> decks = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Card> cards = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -27,25 +31,18 @@ public class User {
     private Integer groupId;
     private Long sepCoins;
     private Integer status; //0:online, 1:
-
+    private Long clanId;
+    private String clanName;
+    private boolean isRobot = false;
     @Setter
     @Getter
     @Column(name = "leader_board_punkt")
     private Long leaderBoardPunkt;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Lootbox> lootboxes = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    public List<Deck> decks = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    public List<Card> cards = new ArrayList<>();
-
 //    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    public List<User> friends = new ArrayList<>();
-
-
 
     @Override
     public String toString() {
@@ -63,5 +60,13 @@ public class User {
                 ", decks=" + decks.toString() +
                 ", cards=" + cards.toString() +
                 '}';
+    }
+
+    public boolean isRobot() {
+        return isRobot;
+    }
+
+    public void setRobot(boolean robot) {
+        isRobot = robot;
     }
 }

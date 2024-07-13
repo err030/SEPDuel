@@ -12,10 +12,12 @@ export class Global {
   public static duelRestServiceUrl: string = this.backendUrl + "/api/duel";
   public  static duelRequestRestServiceUrl:string=this.backendUrl + "/duelRequest";
   public static chatGroupServiceUrl: string = this.backendUrl + "/chatgroup";
+  public static robotRestServiceUrl: string = this.backendUrl + "/robot";
 
 
 
   public static loggedUser: User;
   public static currentDeck: Deck;
   public static savedCards: Card[];
+  static tournamentRestServiceUrl: string = this.backendUrl + "/api/tournament";
 }

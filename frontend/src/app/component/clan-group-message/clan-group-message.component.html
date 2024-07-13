@@ -1,0 +1,40 @@
+<!--<p>chat-group-message works!</p>-->
+<div class="flex flex-column card-container p-4" *ngIf="myClan">
+
+  <div class="flex align-items-center justify-content-center font-bold ml-2 mr-2 message_dialog_header" *ngIf="myClan">
+    <button (click)="goMyClan()" class="back-btn">BACK</button>
+    {{myClan.name}}
+  </div>
+  <p-divider type="solid"></p-divider>
+
+  <div class="flex align-items-center justify-content-center ml-2 mr-2 message_dialog_history">
+    <p-scroller [items]="allMSGs" [itemSize]="50" #scroller [appendOnly]="true">
+      <ng-template pTemplate="item" let-message>
+        <div class="message-row mb-4" [ngClass]="{'message-sent-by-me': message.senderType === 'me', 'message-sent-by-friend': message.senderType === 'friend'}">
+          <div class="text-xl font-bold" [ngClass]="{'text-right': message.senderType === 'me'}">
+            <p-avatar *ngIf="message.senderType === 'friend'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
+                      [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+            {{ message.msgContent }}
+            <p-avatar *ngIf="message.senderType === 'me'" [label]=getUserAvatarUrl(message.senderType,message.sender) styleClass="mr-2"
+                      [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"></p-avatar>
+          </div>
+        </div>
+      </ng-template>
+
+    </p-scroller>
+  </div>
+  <p-divider type="solid"></p-divider>
+
+  <div class="flex align-items-top justify-content-center ml-2 mr-2 message_dialog_inputField" style="width: 100%">
+    <div class="grid" style="width: 100%">
+      <div class="col-12 pt-2 pb-2 pl-0 pr-0" style="width: 100%">
+        <textarea pInputTextarea rows="3" style=" width: 100%; height: 100%" [(ngModel)]="textareaInput"></textarea>
+      </div>
+      <div class="col"></div>
+      <div class="col-fixed pt-0 pb-2 pl-0 pr-0" style="width: 110px">
+        <p-button label="Senden" icon="pi pi-arrow-circle-right" (onClick)="sendMessage()"></p-button>
+      </div>
+    </div>
+  </div>
+
+</div>

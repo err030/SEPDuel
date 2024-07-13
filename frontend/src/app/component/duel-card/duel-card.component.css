@@ -1,6 +1,6 @@
 .duel-card {
-  width: 120px; /* 调整卡牌宽度 */
-  height: 180px; /* 调整卡牌高度 */
+  width: 100px; /* 调整卡牌宽度 */
+  height: 160px; /* 调整卡牌高度 */
   border: 2px solid rgba(23, 23, 23, 0.9); /* 设置卡牌边框 */
   border-radius: 5px; /* 设置边角弧度 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
@@ -20,7 +20,7 @@
 }
 
 .duel-card h3 {
-  font-size: 1rem; /* 调整标题字体大小 */
+  font-size: 0.8rem; /* 调整标题字体大小 */
   color: rgb(255, 255, 255); /* 设置标题颜色 */
   text-shadow: -1px -1px 0 #000,
   1px -1px 0 #000,
@@ -30,7 +30,7 @@
 
 .duel-card p {
   margin: 2px 0; /* 调整段落的外边距 */
-  font-size: 1rem; /* 调整段落字体大小 */
+  font-size: 0.8rem; /* 调整段落字体大小 */
   color: rgb(255, 255, 255);
   text-shadow: -1px -1px 0 #000,
   1px -1px 0 #000,

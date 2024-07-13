@@ -18,6 +18,16 @@ public class Message {
     private String sender;  //Sender
 
     private String recipient; //Empfanger
+    @ManyToOne
+    private Chat chat;
+    //Absenderkategorie (ich, Freund)
+    private String senderType;
+    private String msgType;// new_user Neuer Benutzer online|| server server Nachricht|| group_chat Gruppenchat Nachricht|| offline Benutzer offline
+    private String fromUuid;
+    private String chatGroupId;
+    private LocalDateTime timestamp;
+    @Column(name = "is_read", columnDefinition = "bit(1) default b'0'")
+    private boolean isRead;
 
     public String getRecipient() {
         return recipient;
@@ -27,16 +37,6 @@ public class Message {
         this.recipient = recipient;
     }
 
-    @ManyToOne
-    private Chat chat;
-    //Absenderkategorie (ich, Freund)
-    private String senderType;
-
-    private String msgType;// new_user Neuer Benutzer online|| server server Nachricht|| group_chat Gruppenchat Nachricht|| offline Benutzer offline
-
-    private String fromUuid;
-
-    private String chatGroupId;
     //Getter, Setter and others methodes
     public String getChatGroupId() {
         return chatGroupId;
@@ -77,10 +77,6 @@ public class Message {
     public void setSenderType(String senderType) {
         this.senderType = senderType;
     }
-
-    private LocalDateTime timestamp;
-    @Column(name = "is_read", columnDefinition="bit(1) default b'0'")
-    private boolean isRead;
 
     public Long getMsgId() {
         return msgId;

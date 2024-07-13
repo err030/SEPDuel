@@ -1,0 +1,39 @@
+.duel-history {
+  padding: 20px;
+}
+
+.history-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-family: Herloit, sans-serif;
+}
+
+.history-table-tr {
+  /*font-family: Herloit, sans-serif;*/
+}
+
+.vs-text {
+  color: #909399;
+  padding: 0 50px;
+  font-size: 25px;
+}
+
+.history-item-opponent {
+  display: flex;
+  align-items: center;
+}
+
+.opponent-item {
+  font-size: 20px;
+}
+
+.opponent-point {
+  font-size: 15px;
+  font-family: normal;
+}
+.win {
+  color: #67C23A;
+}
+.lose {
+  color: #F56C6C;
+}
