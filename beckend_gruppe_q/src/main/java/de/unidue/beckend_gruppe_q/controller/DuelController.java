@@ -210,16 +210,12 @@ public class DuelController {
 
     private void robotPlay(Duel duel) {
         while (duel.getCurrentPlayer().isRobot() && !duel.isGameFinished()) {
-            Player robot = duel.getCurrentPlayer();
-
             // Call summon method from RobotService
             robotService.summonCard(duel);
 
             // Call attack method from RobotService
+
             robotService.robotAttack(duel);
-
-            // Alternate attack between player and defender
-
 
             // Move to next round
             duel.nextRound();
