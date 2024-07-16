@@ -89,7 +89,7 @@ public class BackendGruppeQApplication {
             userController.addUser(d);
             for (User user : userRepository.findAll().stream().filter(u -> !u.isRobot()).toList()) {
                 Random random = new Random();
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 10; i++) {                      //add 10 random cards
                     int r = random.nextInt(cardRepository.findAll().size() - 1);
                     Card card = cardRepository.findAll().get(r).clone();
                     card.setId(null);

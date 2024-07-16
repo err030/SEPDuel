@@ -281,6 +281,10 @@ public class TournamentController {
 
         TournamentBet bet = tournamentBetRepository.findByTournamentAndUser(tournament, user);
 
+        if (tournament.getWinnerId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tournament has not been started!");
+        }
+
         if (bet.getBetOnUserId().equals(tournament.getWinnerId())) {
 
             bet.getUser().setSepCoins(bet.getUser().getSepCoins() + 50);
