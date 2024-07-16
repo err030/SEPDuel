@@ -18,12 +18,12 @@ public class RobotUserInitializer implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         // 检查是否已经存在Robot用户
-        if (!userRepository.findByEmail("robot@robot.com").isPresent()) {
+        if (userRepository.findByEmail("robot@robot.com").isEmpty()) {
             User robotUser = new User();
             robotUser.setUsername("robot");
-            robotUser.setPassword("password"); // 设置Robot用户的密码
+            robotUser.setPassword("password");
             robotUser.setFirstname("Robot");
             robotUser.setLastname("Player");
             robotUser.setEmail("robot@robot.com");
