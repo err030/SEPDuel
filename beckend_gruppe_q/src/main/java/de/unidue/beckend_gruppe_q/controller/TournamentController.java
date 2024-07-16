@@ -72,24 +72,30 @@ public class TournamentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
+        TournamentInvitation currentInvitation = tournamentInvitationRepository.findByUserId(currentUserId);
+        if (currentInvitation != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request has already been sent!");
+        }
+
         Tournament tournament = new Tournament();
         tournament.setClan(clan);
         tournament.setStatus("Waiting");
-        tournament = tournamentRepository.save(tournament);
+//        tournament = tournamentRepository.save(tournament);
+        tournamentRepository.save(tournament);
 
-        Tournament finalTournament = tournament;
+//        Tournament finalTournament = tournament;
         this.tournament = tournament;
 
         /* suppose the user who starts the invitation already accepted the invitation
            in the startTournament method, all the invitations are manipulated,
            so the sender of this invitation should also be included
         */
-        TournamentInvitation currentUserInvitation = new TournamentInvitation(finalTournament, currentUser, true);
+        TournamentInvitation currentUserInvitation = new TournamentInvitation(tournament, currentUser, true);
         tournamentInvitationRepository.save(currentUserInvitation);
 
         List<TournamentInvitation> invitations = clan.getUsers().stream()
                 .filter(user -> !user.getId().equals(currentUserId))
-                .map(user -> new TournamentInvitation(finalTournament, user, false))
+                .map(user -> new TournamentInvitation(tournament, user, false))
                 .toList();
         tournamentInvitationRepository.saveAll(invitations);
         playersList.add(currentUserInvitation);
@@ -103,6 +109,8 @@ public class TournamentController {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("user not found"));
 
         List<Tournament> tournaments = tournamentRepository.findByClanId(user.getClanId());
+
+        if (tournaments.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
         Tournament tournament = tournaments.get(tournaments.size() - 1);
 

@@ -15,4 +15,6 @@ public interface TournamentInvitationRepository extends JpaRepository<Tournament
     boolean existsByTournament(Tournament tournament);
 
     List<TournamentInvitation> findByAccepted(boolean accepted);
+
+    TournamentInvitation findByUserId(Long currentUserId);
 }
