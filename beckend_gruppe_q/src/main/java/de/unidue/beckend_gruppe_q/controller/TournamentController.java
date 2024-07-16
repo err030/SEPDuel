@@ -73,7 +73,7 @@ public class TournamentController {
         }
 
         TournamentInvitation currentInvitation = tournamentInvitationRepository.findByUserId(currentUserId);
-        if (currentInvitation != null){
+        if (currentInvitation != null && currentInvitation.getTournament().getWinnerId() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request has already been sent!");
         }
 
