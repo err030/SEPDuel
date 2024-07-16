@@ -105,6 +105,7 @@ export class ClanComponent implements OnInit{
       (response:any) => {
         console.log(response);
         this.tournamentId = response.id;
+        alert("Invitations sent!")
       })
   }
 
