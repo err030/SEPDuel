@@ -45,11 +45,10 @@ interface Message {
 })
 export class ClanGroupMessageComponent implements OnInit{
   loggedUser: User | null = null;
+
   myClan: Clan | null = null;
 
   allMSGs: Message[] = [];
-
-  msgList: Message[] = [];
 
   textareaInput: string = '';
 
@@ -58,7 +57,6 @@ export class ClanGroupMessageComponent implements OnInit{
   @ViewChild('scroller') scroller!: Scroller;
 
   socket$: WebSocketSubject<{ fromUuid: string; chatGroupId: number; sender: string; senderType: string; msgType: string; msgContent: string }> | undefined;
-  public messages: { id: string, message: string }[] = [];
   public message: string | undefined;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -89,15 +87,11 @@ export class ClanGroupMessageComponent implements OnInit{
         this.loggedUser = this.userService.loggedUser;
         console.log(this.loggedUser, this.myClan)
 
-        console.log('chat messagelist :', this.msgList);
         const msgListData = localStorage.getItem('groupMsgList');
         if (msgListData != undefined && msgListData != null) {
 
-          this.msgList = JSON.parse(msgListData);
+          this.allMSGs = JSON.parse(msgListData);
         }
-
-        //@ts-ignore
-        this.allMSGs = this.msgList.filter(message => (message.chatGroupId === this.myClan?.id));
 
         setTimeout(() => {
           this.scroller.scrollToIndex(999999, 'smooth');
@@ -109,8 +103,6 @@ export class ClanGroupMessageComponent implements OnInit{
 
     this.socket$ = new WebSocketSubject('ws://localhost:8080/websocket/' + this.loggedUser?.id);
 
-      let that = this;
-
     this.socket$.subscribe(
       (message) => {
         if (!message.chatGroupId || message.chatGroupId != this.myClan?.id) return
@@ -118,8 +110,8 @@ export class ClanGroupMessageComponent implements OnInit{
 
         const temp = JSON.stringify(this.allMSGs);
         //console.log(temp);
-        that.allMSGs = [];
-        that.allMSGs = JSON.parse(temp);
+        this.allMSGs = [];
+        this.allMSGs = JSON.parse(temp);
 
         const msg: Message = {
           // @ts-ignore
@@ -131,19 +123,21 @@ export class ClanGroupMessageComponent implements OnInit{
           sender: message.sender,
           // @ts-ignore
           recipient: this.myClan?.users.map(user => user.id).join(','),
+
           senderType: 'friend',
           msgType: 'group_chat',
           isRead: false
         };
         console.log(msg);
-        that.allMSGs.push(msg);
-        this.msgList.push(msg);
+
+        this.allMSGs.push(msg);
+
 
         setTimeout(() => {
           this.scroller.scrollToIndex(999999, 'smooth');
         }, 100);
 
-        localStorage.setItem("groupMsgList", JSON.stringify(this.msgList));
+        localStorage.setItem("groupMsgList", JSON.stringify(this.allMSGs));
       },
       (error) => console.error('WebSocket error:', error),
       () => console.log('WebSocket connection closed')
@@ -175,9 +169,8 @@ export class ClanGroupMessageComponent implements OnInit{
     };
 
     this.allMSGs.push(message);
-    this.msgList.push(message);
 
-    localStorage.setItem("groupMsgList", JSON.stringify(this.msgList));
+    localStorage.setItem("groupMsgList", JSON.stringify(this.allMSGs));
 
     this.textareaInput = ''; // Clear the input field
 
