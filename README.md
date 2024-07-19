@@ -1,4 +1,4 @@
-### Author (by letter):Beibei Tu, Jiancheng Yu, Yuchen Teng, Zheyuan Wu, Zijie Liu
+### Author (by letter):Beibei Tu, Bohan Sun, Jiancheng Yu, Yuchen Teng, Zheyuan Wu, Zijie Liu
 
 # User manual
 ## Technical requirements
