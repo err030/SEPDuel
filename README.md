@@ -1,96 +1,50 @@
-# Gruppe Q
+###User manual
+#Technical requirements
+Minimum technical requirements that the system needs to be able to operate as desired
+1. An up-to-date docker installation.
+2. A modern, working browser (e.g. Chrome, Edge)
+3. Access to OS terminal
 
-Use
-git branch -D <branch>
-to force delete the old branches
+
+###Installation instructions
+Detailed explanation of how the developed system can be put into operation on a computer in a fully functional manner.
+1. Load the requiring tar files to docker repository:
+docker load < *.tar
+2. Open folder:
+cd /folder
+3. Run docker container:
+docker compose up
+4. (optional) Ensure every component (backend, frontend, mysql) is up and running
+Operating instructions
+Detailed explanation of how the developed system is to be operated.
+
+After successfully starting up the docker container, open your browser and browse localhost:4200, this is the main login page. You should click “register” to register a new account as a user. In the registration page, you should fill in the blanks and make sure your repeated password matches. If you want to register for Admin, you need a special invitation code.
 
 
-## Getting started
+After registration, you will be redirected to the login page, where you can sign in. Input your email address and your password, click “Sign In”, you will be redirected to the Second-Factor-Authentication Page. You should be received an E-mail by now, input your security code from the e-mail, click “Next”, and you are good to go.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+On the main homepage, you can browse your profile and change your avatar by clicking “Profile”. All player information and match history can be found in the Profile, and players can also change their password here.
+By clicking “Decks” in the center, you can add decks and edit them, but notice there’s a max limit of 3 decks and each deck contains max. 30 cards. You can add a card in only one deck, before adding it to other decks, you should remove it from the deck first.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+By clicking “Friend” button on the top-right corner, you can search other users and ask them to add you as a friend. Besides, you can set your friend list to either “private” or “public”. Users should be able to send friend requests, after requests confirmed by the other user, you can now start to chat. In the chat window you can delete or edit the sent message if the other user has not read them. You can also start a group chat by giving this group a name and  selecting friends. Users who are invited to this group can find them in this group chat.
 
-## Add your files
+To use the project, click on a friend from the friend list. Then, click on the chat button to navigate to the chat interface. In the chat interface, you will be able to see the friend list, the input box, and the message area.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+When the user types a message in the chat box and clicks send, if the recipient has not read the message yet, the user can see the ‘löschen’ and ‘bearbeiten’ buttons below the message.
 
-```
-cd existing_repo
-git remote add origin https://git.uni-due.de/sep/sommersemester_2024/gruppe-q-t/gruppe-q.git
-git branch -M main
-git push -uf origin main
-```
+Clicking the ‘löschen’ button will directly remove the message, while clicking the ‘bearbeiten’ button will bring up a dialog box with a new input field to modify the sent message.
 
-## Integrate with your tools
+By clicking on the group chat option, the user can create a new group, select users to join the group chat, and name the group chat.
 
-- [ ] [Set up project integrations](https://git.uni-due.de/sep/sommersemester_2024/gruppe-q-t/gruppe-q/-/settings/integrations)
+After creating the group, clicking on the group chat allows the user to send messages, which will be displayed in real-time to other users in the group.
 
-## Collaborate with your team
+Users can go to the lootbox page and use their sep-points to buy lootboxes, there are three kinds of lootboxes users can buy. Gold and Rare lootboxes are more expensive because they have a bigger chance to receive rare and legendary cards. After buying a lootbox, users can open the lootboxes they bought and receive different cards according to the type of lootbox they bought. 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+In the leaderboard page users can see the ranking of all the users. Users can use their cards to duel with other users by sending duel requests in the leaderboard, users have thirty seconds time to accept the duel request or the request will be rejected. Users can also decline the request by clicking the decline button. After accepting the request, both users can go to the dual page by clicking the enter game button. Users can start the game by clicking the start game button. One user will get a random card from the deck they created, if the card is common, user can summon the card immediately and if it is a rare card, the user can only summon the rare card by sacrificing two cards on the table and if it is a legendary card, he user can only summon the legendary card by sacrificing three cards on the table. the User can only summon the card in the first round and use the card to attack in the second card or after.A user can only summon or attack in one round. A game is ended if one user has no health points left and the winner will be rewarded 50 leaderboard points and the loser will have 50 leaderboard points less in their account.
 
-## Test and Deploy
+In the Clan List, players can create a Clan. After creation, the system will automatically redirect to the Clan page, where all members can be seen, and Tournaments and Bets can be initiated for each round of the Tournament. All members of the Clan will be randomly paired to compete in matches. The player who wins the final round of the tournament will receive 700 SEP coins. Other members can also bet on which player will win the match. Each bet will cost 50 SEP coins, and if the bet is successful, the bettor will receive 50 SEP coins and a Gold-Lootbox.
 
-Use the built-in continuous integration in GitLab.
+On the homepage, clicking "Play with Robot" allows players to battle against a robot, which will follow game rules to compete with the player.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+On the homepage, players can also click on SEP-TV to watch live battles. Viewers of the live stream can see both players' hands.
 
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
