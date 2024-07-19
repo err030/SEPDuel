@@ -1,3 +1,7 @@
+Author (by letter):Beibei Tu, Jiancheng Yu, Yuchen Teng, Zheyuan Wu, Zijie Liu
+
+<img width="384" alt="image" src="https://github.com/user-attachments/assets/cd2efc71-b4b6-4cdc-af10-ce69b4ed2726">
+
 User manual
 Technical requirements
 Minimum technical requirements that the system needs to be able to operate as desired
