@@ -3,17 +3,17 @@
 # User manual
 ## Technical requirements
 ## Minimum technical requirements that the system needs to be able to operate as desired
-### 1. An up-to-date docker installation.
-### 2. A modern, working browser (e.g. Chrome, Edge)
-### 3. Access to OS terminal
+1. An up-to-date docker installation.
+2. A modern, working browser (e.g. Chrome, Edge)
+3. Access to OS terminal
 
 
 # Installation instructions
 ## Detailed explanation of how the developed system can be put into operation on a computer in a fully functional manner.
-### 1. Load the requiring tar files to docker repository: docker load < *.tar
-### 2. Open folder: cd /folder
-### 3. Run docker container: docker compose up
-### 4. (optional) Ensure every component (backend, frontend, mysql) is up and running
+1. Load the requiring tar files to docker repository: docker load < *.tar
+2. Open folder: cd /folder
+3. Run docker container: docker compose up
+4. (optional) Ensure every component (backend, frontend, mysql) is up and running
 
 # Operating instructions
 ## Detailed explanation of how the developed system is to be operated.
