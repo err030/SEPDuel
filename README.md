@@ -1,12 +1,12 @@
-###User manual
-#Technical requirements
+User manual
+Technical requirements
 Minimum technical requirements that the system needs to be able to operate as desired
 1. An up-to-date docker installation.
 2. A modern, working browser (e.g. Chrome, Edge)
 3. Access to OS terminal
 
 
-###Installation instructions
+Installation instructions
 Detailed explanation of how the developed system can be put into operation on a computer in a fully functional manner.
 1. Load the requiring tar files to docker repository:
 docker load < *.tar
